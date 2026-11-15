@@ -16,28 +16,37 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.terraentity.api.entity.IAttackableProjectile;
-import org.confluence.terraentity.api.entity.ICollisionAttackEntity;
-import org.confluence.terraentity.api.entity.ITrackType;
-import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.mod.api.ITrackType;
+import org.confluence.mod.common.data.map.ImmunityDataMap;
+import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
-/**
- * <h1>长矛弹射物基类</h1>
- * <p>
- * 子类应覆写 {@link #updateMotion()} 方法实现自定义运动曲线，
- * 可选覆写配置方法（{@link #getDamageFactor}、{@link #getAcceleration} 等）实现数据驱动。
- * 可选覆写 {@link #getTrailParticle()} 提供拖尾粒子效果。
- */
-public abstract class SpearProjectile extends AbstractHurtingProjectile implements ICollisionAttackEntity {
+/// 长矛弹射物基类
+
+/// 子类应覆写 {@link #updateMotion()} 方法实现自定义运动曲线，
+
+/// 可选覆写配置方法（{@link #getDamageFactor}、{@link #getAcceleration} 等）实现数据驱动。
+
+/// 可选覆写 {@link #getTrailParticle()} 提供拖尾粒子效果。
+public abstract class SpearProjectile extends AbstractHurtingProjectile implements Immunity {
+    public static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
+    protected WeaponTargeting targeting() {
+        return TARGETING;
+    }
+
     public int lifetime;
     public int pierceRemaining;
     protected float attackDamageFactor = 1.0F;
@@ -54,7 +63,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     public float gravity;
 
     protected ItemStack firedFromWeapon;
-    protected LivingEntity target;
+    protected Entity target;
 
     public static final EntityDataAccessor<Vector3f> DATA_DIRECTION =
             SynchedEntityData.defineId(SpearProjectile.class, EntityDataSerializers.VECTOR3);
@@ -104,7 +113,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         }
     }
 
-    // ===== 策略方法（子类覆写以自定义参数） =====
+    /// ===== 策略方法（子类覆写以自定义参数） =====
 
     protected float getDamageFactor() { return config.damageFactor; }
     public float getBaseSpeed() { return config.baseSpeed; }
@@ -113,10 +122,8 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     protected int getPierceCount() { return config.pierceCount; }
     protected float getAcceleration() { return config.acceleration; }
     protected Optional<ITrackType> getTrackType() { return config.trackType; }
-    @Nullable
-    protected IEffectStrategy getHitEffect() { return config.hitEffect; }
 
-    /** 弹射物配置，子类构造时通过链式调用设置 */
+    /// 弹射物配置，子类构造时通过链式调用设置
     protected Config config = Config.DEFAULT;
 
     public static class Config {
@@ -129,7 +136,6 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         int pierceCount = 1;
         float acceleration = 1.0f;
         Optional<ITrackType> trackType = Optional.empty();
-        IEffectStrategy hitEffect;
 
         public Config damageFactor(float v) { this.damageFactor = v; return this; }
         public Config baseSpeed(float v) { this.baseSpeed = v; return this; }
@@ -138,7 +144,6 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         public Config pierceCount(int v) { this.pierceCount = v; return this; }
         public Config acceleration(float v) { this.acceleration = v; return this; }
         public Config trackType(ITrackType v) { this.trackType = Optional.ofNullable(v); return this; }
-        public Config hitEffect(IEffectStrategy v) { this.hitEffect = v; return this; }
     }
 
     public void initFromOwner(LivingEntity owner) {
@@ -153,14 +158,14 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         fire(direction, speed, knockBack);
     }
 
-    // ===== 运动逻辑 =====
+    /// ===== 运动逻辑 =====
     protected abstract void updateMotion();
 
     protected Vec3 initVelocity(LivingEntity owner, Vec3 direction, float speed) {
         return direction.scale(speed);
     }
 
-    // ===== 粒子 =====
+    /// ===== 粒子 =====
 
     @Override
     @Nullable
@@ -197,7 +202,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
             setDeltaMovement(velocity);
 
             Optional<ITrackType> track = getTrackType();
-            if (track.isPresent() && target != null && target.isAlive()) {
+            if (track.isPresent() && targeting().canKeep(getOwner(), target)) {
                 Vec3 dir = target.position()
                         .add(0, target.getBoundingBox().getYsize() * 0.5, 0)
                         .subtract(position())
@@ -227,32 +232,90 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         }
     }
 
-    // ===== 碰撞与伤害 =====
+    /// ===== 碰撞与伤害 =====
 
     @Override
     protected boolean canHitEntity(Entity target) {
         if (pierceRemaining <= 0) {
             return false;
         }
-        return LibUtils.canHitEntity(this, target);
+        return LibEntityUtils.canHitEntity(this, target);
     }
 
-    @Override
     public boolean shouldDoCollision() {
         return true;
     }
 
-    // ===== 伤害计算（子类可覆写） =====
+    protected void doCollisionAttack(Predicate<Entity> filter, Consumer<Entity> attackCallback) {
+        if (!shouldDoCollision() || level().isClientSide) return;
+        CollisionProperties properties = getCollisionProperties();
+        properties.reduceAttackInterval();
+        if (properties.canAttack()) {
+            List<Entity> entities = level().getEntities(this, getBoundingBox().inflate(properties.attackRangeExtent), e -> e != this);
+            if (!entities.isEmpty()) {
+                for (Entity e : entities) {
+                    if (filter.test(e)) {
+                        attackCallback.accept(e);
+                        properties.rewind();
+                    }
+                }
+            } else {
+                properties.reDetect();
+            }
+        }
+    }
+
+    public static class CollisionProperties {
+        public int detectInternal;
+        public int attackInternal;
+        public float attackRangeExtent;
+        public int actualAttackInterval;
+
+        public CollisionProperties(int detectInternal, int attackInternal, float attackRangeExtent) {
+            this.detectInternal = detectInternal;
+            this.attackInternal = attackInternal;
+            this.attackRangeExtent = attackRangeExtent;
+            this.actualAttackInterval = attackInternal;
+        }
+
+        public void rewind() {
+            actualAttackInterval = attackInternal;
+        }
+
+        public void reDetect() {
+            actualAttackInterval = detectInternal;
+        }
+
+        public void reduceAttackInterval() {
+            actualAttackInterval--;
+        }
+
+        public boolean canAttack() {
+            return actualAttackInterval <= 0;
+        }
+
+        public CollisionProperties setAttackInterval(int attackInterval) {
+            this.attackInternal = attackInterval;
+            return this;
+        }
+
+        public CollisionProperties setDetectInterval(int detectInterval) {
+            this.detectInternal = detectInterval;
+            return this;
+        }
+
+        public CollisionProperties setAttackRange(float attackRange) {
+            this.attackRangeExtent = attackRange;
+            return this;
+        }
+    }
+
+    /// ===== 伤害计算（子类可覆写） =====
     protected float getDamage() {
         return getBaseDamage() * getDamageFactor();
     }
 
-    protected void applyHitEffect(LivingEntity owner, LivingEntity target) {
-        IEffectStrategy effect = getHitEffect();
-        if (effect != null) {
-            effect.getEffect().accept(owner, target);
-        }
-    }
+    protected void applyHitEffect(LivingEntity owner, LivingEntity target) {}
 
     protected void applyPenetration() {
         if (--pierceRemaining <= 0 && !level().isClientSide) {
@@ -261,45 +324,31 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     }
 
     protected boolean doHurt(Entity target) {
-        if (LibUtils.canHitEntity(this, target)) {
-            float damage = getDamage();
-            DamageSource damageSource = damageSource();
-
-            if (IAttackableProjectile.tryHit(target, damageSource)) {
-                return true;
-            }
-
-            LivingEntity hurter;
-            if (LibUtils.tryFindBeImpacted(target) instanceof LivingEntity living) {
-                hurter = living;
-            } else {
-                return false;
-            }
-
-            if (getOwner() instanceof LivingEntity owner) {
-                applyHitEffect(owner, hurter);
-            }
-
-            if (target.hurt(damageSource, damage)) {
-                float attackKnockBack = getBaseKnockBack() + knockBack;
-                VectorUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
-                applyPenetration();
-            }
-            return true;
+        if (!canHitEntity(target)) return false;
+        Entity damageRecipient = target;
+        LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(target);
+        if (logicalTarget == null) return false;
+        DamageSource source = damageSource();
+        /// 静态无敌帧按弹射物类型共享，局部无敌帧按当前实例区分。
+        Immunity cause = confluence$getImmunityType() == Type.STATIC ? (Immunity) getType() : this;
+        boolean hurt = Immunity.hurt(cause, damageRecipient, logicalTarget, source, getDamage());
+        if (!hurt) {
+            return false;
         }
-        return false;
+        LivingEntity effectTarget = LibEntityUtils.effectTarget(target);
+        if (getOwner() instanceof LivingEntity owner && effectTarget != null)
+            applyHitEffect(owner, effectTarget);
+        LibEntityUtils.knockBackA2B(this, logicalTarget, (getBaseKnockBack() + knockBack) * 0.5, 0.2);
+        applyPenetration();
+        return true;
     }
 
     public DamageSource damageSource() {
-        return ModDamageTypes.of(level(), ModDamageTypes.SPEAR_PROJECTILE, this, getOwner());
+        return LibDamageTypes.of(level(), LibDamageTypes.SPEAR_PROJECTILE, this, getOwner());
     }
-
 
     @Nullable
     public net.minecraft.resources.ResourceLocation getProjTexture() { return null; }
-
-    @Nullable
-    public net.minecraft.client.model.geom.ModelLayerLocation getModelLayer() { return null; }
 
     public float getSpinRotation(float partialTick) {
         return Mth.lerp(partialTick, rotate.old, rotate.neo);
@@ -335,7 +384,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         this.entityData.set(DATA_INIT_SPEED, getDeltaMovement().toVector3f());
     }
 
-    // ===== 初始化 =====
+    /// ===== 初始化 =====
 
     @Override
     public void onAddedToLevel() {
@@ -347,16 +396,10 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
                 this.knockBack += (float) instance.getValue();
             }
 
-            var entities = level().getEntities(this,
-                    getBoundingBox().inflate(50),
-                    e -> e instanceof LivingEntity living && living.isAlive() && e != owner1);
-            entities.sort(Comparator.comparingDouble(a -> a.distanceToSqr(this)));
-            for (Entity entity : entities) {
-                if (entity instanceof LivingEntity living) {
-                    target = living;
-                    break;
-                }
-            }
+            target = LibEntityUtils.nearest(
+                    level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(50)),
+                    living -> targeting().canAcquire(owner1, living),
+                    Comparator.comparingDouble(living -> living.distanceToSqr(this)));
         }
     }
 
@@ -422,7 +465,6 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         return 0;
     }
 
-    @Override
     public CollisionProperties getCollisionProperties() {
         return collisionProperties;
     }
@@ -433,5 +475,15 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         if (!level().isClientSide) {
             discard();
         }
+    }
+
+    @Override
+    public Type confluence$getImmunityType() {
+        return ImmunityDataMap.getImmunityType(this);
+    }
+
+    @Override
+    public int confluence$getImmunityDuration(DamageSource damageSource) {
+        return ImmunityDataMap.getImmunityDuration(this, damageSource, source -> 1);
     }
 }

@@ -15,17 +15,16 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
-import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.List;
 
-public class ModBoneMealItem extends TooltipItem {
+public class ModBoneMealItem extends CustomRarityItem {
     public ModBoneMealItem(ModRarity rarity, String name) {
-        super(new Properties(), rarity, "tooltip.item.confluence." + name + ".0");
+        super(new Properties(), rarity);
     }
 
     @Override
@@ -40,10 +39,10 @@ public class ModBoneMealItem extends TooltipItem {
                     LivingEntity newEntity = null;
                     if (stack.is(ConsumableItems.BLOODSTAINED_POWDER.get()) && entityType == EntityType.CREEPER) {
                         entity.remove(Entity.RemovalReason.KILLED);
-                        newEntity = TEMonsterEntities.BLOODY_SPORE.value().create(level);
+                        newEntity = MonsterEntities.BLOODY_SPORE.value().create(level);
                     } else if (stack.is(ConsumableItems.ROTTEN_BONE_DUST.get()) && entityType == EntityType.SKELETON) {
                         entity.remove(Entity.RemovalReason.KILLED);
-                        newEntity = TEMonsterEntities.DECAYEDER.value().create(level);
+                        newEntity = MonsterEntities.DECAYEDER.value().create(level);
                     }
                     if (newEntity != null) {
                         newEntity.setPos(entity.getX(), entity.getY(), entity.getZ());
@@ -111,7 +110,7 @@ public class ModBoneMealItem extends TooltipItem {
             };
         } else {
             if ("crimson".equals(blockType) || "corrupt".equals(blockType)) {
-                blockState = ModBlocks.DEATHWEED.get().defaultBlockState();
+                blockState = NatureBlocks.DEATHWEED.get().defaultBlockState();
             }
         }
         return blockState;

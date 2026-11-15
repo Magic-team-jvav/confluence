@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
-import static org.confluence.lib.util.StructureUtils.getHeight;
-import static org.confluence.lib.util.StructureUtils.rectangular;
+import static org.confluence.lib.util.LibStructureUtils.getHeight;
+import static org.confluence.lib.util.LibStructureUtils.rectangular;
 
 public class LivingMahoganyTreeStructure extends Structure {
     public static final MapCodec<LivingMahoganyTreeStructure> CODEC = simpleCodec(LivingMahoganyTreeStructure::new);
@@ -55,8 +55,8 @@ public class LivingMahoganyTreeStructure extends Structure {
                     random,
                     random.nextInt(36, 42),
                     1,
-                    2.5D,
-                    0.8D,
+                    2.5F,
+                    0.8F,
                     1,
                     14,
                     2,
@@ -92,7 +92,8 @@ public class LivingMahoganyTreeStructure extends Structure {
                     0.20F,
                     0.75F,
                     2,
-                    3
+                    3,
+                    0
             );
             rectangular(centerPos.offset(1, 0, 1), centerPos.offset(-1, 1, -1), 0, blockMap, 0);
 

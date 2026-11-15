@@ -10,10 +10,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
+
+import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
-import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
+
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -27,21 +29,21 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile implement
     }
 
     public MagicDaggerProjectile(LivingEntity living) {
-        super(ModEntities.MAGIC_DAGGER_PROJECTILE.get(), living.level());
+        super(ModEntities.MAGIC_DAGGER.get(), living.level());
     }
 
     @Override
     public DamageSource getDamageSource() {
-        return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
+        return LibDamageTypes.of(level(), LibDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
     }
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
-            hitSet.add(entity.getUUID());
+            hitSet.add(LibEntityUtils.dedupeIdentity(entity).getUUID());
             this.damage -= deltaDamage;
-            VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
+            LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(entity), 0.5, 0.2);
             if (penetrate >= 2) {
                 discard();
             } else {
@@ -52,7 +54,7 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile implement
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
-        // super.onHitBlock(result); 跳过创建物品
+        /// super.onHitBlock(result); 跳过创建物品
         BlockState blockstate = level().getBlockState(result.getBlockPos());
         blockstate.onProjectileHit(level(), blockstate, result, this);
         if (!level().isClientSide) {

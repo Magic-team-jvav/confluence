@@ -16,12 +16,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.conversion.ConversionTable;
+import org.confluence.mod.common.block.conversion.natural.*;
 import org.confluence.mod.common.block.natural.LogBlockSet;
-import org.confluence.mod.common.block.natural.spreadable.conversion_table.*;
-import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.GamePhase;
+import org.confluence.mod.common.data.saved.EnvironmentalMachines;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Hashtable;
@@ -39,6 +42,14 @@ public interface ISpreadable {
     Type getSpreadType();
 
     default void spread(BlockState blockState, ServerLevel level, BlockPos blockPos, RandomSource randomSource) {
+        // 机器维持先于自然感染概率和休眠判定；消耗由独立的世界时间逻辑管理。
+        if (EnvironmentalMachines.INSTANCE.maintain(level, blockPos)) {
+            for (int i = 0; i < 4; i++) {
+                BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);
+                EnvironmentalMachines.INSTANCE.maintain(level, targetPos);
+            }
+            return;
+        }
         if (!blockState.getValue(STILL_ALIVE)) return;
         int chance = level.getGameRules().getInt(Confluence.SPREADABLE_CHANCE);
         int phase = KillBoard.INSTANCE.getGamePhase().getOrder();
@@ -47,7 +58,7 @@ public interface ISpreadable {
         }
         if (chance != 100 && (chance == 0 || randomSource.nextInt(100) >= chance)) return;
 
-        boolean hardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
+        boolean hardmode = ModUtils.isHardmode();
         for (int i = 0; i < 4; ++i) {
             BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);
             if (!level.isLoaded(targetPos)) continue;
@@ -74,6 +85,7 @@ public interface ISpreadable {
     }
 
     default void spreadOrDie(int phase, BlockState selfState, ServerLevel serverLevel, BlockPos selfPos, RandomSource randomSource, BlockState targetState, BlockPos targetPos) {
+        if (EnvironmentalMachines.INSTANCE.maintain(serverLevel, targetPos)) return;
         spreadTree(serverLevel, targetPos);
         serverLevel.setBlockAndUpdate(targetPos, targetState);
         if (randomSource.nextInt(7) > phase) {
@@ -82,13 +94,14 @@ public interface ISpreadable {
     }
 
     default void spreadTree(ServerLevel level, BlockPos targetPos) {
-        boolean hardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
+        boolean hardmode = ModUtils.isHardmode();
         BlockState blockState = level.getBlockState(targetPos.above());
         if (blockState.is(BlockTags.LOGS) || blockState.is(BlockTags.LEAVES)) {
             Map<BlockPos, BlockState> map = searchFace(level, targetPos, new Hashtable<>(), 0);
             for (Map.Entry<BlockPos, BlockState> entry : map.entrySet()) {
                 BlockState source = entry.getValue();
-                if (source == AIR) continue;
+                if (source == AIR || EnvironmentalMachines.INSTANCE.maintain(level, entry.getKey()))
+                    continue;
                 BlockState target = getSpreadType().getNullable(source, hardmode);
                 if (target != null) {
                     level.setBlockAndUpdate(entry.getKey(), target);

@@ -14,6 +14,7 @@ import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.SecretFlagMatcher;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.mixed.IMinecraftServer;
@@ -42,8 +43,8 @@ public enum BoulderRainGameEvent implements GameEvent {
             return type.hasSkyLight() && !type.hasCeiling();
         }).toList();
         long flag = IMinecraftServer.of(server).confluence$getSecretFlag();
-        this.isAvailableSeeds = IMinecraftServer.matchesSecretFlag(flag, IWorldOptions.BW_MASK) ||
-                IMinecraftServer.equalsSecretFlag(flag, IWorldOptions.DW_MASK | IWorldOptions.FTW_MASK);
+        this.isAvailableSeeds = SecretFlagMatcher.matchesSecretFlag(flag, IWorldOptions.BW_MASK) ||
+                SecretFlagMatcher.equalsSecretFlag(flag, IWorldOptions.DW_MASK | IWorldOptions.FTW_MASK);
     }
 
     @Override

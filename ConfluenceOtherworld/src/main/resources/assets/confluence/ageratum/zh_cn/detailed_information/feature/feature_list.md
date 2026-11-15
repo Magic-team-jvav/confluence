@@ -394,8 +394,12 @@
 
 ### 水下宝箱
 
-- id：confluence:water_chests
-- 生成于主世界任何有水的位置
+- id：confluence:water_chests_above_30
+- Y ≥ 30 的水底（海洋、河流、湖泊等地表水域），每区块 1/16 概率
+- id：confluence:water_chests_below_30
+- Y < 30 的洞穴水变体：每 8 区块做一次逐层枚举（取各层洞穴底上方那一格，每层 1 个采样点），因此被洞顶遮住的水洞也能出箱
+- 两者都是贴水下地面生成：用 OCEAN_FLOOR_WG 高度图定位水底，仅当该处是水方块时放下；主世界所有群系通用
+- 长着海草/海带的水底列会被跳过（该位置不是水方块）
 
 ### 洞穴砂岩箱
 
@@ -570,6 +574,41 @@
 - id：confluence:natures_gift
 - 生成于丛林系列群系
 
+## 石笋
+
+### 沙漠石笋
+
+- id：confluence:desert_stalagmite
+- id：confluence:desert_stalactite
+- 生成于沙漠系列群系的地表与地下：石笋朝上长在地面 / 洞底，钟乳石朝下挂在天花板上
+- 一次放置最多 2 格（1~2 格高，1 格更常见）
+
+### 腐化石笋
+
+- id：confluence:corrupt_stalagmite
+- id：confluence:corrupt_stalactite
+- 生成于腐化之地群系地下、洞穴层的地面与天花板；腐化沙漠、腐化冻原等变种群系不会生成
+
+### 猩红石笋
+
+- id：confluence:crimson_stalagmite
+- id：confluence:crimson_stalactite
+- 生成于猩红之地群系地下、洞穴层的地面与天花板；猩红沙漠、猩红冻原等变种群系不会生成
+
+### 冰锥
+
+- id：confluence:ice_stalagmite
+- id：confluence:ice_icicle
+- 生成于所有冰雪群系的地下、洞穴层：地面版朝上长，天花板版朝下挂
+
+### 大理石笋
+
+- 由大理石洞穴结构在洞底与天花板直接写入方块（不走地物）：贴附着面那格是 base、外侧那格是 tip_merge、只有 1 格时是 tip_single
+
+### 花岗岩石笋
+
+- 由花岗岩洞穴结构在洞底与天花板直接写入方块（不走地物），状态规则同上
+
 ## 其余生成
 
 ### 猩红祭坛（生物群系）
@@ -596,3 +635,14 @@
 
 - id：confluence:gemstone_cave
 - 生成于主世界群系地下、洞穴层
+
+### 猩红眼球
+
+- id：confluence:crimson_eyeball_embedded
+- id：confluence:crimson_eyeball_standing
+- 只生成于猩红之地群系的地表（猩红沙漠、猩红苔原等变种群系不会生成），两者都要求落点附近的地面足够平整
+- 嵌地型（3x3x2）：最上面一层是外露的眼球面（眼白 + 瞳孔），瞳孔形状随机且一定连续不断开，第二层整层眼球块埋在地表之下
+- 站立型（2x2 ~ 5x5，越小越常见）：实心眼球的方块立方体，正面朝向随机水平方向并长有瞳孔，其余五面与内部都填眼球块
+- 瞳孔大小跟随眼球尺寸：2x2 以单块瞳孔为主（少数双块），3x3 为单块 / 双块 / 2x2，4x4 保底 2x2，5x5 保底 3x3
+- 站立型的底部附带猩红石包裹：分叉的猩红石「血管」贴着地面爬开，并在眼球底部向外铺成底座，整体比地面高出一格
+- 4x4 / 5x5 的巨型眼球还有较低概率内部含水：水从眼球底面往上填到随机高度，四面都被眼球块包住，只在内部、不在表面破洞

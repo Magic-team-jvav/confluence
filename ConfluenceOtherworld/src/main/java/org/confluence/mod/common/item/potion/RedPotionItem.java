@@ -1,23 +1,20 @@
 package org.confluence.mod.common.item.potion;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.terra_curio.common.init.TCEffects;
 
 import java.util.List;
 
@@ -47,7 +44,7 @@ public class RedPotionItem extends AbstractPotionItem {
             MobEffects.DARKNESS,
             ModEffects.CURSED,
             ModEffects.BLEEDING,
-            TCEffects.CONFUSED,
+            LibEffects.CONFUSED,
             MobEffects.MOVEMENT_SLOWDOWN,
             MobEffects.WEAKNESS,
             ModEffects.SILENCED,
@@ -67,7 +64,7 @@ public class RedPotionItem extends AbstractPotionItem {
                 living.addEffect(new MobEffectInstance(Util.getRandom(beneficial, living.getRandom()), 30 * 60 * 20));
             }
         } else {
-            int duration = LibUtils.switchByDifficulty(level, living.blockPosition(), 60, 120, 180) * 60 * 20;
+            int duration = LibUtils.switchByDifficulty(level, 60, 120, 180) * 60 * 20;
             if (living.getRandom().nextFloat() < 1.0F / 11.0F) {
                 living.setRemainingFireTicks(duration);
             } else {
@@ -76,8 +73,4 @@ public class RedPotionItem extends AbstractPotionItem {
         }
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.item.confluence.red_potion.0").withStyle(ChatFormatting.GRAY));
-    }
 }

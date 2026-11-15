@@ -1,20 +1,18 @@
 package org.confluence.mod.common.item.paint;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 
-import java.util.List;
 
-public class PaintScraperItem extends TooltipItem {
-    public PaintScraperItem(Properties properties, ModRarity rarity, List<Component> tooltips) {
-        super(properties.stacksTo(1), rarity, tooltips);
+public class PaintScraperItem extends CustomRarityItem {
+    public PaintScraperItem(Properties properties, ModRarity rarity) {
+        super(properties.stacksTo(1), rarity);
     }
 
     @Override

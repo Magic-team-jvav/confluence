@@ -10,10 +10,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketS2C;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 
@@ -41,8 +41,8 @@ public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, 
 
     /// @see PlayerUtils#dropMoney(Player)
     public static boolean replaceCombatKillPacket(ServerPlayer player, Component message) {
-        if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
-            CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+        if (ModCommonConfigs.SHOW_MONEY_DROPS.get()) {
+            CompoundTag tag = LibEntityUtils.getOrCreatePersistedData(player);
             long drops = tag.getLong("confluence:drops_money");
             tag.remove("confluence:drops_money");
             Coins coins = PlayerUtils.decodeCoin(drops);

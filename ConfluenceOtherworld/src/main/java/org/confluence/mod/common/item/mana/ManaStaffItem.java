@@ -1,6 +1,7 @@
 package org.confluence.mod.common.item.mana;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,6 +12,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -26,6 +28,7 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.PlayerUtils;
@@ -36,7 +39,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRarityItem {
+public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRarityItem implements IWeaponTooltip {
     public static final ResourceLocation ID = Confluence.asResource("mana_staff");
     protected final ProjectileFactory<E> factory;
     protected final float damage;
@@ -141,10 +144,8 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.confluence.attack_damage", damage).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.mana_cost", manaCost).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.velocity", velocity).withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable("tooltip.confluence.cooldown", cooldown).withStyle(ChatFormatting.GRAY));
         if (tooltips != null) {
             tooltipComponents.addAll(tooltips);
         }
@@ -153,5 +154,25 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     @FunctionalInterface
     public interface ProjectileFactory<E extends Projectile> {
         E create(ServerPlayer player);
+    }
+
+    @Override
+    public Holder<Attribute> getTooltipDamageAttribute() {
+        return LibAttributes.getMagicDamage();
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return damage * attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return IWeaponTooltip.speedFromCooldown(cooldown, attributeValue);
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue, @Nullable Player player) {
+        return IWeaponTooltip.speedFromCooldown(cooldown, attributeValue, player);
     }
 }

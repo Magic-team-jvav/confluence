@@ -1,0 +1,240 @@
+package org.confluence.mod.common.soulcerer.skill;
+
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
+import org.confluence.mod.util.SoulcererUtils;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Supplier;
+
+/// 通用弹幕技能：一次施放生成 1..n 枚 `SoulLureProjectile`，可选附带自身增益与命中范围爆炸。
+///
+/// 引魂、强力引魂、附魂印记、引魂激荡、迷魂孢雾、灵魂突击与灵魂引发的连锁弹幕都由它派生，
+/// 差异只在 {@link Builder} 里的参数——新增同类技能不需要再写类。
+public class SoulProjectileSkill extends SoulSkill {
+    private final ResourceLocation particle;
+    private final float speed;
+    private final double gravity;
+    private final int count;
+    private final double spread;
+    private final double spawnAbove;
+    private final double aoeRadius;
+    private final float aoeDamage;
+    private final float refundChance;
+    private final int extraBounces;
+    private final double surgeOnHitRadius;
+    private final float upwardChance;
+    private final double upwardPitch;
+    private final boolean weakHoming;
+    private final float weaponShare;
+    private final @Nullable Supplier<Holder<MobEffect>> selfEffect;
+    private final int selfEffectTicks;
+
+    public SoulProjectileSkill(ResourceLocation icon, ResourceLocation id, Builder builder) {
+        super(icon, id, builder.damage, Kind.ACTIVE, builder.soulCost, builder.cooldown);
+        this.particle = builder.particle;
+        this.speed = builder.speed;
+        this.gravity = builder.gravity;
+        this.count = Math.max(1, builder.count);
+        this.spread = builder.spread;
+        this.spawnAbove = builder.spawnAbove;
+        this.aoeRadius = builder.aoeRadius;
+        this.aoeDamage = builder.aoeDamage;
+        this.refundChance = builder.refundChance;
+        this.extraBounces = Math.max(0, builder.extraBounces);
+        this.surgeOnHitRadius = Math.max(0.0, builder.surgeOnHitRadius);
+        this.upwardChance = builder.upwardChance;
+        this.upwardPitch = builder.upwardPitch;
+        this.weakHoming = builder.weakHoming;
+        this.weaponShare = builder.weaponShare;
+        this.selfEffect = builder.selfEffect;
+        this.selfEffectTicks = builder.selfEffectTicks;
+    }
+
+    public static Builder builder(ResourceLocation particle) {
+        return new Builder(particle);
+    }
+
+    /// 弹幕只按声明比例计入武器伤害（默认全额，迷魂孢雾为 20%）。
+    @Override
+    public float getWeaponShare() {
+        return weaponShare;
+    }
+
+    /// 服务端生成弹幕（多枚时按扇形散布），并按需给自身附加增益。
+    @Override
+    public void use(Player player, SoulSkillStack skillStack) {
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return;
+        }
+        /// 武器伤害按技能声明的比例计入（迷魂孢雾只吃 20%，其余技能默认全额）。
+        float weaponDamage = SoulcererUtils.getWeaponSoulDamage(player) * weaponShare;
+        float damage = SoulcererUtils.getSoulSkillDamage(player, skillStack, weaponDamage);
+        /// 引渡者：引魂系列弹幕额外弹射一次；技能自己也可以声明额外弹射次数（强力引魂 +1）。
+        int extraBounce = extraBounces + (SoulcererUtils.isSoulBookLearned(player, SoulBooks.PSYCHOPOMP)
+                && skillStack.getSoulSkill().is(ModTags.SoulSkills.SOUL_LURE)
+                ? SoulSkillParameters.PSYCHOPOMP_SOUL_LURE_EXTRA_BOUNCE : 0);
+        Vec3 eye = player.getEyePosition();
+        Vec3 look = player.getLookAngle();
+        RandomSource random = RandomSource.create();
+        /// 迷魂孢雾一类技能**每轮齐射独立掷骰**：走斜上方抛射还是直线平射。
+        boolean upward = upwardChance > 0.0F && random.nextFloat() < upwardChance;
+        Vec3 axis = upward && upwardPitch != 0.0 ? look.xRot((float) upwardPitch) : look;
+        for (int i = 0; i < count; i++) {
+            Vec3 direction = spread <= 0.0 || count == 1 ? axis : jitter(axis, random);
+            Vec3 origin = upward && spawnAbove > 0.0
+                    ? eye.add(look.scale(2.0)).add(0.0, spawnAbove, 0.0)
+                    : eye;
+            /// 直线弹道按名字就是直线：不吃重力；斜上方抛射才用技能自己的重力。
+            SoulLureProjectile projectile = new SoulLureProjectile(serverPlayer, origin, direction, damage, particle, speed,
+                    upward ? gravity : 0.0, SoulSkillParameters.SOUL_LURE_MAX_DISTANCE, SoulSkillParameters.SOUL_LURE_MAX_AGE_TICKS, aoeRadius, aoeDamage);
+            projectile.addBounces(extraBounce);
+            projectile.setWeakHoming(weakHoming);
+            if (surgeOnHitRadius > 0.0) {
+                projectile.setSurgeOnHit(surgeOnHitRadius);
+            }
+            modifyProjectile(projectile);
+            player.level().addFreshEntity(projectile);
+        }
+        if (refundChance > 0.0F && random.nextFloat() < refundChance) {
+            SoulcererUtils.adjustSoul(player, 1.0F);
+        }
+        if (selfEffect != null && selfEffectTicks > 0) {
+            player.addEffect(new MobEffectInstance(selfEffect.get(), selfEffectTicks));
+        }
+    }
+
+    /// 生成弹幕后的定制钩子，派生类可在这里给弹幕打标记（默认不改）。
+    protected void modifyProjectile(SoulLureProjectile projectile) {}
+
+    /// 以视线为轴做锥形散布，用于孢子弹幕一类多枚齐射。
+    private Vec3 jitter(Vec3 look, RandomSource random) {
+        double dx = (random.nextDouble() - 0.5) * spread;
+        double dy = (random.nextDouble() - 0.5) * spread;
+        double dz = (random.nextDouble() - 0.5) * spread;
+        return look.add(dx, dy, dz).normalize();
+    }
+
+    public static final class Builder {
+        private final ResourceLocation particle;
+        private float damage = SoulSkillParameters.ACTIVE_DAMAGE;
+        private float soulCost = SoulSkillParameters.ACTIVE_SOUL_COST;
+        private int cooldown = SoulSkillParameters.ACTIVE_COOLDOWN_TICKS;
+        private float speed = SoulSkillParameters.SOUL_LURE_SPEED;
+        private double gravity;
+        private int count = 1;
+        private double spread;
+        private double spawnAbove;
+        private double aoeRadius;
+        private float aoeDamage;
+        private float refundChance;
+        private int extraBounces;
+        private double surgeOnHitRadius;
+        private float upwardChance;
+        private double upwardPitch;
+        private boolean weakHoming = true;
+        private float weaponShare = 1.0F;
+        private @Nullable Supplier<Holder<MobEffect>> selfEffect;
+        private int selfEffectTicks;
+
+        private Builder(ResourceLocation particle) {
+            this.particle = particle;
+        }
+
+        public Builder damage(float damage) {
+            this.damage = damage;
+            return this;
+        }
+
+        public Builder cost(float soulCost, int cooldown) {
+            this.soulCost = soulCost;
+            this.cooldown = cooldown;
+            return this;
+        }
+
+        public Builder speed(float speed) {
+            this.speed = speed;
+            return this;
+        }
+
+        public Builder gravity(double gravity) {
+            this.gravity = gravity;
+            return this;
+        }
+
+        public Builder count(int count, double spread) {
+            this.count = count;
+            this.spread = spread;
+            return this;
+        }
+
+        public Builder spawnAbove(double spawnAbove) {
+            this.spawnAbove = spawnAbove;
+            return this;
+        }
+
+        public Builder aoe(double aoeRadius, float aoeDamage) {
+            this.aoeRadius = aoeRadius;
+            this.aoeDamage = aoeDamage;
+            return this;
+        }
+
+        public Builder refund(float refundChance) {
+            this.refundChance = refundChance;
+            return this;
+        }
+
+        /// 本技能弹幕在「本体自带的 1 次弹射」之上额外再弹几次（引渡者的额外弹射会再叠上去）。
+        public Builder bounces(int extraBounces) {
+            this.extraBounces = extraBounces;
+            return this;
+        }
+
+        /// 命中敌怪时在该位置补一发灵魂激荡（引魂激荡用），半径 0 关闭。
+        public Builder surgeOnHit(double radius) {
+            this.surgeOnHitRadius = radius;
+            return this;
+        }
+
+        /// 每轮齐射按该概率改走「斜上方抛射」，其余概率走「直线平射」（迷魂孢雾用）。
+        ///
+        /// @param chance 斜上方抛射概率，0 表示永远直线
+        /// @param pitch  仰角（弧度），只对斜上方抛射生效
+        public Builder upwardVolley(float chance, double pitch) {
+            this.upwardChance = Math.clamp(chance, 0.0F, 1.0F);
+            this.upwardPitch = pitch;
+            return this;
+        }
+
+        /// 关闭本技能弹幕的弱追踪（默认开启）。孢子这类需要保持散开的弹幕会关掉它。
+        public Builder weakHoming(boolean value) {
+            this.weakHoming = value;
+            return this;
+        }
+
+        /// 本技能只计入武器伤害的这一比例（默认 1.0 = 全额）；迷魂孢雾按设计只吃 20%。
+        public Builder weaponShare(double share) {
+            this.weaponShare = Math.clamp((float) share, 0.0F, 1.0F);
+            return this;
+        }
+
+        public Builder selfEffect(Supplier<Holder<MobEffect>> effect, int ticks) {
+            this.selfEffect = effect;
+            this.selfEffectTicks = ticks;
+            return this;
+        }
+
+        public SoulProjectileSkill build(ResourceLocation icon, ResourceLocation id) {
+            return new SoulProjectileSkill(icon, id, this);
+        }
+    }
+}

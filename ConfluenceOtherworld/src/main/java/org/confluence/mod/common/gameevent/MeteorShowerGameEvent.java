@@ -20,12 +20,11 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
+import org.confluence.mod.common.entity.animal.Worm;
 import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.terraentity.entity.animal.SimpleVariantAnimal;
-import org.confluence.terraentity.entity.animal.VariantsTextureMaps;
-import org.confluence.terraentity.init.entity.TEAnimals;
 
 import java.util.HashSet;
 import java.util.List;
@@ -52,7 +51,7 @@ public enum MeteorShowerGameEvent implements GameEvent {
         }
         GameEventSystem.removeUnTracked(spawned, level);
         List<ServerPlayer> players = level.players();
-        if (spawned.size() >= CommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_BASE.get() + players.size() * CommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_PER_PLAYER.get()) {
+        if (spawned.size() >= ModCommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_BASE.get() + players.size() * ModCommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_PER_PLAYER.get()) {
             return 0;
         }
         ServerChunkCache chunkCache = level.getChunkSource();
@@ -61,7 +60,7 @@ public enum MeteorShowerGameEvent implements GameEvent {
             NaturalSpawnerUtils.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtils.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();
             if (speed <= 0) continue;
-            int interval = Mth.floor(20 * CommonConfigs.METEOR_SHOWER_EVENT_SPAWN_ENCHANTED_NIGHTCRAWLERS_INTERVAL_FACTOR.get() / speed);
+            int interval = Mth.floor(20 * ModCommonConfigs.METEOR_SHOWER_EVENT_SPAWN_ENCHANTED_NIGHTCRAWLERS_INTERVAL_FACTOR.get() / speed);
             if (level.random.nextInt(interval) != 0) continue;
             Vec3 position = player.position();
             int count = data.getCount(1);
@@ -73,11 +72,11 @@ public enum MeteorShowerGameEvent implements GameEvent {
                 if (LibUtils.getChunkIfLoaded(chunkCache, cx, cz) == null) {
                     continue;
                 }
-                EntityType<SimpleVariantAnimal> type = TEAnimals.WORM.get();
+                EntityType<Worm> type = CritterEntities.WORM.get();
                 BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, type, Mth.floor(x), Mth.floor(z));
-                SimpleVariantAnimal worm = type.spawn(level, pos, MobSpawnType.EVENT);
+                Worm worm = type.spawn(level, pos, MobSpawnType.EVENT);
                 if (worm != null) {
-                    worm.setVariant(VariantsTextureMaps.ENCHANTED_NIGHTCRAWLER_ID);
+                    worm.setVariant(Worm.Variant.NIGHTCRAWLER);
                     worm.addTag(ENTITY_TAG);
                     spawned.add(worm);
                 }
@@ -111,8 +110,8 @@ public enum MeteorShowerGameEvent implements GameEvent {
         }
         return LibDateUtils.getDayTime(level) == LibDateUtils._19$30 &&
                 level.random.nextInt(isCelebrationMK10
-                        ? CommonConfigs.METEOR_SHOWER_EVENT_CELEBRATIONMK10_FREQUENCY.get()
-                        : CommonConfigs.METEOR_SHOWER_EVENT_FREQUENCY.get()
+                        ? ModCommonConfigs.METEOR_SHOWER_EVENT_CELEBRATIONMK10_FREQUENCY.get()
+                        : ModCommonConfigs.METEOR_SHOWER_EVENT_FREQUENCY.get()
                 ) == 0;
     }
 

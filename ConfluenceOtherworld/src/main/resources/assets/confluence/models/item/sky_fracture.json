@@ -1,0 +1,36 @@
+{
+  "base": {
+    "parent": "confluence:item/sky_fracture_display",
+    "textures": {
+      "layer0": "confluence:item/mana_staff/sky_fracture"
+    }
+  },
+  "gui_light": "front",
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/mana_staff/sky_fracture_inventory"
+      }
+    },
+    "ground": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/mana_staff/sky_fracture_inventory"
+      }
+    },
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/mana_staff/sky_fracture_inventory"
+      }
+    },
+    "head": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/mana_staff/sky_fracture_head"
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+package org.confluence.mod.mixin.integration.geckolib;
+
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.resources.ResourceLocation;
+import org.confluence.mod.client.event.ModClientSetups;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import software.bernie.geckolib.loading.FileLoader;
+
+import java.io.InputStream;
+import java.nio.charset.Charset;
+
+@Mixin(value = FileLoader.class, remap = false)
+public abstract class FileLoaderMixin {
+    @WrapOperation(method = "getFileContents", at = @At(value = "INVOKE", target = "Lorg/apache/commons/io/IOUtils;toString(Ljava/io/InputStream;Ljava/nio/charset/Charset;)Ljava/lang/String;"))
+    private static String wrapToString(InputStream input, Charset charset, Operation<String> original, @Local(argsOnly = true) ResourceLocation location) {
+        String result = original.call(input, charset);
+        return ModClientSetups.wrapFile(result, location);
+    }
+}

@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * <h1>暴风锤 — 风爆附魔效果</h1>
+ * <h1>风暴锤 — 风爆附魔效果</h1>
  * 连枷命中实体时触发：GUST_EMITTER 粒子 + WIND_CHARGE_BURST 音效 + 类似风弹的击退效果。
  * <p>
  * 仅实体命中触发，方块命中不执行。

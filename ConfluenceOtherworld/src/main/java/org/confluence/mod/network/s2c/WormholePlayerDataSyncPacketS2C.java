@@ -15,7 +15,7 @@ import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.data.Team;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,0 +1,25 @@
+package org.confluence.mod.common.entity;
+
+import com.mojang.serialization.Codec;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.StringRepresentable;
+import org.confluence.mod.Confluence;
+
+public interface IVariant extends StringRepresentable {
+    static ResourceLocation resource(String path) {
+        return Confluence.asResource(path);
+    }
+
+    Codec<? extends IVariant> codec();
+
+    String serializeKey();
+
+    ResourceLocation modelPath();
+
+    ResourceLocation texturePath();
+
+    default void serialize(CompoundTag tag) {
+        tag.putString(serializeKey(), getSerializedName());
+    }
+}

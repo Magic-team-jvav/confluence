@@ -1,0 +1,11 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "confluence:item/tool/homing_bee"
+    },
+    "display": {
+        "head": {
+            "scale": [0, 0, 0]
+        }
+    }
+}

@@ -1,18 +1,18 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
+import org.confluence.mod.util.ModUtils;
 
-public class HardmodeConvertorItem extends TooltipItem {
+public class HardmodeConvertorItem extends CustomRarityItem {
     public HardmodeConvertorItem() {
-        super(new Properties().stacksTo(1), ModRarity.MASTER, getTooltipsFromString("hardmode_convertor", 1, ChatFormatting.GOLD));
+        super(new Properties().stacksTo(1), ModRarity.MASTER);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class HardmodeConvertorItem extends TooltipItem {
             server.getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.hardmode_conversion.pass"), false);
             return InteractionResult.PASS;
         }
-        HardmodeConvertor.INSTANCE.start(server, true);
+        ModUtils.prepareHardmode();
         return InteractionResult.CONSUME;
     }
 }

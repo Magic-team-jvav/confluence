@@ -3,8 +3,10 @@ package org.confluence.mod.common.init;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.menu.*;
 
 import java.util.function.Supplier;
@@ -17,6 +19,7 @@ public final class ModMenuTypes {
     public static final Supplier<MenuType<HellforgeMenu>> HELLFORGE = TYPES.register("hellforge", () -> new MenuType<>(HellforgeMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<FletchingTableMenu>> FLETCHING_TABLE = TYPES.register("fletching_table", () -> new MenuType<>(FletchingTableMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<AlchemyTableMenu>> ALCHEMY_TABLE = TYPES.register("alchemy_table", () -> new MenuType<>(AlchemyTableMenu::new, FeatureFlags.VANILLA_SET));
+    public static final Supplier<MenuType<BrewingVialMenu>> BREWING_VIAL = TYPES.register("brewing_vial", () -> new MenuType<>(BrewingVialMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<ExtraInventoryMenu>> EXTRA_INVENTORY = TYPES.register("extra_inventory", () -> new MenuType<>(ExtraInventoryMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<CookingPotMenu>> COOKING_POT = TYPES.register("cooking_pot", () -> new MenuType<>(CookingPotMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<SawmillMenu>> SAWMILL = TYPES.register("sawmill", () -> new MenuType<>(SawmillMenu::new, FeatureFlags.VANILLA_SET));
@@ -27,8 +30,9 @@ public final class ModMenuTypes {
     public static final Supplier<MenuType<LoomMenu>> LOOM = TYPES.register("loom", () -> new MenuType<>(LoomMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<DyeVatMenu>> DYE_VAT = TYPES.register("dye_vat", () -> new MenuType<>(DyeVatMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<DyeMixMenu>> DYE_MIX = TYPES.register("dye_mix", () -> new MenuType<>(DyeMixMenu::new, FeatureFlags.VANILLA_SET));
+    public static final Supplier<MenuType<VoidVaultMenu>> VOID_VAULT = TYPES.register("void_vault", () -> new MenuType<>(VoidVaultMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<PiggyBankMenu>> PIGGY_BANK = TYPES.register("piggy_bank", () -> new MenuType<>(PiggyBankMenu::new, FeatureFlags.VANILLA_SET));
 
-    public static final Supplier<MenuType<NPCTradesForgeMenu>> NPC_TRADES_MENU = TYPES.register("npc_trades", () -> new MenuType<>(NPCTradesForgeMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<NPCReforgeMenu>> REFORGE_MENU = TYPES.register("reforge_menu", () -> new MenuType<>(NPCReforgeMenu::new, FeatureFlags.VANILLA_SET));
+    public static final Supplier<MenuType<NPCTradeMenu>> NPC_TRADE = TYPES.register("npc_trade", () -> IMenuTypeExtension.create(NPCTradeMenu::fromNetwork));
 }

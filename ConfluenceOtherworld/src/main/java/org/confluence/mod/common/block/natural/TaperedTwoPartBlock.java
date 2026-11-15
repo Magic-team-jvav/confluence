@@ -6,6 +6,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -13,6 +15,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -75,6 +78,23 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
         }
     }
 
+    /// 玩家破坏支撑段时，沿锥尖方向按同一工具结算失去支撑部分的战利品。
+    @Override
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
+        super.playerDestroy(level, player, pos, state, blockEntity, tool);
+        if (level.isClientSide) return;
+        Direction direction = state.getValue(TIP_DIRECTION);
+        BlockPos next = pos.relative(direction);
+        while (!level.isOutsideBuildHeight(next)) {
+            BlockState nextState = level.getBlockState(next);
+            if (!nextState.is(this) || nextState.getValue(TIP_DIRECTION) != direction || isValidTaperedPlacement(level, next, direction))
+                return;
+            Block.dropResources(nextState, level, next, level.getBlockEntity(next), player, tool);
+            level.destroyBlock(next, false);
+            next = next.relative(direction);
+        }
+    }
+
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         LevelAccessor level = context.getLevel();
@@ -132,7 +152,9 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     }
 
     private boolean isValidTaperedPlacement(LevelReader level, BlockPos pos, Direction dir) {
-        return level.getBlockState(pos.relative(dir.getOpposite())).isFaceSturdy(level, pos.relative(dir.getOpposite()), dir) || (level.getBlockState(pos.relative(dir.getOpposite())).is(this.asBlock()) && (level.getBlockState(pos.relative(dir.getOpposite())).getValue(PART) == TIP_SINGLE));
+        BlockPos support = pos.relative(dir.getOpposite());
+        BlockState state = level.getBlockState(support);
+        return state.isFaceSturdy(level, support, dir) || state.is(this.asBlock());
     }
 
     private @Nullable Direction calculateTipDirection(LevelReader level, BlockPos pos, Direction dir) {

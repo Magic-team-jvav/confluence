@@ -9,7 +9,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibRenderUtils;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 
 import java.util.Locale;
@@ -20,13 +20,13 @@ import static org.confluence.mod.util.ClientUtils.draw;
 public class TerraStyleFoodHud implements LayeredDraw.Layer {
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        if (!ClientConfigs.terraStyleFood) return;
+        if (!ModClientConfigs.terraStyleFood) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !LibRenderUtils.shouldDrawSurvivalElements(minecraft)) return;
         LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
-        ClientConfigs.foodStyle.render(guiGraphics, minecraft);
+        ModClientConfigs.foodStyle.render(guiGraphics, minecraft);
 
         minecraft.getProfiler().pop();
     }

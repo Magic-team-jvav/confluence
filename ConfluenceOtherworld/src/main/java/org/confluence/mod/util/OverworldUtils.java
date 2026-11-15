@@ -1,11 +1,7 @@
 package org.confluence.mod.util;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.resources.ResourceKey;
@@ -18,10 +14,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -34,7 +31,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.worldgen.secret_seed.NotTheBees;
 import org.jetbrains.annotations.ApiStatus;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -45,8 +41,16 @@ public final class OverworldUtils {
         return Level.OVERWORLD;
     }
 
+    public static ResourceKey<DimensionType> dimensionType() {
+        return BuiltinDimensionTypes.OVERWORLD;
+    }
+
     public static ResourceKey<Level> underworld() {
         return Level.NETHER;
+    }
+
+    public static ResourceKey<DimensionType> underworldType() {
+        return BuiltinDimensionTypes.NETHER;
     }
 
     private static boolean uninitialized = true;
@@ -81,79 +85,71 @@ public final class OverworldUtils {
     }
 
     @ApiStatus.Internal
-    public static void replaceBiome(
-            MultiNoiseBiomeSource biomeSource,
-            int x,
-            int y,
-            int z,
-            CallbackInfoReturnable<Holder<Biome>> cir,
-            Supplier<List<Holder<Biome>>> jungleGetter,
-            Supplier<Pair<Holder<Biome>, Holder<Biome>>> biomePairGetter
+    public static Holder<Biome> postProcess(
+            int x, int y, int z,
+            Holder<Biome> biome,
+            Supplier<List<Holder<Biome>>> jungleGetter
     ) {
-        if (uninitialized) return;
-        Holder<Biome> replaced = cir.getReturnValue();
-        if (replaced == null) return;
+        if (uninitialized) return biome;
+        Holder<Biome> result = biome;
         if (notTheBees) {
             List<Holder<Biome>> jungle = jungleGetter.get();
             if (!jungle.isEmpty()) {
-                replaced = NotTheBees.replaceBiome(x, y, z, replaced, jungle);
-            }
-        } else {
-            Pair<Holder<Biome>, Holder<Biome>> pair = biomePairGetter.get();
-            if (pair != null && replaced == pair.getFirst()) {
-                replaced = pair.getSecond();
+                result = NotTheBees.replaceBiome(x, y, z, result, jungle);
             }
         }
-        if (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.THE_CRIMSON)) {
+        if (OverworldUtils.isEvil(result)) {
             BlockPos spawnPos = server.getWorldData().overworldData().getSpawnPos();
-            if (Mth.lengthSquared(spawnPos.getX() - x, spawnPos.getZ() - z) <= 128 * 128) {
-                replaced = plains;
+            if (Mth.lengthSquared(spawnPos.getX() - QuartPos.toBlock(x), spawnPos.getZ() - QuartPos.toBlock(z)) <= 128 * 128) {
+                result = plains;
             }
         }
-        cir.setReturnValue(replaced);
+        return result;
     }
 
     @ApiStatus.Internal
-    public static void replaceTree(FeaturePlaceContext<TreeConfiguration> context, CallbackInfoReturnable<Boolean> cir) {
-        if (uninitialized) return;
-        WorldGenLevel level = context.level();
-        if (!(level instanceof WorldGenRegion)) return;
-        BlockPos origin = context.origin();
-        Holder<Biome> biome = level.getBiome(origin);
-        if (biome.is(ModTags.Biomes.VANITY_TREES_REPLACEABLE)) {
-            RandomSource random = context.random();
-            if (context.config().trunkProvider.getState(random, origin).is(Blocks.CHERRY_LOG)) {
-                return;
-            }
-            float v = ModSecretSeeds.DRUNK_WORLD.match() ? 0.02F : 0.01F;
-            if (random.nextFloat() < v) {
-                if (random.nextFloat() < 0.75F) {
-                    boolean placed = yellowWillowTree.place(level, context.chunkGenerator(), random, origin);
-                    if (placed) cir.setReturnValue(true);
-                } else {
-                    boolean placed = cherry.place(level, context.chunkGenerator(), random, origin);
-                    if (placed) cir.setReturnValue(true);
+    public static boolean replaceTree(FeaturePlaceContext<TreeConfiguration> context) {
+        if (!uninitialized) {
+            WorldGenLevel level = context.level();
+            if (level.getLevel().dimension() == dimension() && level instanceof WorldGenRegion) {
+                BlockPos origin = context.origin();
+                if (level.getBiome(origin).is(ModTags.Biomes.VANITY_TREES_REPLACEABLE)) {
+                    RandomSource random = context.random();
+                    if (!context.config().trunkProvider.getState(random, origin).is(Blocks.CHERRY_LOG) &&
+                            random.nextInt(ModSecretSeeds.DRUNK_WORLD.match() ? 50 : 100) == 0
+                    ) {
+                        if (random.nextInt(4) == 0) {
+                            return cherry.place(level, context.chunkGenerator(), random, origin);
+                        }
+                        return yellowWillowTree.place(level, context.chunkGenerator(), random, origin);
+                    }
                 }
             }
         }
+        return false;
     }
 
     @ApiStatus.Internal
-    public static boolean replaceLogBoulder(WorldGenLevel instance, BlockPos blockPos, BlockState blockState, int i, Operation<Boolean> original) {
-        if (blockState.is(Blocks.OAK_LOG) && ModSecretSeeds.NO_TRAPS.match(instance.getLevel().getServer()) && blockState.getValue(BlockStateProperties.AXIS) == Direction.Axis.Y) {
-            if (instance.getRandom().nextFloat() < 0.2F) {
-                blockState = FunctionalBlocks.OAK_LOG_BOULDER.get().defaultBlockState();
-            }
+    public static boolean replaceLogBoulder(WorldGenLevel level, BlockPos pos, BlockState state, int i, Operation<Boolean> original) {
+        if (level.getLevel().dimension() == dimension() &&
+                state.is(Blocks.OAK_LOG) &&
+                state.getValue(BlockStateProperties.AXIS) == Direction.Axis.Y &&
+                ModSecretSeeds.NO_TRAPS.match(level.getLevel().getServer()) &&
+                level.getRandom().nextInt(5) == 0
+        ) {
+            state = FunctionalBlocks.OAK_LOG_BOULDER.get().defaultBlockState();
         }
-        return original.call(instance, blockPos, blockState, i);
+        return original.call(level, pos, state, i);
     }
 
     @ApiStatus.Internal
     public static boolean replacePine(PlacementContext context, RandomSource random, BlockPos pos) {
         if (uninitialized) return false;
         WorldGenLevel level = context.getLevel();
-        if (!(level instanceof WorldGenRegion)) return false;
-        if (random.nextInt(4) == 0) {
+        if (level.getLevel().dimension() == dimension() &&
+                level instanceof WorldGenRegion &&
+                random.nextInt(4) == 0
+        ) {
             return pineTree.place(level, context.generator(), random, pos);
         }
         return false;
@@ -186,7 +182,12 @@ public final class OverworldUtils {
 
     /// default -64
     public static int getCaveY() {
-        return -60;
+        return -64;
+    }
+
+    // default 128
+    public static int getUnderworldGenerationHeight() {
+        return 128;
     }
 
     /// default 63
@@ -194,8 +195,12 @@ public final class OverworldUtils {
         return 63;
     }
 
+    public static boolean isForest(Holder<Biome> holder) {
+        return holder.is(ModTags.Biomes.IS_FOREST);
+    }
+
     public static boolean isDesert(Holder<Biome> holder) {
-        return holder.is(Tags.Biomes.IS_DESERT);
+        return holder.is(Tags.Biomes.IS_DESERT) || holder.is(Tags.Biomes.IS_BADLANDS);
     }
 
     /// 对应泰拉的地表雪原和地下雪原，由于MC的这两个群系不以高度为判据，所以使用的时候请先用该方法判断是否是雪原,再以y轴高度判断
@@ -208,7 +213,7 @@ public final class OverworldUtils {
     }
 
     public static boolean isJungle(Holder<Biome> holder) {
-        return holder.is(Tags.Biomes.IS_JUNGLE);
+        return holder.is(Tags.Biomes.IS_JUNGLE) || holder.is(Tags.Biomes.IS_LUSH);
     }
 
     public static boolean isMushroom(Holder<Biome> holder) {
@@ -223,7 +228,44 @@ public final class OverworldUtils {
         return holder.is(ModTags.Biomes.THE_CRIMSON);
     }
 
+    public static boolean isEvil(Holder<Biome> holder) {
+        return isCorruption(holder) || isCrimson(holder);
+    }
+
     public static boolean isHallow(Holder<Biome> holder) {
         return holder.is(ModTags.Biomes.THE_HALLOW);
+    }
+
+    public static boolean inSpace(double y) {
+        return y >= getSpaceY() && y < getUltraY();
+    }
+
+    public static boolean inSurface(double y) {
+        return y >= getSurfaceY() && y < getSpaceY();
+    }
+
+    public static boolean inUnderground(double y) {
+        return y >= getUndergroundY() && y < getSurfaceY();
+    }
+
+    public static boolean inCave(double y) {
+        return y >= getCaveY() && y < getUndergroundY();
+    }
+
+    public static boolean inUnderworld(ResourceKey<Level> dimension, double y) {
+        return dimension == underworld();
+    }
+
+    public static boolean belowSpace(double y) {
+        return y >= getCaveY() && y < getSpaceY();
+    }
+
+    public static boolean aboveSurface(double y) {
+        return y >= getSurfaceY() && y < getUltraY();
+    }
+
+    /// OverworldUtils.inUnderground(y) || OverworldUtils.inCave(y)
+    public static boolean belowSurface(double y) {
+        return y >= getCaveY() && y < getSurfaceY();
     }
 }

@@ -17,13 +17,12 @@ import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
-import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terraentity.init.item.TESummonItems;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,6 +39,9 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
+        //item(recipeOutput, "terraformer", addItem(FunctionalBlocks.CLENTAMINATOR.get().asItem(), FunctionalBlocks.TERRAFORMER.get().asItem(), 1, GamePhase.MOON_LORD));
+        item(recipeOutput, "red_solution", addItem(MaterialItems.PURPLE_SOLUTION.get(), MaterialItems.RED_SOLUTION.get(), 1, GamePhase.MOON_LORD));
+        item(recipeOutput, "purple_solution", addItem(MaterialItems.RED_SOLUTION.get(), MaterialItems.PURPLE_SOLUTION.get(), 1, GamePhase.MOON_LORD));
         // 黑名单
         item(recipeOutput, "deny_stairs", blacklist(ItemTags.STAIRS));
         item(recipeOutput, "deny_band_of_star_power", blacklist(AccessoryItems.BAND_OF_STARPOWER.get()));
@@ -196,6 +198,8 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, ToolItems.MECHANIC_SAFE_KEY, ChestBlocks.MECHANIC_SAFE_CHEST);
         // 微光箭转化
         item(recipeOutput, "shimmer_arrow", addItem(ItemTags.ARROWS, ArrowItems.SHIMMER_ARROW.get(), 1));
+        /// 以太火把：任意火把扔进微光转化而成（泰拉瑞亚 1.4.4），火把标签在 ModItemTagsProvider 里维护。
+        item(recipeOutput, "aether_torch", addItem(ModTags.Items.TORCH, TorchBlocks.AETHER_TORCH.get().asItem(), 1));
         // 匣子转化
         item(recipeOutput, CrateBlocks.PEARLWOOD_CRATE, CrateBlocks.WOODEN_CRATE);
         item(recipeOutput, CrateBlocks.MYTHRIL_CRATE, CrateBlocks.IRON_CRATE);
@@ -277,7 +281,7 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, ConsumableItems.CAN_OF_WORMS, ConsumableItems.HERB_BAG);
         item(recipeOutput, FunctionalBlocks.ALCHEMY_TABLE, FunctionalBlocks.BEWITCHING_TABLE);
         item(recipeOutput, FunctionalBlocks.BEWITCHING_TABLE, FunctionalBlocks.ALCHEMY_TABLE);
-        item(recipeOutput, TESummonItems.FINCH_STAFF, ModItems.LIVING_WOOD_WAND);
+        item(recipeOutput, SummonItems.FINCH_STAFF, ModItems.LIVING_WOOD_WAND);
         item(recipeOutput, MaterialItems.SPELL_TOME, ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO);
 
         item(recipeOutput, NatureBlocks.GRANITE, NatureBlocks.MARBLE);
@@ -296,7 +300,6 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, "jungle_hive_from_crispy_honey_block", addItem(DecorativeBlocks.CRISPY_HONEY_BLOCK,NatureBlocks.JUNGLE_HIVE_BLOCK));
         item(recipeOutput, Blocks.PUMPKIN, Blocks.CACTUS);
         item(recipeOutput, Blocks.CACTUS, Blocks.PUMPKIN);
-        item(recipeOutput, Blocks.SNOW_BLOCK, NatureBlocks.AETHERIUM_BLOCK);
         item(recipeOutput, DecorativeBlocks.SUN_PLATE.FULL, DecorativeBlocks.MOON_PLATE.FULL);
         item(recipeOutput, DecorativeBlocks.MOON_PLATE.FULL, DecorativeBlocks.SUN_PLATE.FULL);
         item(recipeOutput, "acacia_log_from_oak_log", addItem(Blocks.OAK_LOG, Blocks.ACACIA_LOG));

@@ -9,8 +9,8 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.ModEffects;
 
 public class SweetSword extends BaseSwordItem {
-    public SweetSword(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, ModifierBuilder modifierBuilder) {
-        super(tier, rarity, rawDamage, rawSpeed, modifierBuilder);
+    public SweetSword(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, SwordDefinition.Builder definition) {
+        super(tier, rarity, rawDamage, rawSpeed, definition);
     }
 
     public static void applyEffects(MobEffectEvent.Applicable event) {
@@ -25,8 +25,8 @@ public class SweetSword extends BaseSwordItem {
             }
             effect.update(new MobEffectInstance(
                     effect.getEffect(),
-                    (int) (effect.duration * factor),
-                    (int) (effect.amplifier * factor),
+                    (int) (effect.getDuration() * factor),
+                    (int) (effect.getAmplifier() * factor),
                     effect.isAmbient(),
                     effect.isVisible(),
                     effect.showIcon()

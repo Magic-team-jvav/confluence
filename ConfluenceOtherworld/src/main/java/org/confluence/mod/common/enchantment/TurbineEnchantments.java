@@ -9,10 +9,10 @@ import org.confluence.mod.common.init.ModEnchantments;
 
 /**
  * <h1>涡轮 — 连枷涡轮附魔效果</h1>
- * 连枷 SPIN 阶段根据持续时长提供伤害和转速加成。
+ * 连枷 SPIN 阶段根据持续时长提供伤害、挥舞速度、投出速度和命中间隔加成。
  * <p>
- * 每 {@value #TICKS_PER_STACK} tick（1.5 秒）叠加一层，每层 +2% 伤害和速度，
- * 最多 {@value #MAX_STACKS} 层（+8%）。离开 SPIN 阶段后归零。
+ * 每 {@value #TICKS_PER_STACK} tick（1.5 秒）叠加一层，每层 +2.5% 加成，
+ * 最多 {@value #MAX_STACKS} 层（+10%），再乘以附魔等级。离开 SPIN 阶段后归零。
  * <p>
  * 与 {@link WindBurstEnchantments}（flail_wind_burst）互斥。
  */

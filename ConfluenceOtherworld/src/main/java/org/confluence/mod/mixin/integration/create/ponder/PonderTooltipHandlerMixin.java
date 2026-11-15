@@ -8,7 +8,7 @@ import net.createmod.catnip.gui.ScreenOpener;
 import net.createmod.ponder.foundation.ui.PonderUI;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.lib.mixin.accessor.KeyMappingAccessor;
+import org.confluence.lib.mixin.client.KeyMappingAccessor;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;

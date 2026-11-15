@@ -3,26 +3,26 @@
     "base": {
         "parent": "builtin/entity",
         "textures": {
-            "particle": "confluence:item/flail/flower_power"
+            "particle": "confluence:item/flail/flower_power_inventory"
         }
     },
     "perspectives": {
         "fixed": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/flail/flower_power"
+                "layer0": "confluence:item/flail/flower_power_inventory"
             }
         },
         "ground": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/flail/flower_power"
+                "layer0": "confluence:item/flail/flower_power_inventory"
             }
         },
         "gui": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/flail/flower_power"
+                "layer0": "confluence:item/flail/flower_power_inventory"
             }
         }
     }

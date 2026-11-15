@@ -1,6 +1,7 @@
 package org.confluence.mod.common.gameevent;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -26,6 +27,8 @@ import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.CustomGameEventRegisterEvent;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.entity.monster.Scutlix;
+import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
 import org.confluence.mod.network.s2c.GameEventSyncPacketS2C;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,20 +38,30 @@ public enum GameEventSystem implements IGlobalData {
     INSTANCE;
     public static final ResourceKey<GameEvent> ALL_EVENT_KEY = GameEvent.createKey(Confluence.asResource("all_event"));
 
-    private final Map<ResourceKey<? extends GameEvent>, GameEvent> events = Util.make(new IdentityHashMap<>(), map -> {
+    private final Map<ResourceKey<? extends GameEvent>, GameEvent> events = Util.make(new Reference2ObjectOpenHashMap<>(), map -> {
         map.put(SlimeRainGameEvent.KEY, SlimeRainGameEvent.INSTANCE);
         map.put(BloodMoonGameEvent.KEY, BloodMoonGameEvent.INSTANCE);
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
+        if (Confluence.UNRELEASED_EVENTS)
+            map.put(PirateInvasionGameEvent.KEY, PirateInvasionGameEvent.INSTANCE);
         map.put(MeteorShowerGameEvent.KEY, MeteorShowerGameEvent.INSTANCE);
         map.put(LanternNightGameEvent.KEY, LanternNightGameEvent.INSTANCE);
         map.put(SpecificMoonGameEvent.KEY, SpecificMoonGameEvent.INSTANCE);
         map.put(FrostMoonGameEvent.KEY, FrostMoonGameEvent.INSTANCE);
         map.put(PumpkinMoonGameEvent.KEY, PumpkinMoonGameEvent.INSTANCE);
         map.put(BoulderRainGameEvent.KEY, BoulderRainGameEvent.INSTANCE);
+        map.put(WindyDayGameEvent.KEY, WindyDayGameEvent.INSTANCE);
+        map.put(BlizzardGameEvent.KEY, BlizzardGameEvent.INSTANCE);
+        if (Confluence.UNRELEASED_EVENTS) {
+            map.put(SandstormGameEvent.KEY, SandstormGameEvent.INSTANCE);
+            map.put(PartyGameEvent.KEY, PartyGameEvent.INSTANCE);
+        }
         ModLoader.postEvent(new CustomGameEventRegisterEvent(map));
     });
     private transient int startedEventAmount;
     private transient int startedNonEnvEventAmount;
+    /// 是否有会推实体的天气事件正在运行。**风系统平时不影响任何实体**，这个标志让逐实体结算退化成一次布尔判断。
+    private transient boolean anyWindPushedEvent;
 
     public void syncAll(ServerPlayer player) {
         List<ResourceKey<? extends GameEvent>> started = new ArrayList<>(events.size());
@@ -101,6 +114,31 @@ public enum GameEventSystem implements IGlobalData {
         }
         this.startedEventAmount = started;
         this.startedNonEnvEventAmount = nonEnv;
+
+        boolean anyWindPush = false;
+        for (GameEvent event : events.values()) {
+            if (event instanceof WindPushedEvent && event.started()) {
+                anyWindPush = true;
+                break;
+            }
+        }
+        this.anyWindPushedEvent = anyWindPush;
+    }
+
+    /// 实体受风的唯一入口。
+    ///
+    /// **风系统本身不产生任何实体推力**：无论风速多大，平时实体都不受影响。
+    /// 只有沙尘暴、暴风雪这类实现了 {@link WindPushedEvent} 的事件激活期间才会逐实体结算。
+    ///
+    /// @see WindPushedEvent
+    public void pushEventWind(Entity entity) {
+        if (!anyWindPushedEvent) return;
+        for (GameEvent event : events.values()) {
+            if (event instanceof WindPushedEvent pushed && event.started()) {
+                pushed.pushWindOn(entity);
+                return; // 同一时刻只允许一个风推事件（沙尘暴与暴风雪互斥：沙漠 vs 雪原）
+            }
+        }
     }
 
     public void countKilled(LivingEntity living) {
@@ -171,10 +209,12 @@ public enum GameEventSystem implements IGlobalData {
         return "confluence:game_event_system";
     }
 
-    public static final Map<ResourceKey<? extends GameEvent>, GameEvent> INVASION_EVENTS = Util.make(new IdentityHashMap<>(), map -> {
+    public static final Map<ResourceKey<? extends GameEvent>, GameEvent> INVASION_EVENTS = Util.make(new Reference2ObjectOpenHashMap<>(), map -> {
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
+        if (Confluence.UNRELEASED_EVENTS)
+            map.put(PirateInvasionGameEvent.KEY, PirateInvasionGameEvent.INSTANCE);
         map.put(FrostMoonGameEvent.KEY, FrostMoonGameEvent.INSTANCE);
-        // todo 海盗，火星
+        // todo 火星
     });
 
     public static boolean isInvasionEvent(ResourceKey<? extends GameEvent> key) {
@@ -234,8 +274,10 @@ public enum GameEventSystem implements IGlobalData {
             if (random.isEmpty()) continue;
             Vec3 position = player.position();
             MobSpawnSettings.SpawnerData spawnerData = random.get();
+            if (!DevelopmentSpawnPolicy.allowsAutomaticSpawn(spawnerData.type)) continue;
             int count = data.getCount(level.random.nextIntBetweenInclusive(spawnerData.minCount, spawnerData.maxCount));
             for (int j = 0; j < count; j++) {
+                if (!event.canSpawnEntity(level, spawnerData.type)) break;
                 double x = LibMathUtils.randomFromTo(level.random, position.x, 24, 32);
                 double z = LibMathUtils.randomFromTo(level.random, position.z, 24, 32);
                 int cx = SectionPos.blockToSectionCoord(x);
@@ -246,11 +288,16 @@ public enum GameEventSystem implements IGlobalData {
                 BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, spawnerData.type, Mth.floor(x), Mth.floor(z));
                 Entity entity = spawnerData.type.spawn(level, pos, MobSpawnType.EVENT);
                 if (entity != null) {
-                    entity.addTag(entityTag);
-                    spawned.add(entity);
-                    if (setTarget && entity instanceof Mob mob && player.canBeSeenAsEnemy()) {
-                        mob.setTarget(player);
+                    if (entity instanceof Scutlix scutlix && !scutlix.ensureRider(level)) {
+                        entity.getPassengers().forEach(Entity::discard);
+                        entity.discard();
+                        continue;
                     }
+                    entity.getSelfAndPassengers().forEach(member -> {
+                        member.addTag(entityTag);
+                        spawned.add(member);
+                        if (setTarget && member instanceof Mob mob && player.canBeSeenAsEnemy()) mob.setTarget(player);
+                    });
                 }
             }
         }

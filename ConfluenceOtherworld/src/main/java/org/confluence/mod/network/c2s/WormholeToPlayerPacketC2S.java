@@ -11,7 +11,7 @@ import org.confluence.lib.network.IPacketC2S;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.WormholeHandler;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.item.PotionItems;
 
@@ -55,7 +55,7 @@ public record WormholeToPlayerPacketC2S(UUID targetPlayerId, ByMod byMod) implem
         potion.shrink(1);
         teleport(sourcePlayer, target);
 
-        if (!CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
+        if (!ModCommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
             return;
         }
 
@@ -105,7 +105,7 @@ public record WormholeToPlayerPacketC2S(UUID targetPlayerId, ByMod byMod) implem
         FTB_CHUNKS {
             @Override
             public boolean enabled() {
-                return CommonConfigs.FTB_CHUNKS_WORMHOLE_POTION.get();
+                return ModCommonConfigs.FTB_CHUNKS_WORMHOLE_POTION.get();
             }
         };
 

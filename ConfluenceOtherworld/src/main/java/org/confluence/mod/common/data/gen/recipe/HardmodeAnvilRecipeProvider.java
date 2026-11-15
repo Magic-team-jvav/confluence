@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import net.minecraft.world.level.ItemLike;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
@@ -19,7 +20,6 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terra_guns.common.init.TGItems;
 
 import java.util.List;
 import java.util.Map;
@@ -33,6 +33,15 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
 
+        hardmodeAnvil(recipeOutput, SummonItems.SPIDER_STAFF.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, MaterialItems.SPIDER_FANG),
+                'b', AmountIngredient.of(3, MaterialItems.SPIDER_FANG)
+        ), List.of(
+                "a a",
+                "aaa",
+                " b ",
+                " b "
+        )));
         hardmodeAnvil(recipeOutput, DrillItems.DRAX.toStack(), ShapedRecipePattern.of(Map.of(
                 'H', AmountIngredient.of(3, MaterialItems.HALLOWED_INGOT),
                 'F', Ingredient.of(MaterialItems.SOUL_OF_FRIGHT),
@@ -64,10 +73,10 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "HHH",
                 "ppp"
         )));
-        hardmodeAnvil(recipeOutput, TGItems.CHLOROPHYTE_BULLET.toStack(60), AmountIngredient.of(60, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
-        hardmodeAnvil(recipeOutput, TGItems.CRYSTAL_BULLET.toStack(100), AmountIngredient.of(100, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
-        hardmodeAnvil(recipeOutput, TGItems.ICHOR_BULLET.toStack(150), AmountIngredient.of(150, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.ICHOR));
-        hardmodeAnvil(recipeOutput, TGItems.CURSED_BULLET.toStack(150), AmountIngredient.of(150, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CURSED_FLAME));
+        hardmodeAnvil(recipeOutput, GunItems.CHLOROPHYTE_BULLET.toStack(60), AmountIngredient.of(60, GunItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
+        hardmodeAnvil(recipeOutput, GunItems.CRYSTAL_BULLET.toStack(100), AmountIngredient.of(100, GunItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
+        hardmodeAnvil(recipeOutput, GunItems.ICHOR_BULLET.toStack(150), AmountIngredient.of(150, GunItems.MUSKET_BULLET), Ingredient.of(MaterialItems.ICHOR));
+        hardmodeAnvil(recipeOutput, GunItems.CURSED_BULLET.toStack(150), AmountIngredient.of(150, GunItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CURSED_FLAME));
         // 秘银套
         hardmodeAnvil(recipeOutput, ArmorItems.MYTHRIL_HAT.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL),
@@ -677,6 +686,58 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "ac",
                 "db"
         )));
+        // 机械三王召唤装置
+        // 灯塔装置：晶状体 x3、铁锭/铅锭 x5、光明之魂 x6
+        hardmodeAnvil(recipeOutput, FunctionalBlocks.DUAL_FLASH_LIGHTHOUSE.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, MaterialItems.LENS),
+                'b', AmountIngredient.of(1, Items.IRON_INGOT, MaterialItems.LEAD_INGOT),
+                'c', AmountIngredient.of(6, MaterialItems.SOUL_OF_LIGHT)
+        ), List.of(
+                " a ",
+                "bcb",
+                " b ",
+                "b b"
+        )));
+        // TODO 暂时禁用机械骷髅王基站（phantom_base_station）
+        // 基站：地牢魔骨 x30、铁锭/铅锭 x5、光明之魂 x3、暗影之魂 x3
+        // hardmodeAnvil(recipeOutput, FunctionalBlocks.PHANTOM_BASE_STATION.toStack(), ShapedRecipePattern.of(Map.of(
+        //         'a', AmountIngredient.of(3, ConsumableItems.DUNGEON_DEMON_BONE),
+        //         'b', AmountIngredient.of(5, Items.IRON_INGOT, MaterialItems.LEAD_INGOT),
+        //         'c', AmountIngredient.of(3, MaterialItems.SOUL_OF_LIGHT),
+        //         'd', AmountIngredient.of(3, MaterialItems.SOUL_OF_NIGHT)
+        // ), List.of(
+        //         "   b",
+        //         "aaaa",
+        //         "acda",
+        //         "aaaa"
+        // )));
+        // 震地锤：腐肉/椎骨 x6、铁锭/铅锭 x5、暗影之魂 x6
+        hardmodeAnvil(recipeOutput, FunctionalBlocks.EARTHSHAKER_DEVICE.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, MaterialItems.ROTTEN_CHUNK, MaterialItems.VERTEBRA),
+                'b', AmountIngredient.of(1, Items.IRON_INGOT, MaterialItems.LEAD_INGOT),
+                'c', AmountIngredient.of(6, MaterialItems.SOUL_OF_NIGHT)
+        ), List.of(
+                "bcb",
+                "aba",
+                " b ",
+                " b "
+        )));
+        // 晶光刃：对应颜色的陨石光剑 + 25 水晶碎块（困难模式砧 / 无序）
+        phasesaber(recipeOutput, SwordItems.WHITE_PHASESABER.toStack(), SwordItems.WHITE_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.RED_PHASESABER.toStack(), SwordItems.RED_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.ORANGE_PHASESABER.toStack(), SwordItems.ORANGE_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.YELLOW_PHASESABER.toStack(), SwordItems.YELLOW_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.GREEN_PHASESABER.toStack(), SwordItems.GREEN_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.BLUE_PHASESABER.toStack(), SwordItems.BLUE_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.PURPLE_PHASESABER.toStack(), SwordItems.PURPLE_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.PINK_PHASESABER.toStack(), SwordItems.PINK_PHASEBLADE);
+    }
+
+    /// 晶光刃：同色陨石光剑 + 25 水晶碎块，无序合成。
+    protected void phasesaber(RecipeOutput recipeOutput, ItemStack result, ItemLike phaseblade) {
+        hardmodeAnvil(recipeOutput, result,
+                AmountIngredient.of(25, MaterialItems.CRYSTAL_SHARDS),
+                Ingredient.of(phaseblade));
     }
 
     protected void hardmodeAnvil(RecipeOutput recipeOutput, ItemStack result, ShapedRecipePattern pattern) {

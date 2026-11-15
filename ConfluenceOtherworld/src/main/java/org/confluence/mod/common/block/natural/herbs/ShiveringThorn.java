@@ -37,7 +37,7 @@ public class ShiveringThorn extends BaseHerbBlock {
 
 
     @Override
-    public boolean canBloom(ServerLevel level, BlockState state) {
+    public boolean canBloom(ServerLevel level, BlockState state, BlockPos pos) {
         return getAge(state) == MAX_AGE;
     }
 

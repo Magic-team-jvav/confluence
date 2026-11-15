@@ -16,14 +16,18 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.lib.common.item.GroupItem;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.TranslationConsumer;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
 
 public class DecoBlockSet {
     public static final List<DecoBlockSet> DECO_BLOCK_SETS = new ArrayList<>();
@@ -31,6 +35,7 @@ public class DecoBlockSet {
     public final String id;
     public final List<ObjectIntPair<Supplier<? extends ItemLike>>> materials;
     public final boolean stonecutting;
+    public final boolean skipCreativeTab;
 
     public final DeferredBlock<Block> FULL;
     public final DeferredBlock<StairBlock> STAIRS;
@@ -41,6 +46,7 @@ public class DecoBlockSet {
         this.id = builder.id;
         this.materials = builder.materials;
         this.stonecutting = builder.stonecutting;
+        this.skipCreativeTab = builder.skipCreativeTab;
 
         this.FULL = ModBlocks.registerWithItem(id, () -> builder.full.apply(builder.properties.get()), builder.itemProperties);
         this.STAIRS = ModBlocks.registerWithItem(id + "_stairs", () -> builder.stairs.apply(FULL.get().defaultBlockState(), builder.properties.get()), builder.itemProperties);
@@ -52,6 +58,7 @@ public class DecoBlockSet {
 
     public static void acceptBuilding(CreativeModeTab.Output output) {
         for (DecoBlockSet blockSet : DecoBlockSet.DECO_BLOCK_SETS) {
+            if (blockSet.skipCreativeTab) continue;
             CreativeModeTab.Output o = GroupItem.belongsTo(blockSet.id, output);
 
             o.accept(blockSet.FULL.get());
@@ -91,6 +98,7 @@ public class DecoBlockSet {
         private final Supplier<BlockBehaviour.Properties> properties;
         private final List<ObjectIntPair<Supplier<? extends ItemLike>>> materials = new ArrayList<>();
         private boolean stonecutting = false;
+        private boolean skipCreativeTab = false;
         private Item.Properties itemProperties = new Item.Properties();
         private Function<BlockBehaviour.Properties, ? extends Block> full = Block::new;
         private BiFunction<BlockState, BlockBehaviour.Properties, ? extends StairBlock> stairs = StairBlock::new;
@@ -109,6 +117,12 @@ public class DecoBlockSet {
 
         public Builder itemProperties(Item.Properties properties) {
             this.itemProperties = properties;
+            return this;
+        }
+
+        /// 由专用分组展示的装饰套装不再重复加入通用建筑分组。
+        public Builder skipCreativeTab() {
+            this.skipCreativeTab = true;
             return this;
         }
 
@@ -135,6 +149,12 @@ public class DecoBlockSet {
         public Builder wall(@Nullable Function<BlockBehaviour.Properties, ? extends WallBlock> function) {
             this.wall = function;
             return this;
+        }
+
+        public DecoBlockSet build(BiConsumer<DecoBlockSet, TranslationConsumer> translations) {
+            DecoBlockSet set = build();
+            Confluence.addLanguageProvider(language -> translations.accept(set, language));
+            return set;
         }
 
         public DecoBlockSet build() {

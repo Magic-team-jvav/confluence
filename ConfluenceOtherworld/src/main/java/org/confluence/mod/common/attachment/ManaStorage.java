@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.lib.util.supplier.FloatSupplier;
@@ -18,6 +19,7 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.ApiStatus;
 
 public class ManaStorage implements INBTSerializable<CompoundTag> {
+    private final IAttachmentHolder owner;
     private int stars;
     private int additionalMana;
     private float currentMana;
@@ -27,7 +29,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
 
     private boolean arcaneCrystalUsed;
 
-    public ManaStorage() {
+    public ManaStorage(IAttachmentHolder owner) {
         this.stars = 1;
         this.additionalMana = 0;
         this.currentMana = 20;
@@ -36,6 +38,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         this.fastManaRegeneration = false;
 
         this.arcaneCrystalUsed = false;
+        this.owner = owner;
     }
 
     @Override
@@ -53,7 +56,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         this.stars = nbt.getInt("stars");
         this.additionalMana = nbt.getInt("additionalMana");
-        this.currentMana = nbt.getInt("currentMana");
+        this.currentMana = nbt.getFloat("currentMana");
         this.fastManaRegeneration = nbt.getBoolean("fastManaRegeneration");
         this.arcaneCrystalUsed = nbt.getBoolean("arcaneCrystalUsed");
     }
@@ -83,8 +86,14 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         return true;
     }
 
+    /// 读取当前魔力；数值在两种资源模式之间保留，是否显示由 UI 判断。
     public float getCurrentMana() {
         return currentMana;
+    }
+
+    /// 设置当前魔力并夹在 0..上限之间；灵魂模式下也保留该值，供切回魔力条时使用。
+    public void setCurrentMana(float currentMana) {
+        this.currentMana = Mth.clamp(currentMana, 0.0F, getMaxMana());
     }
 
     public int getRegenerateDelay() {
@@ -114,11 +123,17 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     }
 
     public boolean canExtract() {
-        return currentMana > 0;
+        return !isSoulMode() && currentMana > 0;
     }
 
     public boolean canReceive() {
-        return currentMana < getMaxMana();
+        return !isSoulMode() && currentMana < getMaxMana();
+    }
+
+    /// 只读取已存在的灵魂附件，避免构造和读档阶段相互创建。
+    private boolean isSoulMode() {
+        return owner instanceof LivingEntity living && living.hasData(ModAttachmentTypes.SOUL_STORAGE)
+                && SoulStorage.of(living).isSoulMode();
     }
 
     public boolean addStar() {

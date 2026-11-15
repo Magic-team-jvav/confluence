@@ -4,7 +4,7 @@ import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import org.confluence.terraentity.init.TETags;
+import org.confluence.mod.common.init.ModTags;
 
 import java.util.function.Function;
 
@@ -14,7 +14,7 @@ public class MrCrayfishFurnitureHelper {
     }
 
     public static void blockTags(Function<TagKey<Block>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block>> consumer) {
-        consumer.apply(TETags.Blocks.NPC_HOUSE_CHAIR)
+        consumer.apply(ModTags.Blocks.NPC_HOUSE_CHAIR)
                 .addOptional(resource("oak_chair"))
                 .addOptional(resource("spruce_chair"))
                 .addOptional(resource("birch_chair"))
@@ -62,7 +62,7 @@ public class MrCrayfishFurnitureHelper {
                 .addOptional(resource("pink_stool"))
         ;
 
-        consumer.apply(TETags.Blocks.NPC_HOUSE_TABLE)
+        consumer.apply(ModTags.Blocks.NPC_HOUSE_TABLE)
                 .addOptional(resource("oak_table"))
                 .addOptional(resource("spruce_table"))
                 .addOptional(resource("birch_table"))

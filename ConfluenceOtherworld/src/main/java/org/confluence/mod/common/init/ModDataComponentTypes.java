@@ -1,12 +1,14 @@
 package org.confluence.mod.common.init;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.RepeaterContents;
-import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
@@ -17,9 +19,11 @@ public final class ModDataComponentTypes {
     public static final DeferredRegister.DataComponents TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Confluence.MODID);
 
     public static final Supplier<DataComponentType<LootComponent>> LOOT = TYPES.registerComponentType("loot", builder -> builder.persistent(LootComponent.CODEC).networkSynchronized(LootComponent.STREAM_CODEC));
-    public static final Supplier<DataComponentType<PrefixComponent>> PREFIX = TYPES.registerComponentType("prefix", builder -> builder.persistent(PrefixComponent.CODEC)); // 不能使用同步
+    public static final Supplier<DataComponentType<PrefixComponent>> PREFIX = TYPES.registerComponentType("prefix", builder -> builder.persistent(PrefixComponent.CODEC).networkSynchronized(PrefixComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<ValueComponent>> VALUE = TYPES.registerComponentType("value", builder -> builder.persistent(ValueComponent.CODEC).networkSynchronized(ValueComponent.STREAM_CODEC));
-    public static final Supplier<DataComponentType<SwordProjectileComponent>> SWORD_PROJECTILE = TYPES.registerComponentType("sword_projectile", builder -> builder.persistent(SwordProjectileComponent.CODEC).networkSynchronized(SwordProjectileComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<PrimitiveValueComponent>> ARMOR_BONUS = TYPES.registerComponentType("armor_bonus", builder -> builder.persistent(PrimitiveValueComponent.CODEC).networkSynchronized(PrimitiveValueComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<RepeaterContents>> REPEATER_CONTENTS = TYPES.registerComponentType("repeater_contents", builder -> builder.persistent(RepeaterContents.CODEC).networkSynchronized(RepeaterContents.STREAM_CODEC));
+    public static final Supplier<DataComponentType<ResourceLocation>> SOUL_SKILL = TYPES.registerComponentType("soulcerer_skill", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC));
+    /// 星体研究汇编已装订的书页数量。
+    public static final Supplier<DataComponentType<Integer>> STELLAR_STUDIES_PAGES = TYPES.registerComponentType("stellar_studies_pages", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 }

@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.FeatureUtils;
+import org.confluence.lib.util.LibFeatureUtils;
 
 public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
     // 树木结构常量
@@ -181,7 +181,7 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
         }
 
         // 重新计算树叶的状态并更新
-        FeatureUtils.updateLeavesOptimized(level, collisionSet, leavesSet, true, false);
+        LibFeatureUtils.updateLeavesOptimized(level, collisionSet, leavesSet, true, false);
 
         return true;
     }

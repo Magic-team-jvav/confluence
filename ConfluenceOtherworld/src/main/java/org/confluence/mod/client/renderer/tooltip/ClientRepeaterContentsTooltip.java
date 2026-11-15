@@ -65,7 +65,7 @@ public class ClientRepeaterContentsTooltip implements ClientTooltipComponent {
     }
 
     private int getSize() {
-        return this.contents.getUedSlotSize();
+        return this.contents.getUsedSlotSize();
     }
 
     private int gridSizeX() {

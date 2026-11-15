@@ -10,23 +10,39 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
+import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.network.IPacket;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.lib.util.consumer.Consumer3;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.gui.MergedConfigurationScreen;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.client.summoner.SummonerClientEvents;
+import org.confluence.mod.common.ModCommonConfigs;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.ModPrefix;
+import org.confluence.mod.common.data.TranslationConsumer;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.item.SoulItems;
+import org.confluence.mod.common.summoner.SummonerEvents;
+import org.confluence.mod.common.summoner.register.*;
+import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.create.CreateHelper;
-import org.confluence.mod.integration.terra_entity.TEEvents;
-import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
+import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 @Mod(Confluence.MODID)
 public final class Confluence {
@@ -34,25 +50,39 @@ public final class Confluence {
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
-    public static final boolean SOUL_SKILLS = false;
+    // todo 1.3.0
+    public static final boolean SOUL_SKILLS = true ;
+    public static final boolean THE_END_BIOMES = LibUtils.isDev();
+    public static final boolean UNRELEASED_SPAWNS = LibUtils.isDev();
+    public static final boolean UNRELEASED_EVENTS = LibUtils.isDev();
 
     public Confluence(IEventBus eventBus, ModContainer container) {
-        StartupConfigs.register(container);
-        CommonConfigs.register(container);
+        {
+            LibUtils.setForTheWorthyPredicate(ForTheWorthy::isEnabled);
+            EnvironmentLevelAccess.setGraveyardPredicate((player, level, pos) -> ModBlockCounters.isGraveyard(level, pos) || ModBlockCounters.isGraveyard(level, player.blockPosition()));
+            LibEntityUtils.setTeamGetter(player -> PlayerSpecialData.of(player).getTeam());
+        }
+        ModDynamicBiomes.init();
+        ModMiniBiomes.init();
+        DynamicBiomeUtils.enable();
+        ModStartupConfigs.register(container);
+        ModCommonConfigs.register(container);
         if (LibUtils.isPhysicalClient()) {
-            ClientConfigs.register(container);
+            ModClientConfigs.register(container);
+            SummonerClientEvents.init(eventBus);
             container.registerExtensionPoint(IConfigScreenFactory.class, MergedConfigurationScreen::factory);
         }
 
-        TEEvents.register(eventBus);
         ModBlocks.register(eventBus);
         ModItems.register(eventBus);
+        SoulItems.register(eventBus);
         ModVillagers.register(eventBus);
         ModRecipes.register(eventBus);
         ModFeatures.register(eventBus);
         ModEnchantments.register(eventBus);
         AgeratumHelper.register(eventBus);
         CreateHelper.register(eventBus);
+        IronSpellHelper.registerEvents();
         ModAdvancements.register(eventBus);
 
         TFReferences.init();
@@ -60,18 +90,29 @@ public final class Confluence {
         ModPrefix.initialize();
 
         ModTabs.TABS.register(eventBus);
-        ModEntities.ENTITIES.register(eventBus);
+        ModEntities.register(eventBus);
+        ModCustomRegistries.register(eventBus);
         ModDataComponentTypes.TYPES.register(eventBus);
         ModSoundEvents.EVENTS.register(eventBus);
         ModAttachmentTypes.TYPES.register(eventBus);
+        { // todo 合并注册
+            SummonerAttachmentTypes.register(eventBus);
+            SummonerRegistries.register(eventBus);
+            SummonerAttachmentEntityTypes.register(eventBus);
+            SummonerSoundEvents.register(eventBus);
+            SummonerSummonMarks.init();
+            SummonerEvents.init();
+            SummonerParticleTypes.TYPES.register(eventBus);
+        }
         ModEffects.EFFECTS.register(eventBus);
         ModMenuTypes.TYPES.register(eventBus);
         ModParticleTypes.TYPES.register(eventBus);
         ModChunkGenerators.GENERATORS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
         ModStructures.TYPES.register(eventBus);
+        ModLootTables.EntryTypes.TYPES.register(eventBus);
         ModLootTables.ItemConditions.TYPES.register(eventBus);
-        ModTradeLockProviderTypes.TYPES.register(eventBus);
+        ModLootTables.ItemFunctions.TYPES.register(eventBus);
         ModCommands.ARGUMENT_TYPE_INFOS.register(eventBus);
         ModDensityFunctionTypes.TYPES.register(eventBus);
 
@@ -106,5 +147,19 @@ public final class Confluence {
 
     public static <P extends IPacket> CustomPacketPayload.Type<P> createType(String id) {
         return new CustomPacketPayload.Type<>(asResource(id));
+    }
+
+    private static final List<Consumer<TranslationConsumer>> LANGUAGE_PROVIDERS = new ArrayList<>();
+
+    public static void addLanguageProvider(Consumer<TranslationConsumer> consumer) {
+        if (DatagenModLoader.isRunningDataGen()) {
+            LANGUAGE_PROVIDERS.add(consumer);
+        }
+    }
+
+    public static void forEachLanguageProvider(Consumer3<String, String, String> consumer3) {
+        for (Consumer<TranslationConsumer> provider : LANGUAGE_PROVIDERS) {
+            provider.accept(consumer3::accept);
+        }
     }
 }

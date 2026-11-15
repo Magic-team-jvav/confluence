@@ -23,7 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.menu.IToggleSlot;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.client.gui.BestiaryScreen;
 import org.confluence.mod.client.gui.GuiSprite;
@@ -31,7 +31,7 @@ import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
 import org.confluence.mod.mixed.IInventoryScreen;
 import org.confluence.mod.network.TeamPacket;
@@ -92,12 +92,13 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         super.init();
         addRenderableWidget(new ImageButton(leftPos + 109, topPos + 166, 16, 16, HOUSE_BUTTON, button -> {
             if (menu.getCarried().isEmpty()) {
-                getMinecraft().setScreen(null);
+                super.onClose();
                 HouseSelectHud.inSelectHUD = true;
             }
         }));
         addRenderableWidget(this.bestiaryButton = new ImageButton(leftPos + 125, topPos + 166, 16, 16, BESTIARY_BUTTON, button -> {
             if (menu.getCarried().isEmpty()) {
+                super.onClose();
                 getMinecraft().pushGuiLayer(this);
                 getMinecraft().setScreen(new BestiaryScreen());
             }
@@ -370,9 +371,9 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     public static ImageButton getExtraInventoryButton(EffectRenderingInventoryScreen<?> screen, boolean isInventoryScreen) {
-        int x = screen.getGuiLeft() - 16 + ClientConfigs.extraInventoryButtonOffsetX;
-        if (!isInventoryScreen && ClientConfigs.extraInventoryButtonOffsetX >= 192) x += 19;
-        int y = screen.getGuiTop() + 2 + ClientConfigs.extraInventoryButtonOffsetY;
+        int x = screen.getGuiLeft() - 16 + ModClientConfigs.extraInventoryButtonOffsetX;
+        if (!isInventoryScreen && ModClientConfigs.extraInventoryButtonOffsetX >= 192) x += 19;
+        int y = screen.getGuiTop() + 2 + ModClientConfigs.extraInventoryButtonOffsetY;
         ImageButton extraInventoryButton = new ImageButton(x, y, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
             LocalPlayer player = Minecraft.getInstance().player;
             if (player != null) {

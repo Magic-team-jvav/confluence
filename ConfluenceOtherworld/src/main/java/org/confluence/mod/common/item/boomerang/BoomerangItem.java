@@ -1,0 +1,153 @@
+package org.confluence.mod.common.item.boomerang;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEnchantmentUtils;
+import org.confluence.mod.api.item.ILeftClickStateItem;
+import org.confluence.mod.api.item.IWeaponTooltip;
+import org.confluence.mod.common.entity.projectile.BoomerangProjectile;
+import org.confluence.mod.common.init.ModEnchantments;
+import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.item.ModItems;
+import org.jetbrains.annotations.Nullable;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
+
+import java.util.List;
+
+
+public class BoomerangItem extends Item implements ILeftClickStateItem, IWeaponTooltip {
+    private final Settings settings;
+
+    public BoomerangItem(Settings settings) {
+        super(settings.properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
+        this.settings = settings;
+    }
+
+    @Override
+    public void onLeftClick(Player player, ItemStack stack) {
+        if (player instanceof ServerPlayer serverPlayer)
+            throwBoomerang(serverPlayer, InteractionHand.MAIN_HAND);
+    }
+
+    @Override
+    public void onLeftRelease(Player player, ItemStack stack) {}
+
+    /// 左键包和右键入口共用同一套发射逻辑，避免两个按键路径以后出现伤害、冷却或数量上限差异。
+    public void throwBoomerang(ServerPlayer player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        int maximumActive = settings.maxCount() + LibEnchantmentUtils.getEnchantmentLevel(ModEnchantments.MULTI_BOOMERANG, stack);
+        if (player.getCooldowns().isOnCooldown(this) || activeCount(player, stack) >= maximumActive) {
+            return;
+        }
+        BoomerangProjectile projectile = new BoomerangProjectile(ModEntities.BOOMERANG_PROJECTILE.get(), player.level());
+        projectile.configure(player, stack, settings);
+        onThrown(projectile, player, stack);
+        projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, settings.flySpeed(), 0.0F);
+        player.level().addFreshEntity(projectile);
+        player.playSound(SoundEvents.TRIDENT_THROW.value(), 0.6F, 1.35F);
+        player.swing(hand, true);
+        player.awardStat(Stats.ITEM_USED.get(this));
+        player.getCooldowns().addCooldown(this, settings.cooldown());
+        if (!player.getAbilities().instabuild) {
+            stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+        }
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (hand == InteractionHand.OFF_HAND) return InteractionResultHolder.fail(stack);
+        if (player instanceof ServerPlayer serverPlayer) {
+            throwBoomerang(serverPlayer, hand);
+        }
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+
+        tooltip.add(Component.translatable("tooltip.confluence.boomerang.fly_speed")
+                .append(": ")
+                .append(String.format("%.2f", settings.flySpeed()))
+                .withStyle(ChatFormatting.GRAY));
+        if (settings.maxCount() > 1) {
+            tooltip.add(Component.translatable("tooltip.confluence.boomerang.max_count")
+                    .append(": ")
+                    .append(Integer.toString(settings.maxCount()))
+                    .withStyle(ChatFormatting.GRAY));
+        }
+        if (settings.penetration() > 1) {
+            tooltip.add(Component.translatable("tooltip.confluence.boomerang.penetration")
+                    .append(": ")
+                    .append(Integer.toString(settings.penetration()))
+                    .withStyle(ChatFormatting.GRAY));
+        }
+    }
+
+    private int activeCount(Player player, ItemStack stack) {
+        int count = 0;
+        for (BoomerangProjectile projectile : player.level().getEntitiesOfClass(BoomerangProjectile.class, player.getBoundingBox().inflate(settings.activeSearchRange()))) {
+            if (projectile.belongsTo(player) && ItemStack.isSameItem(projectile.getWeapon(), stack)) {
+                count++;
+            }
+        }
+        return Math.max(0, count);
+    }
+
+    /// 投掷物刚生成、还没加入世界时调用一次，用来定下这一发的一次性数据（例如携带的符文）。
+    public void onThrown(BoomerangProjectile projectile, ServerPlayer player, ItemStack stack) {}
+
+    /// 射弹成功命中后在服务端结算武器专属效果。
+    public void onProjectileHit(BoomerangProjectile projectile, LivingEntity owner, LivingEntity target) {}
+
+    /// 由客户端实体 tick 生成拖尾，不依赖渲染帧率。
+    public void emitFlightParticles(BoomerangProjectile projectile, Vec3 movement) {}
+
+    /// 由客户端实体按需创建一枚跟随投掷物的粒子风暴发射器，返回 null 表示该武器不需要。
+    /// 挂载与注册由 {@link BoomerangProjectile} 统一完成，这里只负责按符文挑贴图与颜色。
+    public @Nullable ParticleEmitter createRuneEmitter(BoomerangProjectile projectile, int rune) {
+        return null;
+    }
+
+    public record Settings(float damage, float flySpeed, float backSpeed, int forwardTicks,
+                           int cooldown, int maxCount, int penetration, boolean fire,
+                           Item.Properties properties) {
+        private static final double DEFAULT_ACTIVE_SEARCH_RANGE = 96.0;
+
+        public Settings {
+            if (damage < 0.0F || flySpeed <= 0.0F || backSpeed <= 0.0F) {
+                throw new IllegalArgumentException("Boomerang speed and damage settings must be positive");
+            }
+            if (forwardTicks <= 0 || cooldown < 0 || maxCount <= 0 || penetration <= 0) {
+                throw new IllegalArgumentException("Boomerang tick and count settings must be positive");
+            }
+        }
+
+        public double activeSearchRange() {
+            return DEFAULT_ACTIVE_SEARCH_RANGE;
+        }
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return settings.damage() * attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / Math.max(1, settings.cooldown());
+    }
+}

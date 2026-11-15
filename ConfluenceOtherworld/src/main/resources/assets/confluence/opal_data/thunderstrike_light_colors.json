@@ -1,0 +1,28 @@
+{
+  "particles": {
+    "confluence:thunderstrike_spark": {
+      "color": [
+        0.16,
+        0.55,
+        1
+      ],
+      "light_level": 9
+    },
+    "confluence:thunderstrike_preview": {
+      "color": [
+        0.16,
+        0.55,
+        1
+      ],
+      "light_level": 4
+    },
+    "confluence:thunderstrike_impact": {
+      "color": [
+        0.16,
+        0.55,
+        1
+      ],
+      "light_level": 13
+    }
+  }
+}

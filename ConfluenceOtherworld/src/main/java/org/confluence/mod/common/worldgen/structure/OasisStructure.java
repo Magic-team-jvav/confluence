@@ -13,20 +13,20 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.confluence.lib.util.StructureUtils.*;
-import static org.confluence.lib.util.VectorUtils.ballPos;
-import static org.confluence.lib.util.VectorUtils.frustumSetPos;
+import static org.confluence.lib.util.LibStructureUtils.*;
+import static org.confluence.lib.util.LibGeometryUtils.ballPos;
+import static org.confluence.lib.util.LibGeometryUtils.frustumSetPos;
 
 public class OasisStructure extends Structure {
     public static final MapCodec<OasisStructure> CODEC = simpleCodec(OasisStructure::new);
@@ -55,20 +55,20 @@ public class OasisStructure extends Structure {
             WorldgenRandom random = context.random();
             BlockPos centerPos = startChunk.getMiddleBlockPosition(lowestY);
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
-            Vector3d start = new Vector3d(centerPos.getX() + random.nextInt(-2, 3), centerPos.getY() -20, centerPos.getZ() + random.nextInt(-2, 3));
-            Vector3d end = new Vector3d(centerPos.getX(), centerPos.getY() + 1, centerPos.getZ());
-            List<Vector3d> listPos = frustumSetPos(start, end, 60.5, 40.5, 0.2F, random);
+            Vector3f start = new Vector3f(centerPos.getX() + random.nextInt(-2, 3), centerPos.getY() - 20, centerPos.getZ() + random.nextInt(-2, 3));
+            Vector3f end = new Vector3f(centerPos.getX(), centerPos.getY() + 1, centerPos.getZ());
+            List<Vector3f> listPos = frustumSetPos(start, end, 60.5F, 40.5F, 0.2F, random);
             Map<BlockPos, ResourceLocation> feature = new HashMap<>();
             BlockPos checkPos;
-            for (Vector3d vector3d : listPos) {
-                checkPos = VectorUtils.fromVector3d(vector3d).offset(0, 4, 0);
-                if ((checkPos.getY() > centerPos.getY()) && (0.05F > random.nextFloat()) && (new Vector3d(centerPos.getX(), 0, centerPos.getZ()).distance(new Vector3d(checkPos.getX(), 0, checkPos.getZ())) > 32)) feature.put(checkPos, Confluence.asResource("palm_tree"));
+            for (Vector3f vector3d : listPos) {
+                checkPos = LibMathUtils.fromVector3f(vector3d).offset(0, 4, 0);
+                if ((checkPos.getY() > centerPos.getY()) && (0.05F > random.nextFloat()) && (new Vector3f(centerPos.getX(), 0, centerPos.getZ()).distance(new Vector3f(checkPos.getX(), 0, checkPos.getZ())) > 32)) feature.put(checkPos, Confluence.asResource("palm_tree"));
             }
 
-            lineSet(listPos, 3.5, 3.5, 2, true, blockMap);
-            List<Vector3d> listVct = ballPos(18.5, centerPos.offset(0, 18, 0), 0.02F, random);
-            for (Vector3d vector3d : listVct) {
-                ball(15.5, VectorUtils.fromVector3d(vector3d), 0, 3, true, blockMap, centerPos.getY() - 1);
+            lineSet(listPos, 3.5F, 3.5F, 2, true, blockMap);
+            List<Vector3f> listVct = ballPos(18.5F, centerPos.offset(0, 18, 0), 0.02F, random);
+            for (Vector3f vector3d : listVct) {
+                ball(15.5F, LibMathUtils.fromVector3f(vector3d), 0, 3, true, blockMap, centerPos.getY() - 1);
             }
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(

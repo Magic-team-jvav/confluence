@@ -5,7 +5,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.JavaOps;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.server.MinecraftServer;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
 import org.confluence.mod.mixed.IMinecraftServer;
@@ -20,7 +24,27 @@ public interface SecretFlagMatcher {
     boolean flipMatch();
 
     default boolean matchesSecretFlag() {
-        return IMinecraftServer.matchesSecretFlag(secretFlag()) != flipMatch();
+        return matchesSecretFlag(secretFlag()) != flipMatch();
+    }
+
+    static boolean matchesSecretFlag(long secretFlag, long flag) {
+        return (secretFlag & flag) != 0;
+    }
+
+    /// 用于复数位的flag
+    static boolean equalsSecretFlag(long secretFlag, long flag) {
+        return (secretFlag & flag) == flag;
+    }
+
+    static boolean matchesSecretFlag(long flag) {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) {
+            if (LibUtils.isLogicalClient()) {
+                return matchesSecretFlag(ClientPacketHandler.getSecretFlag(), flag);
+            }
+            return false;
+        }
+        return IMinecraftServer.of(server).matchesSecretFlag(flag);
     }
 
     static <M extends SecretFlagMatcher> MapCodec<M> createMapCodec(BiFunction<Long, Boolean, M> factory) {

@@ -2,7 +2,6 @@ package org.confluence.mod.common.item.common;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundInteractPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -19,20 +18,20 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.map.BugNetEntityToItem;
 import org.confluence.mod.common.init.item.ModItems;
 
-import java.util.List;
 import java.util.function.Predicate;
 
-public class BugNetItem extends TooltipItem {
+public class BugNetItem extends CustomRarityItem {
     private final double maxSize;
     private final Predicate<LivingEntity> predicate;
 
-    public BugNetItem(ModRarity rarity, List<Component> tooltips, double maxSize, Predicate<LivingEntity> predicate) {
-        super(new Properties().stacksTo(1), rarity, tooltips);
+    public BugNetItem(ModRarity rarity, double maxSize, Predicate<LivingEntity> predicate) {
+        super(new Properties().stacksTo(1), rarity);
         this.maxSize = maxSize;
         this.predicate = predicate;
     }
@@ -87,12 +86,16 @@ public class BugNetItem extends TooltipItem {
                 player, from, to, aabb, entity -> !entity.isSpectator() && entity.isPickable(), squared
         );
         if (entityHitResult != null && entityHitResult.getLocation().distanceToSqr(from) < sqr) l:{
-            if (!(LibUtils.tryFindBeImpacted(entityHitResult.getEntity()) instanceof LivingEntity interactionTarget)) {
+            if (!(LibEntityUtils.tryFindBeImpacted(entityHitResult.getEntity()) instanceof LivingEntity interactionTarget)) {
                 break l;
             }
             if (player.isLocalPlayer()) {
                 ((LocalPlayer) player).connection.send(ServerboundInteractPacket.createInteractionPacket(interactionTarget, false, InteractionHand.MAIN_HAND));
             } else if (predicate.test(interactionTarget) && interactionTarget.getBoundingBox().getSize() <= maxSize) {
+                if (interactionTarget instanceof org.confluence.mod.common.entity.animal.MysticFrog frog) {
+                    frog.escapeNet();
+                    break l;
+                }
                 ItemStack itemStack = BugNetEntityToItem.getItem((ServerPlayer) player, interactionTarget);
                 if (itemStack == null) {
                     itemStack = ModItems.ENTITY_DISPLAY.get().getDefaultInstance();

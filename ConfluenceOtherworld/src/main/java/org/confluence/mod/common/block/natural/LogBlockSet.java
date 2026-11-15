@@ -27,6 +27,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.function.TriFunction;
 import org.confluence.lib.common.item.GroupItem;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.TranslationConsumer;
 import org.confluence.mod.common.init.item.ModItems;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -568,6 +570,12 @@ public class LogBlockSet {
         public Builder sapling(Function<BlockBehaviour.Properties, ? extends SaplingBlock> function) {
             this.sapling = function;
             return this;
+        }
+
+        public LogBlockSet build(BiConsumer<LogBlockSet, TranslationConsumer> translations) {
+            LogBlockSet set = build();
+            Confluence.addLanguageProvider(language -> translations.accept(set, language));
+            return set;
         }
 
         public LogBlockSet build() {

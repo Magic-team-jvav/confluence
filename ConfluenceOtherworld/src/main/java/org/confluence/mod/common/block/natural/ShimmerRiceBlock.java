@@ -24,7 +24,7 @@ public class ShimmerRiceBlock extends Block implements SimpleShimmerImmersedBloc
     public static final BooleanProperty SHIMMER_IMMERSED = StateProperties.SHIMMER_IMMERSED;
 
     public ShimmerRiceBlock(Properties properties) {
-        super(properties.lightLevel(state -> state.getValue(SHIMMER_IMMERSED) ? 10 : 0));
+        super(properties.lightLevel(state -> state.getValue(SHIMMER_IMMERSED) ? 5 : 0));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(AGE, 0)
                 .setValue(HALF, DoubleBlockHalf.LOWER)

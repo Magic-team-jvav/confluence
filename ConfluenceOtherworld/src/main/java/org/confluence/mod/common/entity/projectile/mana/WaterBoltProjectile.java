@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 import java.util.function.UnaryOperator;
 
@@ -17,7 +17,7 @@ public class WaterBoltProjectile extends AbstractManaProjectile {
     }
 
     public WaterBoltProjectile(LivingEntity living) {
-        this(ModEntities.WATER_BOLT_PROJECTILE.get(), living.level());
+        this(ModEntities.WATER_BOLT.get(), living.level());
     }
 
     @Override

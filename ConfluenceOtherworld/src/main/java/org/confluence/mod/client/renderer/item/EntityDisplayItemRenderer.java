@@ -11,14 +11,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 
@@ -26,33 +24,31 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Function;
 
 public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
     private Map<UUID, Entity> entityMap = new Hashtable<>();
-    private ResourceKey<Level> currentLevel;
-    private final Function<ClientLevel, RemotePlayer> magicHarp2333 = new Function<>() {
-        private RemotePlayer cache;
+    private ClientLevel currentLevel;
+    private RemotePlayer magicHarpPlayer;
+    private ClientLevel magicHarpLevel;
 
-        @Override
-        public RemotePlayer apply(ClientLevel level) {
-            if (cache == null) {
-                this.cache = new RemotePlayer(level, new GameProfile(Mth.createInsecureUUID(level.random), "MagicHarp2333")) { // Our Leader
-                    private PlayerSkin playerSkin;
+    private RemotePlayer getMagicHarp(ClientLevel level) {
+        if (magicHarpPlayer == null || magicHarpLevel != level) {
+            magicHarpLevel = level;
+            magicHarpPlayer = new RemotePlayer(level, new GameProfile(Mth.createInsecureUUID(level.random), "MagicHarp2333")) { // Our Leader
+                private PlayerSkin playerSkin;
 
-                    @Override
-                    public PlayerSkin getSkin() {
-                        if (playerSkin == null) {
-                            getEntityData().set(DATA_PLAYER_MODE_CUSTOMISATION, (byte) 127); // 显示双层模型
-                            this.playerSkin = new PlayerSkin(Confluence.asResource("textures/magic_harp_2333.png"), null, null, null, PlayerSkin.Model.WIDE, false);
-                        }
-                        return playerSkin;
+                @Override
+                public PlayerSkin getSkin() {
+                    if (playerSkin == null) {
+                        getEntityData().set(DATA_PLAYER_MODE_CUSTOMISATION, (byte) 127); // 显示双层模型
+                        this.playerSkin = new PlayerSkin(Confluence.asResource("textures/magic_harp_2333.png"), null, null, null, PlayerSkin.Model.WIDE, false);
                     }
-                };
-            }
-            return cache;
+                    return playerSkin;
+                }
+            };
         }
-    };
+        return magicHarpPlayer;
+    }
 
     public EntityDisplayItemRenderer() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
@@ -63,23 +59,23 @@ public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         if (level == null) return;
+        // 按 level 实例而不是 dimension 判断：同一维度的不同存档也不能复用旧实体。
+        if (level != currentLevel) {
+            this.currentLevel = level;
+            this.entityMap = new HashMap<>();
+        }
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
         Entity entity;
         if (tag == null) {
-            entity = magicHarp2333.apply(level);
+            entity = getMagicHarp(level);
         } else {
-            if (level.dimension() != currentLevel) {
-                this.currentLevel = level.dimension();
-                this.entityMap = new HashMap<>();
-            }
-
             try {
                 entity = entityMap.computeIfAbsent(tag.getUUID(Entity.UUID_TAG), uuid -> {
-                    Entity loaded = EntityType.loadEntityRecursive(tag, level, Function.identity());
+                    Entity loaded = EntityType.loadEntityRecursive(tag, level, java.util.function.Function.identity());
                     return loaded == null ? new Pig(EntityType.PIG, level) : loaded;
                 });
             } catch (Exception e) {
-                entity = magicHarp2333.apply(level);
+                entity = getMagicHarp(level);
             }
         }
 
@@ -99,5 +95,13 @@ public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
         erd.setRenderShadow(true);
         immediate.endBatch();
         poseStack.popPose();
+    }
+
+    /// 世界卸载时释放缓存实体与假玩家，避免旧 ClientLevel 被渲染器静态实例持有。
+    public void clear() {
+        this.entityMap.clear();
+        this.currentLevel = null;
+        this.magicHarpPlayer = null;
+        this.magicHarpLevel = null;
     }
 }

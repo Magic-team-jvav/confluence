@@ -7,9 +7,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.spear.SporeCloudProjectile;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.animation.EasingType;
 
 public class ChlorophytePartisanItem extends AbstractSpearItem {
@@ -25,14 +25,14 @@ public class ChlorophytePartisanItem extends AbstractSpearItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        VectorUtils.knockBackA2B(owner, victim, 0.31, 0.2);
+        LibEntityUtils.knockBackA2B(owner, victim, 0.31, 0.2);
     }
 
     @Override
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {
         if (last) {
             SporeCloudProjectile projectile = new SporeCloudProjectile(
-                    ModEntities.SPORE_CLOUD_PROJECTILE.get(), level);
+                    ModEntities.SPORE_CLOUD.get(), level);
             projectile.setOwner(owner);
             projectile.setWeapon(owner.getMainHandItem());
 

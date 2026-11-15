@@ -59,7 +59,7 @@ public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<Crystal
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<CrystalBallRecipe> recipe, IFocusGroup focuses) {
         IRecipeCategory.super.createRecipeExtras(builder, recipe, focuses);
-        builder.addRecipeArrow().setPosition(50 + 5, 6 + 2);
+        builder.addRecipeArrowWidget().setPosition(50 + 5, 6 + 2);
     }
 
     @Override
@@ -69,6 +69,6 @@ public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<Crystal
 
     @Override
     public ResourceLocation getRegistryName(RecipeHolder<CrystalBallRecipe> recipe) {
-        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResult().getItem()).getPath());
     }
 }

@@ -10,7 +10,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacket;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.data.Team;
 
 public record TeamPacket(int playerId, Team team, boolean pvp) implements IPacket {
     public static final byte TEAM_MASK = 0b0001_1111;

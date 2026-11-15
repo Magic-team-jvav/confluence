@@ -18,6 +18,14 @@ public final class ParticleHandler {
     private static Vec3 position;
     private static Holder<Biome> biome;
 
+    /// 切维度或退出世界时清空静态引用，避免旧 ClientLevel/LocalPlayer 一直被客户端持有。
+    public static void clear() {
+        player = null;
+        level = null;
+        position = null;
+        biome = null;
+    }
+
     public static void handle(LocalPlayer localPlayer) {
         player = localPlayer;
         level = player.clientLevel;
@@ -36,7 +44,6 @@ public final class ParticleHandler {
 
     public static void addEmitter(Vec3 pos, String path) {
         ParticleEmitter emitter = new ParticleEmitter(level, pos, Confluence.asResource(path));
-        emitter.hideOutline = true;
         MolangParticleEngine.INSTANCE.addEmitter(emitter);
     }
 

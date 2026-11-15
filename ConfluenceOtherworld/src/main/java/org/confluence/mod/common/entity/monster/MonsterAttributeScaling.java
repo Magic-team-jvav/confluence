@@ -1,0 +1,136 @@
+package org.confluence.mod.common.entity.monster;
+
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.monster.Enemy;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.api.summon.OwnedSummon;
+import org.confluence.mod.common.ModCommonConfigs;
+import org.confluence.mod.common.entity.animal.BaseCritter;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
+import org.confluence.mod.common.entity.monster.slime.SweetSlime;
+import org.confluence.mod.common.entity.npc.BaseNPC;
+
+import java.util.Locale;
+import java.util.function.Supplier;
+
+/// 独立于难度、游戏阶段与特殊状态的敌怪属性配置倍率；固定 ResourceLocation 保证读档、重载不会累乘。
+public final class MonsterAttributeScaling {
+    private MonsterAttributeScaling() {}
+
+    /// 所有实体加入世界的路径共用此入口，包括自然生成、刷怪蛋、脚本及区块读档。
+    /// 仅新生成且原本满血的实体补齐新生命上限；读档与配置重载均不治疗。
+    public static void apply(LivingEntity entity, boolean freshSpawn) {
+        if (entity.level().isClientSide || ModCommonConfigs.SPEC == null || !ModCommonConfigs.SPEC.isLoaded())
+            return;
+        boolean eligible = isEligible(entity);
+        CreatureDifficultyScaling.apply(entity, freshSpawn);
+        float health = entity.getHealth();
+        float maximum = entity.getMaxHealth();
+        boolean wasFull = Math.abs(health - maximum) < 0.001F;
+        for (Multiplier multiplier : Multiplier.values()) {
+            AttributeInstance attribute = entity.getAttribute(multiplier.attribute.get());
+            if (attribute != null) {
+                double value = 1.0D;
+                if (eligible) value = multiplier.config.get().get();
+                else if (entity instanceof BaseBoss && multiplier.bossConfig != null)
+                    value = multiplier.bossConfig.get().get();
+                updateModifier(attribute, multiplier.id, value);
+            }
+        }
+        CreatureDifficultyScaling.apply(entity, false);
+        if (entity.getMaxHealth() != maximum) {
+            entity.setHealth(freshSpawn && wasFull && health > 0 ? entity.getMaxHealth() : Math.min(health, entity.getMaxHealth()));
+        }
+    }
+
+    /// 开启跨模组开关也只包含敌对 Mob，不把玩家、NPC、小动物、召唤物及 Boss 纳入普通敌怪倍率。
+    private static boolean isEligible(LivingEntity entity) {
+        if (!(entity instanceof Mob) || entity instanceof Boss || entity instanceof OwnedSummon
+                || entity instanceof BaseNPC || entity instanceof BaseCritter || entity instanceof SweetSlime
+                || entity instanceof EnderDragon || entity instanceof WitherBoss || entity.getType().is(Tags.EntityTypes.BOSSES))
+            return false;
+        if (!(entity instanceof Enemy) && entity.getType().getCategory() != MobCategory.MONSTER)
+            return false;
+        return ModCommonConfigs.ENHANCE_ALL_MONSTER.get()
+                || Confluence.MODID.equals(BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace());
+    }
+
+    /// 加载与重载配置后在服务器线程更新已加载实体；关闭扩展范围时也移除旧倍率。
+    public static void reload() {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) return;
+        server.execute(() -> {
+            for (ServerLevel level : server.getAllLevels()) {
+                for (Entity entity : level.getAllEntities()) {
+                    if (entity instanceof LivingEntity living) {
+                        apply(living, false);
+                        if (living instanceof Boss boss && boss.isMainBody() && boss.shouldEnhanceMultiplayer())
+                            BossMultiplayerEnhancement.apply(living, false);
+                    }
+                }
+            }
+        });
+    }
+
+    /// 只替换本功能自己的最终乘算项，保留阶段、装备及状态修饰符；倍率为 1 时删除该项。
+    static void updateModifier(AttributeInstance attribute, ResourceLocation id, double multiplier) {
+        AttributeModifier previous = attribute.getModifier(id);
+        if (multiplier == 1.0D) {
+            if (previous != null) attribute.removeModifier(id);
+            return;
+        }
+        double amount = multiplier - 1.0D;
+        if (previous != null && previous.amount() == amount && previous.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            return;
+        if (previous != null) attribute.removeModifier(id);
+        attribute.addPermanentModifier(new AttributeModifier(id, amount, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+    }
+
+    private enum Multiplier {
+        HEALTH(() -> Attributes.MAX_HEALTH, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_HEALTH),
+        DAMAGE(() -> LibAttributes.getAttackDamage(), () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_DAMAGE),
+        ARMOR(() -> Attributes.ARMOR, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR, () -> ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_ARMOR),
+        ARMOR_TOUGHNESS(() -> Attributes.ARMOR_TOUGHNESS, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS, () -> ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS),
+        MOVEMENT_SPEED(() -> Attributes.MOVEMENT_SPEED, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED, () -> ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED),
+        FLYING_SPEED(() -> Attributes.FLYING_SPEED, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_FLYING_SPEED, () -> ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_FLYING_SPEED),
+        KNOCKBACK_RESISTANCE(() -> Attributes.KNOCKBACK_RESISTANCE, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE, () -> ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE),
+        FOLLOW_RANGE(() -> Attributes.FOLLOW_RANGE, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE, () -> ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE);
+
+        private final Supplier<Holder<Attribute>> attribute;
+        private final Supplier<ModConfigSpec.DoubleValue> config;
+        private final Supplier<ModConfigSpec.DoubleValue> bossConfig;
+        private final ResourceLocation id;
+
+        Multiplier(Supplier<Holder<Attribute>> attribute, Supplier<ModConfigSpec.DoubleValue> config) {
+            this(attribute, config, null);
+        }
+
+        Multiplier(Supplier<Holder<Attribute>> attribute, Supplier<ModConfigSpec.DoubleValue> config, Supplier<ModConfigSpec.DoubleValue> bossConfig) {
+            this.attribute = attribute;
+            this.config = config;
+            this.bossConfig = bossConfig;
+            id = Confluence.asResource("monster_config." + name().toLowerCase(Locale.ROOT));
+        }
+    }
+}

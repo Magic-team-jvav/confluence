@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.world.Difficulty;
@@ -19,8 +20,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.*;
@@ -46,25 +49,35 @@ import org.confluence.lib.api.event.PlayerNaturalHealEvent;
 import org.confluence.lib.api.event.SwitchItemFunctionEvent;
 import org.confluence.lib.common.event.LibGameEvents;
 import org.confluence.lib.common.item.ColoredItem;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.*;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.common.data.AchievementOffset;
+import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.data.map.DiggingPower;
+import org.confluence.mod.common.data.saved.AnglerData;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
-import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
+import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.common.entity.fishing.FishingSession;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
+import org.confluence.mod.common.entity.monster.BaseMimic;
+import org.confluence.mod.common.entity.mount.MountManager;
+import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
+import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
@@ -77,19 +90,14 @@ import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
-import org.confluence.mod.mixed.IAbstractMinecart;
-import org.confluence.mod.mixed.IMinecraftServer;
-import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.AchievementsDataSyncPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.entity.monster.WoodenMimic;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.Objects;
 
@@ -100,15 +108,15 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
+        PermanentUpgrade.restore(player);
         PlayerUtils.syncSavedData(player);
         BoulderWorld.forceSetAccessory(player);
         if (HardmodeConvertor.INSTANCE.isCompleted()) {
             AchievementUtils.awardAchievement(player, "its_hard");
         }
-        if (CommonConfigs.DO_NPC_SPAWNING.get() && player.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
+        if (ModCommonConfigs.DO_NPC_SPAWNING.get() && player.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.trySpawnGuide(player);
         }
-//        PlayerUtils.syncSoul2Client(player);
         PlayerUtils.syncPlayerData(player);
 
         if (ModUtils.shouldDisplayTeam()) {
@@ -135,7 +143,8 @@ public final class PlayerEvents {
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
         GameEventSystem.INSTANCE.clearAll(player);
         PlayerSpecialData.of(player).setPvP(false);
-        CommonConfigs.reset();
+        ModCommonConfigs.reset();
+        MountManager.dismiss(player);
     }
 
     @SubscribeEvent
@@ -163,7 +172,14 @@ public final class PlayerEvents {
 
         ItemStack itemStack = event.getItemStack();
 
-        if (CommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() &&
+        // 植物纤维绳索宝典：空手右键食用草方块、植物与花
+        if (PlantFiberCordageEvents.handle(player, level, event.getHand(), itemStack, blockPos)) {
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            event.setCanceled(true);
+            return;
+        }
+
+        if (ModCommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() &&
                 !(itemStack.getItem() instanceof BlockItem) &&
                 !itemStack.is(ModTags.Items.MINECART) &&
                 block instanceof BaseRailBlock railBlock &&
@@ -184,7 +200,7 @@ public final class PlayerEvents {
             player.startRiding(minecart, true);
         }
 
-        if (CommonConfigs.FLETCHING_MENU.get() && blockState.is(Blocks.FLETCHING_TABLE)) {
+        if (ModCommonConfigs.FLETCHING_MENU.get() && blockState.is(Blocks.FLETCHING_TABLE)) {
             if (!level.isClientSide) {
                 player.openMenu(new FletchingTableMenu.Provider(level, blockPos));
             }
@@ -228,7 +244,7 @@ public final class PlayerEvents {
         ItemEntity itemEntity = event.getItemEntity();
         ItemStack itemStack = itemEntity.getItem();
         if (IServerPlayer.of(player).confluence$isCouldPickupItem()) {
-            if (CommonConfigs.AUTO_STACK_GELS_COLOR.get()) autoStackGelsColor:{
+            if (ModCommonConfigs.AUTO_STACK_GELS_COLOR.get()) autoStackGelsColor:{
                 Item gel = MaterialItems.GEL.get();
                 if (!itemStack.is(gel)) break autoStackGelsColor;
                 int defaultMaxStackSize = gel.getDefaultMaxStackSize();
@@ -249,10 +265,12 @@ public final class PlayerEvents {
         if (itemStack.is(ModTags.Items.PROVIDE_MANA)) {
             ManaStorage.of(player).receiveMana(() -> itemStack.getCount() * 100.0F);
             StarSteelSword.onManaStarPickup(player);
+            itemStack.setCount(0);
             itemEntity.discard();
             event.setCanPickup(TriState.FALSE);
         } else if (itemStack.is(ModTags.Items.PROVIDE_LIFE)) {
             player.heal(itemStack.getCount() * 4.0F);
+            itemStack.setCount(0);
             itemEntity.discard();
             event.setCanPickup(TriState.FALSE);
         }
@@ -267,14 +285,57 @@ public final class PlayerEvents {
         LucyTheAxe.onPickup(player, itemStack);
     }
 
+
     @SubscribeEvent
     public static void itemFished(ItemFishedEvent event) {
-        Player player = event.getEntity();
-
-        if (!TCUtils.hasType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextFloat() < 0.1429F) {
-            player.level().playSound(null, event.getHookEntity().blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        FishingHook hook = event.getHookEntity();
+        FishingSession session = IFishingHook.of(hook).confluence$getFishingSession();
+        if (session != null && !session.isValid(player)) {
             event.setCanceled(true);
+            return;
         }
+        if (!TCUtils.hasType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextInt(7) == 0) {
+            player.level().playSound(null, hook.blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
+            event.setCanceled(true);
+            return;
+        }
+        // 任务鱼已在收竿流程中优先选出，血月生物不得再清空它。
+        boolean questCatch = AnglerData.INSTANCE.hasValidQuest() && event.getDrops().stream()
+                .anyMatch(stack -> stack.is(AnglerData.INSTANCE.getQuestFish()));
+        boolean caughtMob = !questCatch && tryCatchBloodMoonMob(player, hook, session);
+        if (caughtMob) event.getDrops().clear();
+        if (session != null && (caughtMob || !event.getDrops().isEmpty()))
+            session.consumeBait(player);
+    }
+
+    /// 血月夜晚的水中捕获可替换为生物；仅成功生成时返回 true，失败则保留原鱼获。
+    private static boolean tryCatchBloodMoonMob(ServerPlayer player, FishingHook hook, FishingSession session) {
+        if (!BloodMoonGameEvent.INSTANCE.started() || LibDateUtils.isDay(player.level()) || !hook.getInBlockState().getFluidState().is(FluidTags.WATER))
+            return false;
+        boolean chumCaster = session != null && session.rod().is(FishingPoleItems.CHUM_CASTER.get());
+        if (player.getRandom().nextInt(chumCaster ? 3 : 6) != 0) return false;
+        // 尚未解锁的暴躁史莱姆占生物捕获的 1/5；已解锁时继续选择敌怪。
+        if (player.getRandom().nextInt(5) == 0) {
+            TownSlimeNPC slime = TownSlimeNPC.unlock(player.serverLevel(), NpcEntities.SURLY_SLIME.get(), hook.position());
+            if (slime != null) {
+                slime.setDeltaMovement(player.position().subtract(slime.position()).normalize().scale(0.4));
+                return true;
+            }
+        }
+        var eyeFish = MonsterEntities.WANDERING_EYE_FISH.get();
+        var merman = MonsterEntities.ZOMBIE_MERMAN.get();
+        boolean allowEyeFish = DevelopmentSpawnPolicy.allowsAutomaticSpawn(eyeFish);
+        boolean allowMerman = DevelopmentSpawnPolicy.allowsAutomaticSpawn(merman);
+        if (!allowEyeFish && !allowMerman) return false;
+        // TODO 僵尸人鱼完成后取消注册处的 developmentOnly；两种可生成时各占一半。
+        // TODO 困难模式补齐血浆哥布林鲨鱼、血鳗鱼、恐惧鹦鹉螺：前四种各 22.5%，鹦鹉螺 10%。
+        var type = allowEyeFish && (!allowMerman || player.getRandom().nextBoolean()) ? eyeFish : merman;
+        var enemy = type.spawn(player.serverLevel(), hook.blockPosition(), MobSpawnType.EVENT);
+        if (enemy == null) return false;
+        enemy.setTarget(player);
+        enemy.setDeltaMovement(player.position().subtract(enemy.position()).normalize().scale(0.35));
+        return true;
     }
 
     @SubscribeEvent
@@ -319,9 +380,11 @@ public final class PlayerEvents {
         if (player instanceof ServerPlayer serverPlayer) {
             AccessoryItems.applyLuckyCoin(serverPlayer, event.getTarget());
         }
-        if (player.getMainHandItem().is(ModTags.Items.SPEAR)) {
+        ItemStack stack = player.getMainHandItem();
+        if (stack.is(ModTags.Items.SPEAR) || stack.is(ModTags.Items.FLAIL) || stack.is(ModTags.Items.YOYO)) {
             event.setCanceled(true);
         }
+        SoulcererUtils.soulKnifeReach(event);
     }
 
     @SubscribeEvent
@@ -339,16 +402,12 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        EverBeneficial everBeneficial = EverBeneficial.of(player);
-        EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() != 0, player);
-        EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, player);
-        EverBeneficialItem.AEGIS_APPLE.recovery(everBeneficial, EverBeneficial::isAegisAppleUsed, player);
-        EverBeneficialItem.AMBROSIA.recovery(everBeneficial, EverBeneficial::isAmbrosiaUsed, player);
-        EverBeneficialItem.GALAXY_PEARL.recovery(everBeneficial, EverBeneficial::isGalaxyPearlUsed, player);
-        EverBeneficialItem.ARTISAN_LOAF.recovery(everBeneficial, EverBeneficial::isArtisanLoafUsed, player);
+        MountManager.dismiss(player);
+        PermanentUpgrade.restore(player);
 
         BoulderWorld.forceSetAccessory(player);
         PlayerUtils.flushLocalData(player, player);
+        SoulStorage.of(player).onRespawn();
         PlayerUtils.syncPlayerData(player);
         if (ModSecretSeeds.REALLY_SMALL.match(player.server)) {
             ReallySmall.scalePlayer(player);
@@ -367,7 +426,7 @@ public final class PlayerEvents {
     public static void advancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
         AdvancementHolder advancement = event.getAdvancement();
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        if (!advancement.value().display().map(DisplayInfo::shouldAnnounceChat).orElse(true) && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.id())) {
+        if (!advancement.value().display().map(DisplayInfo::shouldAnnounceChat).orElse(true) && AchievementOffset.Loader.getDisplayOffset().containsKey(advancement.id())) {
             player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), Advancement.name(advancement)), false);
         }
 
@@ -378,11 +437,8 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void advancementProgress(AdvancementEvent.AdvancementProgressEvent event) {
-        ServerPlayer player = (ServerPlayer) event.getEntity();
-        if (!LibUtils.isSingleplayerOwner(player) &&
-                AchievementOffsetLoader.getDisplayOffset().containsKey(event.getAdvancement().id())
-        ) {
-            AchievementsDataSyncPacketS2C.sendToPlayer(player);
+        if (AchievementOffset.Loader.getDisplayOffset().containsKey(event.getAdvancement().id())) {
+            AchievementsDataSyncPacketS2C.sendToPlayer((ServerPlayer) event.getEntity());
         }
     }
 
@@ -391,7 +447,7 @@ public final class PlayerEvents {
         if (event.getTarget() instanceof ServerPlayer target) {
             ServerPlayer sendTo = (ServerPlayer) event.getEntity();
             PlayerUtils.flushLocalData(sendTo, target);
-        } else if (event.getTarget() instanceof AbstractTerraNPC npc) {
+        } else if (event.getTarget() instanceof BaseNPC npc) {
             NPCSpawner.INSTANCE.applyBenedictions(npc);
         }
     }
@@ -399,6 +455,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
+        MountManager.dismiss(player);
         PlayerUtils.flushLocalData(player, player);
         PlayerUtils.syncPlayerData(player);
     }
@@ -407,7 +464,7 @@ public final class PlayerEvents {
     public static void container$Close(PlayerContainerEvent.Close event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         IMinecraftServer server = IMinecraftServer.of(player.server);
-        if (!server.confluence$matchesSecretFlag(IWorldOptions.HARDMODE)) return;
+        if (!server.matchesSecretFlag(IWorldOptions.HARDMODE)) return;
         Level level = player.level();
         if (level.getDifficulty() == Difficulty.PEACEFUL) return;
         if (event.getContainer() instanceof ChestMenu menu &&
@@ -426,22 +483,22 @@ public final class PlayerEvents {
             }
             if (key == null) break mimic;
             if (key.is(ToolItems.KEY_OF_LIGHT)) {
-                WoodenMimic mimic = TEMonsterEntities.HALLOWED_MIMIC.get().create(level);
+                BaseMimic mimic = MonsterEntities.HALLOWED_MIMIC.get().create(level);
                 if (mimic != null) {
                     CustomMimicSummonKeyEvent.summon(mimic, blockEntity);
                 }
             } else if (key.is(ToolItems.KEY_OF_NIGHT)) {
                 boolean summonCorruption;
-                if (server.confluence$matchesSecretFlag(IWorldOptions.DOUBLE_EVIL) && !server.confluence$equalsSecretFlag(IWorldOptions.DOUBLE_EVIL)) {
-                    summonCorruption = server.confluence$matchesSecretFlag(IWorldOptions.THE_CORRUPTION);
+                if (server.matchesSecretFlag(IWorldOptions.DOUBLE_EVIL) && !server.equalsSecretFlag(IWorldOptions.DOUBLE_EVIL)) {
+                    summonCorruption = server.matchesSecretFlag(IWorldOptions.THE_CORRUPTION);
                 } else {
                     summonCorruption = (level.getGameTime() / 24000L) % 2 == 0;
                 }
-                WoodenMimic mimic;
+                BaseMimic mimic;
                 if (summonCorruption) {
-                    mimic = TEMonsterEntities.CORRUPT_MIMIC.get().create(level);
+                    mimic = MonsterEntities.CORRUPT_MIMIC.get().create(level);
                 } else {
-                    mimic = TEMonsterEntities.CRIMSON_MIMIC.get().create(level);
+                    mimic = MonsterEntities.CRIMSON_MIMIC.get().create(level);
                 }
                 if (mimic != null) {
                     CustomMimicSummonKeyEvent.summon(mimic, blockEntity);
@@ -454,7 +511,7 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void canSleep(CanPlayerSleepEvent event) {
-        if (BloodMoonGameEvent.INSTANCE.started()) {
+        if (!ModCommonConfigs.ALLOW_SLEEP_DURING_BLOOD_MOON.get() && BloodMoonGameEvent.INSTANCE.started()) {
             event.setProblem(Player.BedSleepingProblem.NOT_SAFE);
         } else if (ModSecretSeeds.NEVER_SLEEP.match(event.getEntity().server)) {
             event.setProblem(Player.BedSleepingProblem.OTHER_PROBLEM);
@@ -463,7 +520,7 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void canContinueSleeping(CanContinueSleepingEvent event) {
-        if (event.mayContinueSleeping() && BloodMoonGameEvent.INSTANCE.started()) {
+        if (event.mayContinueSleeping() && !ModCommonConfigs.ALLOW_SLEEP_DURING_BLOOD_MOON.get() && BloodMoonGameEvent.INSTANCE.started()) {
             event.setContinueSleeping(false);
         }
     }
@@ -606,5 +663,17 @@ public final class PlayerEvents {
         event.addRange(PlayerUtils.MANA_RANGE, TCUtils.getValue(player, AccessoryItems.MANA$PICKUP$RANGE).getA(), stack -> stack.is(ModTags.Items.PROVIDE_MANA));
         event.addRange(PlayerUtils.COIN_RANGE, TCUtils.getValue(player, AccessoryItems.COIN$PICKUP$RANGE).getA(), stack -> stack.is(ModTags.Items.COINS));
         event.addRange(PlayerUtils.HEART_RANGE, ModEffects.getHeartReachRange(player), stack -> stack.is(ModTags.Items.PROVIDE_LIFE));
+    }
+
+    @SubscribeEvent
+    public static void soulCollection(SoulCollectionEvent event) {
+        SoulcererUtils.soulBowExtraSoul(event);
+        SoulcererUtils.soulKnifeExtraSoul(event);
+        SoulcererUtils.brokenGlimmerHeal(event);
+        SoulcererUtils.soulDropBonus(event);
+        SoulcererUtils.verdantSoulChance(event);
+        SoulcererUtils.bloodRageSoul(event);
+        /// 附魔：灵魂疏导 / 束魂 / 灵魂促行 / 灵魂共振 / 灵魂虹吸
+        EnchantmentBehaviors.onSoulCollected(event);
     }
 }

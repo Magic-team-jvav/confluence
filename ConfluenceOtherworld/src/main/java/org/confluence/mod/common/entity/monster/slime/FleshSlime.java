@@ -1,0 +1,57 @@
+package org.confluence.mod.common.entity.monster.slime;
+
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundEvent;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.ModSoundEvents;
+
+/// 血肉史莱姆 —— 免疫火焰/熔岩/摔伤，不攻击血肉同盟生物。
+public class FleshSlime extends BaseSlime {
+
+    public FleshSlime(EntityType<? extends BaseSlime> type, Level level) {
+        super(type, level, false);
+    }
+
+    @Override
+    protected boolean isFireImmune() {
+        return true;
+    }
+
+    /// 同时屏蔽火焰、熔岩和所有带摔落标签的伤害来源。
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        return source.is(DamageTypeTags.IS_FIRE)
+                || source.is(DamageTypes.LAVA)
+                || source.is(DamageTypeTags.IS_FALL)
+                || super.isInvulnerableTo(source);
+    }
+
+    /// 按血肉山当前阶段配置召唤体型。
+    public void configureSummonedSize(int size) {
+        setSlimeSize(size);
+        setHealth(getMaxHealth());
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        return !target.getType().is(ModTags.EntityTypes.FLESH_ALLIANCE)
+                && super.canAttack(target);
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ROUTINE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ROUTINE_DEATH.get();
+    }
+
+}

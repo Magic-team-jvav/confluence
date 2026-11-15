@@ -10,18 +10,18 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.PathService;
 
 import java.util.Collections;
 
-public class WireCutterItem extends TooltipItem {
+public class WireCutterItem extends CustomRarityItem {
     public WireCutterItem() {
         super(new Properties().stacksTo(1).attributes(new ItemAttributeModifiers(Collections.singletonList(new ItemAttributeModifiers.Entry(
                 Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(Confluence.asResource("wire_cutter"), 20, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND
-        )), true)), ModRarity.BLUE, "tooltip.item.confluence.wire_cutter.0");
+        )), true)), ModRarity.BLUE);
     }
 
     @Override

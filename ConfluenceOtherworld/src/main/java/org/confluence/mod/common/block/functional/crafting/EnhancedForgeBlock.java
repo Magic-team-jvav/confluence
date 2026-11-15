@@ -153,7 +153,8 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         RecipeHolder<T> recipeholder = entity.forge.getRecipeFor(new ArrayRecipeInput(itemStacks), level).orElse(null);
         if (recipeholder != null) {
             if (!entity.isLit() && entity.canForgeBurn(recipeholder)) {
-                data[0] = entity.doUpdateStatus();
+                entity.doUpdateStatus();
+                data[0] = true;
             }
             if (entity.canForgeBurn(recipeholder)) {
                 if (entity.doUpdateProgress(recipeholder, entity::burnForge)) {
@@ -266,7 +267,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
                     Optional<RecipeHolder<R>> recipe = level.getRecipeManager().byType(recipeType).stream()
                             .filter(holder -> holder.value().matches(recipeInput, level))
-                            .max(Comparator.comparingInt(holder -> holder.value().ingredients.size()));
+                            .max(Comparator.comparingInt(holder -> holder.value().getIngredients().size()));
                     if (recipe.isPresent()) {
                         this.lastRecipe = recipe.get();
                         return recipe;
@@ -278,7 +279,8 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
         protected void doBlasting(RecipeHolder<BlastingRecipe> recipeholder, ItemStack lastInput, boolean[] data) {
             if (!isLit() && canBlastingBurn(recipeholder, lastInput)) {
-                data[0] = doUpdateStatus();
+                doUpdateStatus();
+                data[0] = true;
             }
             if (canBlastingBurn(recipeholder, lastInput)) {
                 if (doUpdateProgress(recipeholder, recipeHolder -> burnBlasting(recipeHolder, lastInput))) {
@@ -302,22 +304,21 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             return false;
         }
 
-        protected boolean doUpdateStatus() {
+        protected void doUpdateStatus() {
             ItemStack fuel = getItem(FUEL_SLOT);
-            getBasePart().litTime = getBurnDuration(fuel);
-            getBasePart().litDuration = litTime;
-            if (fuel.hasCraftingRemainingItem()) {
-                getItems().set(FUEL_SLOT, fuel.getCraftingRemainingItem());
-            } else if (fuel.isEmpty()) {
+            int burnDuration = getBurnDuration(fuel);
+            getBasePart().litTime = burnDuration;
+            getBasePart().litDuration = burnDuration;
+            if (burnDuration <= 0 || fuel.isEmpty()) {
                 getBasePart().useFuel = 0;
             } else {
+                ItemStack craftingRemainingItem = fuel.getCraftingRemainingItem();
                 fuel.shrink(1);
                 if (fuel.isEmpty()) {
-                    getItems().set(FUEL_SLOT, fuel.getCraftingRemainingItem());
+                    getItems().set(FUEL_SLOT, craftingRemainingItem);
                 }
                 getBasePart().useFuel = 1;
             }
-            return true;
         }
 
         @Override
@@ -385,18 +386,16 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
                 input.shrink(1);
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
 
         protected boolean canForgeBurn(RecipeHolder<T> recipe) {
-            if ((!recipe.value().isRequiresFuel() || (useFuel() || isLit() || !getItem(FUEL_SLOT).isEmpty())) && Arrays.stream(itemStacks).anyMatch(itemStack -> !itemStack.isEmpty())) {
-                ItemStack neoResult = recipe.value().getResultItem(level.registryAccess());
+            if ((!recipe.value().isRequiresFuel() || useFuel() || isLit()) && Arrays.stream(itemStacks).anyMatch(itemStack -> !itemStack.isEmpty())) {
+                ItemStack neoResult = recipe.value().getResult();
                 return canResultInsert(neoResult);
-            } else {
-                return false;
             }
+            return false;
         }
 
         protected boolean burnForge(RecipeHolder<T> recipe) {

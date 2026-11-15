@@ -29,18 +29,16 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.loading.FMLPaths;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibDateUtils;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.AchievementProgress;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
-import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.mixed.ILevelChunkSection;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
+import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.mixed.IMinecraftServer;
-import org.confluence.mod.mixed.IPlayerAdvancements;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.mod.network.task.ReplyAchievementsPacketC2S;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -111,15 +109,6 @@ public final class AchievementUtils {
         return DataFixTypes.ADVANCEMENTS.wrapCodec(dataCodec, LibClientUtils.getDataFixer(), 1343);
     }
 
-    public static void setData(ServerPlayer player) {
-        Map<UUID, PlayerAdvancements.Data> map = player.connection.getConnection().channel().attr(ReplyAchievementsPacketC2S.ACHIEVEMENTS).get();
-        if (map == null) return;
-        UUID id = player.getGameProfile().getId();
-        PlayerAdvancements.Data data = map.get(id);
-        if (data == null) return;
-        IPlayerAdvancements.of(player.getAdvancements()).confluence$load(player.server.getAdvancements(), data);
-    }
-
     public static void handleData(PlayerAdvancements.Data data, boolean override) {
         if (override || AchievementUtils.data == null) {
             AchievementUtils.data = data;
@@ -172,7 +161,7 @@ public final class AchievementUtils {
     }
 
     public static boolean achievedAchievement(ServerPlayer player, String path) {
-        if (LibUtils.getOrCreatePersistedData(player).getBoolean(Confluence.asPlainId(path))) {
+        if (LibEntityUtils.getOrCreatePersistedData(player).getBoolean(Confluence.asPlainId(path))) {
             return true;
         }
         AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
@@ -180,7 +169,7 @@ public final class AchievementUtils {
     }
 
     public static void awardAchievement(ServerPlayer player, String path) {
-        CompoundTag data = LibUtils.getOrCreatePersistedData(player);
+        CompoundTag data = LibEntityUtils.getOrCreatePersistedData(player);
         String key = Confluence.asPlainId(path);
         if (!data.getBoolean(key)) {
             AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
@@ -193,17 +182,17 @@ public final class AchievementUtils {
 
     public static void youCanDoIt(ServerPlayer player, ServerLevel level, long gameTime) {
         if (gameTime % 1200 == 0L) { // 每分钟检查一次
-            byte firstNight = LibUtils.getOrCreatePersistedData(player).getByte("confluence:you_can_do_it");
+            byte firstNight = LibEntityUtils.getOrCreatePersistedData(player).getByte("confluence:you_can_do_it");
             if (firstNight == -1) return;
             int dayTime = LibDateUtils.getDayTime(level);
             if (LibDateUtils.isNight(dayTime)) {
-                LibUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) 1);
+                LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) 1);
             } else if (firstNight == 1 && LibDateUtils.isDay(dayTime)) {
                 AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("you_can_do_it"));
                 if (advancement != null) {
                     player.getAdvancements().award(advancement, "never");
                 }
-                LibUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) -1);
+                LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) -1);
             }
         }
     }
@@ -250,7 +239,7 @@ public final class AchievementUtils {
     }
 
     public static void theFrequentFlyer(ServerPlayer player, long cost) {
-        CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+        CompoundTag tag = LibEntityUtils.getOrCreatePersistedData(player);
         short before = tag.getShort("confluence:the_frequent_flyer");
         if (before > 10000) return;
         long total = before + cost;
@@ -263,7 +252,7 @@ public final class AchievementUtils {
         tag.putShort("confluence:the_frequent_flyer", (short) total);
     }
 
-    public static void noHobo(AbstractTerraNPC npc, NPCSpawner.Region region) {
+    public static void noHobo(BaseNPC npc, NPCSpawner.Region region) {
         if (npc.level() instanceof ServerLevel serverLevel) {
             for (ServerPlayer player : serverLevel.players()) {
                 if (region.isOnRegion(player.chunkPosition())) {
@@ -275,15 +264,14 @@ public final class AchievementUtils {
 
     public static void quietNeighborhood(ServerPlayer player, ServerLevel level, long gameTime) {
         if (gameTime % 40 == 2) {
-            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
-            if (iSection != null && iSection.confluence$isGraveyard()) {
+            if (ModBlockCounters.isGraveyard(level, player.blockPosition())) {
                 awardAchievement(player, "quiet_neighborhood");
             }
         }
     }
 
     public static void aRareRealm(ServerPlayer player, long gameTime) {
-        if (IMinecraftServer.of(player.server).confluence$matchesSecretFlag(IWorldOptions.SECRET_SEED) && gameTime % 40 == 3) {
+        if (IMinecraftServer.of(player.server).matchesSecretFlag(IWorldOptions.SECRET_SEED) && gameTime % 40 == 3) {
             awardAchievement(player, "a_rare_realm");
         }
     }

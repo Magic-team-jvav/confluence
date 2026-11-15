@@ -19,7 +19,7 @@ import org.confluence.mod.common.init.block.OreBlocks;
 import java.util.Optional;
 
 import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
-import static org.confluence.lib.util.StructureUtils.getHeight;
+import static org.confluence.lib.util.LibStructureUtils.getHeight;
 
 public class SmallLivingMahoganyTreeStructure extends Structure {
     public static final MapCodec<SmallLivingMahoganyTreeStructure> CODEC = simpleCodec(SmallLivingMahoganyTreeStructure::new);
@@ -48,8 +48,8 @@ public class SmallLivingMahoganyTreeStructure extends Structure {
                     random,
                     random.nextInt(21, 25),
                     1,
-                    1.4D,
-                    0.8D,
+                    1.4F,
+                    0.8F,
                     1,
                     7,
                     2,
@@ -85,7 +85,8 @@ public class SmallLivingMahoganyTreeStructure extends Structure {
                     0.20F,
                     0.75F,
                     2,
-                    3
+                    3,
+                    4
             );
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(

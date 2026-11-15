@@ -8,6 +8,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.Confluence;
 
@@ -28,6 +30,10 @@ public interface GameEvent {
     void tick();
 
     default void countKilled(LivingEntity living) {}
+
+    default boolean canSpawnEntity(ServerLevel level, EntityType<?> type) {
+        return true;
+    }
 
     boolean canStart();
 

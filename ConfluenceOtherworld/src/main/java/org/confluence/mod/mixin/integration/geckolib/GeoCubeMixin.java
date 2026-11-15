@@ -1,8 +1,8 @@
 package org.confluence.mod.mixin.integration.geckolib;
 
 import org.confluence.lib.mixed.SelfGetter;
+import org.confluence.mod.client.effect.death.DeathAnimUtils;
 import org.confluence.mod.integration.geckolib.IGeoCube;
-import org.confluence.mod.util.DeathAnimUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import software.bernie.geckolib.cache.object.GeoCube;

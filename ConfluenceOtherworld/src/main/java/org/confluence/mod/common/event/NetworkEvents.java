@@ -4,13 +4,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.summoner.network.SummonerBatchedInfoPayload;
+import org.confluence.mod.common.summoner.network.SummonerBatchedParticlesPayload;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
-import org.confluence.mod.network.task.ReplyAchievementsPacketC2S;
-import org.confluence.mod.network.task.RequestAchievementsPacketS2C;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class NetworkEvents {
@@ -25,17 +25,20 @@ public final class NetworkEvents {
                 .playToClient(FishingPowerInfoPacketS2C.TYPE, FishingPowerInfoPacketS2C.STREAM_CODEC, FishingPowerInfoPacketS2C::handle)
                 .playToClient(KillBoardSyncPacketS2C.TYPE, KillBoardSyncPacketS2C.STREAM_CODEC, KillBoardSyncPacketS2C::handle)
                 .playToClient(ManaPacketS2C.TYPE, ManaPacketS2C.STREAM_CODEC, ManaPacketS2C::handle)
-//                .playToClient(SoulPacketS2C.TYPE, SoulPacketS2C.STREAM_CODEC, SoulPacketS2C::handle)
+                .playToClient(SoulSkillSyncPacketS2C.TYPE, SoulSkillSyncPacketS2C.STREAM_CODEC, SoulSkillSyncPacketS2C::handle)
+                .playToClient(SoulSkillIndexSyncPacketS2C.TYPE, SoulSkillIndexSyncPacketS2C.STREAM_CODEC, SoulSkillIndexSyncPacketS2C::handle)
+                .playToClient(SoulSkillUsePacketS2C.TYPE, SoulSkillUsePacketS2C.STREAM_CODEC, SoulSkillUsePacketS2C::handle)
                 .playToClient(MeteoriteLocationPacketS2C.TYPE, MeteoriteLocationPacketS2C.STREAM_CODEC, MeteoriteLocationPacketS2C::handle)
                 .playToClient(OpenSelectionsScreenPacketS2C.TYPE, OpenSelectionsScreenPacketS2C.STREAM_CODEC, OpenSelectionsScreenPacketS2C::handle)
                 .playToClient(PlayerDeathInfoPacketS2C.TYPE, PlayerDeathInfoPacketS2C.STREAM_CODEC, PlayerDeathInfoPacketS2C::handle)
                 .playToClient(SecretFlagSyncPacketS2C.TYPE, SecretFlagSyncPacketS2C.STREAM_CODEC, SecretFlagSyncPacketS2C::handle)
-                .playToClient(StarPhasesPacketS2C.TYPE, StarPhasesPacketS2C.STREAM_CODEC, StarPhasesPacketS2C::handle)
                 .playToClient(WindSpeedPacketS2C.TYPE, WindSpeedPacketS2C.STREAM_CODEC, WindSpeedPacketS2C::handle)
                 .playToClient(AchievementOffsetSyncPacketS2C.TYPE, AchievementOffsetSyncPacketS2C.STREAM_CODEC, AchievementOffsetSyncPacketS2C::handle)
                 .playToClient(RepeaterShootingPayloadS2C.TYPE, RepeaterShootingPayloadS2C.STREAM_CODEC, RepeaterShootingPayloadS2C::handle)
+                .playToClient(LeftClickCooldownPacketS2C.TYPE, LeftClickCooldownPacketS2C.STREAM_CODEC, LeftClickCooldownPacketS2C::handle)
                 .playToClient(CompatibilitySyncPacketS2c.TYPE, CompatibilitySyncPacketS2c.STREAM_CODEC, CompatibilitySyncPacketS2c::handle)
                 .playToClient(PiggyBankTotalMoneyPacket.TYPE, PiggyBankTotalMoneyPacket.STREAM_CODEC, PiggyBankTotalMoneyPacket::handle)
+                .playToClient(VoidVaultSyncPacketS2C.TYPE, VoidVaultSyncPacketS2C.STREAM_CODEC, VoidVaultSyncPacketS2C::handle)
                 .playToClient(DropletsSyncPacketS2C.TYPE, DropletsSyncPacketS2C.STREAM_CODEC, DropletsSyncPacketS2C::handle)
                 .playToClient(BestiarySyncPacketS2C.TYPE, BestiarySyncPacketS2C.STREAM_CODEC, BestiarySyncPacketS2C::handle)
                 .playToClient(AvailableHouseSelectPacketS2C.TYPE, AvailableHouseSelectPacketS2C.STREAM_CODEC, AvailableHouseSelectPacketS2C::handle)
@@ -49,30 +52,50 @@ public final class NetworkEvents {
                 .playToClient(AchievementsDataSyncPacketS2C.TYPE, AchievementsDataSyncPacketS2C.STREAM_CODEC, AchievementsDataSyncPacketS2C::handle)
                 .playToClient(DragonChargePlayerConfigPacketS2C.TYPE, DragonChargePlayerConfigPacketS2C.STREAM_CODEC, DragonChargePlayerConfigPacketS2C::handle)
                 .playToClient(WormholePlayerDataSyncPacketS2C.TYPE, WormholePlayerDataSyncPacketS2C.STREAM_CODEC, WormholePlayerDataSyncPacketS2C::handle)
-                .playToClient(GuardianFlailBeamPacketS2C.TYPE, GuardianFlailBeamPacketS2C.STREAM_CODEC, GuardianFlailBeamPacketS2C::handle)
+                .playToClient(BossBarSyncPacketS2C.TYPE, BossBarSyncPacketS2C.STREAM_CODEC, BossBarSyncPacketS2C::handle)
+                .playToClient(SummonerBatchedInfoPayload.TYPE, SummonerBatchedInfoPayload.STREAM_CODEC, SummonerBatchedInfoPayload::handle)
+                .playToClient(SummonerBatchedParticlesPayload.TYPE, SummonerBatchedParticlesPayload.STREAM_CODEC, SummonerBatchedParticlesPayload::handle)
+                .playToClient(OpenNPCDialogPacketS2C.TYPE, OpenNPCDialogPacketS2C.STREAM_CODEC, OpenNPCDialogPacketS2C::handle)
+                .playToClient(NPCDialogSyncPacketS2C.TYPE, NPCDialogSyncPacketS2C.STREAM_CODEC, NPCDialogSyncPacketS2C::handle)
+                .playToClient(OpenAnglerDialogPacketS2C.TYPE, OpenAnglerDialogPacketS2C.STREAM_CODEC, OpenAnglerDialogPacketS2C::handle)
+                .playToClient(BulletImpactPacketS2C.TYPE, BulletImpactPacketS2C.STREAM_CODEC, BulletImpactPacketS2C::handle)
+                .playToClient(RedGloveArcPacketS2C.TYPE, RedGloveArcPacketS2C.STREAM_CODEC, RedGloveArcPacketS2C::handle)
+                .playToClient(ThunderstrikePacketS2C.TYPE, ThunderstrikePacketS2C.STREAM_CODEC, ThunderstrikePacketS2C::handle)
+                .playToClient(ShotFeedbackPacketS2C.TYPE, ShotFeedbackPacketS2C.STREAM_CODEC, ShotFeedbackPacketS2C::handle)
 
+                .playToServer(ThunderstrikeRangePacketC2S.TYPE, ThunderstrikeRangePacketC2S.STREAM_CODEC, ThunderstrikeRangePacketC2S::handle)
                 .playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle)
                 .playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle)
                 .playToServer(KeyRequestPacketC2S.TYPE, KeyRequestPacketC2S.STREAM_CODEC, KeyRequestPacketC2S::handle)
                 .playToServer(OpenMenuPacketC2S.TYPE, OpenMenuPacketC2S.STREAM_CODEC, OpenMenuPacketC2S::handle)
                 .playToServer(WormholeToPlayerPacketC2S.TYPE, WormholeToPlayerPacketC2S.STREAM_CODEC, WormholeToPlayerPacketC2S::handle)
-                .playToServer(SellTradePacketC2S.TYPE, SellTradePacketC2S.STREAM_CODEC, SellTradePacketC2S::handle)
                 .playToServer(RecipeTransferPacketC2S.TYPE, RecipeTransferPacketC2S.STREAM_CODEC, RecipeTransferPacketC2S::handle)
                 .playToServer(SpearAttackPacketC2S.TYPE, SpearAttackPacketC2S.STREAM_CODEC, SpearAttackPacketC2S::handle)
-                .playToServer(SwitchEffectEnabledPackedC2S.TYPE, SwitchEffectEnabledPackedC2S.STREAM_CODEC, SwitchEffectEnabledPackedC2S::handle)
                 .playToServer(DyeMixPacketC2S.TYPE, DyeMixPacketC2S.STREAM_CODEC, DyeMixPacketC2S::handle)
+                .playToServer(ElectrifiedInputPacketC2S.TYPE, ElectrifiedInputPacketC2S.STREAM_CODEC, ElectrifiedInputPacketC2S::handle)
                 .playToServer(HouseSelectPacketC2S.TYPE, HouseSelectPacketC2S.STREAM_CODEC, HouseSelectPacketC2S::handle)
                 .playToServer(EmptyTargetSweepPacketC2S.TYPE, EmptyTargetSweepPacketC2S.STREAM_CODEC, EmptyTargetSweepPacketC2S::handle)
                 .playToServer(SwordProjectilePacketC2S.TYPE, SwordProjectilePacketC2S.STREAM_CODEC, SwordProjectilePacketC2S::handle)
                 .playToServer(FlailControlPacketC2S.TYPE, FlailControlPacketC2S.STREAM_CODEC, FlailControlPacketC2S::handle)
+                .playToServer(WhipControlPacketC2S.TYPE, WhipControlPacketC2S.STREAM_CODEC, WhipControlPacketC2S::handle)
+                .playToServer(WhipPlaybackCompletePacketC2S.TYPE, WhipPlaybackCompletePacketC2S.STREAM_CODEC, WhipPlaybackCompletePacketC2S::handle)
+                .playToServer(YoyoControlPacketC2S.TYPE, YoyoControlPacketC2S.STREAM_CODEC, YoyoControlPacketC2S::handle)
+                .playToServer(LeftClickItemActionPacketC2S.TYPE, LeftClickItemActionPacketC2S.STREAM_CODEC, LeftClickItemActionPacketC2S::handle)
+                .playToServer(SoulSkillRequestPacketC2S.TYPE, SoulSkillRequestPacketC2S.STREAM_CODEC, SoulSkillRequestPacketC2S::handle)
+                .playToServer(SoulSkillIndexRequestPacketC2S.TYPE, SoulSkillIndexRequestPacketC2S.STREAM_CODEC, SoulSkillIndexRequestPacketC2S::handle)
+                .playToServer(SoulSkillUsePacketC2S.TYPE, SoulSkillUsePacketC2S.STREAM_CODEC, SoulSkillUsePacketC2S::handle)
+                .playToServer(MountInputPacketC2S.TYPE, MountInputPacketC2S.STREAM_CODEC, MountInputPacketC2S::handle)
+                .playToServer(MountTogglePacketC2S.TYPE, MountTogglePacketC2S.STREAM_CODEC, MountTogglePacketC2S::handle)
                 .playToServer(GiveBannerPacketC2S.TYPE, GiveBannerPacketC2S.STREAM_CODEC, GiveBannerPacketC2S::handle)
                 .playToServer(WormholeRequestPlayerDataPacketC2S.TYPE, WormholeRequestPlayerDataPacketC2S.STREAM_CODEC, WormholeRequestPlayerDataPacketC2S::handle)
+                .playToServer(NPCDialogSessionPacketC2S.TYPE, NPCDialogSessionPacketC2S.STREAM_CODEC, NPCDialogSessionPacketC2S::handle)
+                .playToServer(OpenNPCServicePacketC2S.TYPE, OpenNPCServicePacketC2S.STREAM_CODEC, OpenNPCServicePacketC2S::handle)
+                .playToServer(SummonSkeletronPacketC2S.TYPE, SummonSkeletronPacketC2S.STREAM_CODEC, SummonSkeletronPacketC2S::handle)
+                .playToServer(ShootPacketC2S.TYPE, ShootPacketC2S.STREAM_CODEC, ShootPacketC2S::handle)
+                .playToServer(InspectPacketC2S.TYPE, InspectPacketC2S.STREAM_CODEC, InspectPacketC2S::handle)
 
                 .playBidirectional(TeamPacket.TYPE, TeamPacket.STREAM_CODEC, TeamPacket::handle)
                 .playBidirectional(AskForSoftcorePacket.TYPE, AskForSoftcorePacket.STREAM_CODEC, AskForSoftcorePacket::handle)
-
-                .configurationToClient(RequestAchievementsPacketS2C.TYPE, RequestAchievementsPacketS2C.STREAM_CODEC, RequestAchievementsPacketS2C::handle)
-                .configurationToServer(ReplyAchievementsPacketC2S.TYPE, ReplyAchievementsPacketC2S.STREAM_CODEC, ReplyAchievementsPacketC2S::handle)
         ;
     }
 }

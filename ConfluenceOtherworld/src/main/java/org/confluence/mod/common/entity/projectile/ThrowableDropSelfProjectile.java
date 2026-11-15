@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -14,21 +15,21 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
+
+import org.confluence.lib.util.LibEntityUtils;
 
 import javax.annotation.Nullable;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
+public class ThrowableDropSelfProjectile extends DamageSettableProjectile implements ItemSupplier {
     protected static final EntityDataAccessor<Integer> DATA_FLY_TICKS = SynchedEntityData.defineId(ThrowableDropSelfProjectile.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(ThrowableDropSelfProjectile.class, EntityDataSerializers.ITEM_STACK);
     protected int penetrate;
     protected float deltaDamage;
     protected final Set<UUID> hitSet = new HashSet<>();
-
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder.define(DATA_FLY_TICKS, 5).define(DATA_ITEM_STACK, ItemStack.EMPTY));
@@ -50,6 +51,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
         entityData.set(DATA_ITEM_STACK, drop);
     }
 
+    @Override
     public ItemStack getItem() {
         return entityData.get(DATA_ITEM_STACK);
     }
@@ -66,13 +68,14 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
-            hitSet.add(entity.getUUID());
+            hitSet.add(LibEntityUtils.dedupeIdentity(entity).getUUID());
             this.damage -= deltaDamage;
-            VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
+            LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(entity), 0.5, 0.2);
             if (penetrate >= 3) {
                 if (random.nextBoolean()) {
-                    LibUtils.createItemEntity(getItem(), getX(), getY(), getZ(), level(), 0);
+                    LibEntityUtils.createItemEntity(getItem(), getX(), getY(), getZ(), level(), 0);
                 }
+
                 discard();
             } else {
                 ++this.penetrate;
@@ -84,8 +87,9 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (random.nextBoolean()) {
-            LibUtils.createItemEntity(getItem(), getX(), getY(), getZ(), level(), 0);
+            LibEntityUtils.createItemEntity(getItem(), getX(), getY(), getZ(), level(), 0);
         }
+
         discard();
     }
 
@@ -97,7 +101,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
 
     @Override
     public boolean canHitEntity(Entity target) {
-        return super.canHitEntity(target) && !hitSet.contains(target.getUUID());
+        return super.canHitEntity(target) && !hitSet.contains(LibEntityUtils.dedupeIdentity(target).getUUID());
     }
 
     @Override

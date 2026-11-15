@@ -1,0 +1,150 @@
+package org.confluence.mod.client.effect;
+
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.Util;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderStateShard;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.client.effect.voidsea.VoidSeaRenderer;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+public class ModRenderTypes extends RenderStateShard {
+    public static final RenderType LASER = RenderType.create("confluence_laser", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, false,
+            RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(GameRenderer::getPositionColorShader))
+                    .setCullState(CULL).setLightmapState(NO_LIGHTMAP).setWriteMaskState(COLOR_DEPTH_WRITE).createCompositeState(false));
+    public static final RenderType TRANSLUCENT_LASER = RenderType.create("confluence_translucent_laser", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, true,
+            RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(GameRenderer::getPositionColorShader))
+                    .setCullState(CULL).setLightmapState(NO_LIGHTMAP).setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setWriteMaskState(COLOR_WRITE).createCompositeState(false));
+    public static final RenderType TRANSLUCENT_LASER_NO_CULL = RenderType.create("confluence_translucent_laser_no_cull", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, true,
+            RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(GameRenderer::getPositionColorShader))
+                    .setCullState(NO_CULL).setLightmapState(NO_LIGHTMAP).setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setWriteMaskState(COLOR_WRITE).createCompositeState(false));
+    public static final RenderType HILL_OF_FLESH_BOUNDARY = RenderType.entityTranslucentEmissive(Confluence.asResource("textures/gui/noise.png"));
+    public static final RenderType TRAIL_RENDER_TYPE = RenderType.create(
+            "trail_render_type",
+            DefaultVertexFormat.POSITION_COLOR,
+            VertexFormat.Mode.QUADS,
+            1536,
+            false,
+            true,
+            RenderType.CompositeState.builder()
+                    .setShaderState(RENDERTYPE_LIGHTNING_SHADER)
+                    .setWriteMaskState(COLOR_DEPTH_WRITE)
+                    .setTransparencyState(LIGHTNING_TRANSPARENCY)
+                    .setLightmapState(NO_LIGHTMAP)
+                    .setOutputState(WEATHER_TARGET)
+                    .createCompositeState(false));
+    public static final RenderType ENTITY_TRANSLUCENT_EMISSIVE = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
+            RenderType.CompositeState.builder()
+                    .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                    .setTextureState(new TextureStateShard(Confluence.asResource("textures/mask/sword.png"), true, false))
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setWriteMaskState(COLOR_WRITE)
+                    .setCullState(NO_CULL)
+                    .setOverlayState(OVERLAY)
+                    .createCompositeState(false));
+    public static final BiFunction<ResourceLocation, TransparencyStateShard, RenderType> EYES = Util.memoize(
+            (texture, transparencyStateShard) -> {
+                RenderStateShard.TextureStateShard textureStateShard = new RenderStateShard.TextureStateShard(texture, false, false);
+                return RenderType.create("confluence_eyes", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+                        RenderType.CompositeState.builder()
+                                .setShaderState(RENDERTYPE_EYES_SHADER)
+                                .setTextureState(textureStateShard)
+                                .setTransparencyState(transparencyStateShard)
+                                .setWriteMaskState(COLOR_WRITE)
+                                .createCompositeState(false));
+            });
+    public static final RenderType MACHINE_SCREEN = RenderType.create("confluence_machine_screen",
+            DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, false,
+            RenderType.CompositeState.builder()
+                    .setShaderState(POSITION_COLOR_SHADER)
+                    .setDepthTestState(LEQUAL_DEPTH_TEST)
+                    .setCullState(NO_CULL)
+                    .setWriteMaskState(COLOR_DEPTH_WRITE)
+                    .createCompositeState(false));
+    public static final ShaderStateShard VOID_SEA_SHADER = new ShaderStateShard(() -> VoidSeaRenderer.voidSeaShader);
+    public static final RenderType SEA_RENDER_TYPE = RenderType.create("void_sea", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, false, false,
+            RenderType.CompositeState.builder()
+                    .setShaderState(VOID_SEA_SHADER)
+                    .setTextureState(new TextureStateShard(ResourceLocation.withDefaultNamespace("textures/entity/end_portal.png"), false, false))
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setDepthTestState(LEQUAL_DEPTH_TEST)
+                    .setCullState(NO_CULL)
+                    .setLightmapState(LIGHTMAP)
+                    .setWriteMaskState(COLOR_DEPTH_WRITE)
+                    .createCompositeState(false));
+
+    private static final Function<ResourceLocation, RenderType> ENTITY_GLOW = Util.memoize(texture -> createEntityGlow(texture, NO_LAYERING));
+    private static final Function<ResourceLocation, RenderType> DESTROYER_GLOW = Util.memoize(texture -> createEntityGlow(texture, POLYGON_OFFSET_LAYERING));
+
+    public static RenderType destroyerGlow(ResourceLocation texture) {
+        return DESTROYER_GLOW.apply(texture);
+    }
+
+    private static RenderType createEntityGlow(ResourceLocation texture, LayeringStateShard layering) {
+        return RenderType.create("confluence_entity_glow", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+                RenderType.CompositeState.builder()
+                        .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                        .setTextureState(new TextureStateShard(texture, false, false))
+                        .setTransparencyState(ADDITIVE_TRANSPARENCY)
+                        .setCullState(CULL).setWriteMaskState(COLOR_WRITE)
+                        .setOverlayState(OVERLAY)
+                        .setLayeringState(layering)
+                        .createCompositeState(false));
+    }
+
+    private static final Function<ResourceLocation, RenderType> ENTITY_UNSHADED_GLOW = Util.memoize(texture ->
+            RenderType.create("confluence_entity_unshaded_glow", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(RENDERTYPE_EYES_SHADER)
+                            .setTextureState(new TextureStateShard(texture, false, false))
+                            .setTransparencyState(ADDITIVE_TRANSPARENCY)
+                            .setCullState(CULL).setWriteMaskState(COLOR_WRITE)
+                            .createCompositeState(false)));
+
+    public static RenderType entityUnshadedGlow(ResourceLocation texture) {
+        return ENTITY_UNSHADED_GLOW.apply(texture);
+    }
+
+    public static RenderType entityGlow(ResourceLocation texture) {
+        return ENTITY_GLOW.apply(texture);
+    }
+
+    private static final Function<ResourceLocation, RenderType> ENTITY_TRANSLUCENT_CULL_OVERLAY = Util.memoize(texture ->
+            RenderType.create("confluence_entity_translucent_cull_overlay", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_SHADER)
+                            .setTextureState(new TextureStateShard(texture, false, false))
+                            .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                            .setCullState(CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY)
+                            .createCompositeState(true)));
+
+    public static RenderType entityTranslucentCullOverlay(ResourceLocation texture) {
+        return ENTITY_TRANSLUCENT_CULL_OVERLAY.apply(texture);
+    }
+
+    private static final Function<ResourceLocation, RenderType> ENTITY_EMISSIVE_CULL = Util.memoize(texture ->
+            RenderType.create("confluence_entity_emissive_cull", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                            .setTextureState(new TextureStateShard(texture, false, false))
+                            .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                            .setCullState(CULL)
+                            .setWriteMaskState(COLOR_WRITE)
+                            .setOverlayState(OVERLAY)
+                            .createCompositeState(true)));
+
+    public static RenderType entityEmissiveCull(ResourceLocation texture) {
+        return ENTITY_EMISSIVE_CULL.apply(texture);
+    }
+
+    private ModRenderTypes() {
+        super(null, null, null);
+    }
+}

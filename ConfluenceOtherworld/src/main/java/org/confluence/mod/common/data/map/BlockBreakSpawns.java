@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.common.init.ModDataMaps;
+import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
 
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +40,7 @@ public record BlockBreakSpawns(List<Spawn> spawns) {
                 if (count >= spawn.maxAmount) continue;
             }
             if ((spawn.biomes.size() <= 0 || spawn.biomes.contains(biome)) && level.random.nextFloat() < spawn.chance) {
-                spawn.types.getRandomValue(level.random).ifPresent(type -> type.spawn(level, pos, MobSpawnType.MOB_SUMMONED));
+                spawn.types.getRandomValue(level.random).filter(DevelopmentSpawnPolicy::allowsAutomaticSpawn).ifPresent(type -> type.spawn(level, pos, MobSpawnType.MOB_SUMMONED));
             }
         }
     }

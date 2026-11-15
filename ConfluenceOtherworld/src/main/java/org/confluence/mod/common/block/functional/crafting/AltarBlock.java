@@ -49,19 +49,19 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.recipe.ItemStackHandlerRecipeInput;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.mod.common.recipe.AltarRecipe;
-import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -137,7 +137,7 @@ public class AltarBlock extends BaseEntityBlock {
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
-        if (player instanceof ServerPlayer serverPlayer && IMinecraftServer.isHardmode(serverPlayer.server)) {
+        if (player instanceof ServerPlayer serverPlayer && ModUtils.isHardmode()) {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             if (data.increaseRevealStep()) {
@@ -151,7 +151,7 @@ public class AltarBlock extends BaseEntityBlock {
             RandomSource random = player.getRandom();
             int wraithAmount = random.nextInt(2) + 1;
             for (int i = 0; i < wraithAmount; i++) {
-                TEMonsterEntities.WRAITH.get().spawn(serverLevel, pos.offset(
+                MonsterEntities.WRAITH.get().spawn(serverLevel, pos.offset(
                         Mth.randomBetweenInclusive(random, -15, 15),
                         Mth.randomBetweenInclusive(random, -15, 15),
                         Mth.randomBetweenInclusive(random, -15, 15)
@@ -175,7 +175,7 @@ public class AltarBlock extends BaseEntityBlock {
                 player.addItem(entity.takeItem(-1));
             } else {
                 player.setItemInHand(hand, entity.addItem(player.getItemInHand(hand)));
-                if (CommonConfigs.ALTAR_TIPS.get()) {
+                if (ModCommonConfigs.ALTAR_TIPS.get()) {
                     player.displayClientMessage(TIPS, true);
                 }
             }
@@ -193,7 +193,7 @@ public class AltarBlock extends BaseEntityBlock {
                     crafted = true;
                     AltarRecipe recipe = recipes.getFirst().value();
                     ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
-                    LibUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
+                    LibEntityUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 }
                 if (crafted) {
                     entity.playAnimation(serverLevel, pos);
@@ -204,7 +204,7 @@ public class AltarBlock extends BaseEntityBlock {
                 if (recipes.isEmpty()) return;
                 AltarRecipe recipe = recipes.getFirst().value();
                 ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
-                LibUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
+                LibEntityUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 entity.playAnimation(serverLevel, pos);
                 entity.markUpdated();
             }

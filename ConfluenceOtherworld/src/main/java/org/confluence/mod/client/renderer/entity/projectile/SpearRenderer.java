@@ -10,11 +10,12 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 
-public class SpearRenderer extends EntityRenderer<ThrowableDropSelfProjectile> {
+public class SpearRenderer<T extends Entity & ItemSupplier> extends EntityRenderer<T> {
     private final double zRotate;
 
     public SpearRenderer(EntityRendererProvider.Context pContext) {
@@ -23,12 +24,12 @@ public class SpearRenderer extends EntityRenderer<ThrowableDropSelfProjectile> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ThrowableDropSelfProjectile pEntity) {
+    public ResourceLocation getTextureLocation(T pEntity) {
         return TextureAtlas.LOCATION_BLOCKS;
     }
 
     @Override
-    public void render(ThrowableDropSelfProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
+    public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         poseStack.pushPose();
         Vec3 v = entity.getDeltaMovement();
         float yaw = (float) Math.atan2(v.z, v.x);

@@ -13,6 +13,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.soulcerer.skill.SoulSkill;
 
 public final class ModTags {
     public static class Blocks {
@@ -21,6 +22,9 @@ public final class ModTags {
         public static final TagKey<Block> NEEDS_3_LEVEL = register("needs_3_level");
         public static final TagKey<Block> NEEDS_4_LEVEL = register("needs_4_level");
         public static final TagKey<Block> NEEDS_5_LEVEL = register("needs_5_level");
+        public static final TagKey<Block> NPC_HOUSE_CHAIR = register("npc_house_chair");
+        public static final TagKey<Block> NPC_HOUSE_TABLE = register("npc_house_table");
+        public static final TagKey<Block> NPC_HOUSE_CONSTITUTE = register("npc_house_constitute");
         public static final TagKey<Block> NEEDS_6_LEVEL = register("needs_6_level");
         public static final TagKey<Block> NEEDS_7_LEVEL = register("needs_7_level");
         public static final TagKey<Block> NEEDS_8_LEVEL = register("needs_8_level");
@@ -198,6 +202,7 @@ public final class ModTags {
         public static final TagKey<Block> STORAGE_BLOCKS_COLD_CRYSTAL = common("storage_blocks/cold_crystal");
 
         public static final TagKey<Block> STORAGE_BLOCKS_FLOATING_WHEAT_BALE = common("storage_blocks/floating_wheat_bale");
+        public static final TagKey<Block> HONEY = register("honey");
 
         private static TagKey<Block> common(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
@@ -385,6 +390,7 @@ public final class ModTags {
         public static final TagKey<Item> EXTRACT_MOSS = register("extract_moss");
         public static final TagKey<Item> CORALS = register("corals");
         public static final TagKey<Item> EVIL_MATERIAL = register("evil_material");
+        public static final TagKey<Item> QUICK_BUFF_FOODS = register("quick_buff_foods");
         public static final TagKey<Item> SEAFOOD_DINNER_MATERIALS = register("seafood_dinner_materials");// 制作海鲜大餐
         public static final TagKey<Item> GOLD_COOKING = register("gold_cooking");// 制作金美味
 
@@ -416,6 +422,8 @@ public final class ModTags {
         public static final TagKey<Item> PREFIX_MELEE_ONLY = register("prefix_melee_only");
         public static final TagKey<Item> PREFIX_RANGED_ONLY = register("prefix_ranged_only");
         public static final TagKey<Item> PREFIX_MAGIC_ONLY = register("prefix_magic_only");
+        public static final TagKey<Item> PREFIX_SUMMON_ONLY = register("prefix_summon_only"); // 没有鞭子
+        public static final TagKey<Item> PREFIX_SOUL_ONLY = register("prefix_soul_only");
         public static final TagKey<Item> PREFIX_ACCESSORY_ONLY = register("prefix_accessory_only");
 
         public static final TagKey<Item> COBALT_ORE_SMELTING = common("cobalt_ore_smelting");
@@ -427,14 +435,26 @@ public final class ModTags {
 
         public static final TagKey<Item> MOSS_ITEM = register("moss_item");
         public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon");
+        public static final TagKey<Item> WHIP = register("whip");
+        /// 尚未定稿的内容：本轮新增/改动的武器统一打上此标签，方便后续筛选与测试。
+        public static final TagKey<Item> WIP = register("wip");
+        public static final TagKey<Item> YOYO = register("yoyo");
+        public static final TagKey<Item> BOOMERANG = register("boomerang");
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");
         public static final TagKey<Item> TREASURE_BAG = register("treasure_bag");
         public static final TagKey<Item> FAST_BOW = register("fast_bow");
+        public static final TagKey<Item> AUTOMATIC_BOW = register("automatic_bow");
         public static final TagKey<Item> ABLE_TO_DESTROY_ALTAR = register("able_to_destroy_altar");
         public static final TagKey<Item> EXPLOSIVE = register("explosive"); // 爆炸物，用于爆破专家入住
         public static final TagKey<Item> SHOW_SIGNAL = register("show_signal"); // 手持可以显示信号连线
         public static final TagKey<Item> ROBE = register("robe"); // 用于巫师套装
         public static final TagKey<Item> MIMIC_SUMMON_KEY = register("mimic_summon_key"); // 宝箱怪召唤钥匙，用于计数
+        public static final TagKey<Item> AUTOMATIC_GUN = register("automatic_gun");
+        public static final TagKey<Item> GUN = register("gun");
+        public static final TagKey<Item> MANUAL_GUN = register("manual_gun");
+        public static final TagKey<Item> SEED_AMMO = register("seed_ammo");
+        public static final TagKey<Item> SNOW_AMMO = register("snow_ammo");
+        public static final TagKey<Item> BULLET = register("bullet");
 
         public static final TagKey<Item> DEATH = register("death");
         public static final TagKey<Item> UNABLE_TO_APPLY_PREFIX = register("unable_to_apply_prefix"); // 不能上词缀
@@ -444,6 +464,10 @@ public final class ModTags {
         public static final TagKey<Item> AUTO_ATTACK_BLACKLIST = register("auto_attack_blacklist"); // 自动挥舞黑名单
 
         public static final TagKey<Item> REPEATER_ENCHANTABLE = register("enchantable/repeater");
+        /// 通用武器：武器通用附魔（法器协同、致命一击、精力充沛、灵魂共振、虚空强袭）的可用物品集合。
+        public static final TagKey<Item> GENERAL_WEAPON_ENCHANTABLE = register("enchantable/general_weapon");
+        /// 近战武器：近战专用附魔（回击、眩晕、灵魂虹吸）的可用物品集合。
+        public static final TagKey<Item> MELEE_WEAPON_ENCHANTABLE = register("enchantable/melee_weapon");
         public static final TagKey<Item> REPEATER_CROSSBOW_ENCHANTABLE = common("enchantable/repeater_crossbow");
 
         private static TagKey<Item> common(String name) {
@@ -474,8 +498,9 @@ public final class ModTags {
     }
 
     public static class Fluids {
-        public static final TagKey<Fluid> FISHING_ABLE = register("fishing_able");
-        public static final TagKey<Fluid> NOT_LAVA = register("not_lava");
+        public static final TagKey<Fluid> FISHING_ABLE_ALL = register("fishing_able/all");
+        public static final TagKey<Fluid> FISHING_ABLE_NOT_LAVA = register("fishing_able/not_lava");
+        public static final TagKey<Fluid> SHIMMER = register("shimmer");
 
         private static TagKey<Fluid> register(String id) {
             return Confluence.asTagKey(Registries.FLUID, id);
@@ -483,6 +508,9 @@ public final class ModTags {
     }
 
     public static class EntityTypes {
+        public static final TagKey<EntityType<?>> TOWN_CRITTERS = register("town_critters");
+        public static final TagKey<EntityType<?>> TOWN_SUPPRESSED_CRITTERS = register("town_suppressed_critters");
+        public static final TagKey<EntityType<?>> EATER_RESISTED_PROJECTILES = register("eater_resisted_projectiles");
         public static final TagKey<EntityType<?>> SPAWN_AT_DUNGEON = register("spawn_at_dungeon"); // 允许生成在地牢的生物
         public static final TagKey<EntityType<?>> LAVA_BUG_NET_ALLOWS = register("lava_bug_net_allows"); // 熔岩萤火虫、岩浆蜗牛和地狱蝴蝶; 用于区分普通虫网与防熔岩虫网
         public static final TagKey<EntityType<?>> FEALING_TRANSMUTATION = register("fealing_transmutation"); // 可转化为飞灵的生物
@@ -490,12 +518,18 @@ public final class ModTags {
         public static final TagKey<EntityType<?>> DO_NOT_DROPS_EVIL_SOUL = register("do_not_drops_evil_soul"); // 不掉落光明或暗影之魂
         public static final TagKey<EntityType<?>> BESTIARY_WHITELIST = register("bestiary_whitelist"); // 怪物图鉴白名单
         public static final TagKey<EntityType<?>> BESTIARY_BLACKLIST = register("bestiary_blacklist"); // 怪物图鉴黑名单
+
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_WHITELIST = register("critter_companionship_whitelist"); // 小动物保护指南白名单
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_BLACKLIST = register("critter_companionship_blacklist"); // 小动物保护指南黑名单
         public static final TagKey<EntityType<?>> ENEMY_BANNER_WHITELIST = register("enemy_banner_whitelist"); // 旗帜白名单
         public static final TagKey<EntityType<?>> ENEMY_BANNER_BLACKLIST = register("enemy_banner_blacklist"); // 旗帜黑名单
         public static final TagKey<EntityType<?>> GORE_EFFECT_BLACKLIST = register("gore_effect_blacklist"); // 肢解效果黑名单
         public static final TagKey<EntityType<?>> NPC_INVULNERABLE_TO_PLAYER = register("npc_invulnerable_to_player"); // 能够免疫玩家伤害的NPC
+        public static final TagKey<EntityType<?>> CORRUPT = register("corrupt"); // 腐化生物，用于腐化相关效果判定
+        public static final TagKey<EntityType<?>> FLESH_ALLIANCE = register("flesh_alliance"); // 血肉同盟成员，用于排除同阵营攻击目标
+        public static final TagKey<EntityType<?>> JELLY_FISH = register("jelly_fish"); // 水母类生物，归入美西螈的捕猎目标
+        public static final TagKey<EntityType<?>> GOLDEN_SLIME_REPLACEABLE = register("golden_slime_replaceable"); // 特殊世界中可被金史莱姆替换的普通史莱姆
+        public static final TagKey<EntityType<?>> NO_BLOOD = register("no_blood"); // 不会喷血的生物
 
         private static TagKey<EntityType<?>> register(String id) {
             return Confluence.asTagKey(Registries.ENTITY_TYPE, id);
@@ -508,9 +542,38 @@ public final class ModTags {
         public static final TagKey<Enchantment> MANA_AFFECTIVE_EXCLUSIVE = register("mana_affective_exclusive");
         public static final TagKey<Enchantment> MAGIC_ATTACK_EXCLUSIVE = register("magic_attack_exclusive");
         public static final TagKey<Enchantment> FLAIL_EXCLUSIVE = register("flail_exclusive");
+        public static final TagKey<Enchantment> BEAST_EXCLUSIVE = register("beast_exclusive");
+        /// 食物储备 ↔ 惊喜礼物：两者都在使用治疗药水时结算，互斥避免一次喝药重复触发。
+        public static final TagKey<Enchantment> FOOD_RESERVE_EXCLUSIVE = register("food_reserve_exclusive");
+        /// 多级蓄力 ↔ 超级蓄力。
+        public static final TagKey<Enchantment> CHARGE_EXCLUSIVE = register("charge_exclusive");
 
         private static TagKey<Enchantment> register(String id) {
             return Confluence.asTagKey(Registries.ENCHANTMENT, id);
+        }
+    }
+
+    public static class SoulSkills {
+        public static final TagKey<SoulSkill> SOUL = register("soul");
+        public static final TagKey<SoulSkill> BLOOD_NATURE = register("blood_nature");
+        public static final TagKey<SoulSkill> STAR_LURE = register("star_lure");
+        /// 引魂系列：引渡者只对登记在此标签的技能生效。
+        public static final TagKey<SoulSkill> SOUL_LURE = register("soul_lure");
+        /// 附魂：给自己挂同名增益的技能集合。
+        ///
+        /// **本轮把原来的「强力附魂系列」(`enhanced_soul_series`) 合并进来了**——两者指的是同一类东西：
+        /// 束魂锁链联动、魂术轮转连锁都只认这一个标签，不再维护第二份名单。
+        public static final TagKey<SoulSkill> SOUL_ATTACH = register("soul_attach");
+        /// 强主动技能：必须手动施放的技能——**不被束魂锁链联动、不被魂术轮转连锁或自动选中**。
+        ///
+        /// 目前登记灵魂透支、灭却业火、血怒：它们要么有副作用（透支结束锁武器）、要么是处决类/资源类大招，
+        /// 被自动带出来往往不是玩家想要的。
+        public static final TagKey<SoulSkill> MAJOR_ACTIVE = register("major_active");
+        /// 被动：
+        public static final TagKey<SoulSkill> PASSIVE = register("passive");
+
+        private static TagKey<SoulSkill> register(String id) {
+            return Confluence.asTagKey(ModSoulSkills.REGISTRY_KEY, id);
         }
     }
 

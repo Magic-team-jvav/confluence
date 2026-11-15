@@ -12,16 +12,18 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.ListOperation;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetLoreFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNameFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.loot.PercentageLootEntry;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,64 +38,84 @@ import java.util.function.BiConsumer;
 public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, SyntheticLootTableProvider {
     public AddChestLootConfluenceSubProvider(HolderLookup.Provider provider) {}
 
+    /// 试炼宝库（普通/不祥）共用的额外池：沉重核心与 6 根风棒各一半概率。
+    private static LootPool.Builder trialVaultHeavyCoreOrBreezeRodPool() {
+        return LootPool.lootPool()
+                .add(LootItem.lootTableItem(Items.HEAVY_CORE))
+                .add(LootItem.lootTableItem(Items.BREEZE_ROD)
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(6))));
+    }
+
     public List<AddedChestLoot> getAddedEntitiesLoot() {
         List<AddedChestLoot> entries = new ArrayList<>();
+        entries.add(new AddedChestLoot(BuiltInLootTables.SIMPLE_DUNGEON,
+                LootTable.lootTable().withPool(LootPool.lootPool()
+                        .when(LootItemRandomChanceCondition.randomChance(SoulSkillParameters.LOOT_CHANCE_PERCENT / 100.0F))
+                        .add(LootItem.lootTableItem(SoulItems.BROKEN_GLIMMER).setWeight(SoulSkillParameters.LOOT_WEIGHT)
+                                .apply(SetItemCountFunction.setCount(ConstantValue.exactly(SoulSkillParameters.LOOT_COUNT)))))));
         entries.add(new AddedChestLoot(
                 BuiltInLootTables.ABANDONED_MINESHAFT,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 1))
-                                .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).setWeight(1)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
-                                .add(LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).setWeight(1)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
-                                .add(EmptyLootItem.emptyItem().setWeight(2)))
+                                .add(PercentageLootEntry.exclusive(false,
+                                        PercentageLootEntry.rule(25, LootItem.lootTableItem(MaterialItems.SILVER_INGOT)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7)))),
+                                        PercentageLootEntry.rule(25, LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
+                                )))
                         .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 1))
-                                .add(LootItem.lootTableItem(Items.IRON_INGOT).setWeight(1)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
-                                .add(LootItem.lootTableItem(MaterialItems.LEAD_INGOT).setWeight(1)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
-                                .add(EmptyLootItem.emptyItem().setWeight(2)))
+                                .add(PercentageLootEntry.exclusive(false,
+                                        PercentageLootEntry.rule(25, LootItem.lootTableItem(Items.IRON_INGOT)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7)))),
+                                        PercentageLootEntry.rule(25, LootItem.lootTableItem(MaterialItems.LEAD_INGOT)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
+                                )))
                         .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 1))
-                                .add(LootItem.lootTableItem(Items.ARROW).setWeight(1)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                                .add(LootItem.lootTableItem(ConsumableItems.SHURIKEN).setWeight(1)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                                .add(EmptyLootItem.emptyItem().setWeight(2)))
+                                .add(PercentageLootEntry.exclusive(false,
+                                        PercentageLootEntry.rule(25, LootItem.lootTableItem(Items.ARROW)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                        PercentageLootEntry.rule(25, LootItem.lootTableItem(ConsumableItems.SHURIKEN)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
+                                )))
                         .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 1))
-                                .add(LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION).setWeight(1)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))))
-                                .add(EmptyLootItem.emptyItem().setWeight(1)))
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(50, LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))))
+                                )))
                         .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 1))
-                                .add(LootItem.lootTableItem(PotionItems.SHINE_POTION).setWeight(2)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                                .add(LootItem.lootTableItem(PotionItems.REGENERATION_POTION).setWeight(2)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                                .add(LootItem.lootTableItem(PotionItems.NIGHT_OWL_POTION).setWeight(2)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                                .add(LootItem.lootTableItem(PotionItems.ARCHERY_POTION).setWeight(2)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                                .add(LootItem.lootTableItem(PotionItems.MINING_POTION).setWeight(2)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                                .add(LootItem.lootTableItem(PotionItems.SWIFTNESS_POTION).setWeight(2)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                                .add(LootItem.lootTableItem(PotionItems.GILLS_POTION).setWeight(2)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                                .add(LootItem.lootTableItem(PotionItems.DANGERSENSE_POTION).setWeight(2)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                                .add(LootItem.lootTableItem(PotionItems.HUNTER_POTION).setWeight(2)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                                .add(EmptyLootItem.emptyItem().setWeight(9)))
+                                .add(PercentageLootEntry.exclusive(false,
+                                        PercentageLootEntry.rule(100.0 * 2 / 27, LootItem.lootTableItem(PotionItems.SHINE_POTION)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))),
+                                        PercentageLootEntry.rule(100.0 * 2 / 27, LootItem.lootTableItem(PotionItems.REGENERATION_POTION)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))),
+                                        PercentageLootEntry.rule(100.0 * 2 / 27, LootItem.lootTableItem(PotionItems.NIGHT_OWL_POTION)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))),
+                                        PercentageLootEntry.rule(100.0 * 2 / 27, LootItem.lootTableItem(PotionItems.ARCHERY_POTION)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))),
+                                        PercentageLootEntry.rule(100.0 * 2 / 27, LootItem.lootTableItem(PotionItems.MINING_POTION)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))),
+                                        PercentageLootEntry.rule(100.0 * 2 / 27, LootItem.lootTableItem(PotionItems.SWIFTNESS_POTION)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))),
+                                        PercentageLootEntry.rule(100.0 * 2 / 27, LootItem.lootTableItem(PotionItems.GILLS_POTION)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))),
+                                        PercentageLootEntry.rule(100.0 * 2 / 27, LootItem.lootTableItem(PotionItems.DANGERSENSE_POTION)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))),
+                                        PercentageLootEntry.rule(100.0 * 2 / 27, LootItem.lootTableItem(PotionItems.HUNTER_POTION)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                                )))
                         .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 1))
                                 .add(LootItem.lootTableItem(Items.TORCH).setWeight(1)
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 20)))))
                         .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 1))
-                                .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(2)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                                .add(EmptyLootItem.emptyItem().setWeight(1)))
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(100.0 * 2 / 3, LootItem.lootTableItem(PotionItems.RECALL_POTION)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                                )))
                         .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 1))
-                                .add(LootItem.lootTableItem(ModItems.SILVER_COIN).setWeight(1)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 8))))
-                                .add(EmptyLootItem.emptyItem().setWeight(1)))
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(50, LootItem.lootTableItem(ModItems.SILVER_COIN)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 8))))
+                                )))
         ));
         entries.add(new AddedChestLoot(
                 BuiltInLootTables.DESERT_PYRAMID,
@@ -322,7 +344,9 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                         .add(LootItem.lootTableItem(MaterialItems.SPORE_ROOT)
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
                         .add(LootItem.lootTableItem(MaterialItems.HEIM)
-                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3)))));
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3)))))
+                // 沉重核心 / 风棒（旋风棒）：试炼宝库额外池，二选一，各 50%
+                .withPool(trialVaultHeavyCoreOrBreezeRodPool());
 
         entries.add(new AddedChestLoot(
                 ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/trial_chambers/reward")),
@@ -373,6 +397,8 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
                                 .add(LootItem.lootTableItem(MaterialItems.AMBER)
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3)))))
+                        // 沉重核心 / 风棒（旋风棒）：试炼宝库额外池，二选一，各 50%
+                        .withPool(trialVaultHeavyCoreOrBreezeRodPool())
         ));
         entries.add(new AddedChestLoot(
                 ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/trial_chambers/supply")),
@@ -389,11 +415,32 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(15, 25)))))
         ));
         entries.add(new AddedChestLoot(
+                BuiltInLootTables.BURIED_TREASURE,
+                LootTable.lootTable()
+                        // 海床崩裂者：海底宝藏箱 100% 额外一个池子
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(HammerItems.SEAFLOOR_CRACKER)))
+                        // 风系武器：与风锚同一个池子，一次只随机出一件，权重相同
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(FlailItems.WIND_ANCHOR))
+                                .add(LootItem.lootTableItem(BowItems.WIND_STRING))
+                                .add(LootItem.lootTableItem(ManaWeaponItems.WIND_PAGE))
+                                .add(LootItem.lootTableItem(WhipItems.WIND_WHIP))
+                                .add(LootItem.lootTableItem(ManaWeaponItems.WIND_EYE))
+                                .add(LootItem.lootTableItem(ArrowItems.WIND_ARROW)
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 30)))))
+        ));
+        entries.add(new AddedChestLoot(
                 ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/village/village_savanna_house")),
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
-                                .add(LootItem.lootTableItem(BowItems.HUNTING_BOW)
-                                        .when(LootItemRandomChanceCondition.randomChance(0.6f)))
+                                .add(PercentageLootEntry.independent(false,
+                                        // 60% 概率出现，出现时在猎手弓与狩猎图腾之间二选一
+                                        PercentageLootEntry.rule(60, PercentageLootEntry.exclusive(true,
+                                                PercentageLootEntry.rule(50, LootItem.lootTableItem(BowItems.HUNTING_BOW)),
+                                                PercentageLootEntry.rule(50, LootItem.lootTableItem(AccessoryItems.HUNTING_TOTEM))
+                                        ))
+                                ))
                 )
         ));
         return entries;

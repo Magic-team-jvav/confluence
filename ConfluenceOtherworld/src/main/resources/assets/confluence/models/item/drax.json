@@ -84,6 +84,6 @@
     }
   },
   "textures": {
-    "particle": "confluence:item/drax"
+      "particle": "confluence:item/drill/drax"
   }
 }

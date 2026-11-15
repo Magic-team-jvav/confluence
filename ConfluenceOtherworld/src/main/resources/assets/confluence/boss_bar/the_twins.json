@@ -1,0 +1,32 @@
+{
+    "frame": "confluence:textures/entity/boss_bar/twins_bar.png",
+    "fill": "confluence:textures/entity/boss_bar/twins_bar.png",
+    "texture_width": 256,
+    "texture_height": 64,
+    "frame_width": 256,
+    "frame_height": 46,
+    "fill_source_y": 48,
+    "fill_target_y": 17,
+    "fill_height": 4,
+    "vertical_increment": 40,
+    "sections": [
+        {
+            "left": 38,
+            "width": 65,
+            "reverse": true,
+            "number_center": 70.5,
+            "number_y": 27,
+            "number_color": 16738408,
+            "number_end_color": 16758436
+        },
+        {
+            "left": 153,
+            "width": 65,
+            "reverse": false,
+            "number_center": 185.5,
+            "number_y": 27,
+            "number_color": 7726683,
+            "number_end_color": 13893530
+        }
+    ]
+}

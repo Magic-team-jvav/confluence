@@ -7,7 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.jetbrains.annotations.Nullable;
 

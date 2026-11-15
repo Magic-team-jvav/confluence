@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "confluence:block/spider_nest_stone_1"
+    }
+}

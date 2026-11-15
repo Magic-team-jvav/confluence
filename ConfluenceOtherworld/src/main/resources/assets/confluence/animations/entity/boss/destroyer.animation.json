@@ -1,0 +1,44 @@
+{
+    "format_version": "1.8.0",
+    "animations": {
+        "fire": {
+            "loop": true,
+            "particle_effects": {
+                "0.0": [
+                    {
+                        "effect": "confluence:destroyer_fire",
+                        "locator": "locator"
+                    },
+                    {
+                        "effect": "confluence:destroyer_flash",
+                        "locator": "locator"
+                    },
+                    {
+                        "effect": "confluence:destroyer_round",
+                        "locator": "locator"
+                    },
+                    {
+                        "effect": "confluence:destroyer_smoke",
+                        "locator": "locator"
+                    },
+                    {
+                        "effect": "confluence:destroyer_fire",
+                        "locator": "locator2"
+                    },
+                    {
+                        "effect": "confluence:destroyer_flash",
+                        "locator": "locator2"
+                    },
+                    {
+                        "effect": "confluence:destroyer_round",
+                        "locator": "locator2"
+                    },
+                    {
+                        "effect": "confluence:destroyer_smoke",
+                        "locator": "locator2"
+                    }
+                ]
+            }
+        }
+    }
+}

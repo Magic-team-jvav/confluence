@@ -1,13 +1,14 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class StickyBombEntity extends BaseBombEntity {
     protected BlockState stickBlock;
@@ -46,5 +47,19 @@ public class StickyBombEntity extends BaseBombEntity {
             setNoGravity(false);
             this.stickBlock = null;
         }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        StickyBlockPersistence.save(compound, stickPos, stickBlock);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        StickyBlockPersistence.Attachment attachment = StickyBlockPersistence.load(compound, this);
+        this.stickPos = attachment.position();
+        this.stickBlock = attachment.blockState();
     }
 }

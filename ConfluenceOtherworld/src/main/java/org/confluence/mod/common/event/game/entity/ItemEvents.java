@@ -2,6 +2,7 @@ package org.confluence.mod.common.event.game.entity;
 
 import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -20,35 +21,32 @@ import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.api.event.RegisterEvilMaterialReplacesEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
-import org.confluence.mod.common.item.gun.BeeGunItem;
 import org.confluence.mod.common.item.gun.ManaGunItem;
-import org.confluence.mod.common.item.gun.SpaceGunItem;
-import org.confluence.mod.common.item.gun.StarCannonItem;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
-import org.confluence.terra_guns.api.event.GunEvent;
-import org.confluence.terra_guns.common.entity.bullet.BaseBulletEntity;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 @EventBusSubscriber(modid = Confluence.MODID)
@@ -72,6 +70,7 @@ public final class ItemEvents {
                 prefix.type() == PrefixType.ACCESSORY || // 通过curios的事件添加
                 prefix.modifiers().isEmpty()
         ) return;
+        if (itemStack.is(ModTags.Items.SUMMONER_WEAPON) && !itemStack.is(ModTags.Items.WHIP)) return;
         for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : prefix.modifiers().get().asMap().entrySet()) {
             Holder<Attribute> attribute = entry.getKey();
             for (AttributeModifier modifier : entry.getValue()) {
@@ -99,7 +98,7 @@ public final class ItemEvents {
     }
 
     @SubscribeEvent
-    public static void gunFire(GunEvent.GunFireEvent event) {
+    public static void gunFire(GunEvent.Fire event) {
         if (event.getGun() instanceof ManaGunItem) {
             event.setAmmo(ItemStack.EMPTY);
             event.setFire(true);
@@ -107,43 +106,15 @@ public final class ItemEvents {
     }
 
     @SubscribeEvent
-    public static void gun$Use(GunEvent.UseGunEvent event) {
-        if (event.getGun() instanceof ManaGunItem manaGunItem &&
-                event.getPlayer() instanceof ServerPlayer player &&
-                !manaGunItem.consumeMana(player, player.getMainHandItem())) {
+    public static void gun$Use(GunEvent.Use event) {
+        event.setCooldowns(PrefixUtils.calculateUseTime(event.getPlayer(), event.getCooldowns()));
+        if (event.getGun() instanceof ManaGunItem manaGun && event.getPlayer() instanceof ServerPlayer player && !manaGun.consumeMana(player, player.getMainHandItem())) {
             event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public static void gun$CreateProjectiles(GunEvent.ProjectileCreationEvent event) {
-        if (event.getGun() instanceof BeeGunItem beeGunItem) {
-            event.setProjectiles(beeGunItem.createProjectiles(event.getContext().shooter()));
-            return;
-        }
-
-        if (event.getGun() instanceof StarCannonItem starCannonItem) {
-            event.setProjectiles(List.of(starCannonItem.createProjectile(
-                    event.getContext().shooter(), event.getContext().ammo()
-            )));
-            return;
-        }
-
-        if (event.getGun() instanceof ManaGunItem manaGunItem) {
-            event.setProjectiles(List.of(manaGunItem.createProjectile(
-                    event.getContext().shooter(), event.getContext().ammo()
-            )));
-        }
-        if (event.getGun() instanceof SpaceGunItem) {
-            event.getProjectiles().stream()
-                    .filter(BaseBulletEntity.class::isInstance)
-                    .map(BaseBulletEntity.class::cast)
-                    .forEach(projectile -> projectile.setColorID("space_gun"));
-        }
-    }
-
-    @SubscribeEvent
-    public static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
+    public static void gun$ShrinkBullet(GunEvent.ShrinkBullet event) {
         if (event.getGun() instanceof ManaGunItem) {
             event.setCanceled(true);
         } else if (!event.isInfinity() && PlayerUtils.shouldSkipConsumeAmmo(event.getPlayer())) {
@@ -152,39 +123,43 @@ public final class ItemEvents {
     }
 
     @SubscribeEvent
-    public static void gun$AmmoData(GunEvent.AmmoDataEvent event) {
+    public static void gun$AmmoData(GunEvent.AmmoData event) {
         Player player = event.getPlayer();
-        float velocityModify = (float) player.getAttributeValue(LibAttributes.getRangedVelocity());
-        float knockbackModify = (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
-
-        if (event.getGun() instanceof ManaGunItem manaGunItem) {
-            event.setDamage(manaGunItem.getDamage());
-            event.setInaccuracy(manaGunItem.getInaccuracy());
-            event.setVelocity(manaGunItem.getVelocity());
-            event.setPenetrate(manaGunItem.getPenetrate());
-            event.setKnockback(manaGunItem.getKnockback());
-            event.setCritical(manaGunItem.getCritical());
+        if (event.getGun() instanceof ManaGunItem manaGun) {
+            event.setDamage(manaGun.getDamage());
+            event.setInaccuracy(manaGun.getInaccuracy());
+            event.setVelocity(manaGun.getVelocity());
+            event.setPenetrate(manaGun.getPenetrate());
+            event.setKnockback(manaGun.getKnockback());
+            event.setCritical(manaGun.getCritical());
         }
-
-        event.setVelocity(event.getVelocity() * velocityModify);
-        event.setKnockback(event.getKnockback() * knockbackModify);
+        event.setVelocity(event.getVelocity() * (float) player.getAttributeValue(LibAttributes.getRangedVelocity()));
+        event.setKnockback(event.getKnockback() * (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK));
     }
 
     @SubscribeEvent
-    public static void gun$AmmoSelection(GunEvent.AmmoSelectionEvent event) {
-        if (GunItems.STAR_CANNON.toStack().is(event.getGun())) {
+    public static void gun$AmmoSelection(GunEvent.AmmoSelection event) {
+        if (GunItems.STAR_CANNON.get() == event.getGun()) {
             event.setSelected(event.getAmmo().is(MaterialItems.FALLING_STAR.get()));
         }
     }
 
     @SubscribeEvent
-    public static void gun$InventoryExtra(GunEvent.InventoryExtraEvent event) {
+    public static void gun$InventoryExtra(GunEvent.InventoryExtra event) {
         event.addAmmoFirst(ExtraInventory.of(event.getPlayer()).getAllAmmo());
     }
 
     @SubscribeEvent
     public static void shimmerItemTransmutation$Pre(ShimmerItemTransmutationEvent.Pre event) {
         ItemEntity source = event.getSource();
+        if (source.getItem().is(ConsumableItems.SPARKLE_SLIME_BALLOON) && source.level() instanceof ServerLevel level) {
+            if (TownSlimeNPC.unlock(level, NpcEntities.DIVA_SLIME.get(), source.position()) != null) {
+                event.setShrink(1);
+                level.playSound(null, source.blockPosition(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
+            }
+            event.setCanceled(true);
+            return;
+        }
         if (source.getItem().is(ConsumableItems.SLIME_CROWN) && SlimeRainGameEvent.INSTANCE.forceStart()) {
             source.level().playSound(null, source.getX(), source.getY(), source.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
             source.discard();
@@ -195,11 +170,11 @@ public final class ItemEvents {
     @SubscribeEvent
     public static void shimmerItemTransmutation$Post(ShimmerItemTransmutationEvent.Post event) {
         if (event.getTargets() == null) return;
-        MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
-        if (currentServer == null) return;
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) return;
 
-        boolean corrupt = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
-        boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CRIMSON);
+        boolean corrupt = IMinecraftServer.of(server).matchesSecretFlag(IWorldOptions.THE_CORRUPTION);
+        boolean crimson = IMinecraftServer.of(server).matchesSecretFlag(IWorldOptions.THE_CRIMSON);
         if (corrupt == crimson) return;
 
         event.setTargets(RegisterEvilMaterialReplacesEvent.replaceTargets(event.getTargets(), corrupt, crimson));

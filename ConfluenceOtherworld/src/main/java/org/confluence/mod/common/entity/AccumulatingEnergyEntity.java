@@ -101,12 +101,12 @@ public class AccumulatingEnergyEntity extends Entity {
                 for (Entity entity : entities) {
                     if (entity.getType() == EntityType.PLAYER) {
                         if (ftw) {
-                            lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), entity.blockPosition(), 16, 32, 48, 80));
+                            lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), 16, 32, 48, 80));
                         } else {
-                            lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), entity.blockPosition(), 8, 16, 32, 48));
+                            lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), 8, 16, 32, 48));
                         }
                     } else {
-                        lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), entity.blockPosition(), 100, 200, 300));
+                        lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), 100, 200, 300));
                     }
                     if (EventHooks.onEntityStruckByLightning(entity, lightningBolt)) continue;
                     entity.thunderHit((ServerLevel) level(), lightningBolt);
@@ -122,7 +122,6 @@ public class AccumulatingEnergyEntity extends Entity {
         if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("accumulating_energy"));
             emitter.attachEntity(this);
-            emitter.hideOutline = true;
             emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, 0.5F, 0));
             MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }

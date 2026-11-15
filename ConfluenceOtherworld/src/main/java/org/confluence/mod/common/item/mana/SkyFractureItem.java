@@ -3,27 +3,42 @@ package org.confluence.mod.common.item.mana;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.mana.SkyFractureProjectile;
+import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
+
+import java.util.Optional;
 
 public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+    private TooltipComponent tooltipImage;
+
     public SkyFractureItem() {
-        super(ModRarity.LIGHT_RED, SkyFractureProjectile::new, 24, 17, 17.5F, 6, 0.24);
+        super(ModRarity.LIGHT_RED, SkyFractureProjectile::new, 24, 17, 17.5F, 10, 0.24);
+    }
+
+    /// 与其它长剑一致，在 tooltip 里额外画出 24x 的剑身预览图（使用 HEAD 视角模型）。
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        if (tooltipImage == null) {
+            this.tooltipImage = AltImageComponent.of(stack.getItem());
+        }
+        return Optional.of(tooltipImage);
     }
 
     @Override
@@ -31,35 +46,24 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
         ItemStack stack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer && couldShoot(serverPlayer, stack)) {
             player.awardStat(Stats.ITEM_USED.get(this));
-            player.getCooldowns().addCooldown(this, 10);
+            player.getCooldowns().addCooldown(this, cooldown);
             LibUtils.updateItemStackNbt(stack, tag -> {
                 tag.putLong("StartTime", level.getGameTime());
-
-                double reach = 64;
-                double squared = Mth.square(reach);
-                Vec3 from = player.getEyePosition(1.0F);
-                HitResult hitResult = player.pick(reach, 1.0F, false);
-                double sqr = hitResult.getLocation().distanceToSqr(from);
-                if (hitResult.getType() != HitResult.Type.MISS) {
-                    squared = sqr;
-                    reach = Math.sqrt(sqr);
-                }
-                Vec3 viewVector = player.getViewVector(1.0F);
-                Vec3 to = from.add(viewVector.x * reach, viewVector.y * reach, viewVector.z * reach);
-                AABB aabb = player.getBoundingBox().expandTowards(viewVector.scale(reach)).inflate(1.0, 1.0, 1.0);
-                EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(
-                        player, from, to, aabb, entity -> !entity.isSpectator() && entity.isPickable(), squared
-                );
-                if (entityHitResult != null && entityHitResult.getLocation().distanceToSqr(from) < sqr && entityHitResult.getEntity() instanceof LivingEntity living) {
-                    float[] rot = VectorUtils.dirToRot(new Vec3(living.getX() - player.getX(), living.getEyeY() - player.getEyeY(), living.getZ() - player.getZ()), true);
+                EntityHitResult entityHitResult = TARGETING.viewTarget(player, 64);
+                if (entityHitResult != null) {
+                    Entity target = entityHitResult.getEntity();
+                    Vec3 aim = target instanceof LivingEntity living ? living.getEyePosition() : target.getBoundingBox().getCenter();
+                    float[] rot = LibMathUtils.dirToRot(aim.subtract(player.getEyePosition()), true);
                     tag.putFloat("XRot", rot[1]);
                     tag.putFloat("YRot", rot[0]);
                 } else {
                     tag.putFloat("XRot", player.getXRot());
                     tag.putFloat("YRot", player.getYRot());
                 }
+
             });
         }
+
         return InteractionResultHolder.success(stack);
     }
 
@@ -87,5 +91,15 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return false;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / Math.max(1, cooldown);
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue, Player player) {
+        return getTooltipAttackSpeed(stack, attributeValue);
     }
 }

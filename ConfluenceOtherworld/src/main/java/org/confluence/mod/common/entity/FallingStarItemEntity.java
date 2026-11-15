@@ -15,15 +15,15 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.gameevent.MeteorShowerGameEvent;
-import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4x3f;
@@ -42,7 +42,7 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     public FallingStarItemEntity(Level level, Vec3 pos) {
-        this(ModEntities.FALLING_STAR_ITEM_ENTITY.get(), level);
+        this(ModEntities.FALLING_STAR.get(), level);
         setPos(pos);
         setDeltaMovement(level.random.nextDouble(), -8.0, level.random.nextDouble());
         setItem(MaterialItems.FALLING_STAR.get().getDefaultInstance());
@@ -62,7 +62,6 @@ public class FallingStarItemEntity extends ItemEntity {
             if ((emitter == null || emitter.isRemoved())) {
                 this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
                 emitter.attachEntity(this);
-                emitter.hideOutline = true;
                 MolangParticleEngine.INSTANCE.addEmitter(emitter);
             }
             float y = Mth.sin(getAge() / 10.0F + bobOffs) * 0.1F;
@@ -83,7 +82,7 @@ public class FallingStarItemEntity extends ItemEntity {
             level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
         } else if (level() instanceof ServerLevel serverLevel && ModSecretSeeds.DONT_DIG_UP.match(serverLevel)) {
             if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
-                entityHitResult.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.FALLING_STAR), 100);
+                entityHitResult.getEntity().hurt(LibDamageTypes.of(level(), LibDamageTypes.FALLING_STAR), 100);
                 onRemove();
                 return;
             }
@@ -127,7 +126,7 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     public static void summon(ServerLevel level) {
-        if (CommonConfigs.DO_FALLING_STAR_SPAWNING.get() && LibDateUtils.isNight(level) &&
+        if (ModCommonConfigs.DO_FALLING_STAR_SPAWNING.get() && LibDateUtils.isNight(level) &&
                 level.getGameTime() % getFallingStarSpawnInterval(level) == 0
         ) {
             Set<Vec3> cache = new HashSet<>();
@@ -148,9 +147,9 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     private static int getFallingStarSpawnInterval(ServerLevel level) {
-        int interval = CommonConfigs.FALLING_STAR_INTERVAL.get();
+        int interval = ModCommonConfigs.FALLING_STAR_INTERVAL.get();
         if (MeteorShowerGameEvent.INSTANCE.started()) {
-            float factor = CommonConfigs.METEOR_SHOWER_EVENT_FALLING_STAR_SPAWN_SPEED_MULTIPLIER.get().floatValue();
+            float factor = ModCommonConfigs.METEOR_SHOWER_EVENT_FALLING_STAR_SPAWN_SPEED_MULTIPLIER.get().floatValue();
             return LibMathUtils.divideInt(interval, factor, level.random);
         }
         return interval;

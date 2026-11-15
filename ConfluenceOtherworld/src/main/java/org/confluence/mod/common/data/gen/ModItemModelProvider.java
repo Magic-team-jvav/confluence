@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -18,13 +19,16 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.functional.terraform.Solution;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.paint.PaintItem;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.integration.create.CreateHelper;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import static org.confluence.mod.Confluence.MODID;
@@ -32,6 +36,20 @@ import static org.confluence.mod.Confluence.MODID;
 public class ModItemModelProvider extends ItemModelProvider {
     private static final ResourceLocation MISSING_ITEM = Confluence.asResource("item/item_icon");
     private static final ResourceLocation MISSING_BLOCK = Confluence.asResource("item/blocks_icon");
+    private static final Set<String> SHARED_SLIME_EGGS = Set.of(
+            "black_slime_spawn_egg", "blue_slime_spawn_egg", "corrupt_slime_spawn_egg", "crimslime_spawn_egg",
+            "dungeon_slime_spawn_egg", "evil_slime_spawn_egg", "golden_slime_spawn_egg", "green_dumpling_slime_spawn_egg",
+            "green_slime_spawn_egg", "jungle_slime_spawn_egg", "luminous_slime_spawn_egg", "pink_slime_spawn_egg",
+            "purple_slime_spawn_egg", "red_slime_spawn_egg", "swamp_slime_spawn_egg", "tropic_slime_spawn_egg",
+            "yellow_slime_spawn_egg");
+    private static final Map<String, String> SPAWN_EGG_TEXTURE_ALIASES = Map.ofEntries(
+            Map.entry("crab_spawn_egg", "crap_spawn_egg"),
+            Map.entry("eater_of_worlds_spawn_egg", "eater_of_world_spawn_egg"),
+            Map.entry("eye_of_cthulhu_spawn_egg", "cthulhu_eye_spawn_egg"),
+            Map.entry("female_angler_spawn_egg", "angler_spawn_egg"),
+            Map.entry("giant_antlion_swarmer_spawn_egg", "giant_antlion_spawn_egg"),
+            Map.entry("granite_elemental_spawn_egg", "grantite_elemental_spawn_egg"),
+            Map.entry("little_hornet_spawn_egg", "hornet_spawn_egg"));
     private final ModelFile itemGenerated = new ModelFile.UncheckedModelFile(ResourceLocation.withDefaultNamespace("item/generated"));
     private final Set<Item> skip = new HashSet<>();
 
@@ -41,8 +59,48 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        skip.add(ToolItems.BOSS_TARGET_SELECTOR.get());
+        for (var solution : Solution.values()) skip.add(solution.item());
+        skip.add(FunctionalBlocks.CLENTAMINATOR.get().asItem());
+        skip.add(FunctionalBlocks.TERRAFORMER.get().asItem());
+        GunItems.BULLET_ITEMS.forEach(item -> {
+            // 占位子弹暂无贴图，跳过模型生成，避免贴图校验失败
+            if (item == GunItems.DUMMY_BULLET) return;
+            String path = item.getId().getPath();
+            withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/" + path));
+        });
+
         ModelFile.UncheckedModelFile templateReverse24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse24x"));
         ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));
+
+        handheldTextureAlias(SoulItems.BROKEN_GLIMMER, Confluence.asResource("item/soul_lantern/broken_glimmer"));
+        handheldTextureAlias(SoulItems.SOUL_CONDUIT, Confluence.asResource("item/soul_lantern/soul_conduit"));
+        handheldTextureAlias(SoulItems.PILLAGING_FLAME, Confluence.asResource("item/soul_lantern/pillaging_flame"));
+        handheldTextureAlias(SoulItems.SOUL_CHANT_GUIDE, Confluence.asResource("item/soul_lantern/soul_chant_guide"));
+        handheldTextureAlias(SoulItems.TRUFFLE_LANTERN, Confluence.asResource("item/soul_lantern/truffle_lantern"));
+        handheldTextureAlias(SoulItems.LIFE_SPLENDOR, Confluence.asResource("item/soul_lantern/life_splendor"));
+        handheldTextureAlias(SoulItems.STAR_SPIRIT, Confluence.asResource("item/soul_lantern/star_spirit"));
+        handheldTextureAlias(SoulItems.DAY_AND_NIGHT_ALIKE, Confluence.asResource("item/soul_lantern/day_and_night_alike"));
+        handheldTextureAlias(SoulItems.SENIOR_PATHFINDER_PRO, Confluence.asResource("item/soul_lantern/senior_pathfinder_pro"));
+        handheldTextureAlias(SoulItems.SPIRITWARD_BLADE, Confluence.asResource("item/sword/spiritward_blade"));
+        withExistingParent(SoulItems.FALLEN_SOUL_CORE.getId().getPath(), "item/generated").texture("layer0", Confluence.asResource("item/consumable/fallen_soul_core"));
+        skip.add(SoulItems.FALLEN_SOUL_CORE.get());
+        ItemModelBuilder skillBookModel = withExistingParent(SoulItems.SOUL_SKILL_BOOK.getId().getPath(), "item/generated").texture("layer0", ResourceLocation.withDefaultNamespace("item/book"));
+        for (SoulBooks.Definition book : SoulBooks.styled()) {
+            String path = SoulItems.SOUL_SKILL_BOOK.getId().getPath() + "/" + book.id().getPath();
+            ModelFile styledBook = withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/skill_book/" + book.id().getPath()));
+            skillBookModel.override().predicate(Confluence.asResource("soul_book"), SoulBooks.styleIndex(book.id())).model(styledBook).end();
+        }
+        skip.add(SoulItems.SOUL_SKILL_BOOK.get());
+
+        /// 天顶剑的物品栏模型由手写 JSON（models/item/zenith.json + zenith_gui.json）持有，
+        /// 物品栏/展示位改用 32x 的 zenith_inventory 贴图，手持继续用 item/summon/zenith。
+        skip.add(SwordItems.ZENITH.get());
+        handheldTextureAlias(SwordItems.TRUE_COPPER_SHORTSWORD, Confluence.asResource("item/sword/copper_short_sword"));
+
+        /// 裂天剑：物品栏用 16x 的 sky_fracture_inventory，手持/预览用 24x 的 sky_fracture；
+        /// 整套模型（含毁灭刃同款手持参数）由手写 JSON 持有（models/item/sky_fracture*.json）。
+        skip.add(ManaWeaponItems.SKY_FRACTURE.get());
 
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");
         separateModel(SwordItems.ICE_BLADE, templateReverse24x, "sword/");
@@ -67,6 +125,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(HammerItems.THE_BREAKER, templateReverse24x, "hammer/");
         separateModel(HammerItems.FLESH_GRINDER, templateNormal24x, "hammer/");
         separateModel(HammerItems.ROCKFISH, templateNormal24x, "hammer/");
+        separateModel(HammerItems.SEAFLOOR_CRACKER, templateNormal24x, "hammer/");
         separateModel(HamaxeItems.METEOR_HAMAXE, templateNormal24x, "hamaxe/");
         separateModel(HamaxeItems.MOLTEN_HAMAXE, templateNormal24x, "hamaxe/");
         separateModel(AxeItems.WAR_AXE_OF_THE_NIGHT, templateReverse24x, "axe/");
@@ -80,6 +139,21 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(AxeItems.AXE_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(ToolItems.STAFF_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(SwordItems.WAFFLES_IRON, templateNormal24x, "sword/");
+        flailModel(FlailItems.MACE);
+        flailModel(FlailItems.FLAMING_MACE);
+        flailModel(FlailItems.WIND_ANCHOR);
+        flailModel(FlailItems.GUARDIAN_FLAIL);
+        flailModel(FlailItems.ANCIENT_GUARDIAN_FLAIL);
+        flailModel(FlailItems.BALL_O_HURT);
+        flailModel(FlailItems.THE_MEATBALL);
+        flailModel(FlailItems.BLUE_MOON);
+        flailModel(FlailItems.SUNFURY);
+        flailModel(FlailItems.DAO_OF_POW);
+        flailModel(FlailItems.FLOWER_POWER);
+        flailModel(FlailItems.DRIPPLER_CRIPPLER);
+        flailModel(FlailItems.FLAIRON);
+        flailModel(FlailItems.CHAIN_KNIFE);
+        flailModel(FlailItems.ANCHOR);
         separateModel(PickaxeItems.REAVER_SHARK_PICKAXE, templateReverse24x, "pickaxe/");
 
         getBuilder(SwordItems.NIGHTS_EDGE.getId().getPath()).parent(templateReverse24x).texture("layer0", SwordItems.NIGHTS_EDGE.getId().withPrefix("item/sword/"));
@@ -126,6 +200,13 @@ public class ModItemModelProvider extends ItemModelProvider {
             try {
                 String path1 = "item/crossbow/" + ((item1 instanceof BaseTerraRepeaterItem ? "repeater/" : "") + path);
                 ResourceLocation texture = Confluence.asResource(path1);
+                /// 基础图标和拉弓图标齐全后才创建特制模型，缺图时保持占位模型。
+                if (!existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")
+                        || !existingFileHelper.exists(texture.withSuffix("_pulling"), PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                    withExistingParent(path, MISSING_ITEM);
+                    skip.add(item1);
+                    continue;
+                }
                 withExistingParent(path, handheldRod).texture("layer0", texture)
                         .transforms()
                         .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(-90, 0, -60).translation(2, 0.1f, -3).scale(0.9F, 0.9F, 0.9F).end()
@@ -153,19 +234,36 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(BaitItems.ITEMS, "bait/"));
         customModels.add(createDir(ConsumableItems.ITEMS, "consumable/"));
         customModels.add(createDir(FoodItems.ITEMS, "food/", "seed/"));
+        /// 法器贴图统一放在 `item/artifact/` 下；还没有贴图的法器会自动落到占位图标。
+        customModels.add(createDir(SoulItems.ITEMS, "artifact/"));
         customModels.add(createDir(HookItems.ITEMS, "hook/"));
         customModels.add(createDir(IconItems.ITEMS, "icon/"));
         customModels.add(createDir(LightPetItems.ITEMS, "light_pet/"));
+        customModels.add(createDir(PetItems.ITEMS, "pet/"));
         customModels.add(createDir(MaterialItems.ITEMS, "materials/", "ingot/"));
         customModels.add(createDir(MinecartItems.ITEMS, "minecart/"));
+        customModels.add(createDir(MountItems.ITEMS, "rideable/"));
         customModels.add(createDir(ModItems.ITEMS, "misc/"));
         customModels.add(createDir(ModItems.HIDDEN, "misc/"));
         customModels.add(createDir(PaintItems.ITEMS, "paint/"));
         customModels.add(createDir(PotionItems.ITEMS, "potion/"));
         customModels.add(createDir(QuestedFishes.ITEMS, "quested_fish/"));
         customModels.add(createDir(ToolItems.ITEMS, "tool/"));
+        treasureBagModelAlias(TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG, "skeletron_treasure_bag");
+        treasureBagModelAlias(TreasureBagItems.THE_DESTROYER_TREASURE_BAG, "eater_of_worlds_treasure_bag");
+        treasureBagModelAlias(TreasureBagItems.PLANTERA_TREASURE_BAG, "queen_bee_treasure_bag");
+        treasureBagModelAlias(TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG, "skeletron_treasure_bag");
         customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
         customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor_item/"));
+        customModels.add(createDir(YoyoItems.ITEMS, "yoyo/"));
+        YoyoItems.ITEMS.getEntries().forEach(item -> {
+            if (hasHandwrittenModel(Confluence.asResource("item/" + item.getId().getPath())))
+                skip.add(item.get());
+        });
+        SwordItems.ITEMS.getEntries().forEach(item -> {
+            if (hasHandwrittenModel(Confluence.asResource("item/" + item.getId().getPath())))
+                skip.add(item.get());
+        });
 
         CreateHelper.acceptModels(reg -> customModels.add(createDir(reg, "materials/")));
 
@@ -176,15 +274,19 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheld.add(createDir(SwordItems.ITEMS, "sword/"));
         handheld.add(createDir(AxeItems.ITEMS, "axe/"));
         handheld.add(createDir(HammerItems.ITEMS, "hammer/"));
-        handheld.add(createDir(TEBoomerangItems.ITEMS, "boomerang/"));
+        handheld.add(createDir(BoomerangItems.ITEMS, "boomerang/"));
         handheld.add(createDir(PickaxeItems.ITEMS, "pickaxe/"));
         handheld.add(createDir(PickaxeAxeItems.ITEMS, "pickaxe_axe/"));
         handheld.add(createDir(ManaWeaponItems.ITEMS, "mana_staff/"));
+        handheld.add(createDir(SummonItems.ITEMS, "summon/"));
+        handheld.add(createDir(WhipItems.ITEMS, "whip/"));
         handheld.add(createDir(HoeItems.ITEMS, "hoe/"));
         handheld.add(createDir(ShovelItems.ITEMS, "shovel/"));
         handheld.add(createDir(HamaxeItems.ITEMS, "hamaxe/"));
         handheld.add(createDir(HoeShovelItems.ITEMS, "hoe_shovel/"));
         handheld.add(createDir(GardenShearsItems.ITEMS, "garden_shears/"));
+
+        handheldTextureAlias(SummonItems.NEW_HORNET_STAFF, Confluence.asResource("item/summon/hornet_staff"));
 
         genModels(handheld, "item/handheld");
 
@@ -194,12 +296,23 @@ public class ModItemModelProvider extends ItemModelProvider {
             String path = item.getId().getPath();
             try {
                 if (item1 instanceof SignItem) {
-                    withExistingParent(path, "item/generated").texture("layer0", "confluence:item/sign/" + path);
+                    ResourceLocation texture = Confluence.asResource("item/sign/" + path);
+                    if (existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                        withExistingParent(path, "item/generated").texture("layer0", texture);
+                    } else {
+                        withExistingParent(path, MISSING_BLOCK);
+                    }
                 } else if (item1 instanceof BlockItem item2) {
                     Block block = item2.getBlock();
                     switch (block) {
-                        case DoorBlock ignored ->
-                                withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/decoration/door/" + path));
+                        case DoorBlock ignored -> {
+                            ResourceLocation texture = Confluence.asResource("item/decoration/door/" + path);
+                            if (existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                                withExistingParent(path, "item/generated").texture("layer0", texture);
+                            } else {
+                                withExistingParent(path, MISSING_BLOCK);
+                            }
+                        }
                         case TrapDoorBlock ignored ->
                                 withExistingParent(path, Confluence.asResource("block/" + path + "_bottom"));
                         case SaplingBlock ignored ->
@@ -213,6 +326,14 @@ public class ModItemModelProvider extends ItemModelProvider {
                         //case LeavesBlock ignored -> withExistingParent(path, "block/leaves").texture("all", Confluence.asResource("block/" + path + "_item"));
                         case ChainBlock ignored ->
                                 withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/chain/" + path));
+                        case TorchBlock ignored -> {
+                            ResourceLocation texture = Confluence.asResource("block/torch/" + path);
+                            if (existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                                withExistingParent(path, "item/generated").texture("layer0", texture);
+                            } else {
+                                withExistingParent(path, Confluence.asResource("block/" + path));
+                            }
+                        }
                         default -> withExistingParent(path, Confluence.asResource("block/" + path));
                     }
                 }
@@ -238,11 +359,29 @@ public class ModItemModelProvider extends ItemModelProvider {
             String name = s.append(i).toString();
             withExistingParent(name, "item/generated").texture("layer0", Confluence.asResource("item/compass/" + name));
         }
+
+        for (DeferredHolder<Item, ? extends Item> entry : SpawnEggItems.ITEMS.getEntries()) {
+            String path = entry.getId().getPath();
+            String texturePath = SHARED_SLIME_EGGS.contains(path)
+                    ? "slime_spawn_egg" : SPAWN_EGG_TEXTURE_ALIASES.getOrDefault(path, path);
+            ResourceLocation texture = Confluence.asResource("item/egg/" + texturePath);
+            if (existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                withExistingParent(path, ResourceLocation.withDefaultNamespace("item/generated")).texture("layer0", texture);
+            } else {
+                withExistingParent(path, ResourceLocation.withDefaultNamespace("item/template_spawn_egg"));
+            }
+            skip.add(entry.get());
+        }
+
+        /// 保留主资源目录中的几何、动态渲染和显示变换，不用常规模型覆盖手写定义。
+        generatedModels.keySet().removeIf(this::hasHandwrittenModel);
     }
 
-    /**
-     * 手持高清但是物品栏16x
-     */
+    private void handheldTextureAlias(DeferredItem<? extends Item> item, ResourceLocation texture) {
+        withExistingParent(item.getId().getPath(), "item/handheld").texture("layer0", texture);
+        skip.add(item.get());
+    }
+
     private void separateModel(DeferredItem<?> deferredItem, ModelFile parentModel, String parentPath) {
         String path = deferredItem.getId().getPath();
         getBuilder(path).guiLight(BlockModel.GuiLight.FRONT).customLoader((builder, helper) -> {
@@ -265,6 +404,35 @@ public class ModItemModelProvider extends ItemModelProvider {
         return Map.of(reg, packPaths);
     }
 
+    /// 连枷在手中交给 Geo 手柄渲染器，物品栏与展示场景继续使用紧凑二维图标。
+    private void flailModel(DeferredItem<?> deferredItem) {
+        String path = deferredItem.getId().getPath();
+        ResourceLocation none = Confluence.asResource("");
+        ResourceLocation icon = Confluence.asResource("item/flail/" + path + "_inventory");
+        ModelFile builtinEntity = new ModelFile.UncheckedModelFile(ResourceLocation.withDefaultNamespace("builtin/entity"));
+        getBuilder(path).guiLight(BlockModel.GuiLight.FRONT)
+                .customLoader((builder, helper) -> {
+                    ItemModelBuilder iconModel = new ItemModelBuilder(none, helper)
+                            .parent(itemGenerated)
+                            .texture("layer0", icon);
+                    return SeparateTransformsModelBuilder.begin(builder, helper)
+                            .base(new ItemModelBuilder(none, helper)
+                                    .parent(builtinEntity)
+                                    .texture("particle", icon))
+                            .perspective(ItemDisplayContext.GUI, iconModel)
+                            .perspective(ItemDisplayContext.GROUND, iconModel)
+                            .perspective(ItemDisplayContext.FIXED, iconModel);
+                });
+        skip.add(deferredItem.get());
+    }
+
+    private void treasureBagModelAlias(DeferredItem<? extends Item> item, String textureName) {
+        withExistingParent(item.getId().getPath(), "item/generated")
+                .texture("layer0", Confluence.asResource("item/treasure_bag/" + textureName));
+        skip.add(item.get());
+    }
+
+    /// 按候选目录检查贴图是否存在，避免依赖 texture 抛出异常而选中不存在的路径。
     private void genModels(List<Map<DeferredRegister.Items, String[]>> list, String parent) {
         for (Map<DeferredRegister.Items, String[]> map : list) {
             for (Map.Entry<DeferredRegister.Items, String[]> entry : map.entrySet()) {
@@ -273,15 +441,29 @@ public class ModItemModelProvider extends ItemModelProvider {
                     String path = item.getId().getPath();
                     boolean exist = false;
                     for (String packPath : entry.getValue()) {
-                        try {
-                            withExistingParent(path, parent).texture("layer0", Confluence.asResource("item/" + packPath + path));
-                            exist = true;
-                            break;
-                        } catch (Exception ignored) {}
+                        ResourceLocation texture = Confluence.asResource("item/" + packPath + path);
+                        if (!existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures"))
+                            continue;
+                        withExistingParent(path, parent).texture("layer0", texture);
+                        exist = true;
+                        break;
                     }
                     if (!exist) withExistingParent(path, MISSING_ITEM);
                 }
             }
+        }
+    }
+
+    /// 判断指定物品模型是否已经由主资源目录提供。
+    ///
+    /// 复杂模型继续由手写 JSON 持有；只有没有手写定义的常规模型才由本 Provider 接管。
+    /// 这避免通用兜底在生成目录留下同路径但功能退化的副本。
+    private boolean hasHandwrittenModel(ResourceLocation model) {
+        try {
+            existingFileHelper.getResource(model, PackType.CLIENT_RESOURCES, ".json", "models");
+            return true;
+        } catch (FileNotFoundException ignored) {
+            return false;
         }
     }
 }

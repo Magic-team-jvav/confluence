@@ -1,0 +1,36 @@
+{
+  "base": {
+    "parent": "confluence:item/template_bow24x",
+    "textures": {
+      "layer0": "confluence:item/bow/display/polar_day_pulling_0"
+    }
+  },
+  "gui_light": "front",
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/bow/polar_day_pulling_0"
+      }
+    },
+    "ground": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/bow/polar_day_pulling_0"
+      }
+    },
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/bow/polar_day_pulling_0"
+      }
+    },
+    "head": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/bow/display/polar_day_pulling_0"
+      }
+    }
+  }
+}

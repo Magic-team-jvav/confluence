@@ -1,0 +1,14 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "confluence:item/tool/void_bag"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "confluence:enable": 1
+            },
+            "model": "confluence:item/void_bag_open"
+        }
+    ]
+}

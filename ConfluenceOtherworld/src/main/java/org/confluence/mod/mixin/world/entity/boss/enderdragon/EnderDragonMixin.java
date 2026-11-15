@@ -2,16 +2,17 @@ package org.confluence.mod.mixin.world.entity.boss.enderdragon;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(EnderDragon.class)
 public abstract class EnderDragonMixin {
+    /// MC-271337, MC-272431, MC-276058, MC-311382
     @ModifyArg(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;add(DDD)Lnet/minecraft/world/phys/Vec3;"), index = 1)
     private double enhance(double y, @Local(ordinal = 1) double d1) {
-        if (y == d1 * 0.01 && CommonConfigs.isDragonChargePlayer()) {
+        if (y == d1 * 0.01 && ModCommonConfigs.isDragonChargePlayer()) {
             return d1 * 0.1;
         }
         return y;

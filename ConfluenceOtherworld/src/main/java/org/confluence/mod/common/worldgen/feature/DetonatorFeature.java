@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import org.confluence.lib.util.FeatureUtils;
+import org.confluence.lib.util.LibFeatureUtils;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -31,20 +31,20 @@ public class DetonatorFeature extends Feature<DetonatorFeature.Config> {
         int mz = SectionPos.sectionToBlockCoord(SectionPos.blockToSectionCoord(context.origin().getZ()), 8);
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(mx, context.origin().getY(), mz);
         WorldGenLevel level = context.level();
-        if (FeatureUtils.isPosAir(level, pos)) {
+        if (LibFeatureUtils.isPosAir(level, pos)) {
             Config config = context.config();
-            for (int v = 1; v <= config.maxSearchDown && FeatureUtils.isPosAir(level, pos); ++v) {
+            for (int v = 1; v <= config.maxSearchDown && LibFeatureUtils.isPosAir(level, pos); ++v) {
                 pos.move(0, -1, 0);
             }
             RandomSource random = context.random();
-            if (!FeatureUtils.isPosLiquid(level, pos) &&
+            if (!LibFeatureUtils.isPosLiquid(level, pos) &&
                     config.oreFeature.value().place(level, context.chunkGenerator(), random, pos) &&
-                    FeatureUtils.safeSetBlock(level, pos, FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState(), ModFeatures.IS_REPLACEABLE)
+                    LibFeatureUtils.safeSetBlock(level, pos, FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState(), ModFeatures.IS_REPLACEABLE)
             ) {
                 BlockPos.MutableBlockPos offset = new BlockPos.MutableBlockPos();
                 for (int i = 0; i < config.tryTimes; i++) {
                     offset.setWithOffset(pos, Mth.randomBetweenInclusive(random, -7, 7), 0, Mth.randomBetweenInclusive(random, -7, 7));
-                    if (FeatureUtils.isPosAir(level, offset) && FeatureUtils.isPosSturdy(level, offset.offset(0, -1, 0), Direction.UP)) {
+                    if (LibFeatureUtils.isPosAir(level, offset) && LibFeatureUtils.isPosSturdy(level, offset.offset(0, -1, 0), Direction.UP)) {
                         level.setBlock(offset, FunctionalBlocks.DETONATOR.get().defaultBlockState(), Block.UPDATE_ALL);
                         INetworkEntity a = ModFeatures.getNetworkEntity(level, pos);
                         INetworkEntity b = ModFeatures.getNetworkEntity(level, offset);

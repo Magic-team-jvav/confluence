@@ -2,7 +2,6 @@ package org.confluence.mod.common.block.functional;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -12,6 +11,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -31,15 +31,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.MobEffectInstanceData;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 
 public class EffectiveCandleBlock extends AbstractMechanicalBlock {
     private static final VoxelShape SHAPE = Shapes.or(
@@ -111,7 +110,7 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), (level1, pos, state1, blockEntity) -> {
-            if (level1 instanceof ServerLevel serverLevel && level.getGameTime() % 40 == 5) {
+            if (state1.getValue(LIT) && level1 instanceof ServerLevel serverLevel && level.getGameTime() % 40 == 5) {
                 double x = pos.getX() + 0.5;
                 double y = pos.getY() + 0.5;
                 double z = pos.getZ() + 0.5;
@@ -133,17 +132,17 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
         }
     }
 
-    public static class BItem extends TooltipBlockItem {
+    public static class BItem extends BlockItem {
         public final MobEffectInstanceData[] effectData;
 
-        public BItem(Block block, ModRarity rarity, List<Component> tooltips, MobEffectInstanceData... effectData) {
-            super(block, new Properties(), rarity, tooltips);
+        public BItem(Block block, ModRarity rarity, MobEffectInstanceData... effectData) {
+            super(block, new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
             this.effectData = effectData;
         }
 
         @Override
         public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-            if (isSelected && entity instanceof LivingEntity living) {
+            if (!level.isClientSide && entity instanceof LivingEntity living && (isSelected || stack == living.getOffhandItem())) {
                 awardEffect(living, effectData);
             }
         }

@@ -12,18 +12,25 @@ import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.ModStartupConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.common.data.AchievementOffset;
+import org.confluence.mod.common.data.AnglerQuestLoader;
+import org.confluence.mod.common.entity.npc.NPCNames;
+import org.confluence.mod.common.entity.npc.chat.ChatManager;
+import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
+import org.confluence.mod.common.entity.npc.mood.MoodData;
+import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
 import org.confluence.mod.common.init.ModCommands;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
-import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.network.s2c.NPCDialogSyncPacketS2C;
 import org.confluence.mod.util.PrefixUtils;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @EventBusSubscriber(modid = Confluence.MODID)
@@ -47,7 +54,7 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
-        if (StartupConfigs.brewingStandRecipe()) {
+        if (ModStartupConfigs.brewingStandRecipe()) {
             ModRecipes.Brewing.registerRecipes(event.getBuilder()::addRecipe);
         }
     }
@@ -55,6 +62,8 @@ public final class GameEvents {
     @SubscribeEvent(priority = EventPriority.LOW) // 需要晚于Curios Api
     public static void onDatapackSync(OnDatapackSyncEvent event) {
         ServerPlayer sendTo = event.getPlayer();
+        for (ServerPlayer target : sendTo == null ? event.getPlayerList().getPlayers() : List.of(sendTo))
+            NPCDialogSyncPacketS2C.sendToClient(target);
         if (sendTo == null) {
             for (ServerPlayer target : event.getPlayerList().getPlayers()) {
                 ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(target, target);
@@ -62,12 +71,17 @@ public final class GameEvents {
         } else {
             ExtraInventorySyncPacketS2C.sendToClient(sendTo, sendTo);
             AchievementOffsetSyncPacketS2C.sendToClient(sendTo);
-            AchievementUtils.setData(sendTo);
         }
     }
 
     @SubscribeEvent
     public static void addReloadListener(AddReloadListenerEvent event) {
-        event.addListener(AchievementOffsetLoader.getInstance());
+        event.addListener(AchievementOffset.Loader.getInstance());
+        event.addListener(NPCDialogLoader.getInstance());
+        event.addListener(NPCNames.Loader.getInstance());
+        event.addListener(ChatManager.getLoader());
+        event.addListener(new MoodData.Loader());
+        event.addListener(NPCTradeList.Loader.getInstance());
+        event.addListener(AnglerQuestLoader.getInstance());
     }
 }

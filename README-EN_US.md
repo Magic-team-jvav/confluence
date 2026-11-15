@@ -2,24 +2,25 @@
 
 - [中文](README.md)
 
-| Project Name                                                                  | Description                                        | Runs Independently |
-|-------------------------------------------------------------------------------|----------------------------------------------------|--------------------|
-| [ConfluenceMagicLib](Confluence-Magic-Lib)                                    | Library                                            | no                 |
-| [ConfluenceOtherworld](ConfluenceOtherworld)                                  | Main module                                        | Depends on all     |
-| [TerraEntity](TerraEntity)                                                    | Terra's Entities                                   | yes                |
-| [TerraCurio](TerraCurio)                                                      | Terra's Wearables                                  | yes                |
-| [TerraGuns](TerraGuns)                                                        | Terra's Guns                                       | yes                |
-| [ParticleStorm](https://github.com/westernat/ParticleStorm)                   | Particles API                                      | yes                |
-| [ThreeDimensionParticle](https://github.com/westernat/ThreeDimensionParticle) | 3D Particle core                                   | no                 |
-| [TerraFurniture](TerraFurniture)                                              | Terra's Furniture                                  | yes                |
-| [TheTrackers](TheTrackers)                                                    | Provide real-time location hints for Boss entities | Yes                |
+| Project Name                                                                  | Description                                        |
+|-------------------------------------------------------------------------------|----------------------------------------------------|
+| [ConfluenceMagicLib](Confluence-Magic-Lib)                                    | Confluence series development library              |
+| [ConfluenceOtherworld](ConfluenceOtherworld)                                  | Main module                                        |
+| [TerraCurio](TerraCurio)                                                      | Accessories part                                   |
+| [ParticleStorm](https://github.com/westernat/ParticleStorm)                   | Complex particles API                              |
+| [ThreeDimensionParticle](https://github.com/westernat/ThreeDimensionParticle) | 3D Particle core                                   |
+| [TerraFurniture](TerraFurniture)                                              | Terra's Furniture                                  |
+| [TheTrackers](TheTrackers)                                                    | Provide real-time location hints for Boss entities |
+| [DataTip](https://github.com/cooobird/DataTip)                                | Assets-Driven item tooltip system                  |
+| [OpalLight](https://github.com/westernat/OpalLight)                           | Colorful lighting system                           |
+| [PortLib](PortLib)                                                            | backports library                                  |
 
 | Official Integrations                                                               | Description                                                                            |
 |-------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
 | [ConfluenceDelight](https://github.com/cooobird/ConfluenceDelight)                  | Farmer's Delight integration                                                           |
-| [ConfluenceMusic](https://github.com/westernat/Confluence-Music)                    | Extra music                                                                            |
+| [ConfluenceMusic](https://github.com/westernat/Confluence-Music)                    | Official music mod                                                                     |
 | [ConfluenceDimensionPatch](https://github.com/westernat/Confluence-Dimension-Patch) | Transfer the Confluence Otherworld's modifications to the Overworld to a new dimension |
-| [BetterExperience](https://github.com/EDGtheXu/BetterExperience)                    | The ported version authorized by the original creator of the Terra mod.                |
+| [BetterExperience](https://github.com/Magic-team-jvav/BetterExperience)             | The ported version authorized by the original creator of the Terra mod.                |
 
 ## Build the Project
 
@@ -31,11 +32,4 @@
     git submodule update
   ~~~
 
-- If you would like to manually add a submodule, you can run:
-  ~~~cmd
-    git submodule add -b "<branch name>" "<url>"
-  ~~~
-  > You will also need to add the submodule name in [settings.gradle](settings.gradle)
-  > and [ConfluenceOtherworld/build.gradle](ConfluenceOtherworld/build.gradle).
-
-- After all the project is pulled successuly, you can use gradle's runClient command.
+- After all the project is pulled successuly, boost `confluence [runData]` then `confluence [:ConfluenceOtherworld:runClient]` in gradle.

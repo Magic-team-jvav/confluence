@@ -1,0 +1,992 @@
+package org.confluence.mod.common.entity.boss;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibEffects;
+import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.data.saved.MeteoriteTracker;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
+import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.monster.VisualNeuron;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.item.common.TreasureBagItem;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+
+import java.util.*;
+
+/// 克苏鲁之脑及其两阶段战斗控制器。
+///
+/// 第一阶段会分批召唤视神经元，普通种子二十只，FTW 四十只。Boss 维护每只神经元的精确 UUID、编队位置和出击节奏，
+/// 本体在所有神经元被击败前不可受伤。神经元不会自主索敌，只有处于待命状态的个体才会接受 Boss
+/// 发出的攻击命令。第二阶段才由本体执行瞬移、冲刺与追击行为。
+///
+/// 神经元是可独立存档的实体，因此阶段推进不能只依赖附近实体数量。权威 UUID 集合会持久化；
+/// 子实体在 Boss 区块卸载期间死亡时通过世界账本回报，Boss 重新加载后再统一结算。
+public class BrainOfCthulhu extends BaseBoss {
+    private static final RawAnimation CLOSED = RawAnimation.begin().thenLoop("close");
+    private static final RawAnimation OPEN = RawAnimation.begin().thenPlay("to_open").thenLoop("open");
+    private static final EntityDataAccessor<Boolean> DATA_PHASE_TWO = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_PHASE_ONE_STATE = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_PHASE_ONE_STATE_TICKS = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_PHASE_TWO_STATE = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_PHASE_TWO_STATE_TICKS = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
+    /// 第一阶段初始召唤的飞眼怪数量。
+    private static final int NEURON_COUNT = 20;
+    private final Map<UUID, NeuronHealth> neuronHealth = new HashMap<>();
+    private float estimatedNeuronMaximum;
+    private int neuronHealthUpdateTick = Integer.MIN_VALUE;
+
+    private record NeuronHealth(float current, float maximum) {}
+
+    private static final EntityDataAccessor<Boolean> DATA_OPAQUE_ILLUSIONS = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.BOOLEAN);
+    /// 开场动画开始后首次召唤飞眼怪的时间点，单位 tick。
+    private static final int SUMMON_START_TICK = 21;
+    /// 开场连续召唤飞眼怪的间隔，单位 tick。
+    private static final int SUMMON_INTERVAL_TICKS = 2;
+
+    /// 二阶段后撤时与玩家保持的目标距离，单位格。
+    private static final double PHASE_TWO_RETREAT_DISTANCE = 10.0;
+    /// 二阶段后撤时的移动速度，单位格/tick。
+    private static final double PHASE_TWO_RETREAT_SPEED = 0.3;
+    /// 二阶段曲线冲刺终点相对玩家的水平距离，单位格。
+    private static final double PHASE_TWO_CURVE_DISTANCE = 10.0;
+    /// 同步或追踪战斗玩家时的最大搜索距离，单位格。
+    private static final double NEARBY_PLAYER_SEARCH_RANGE = 250.0;
+
+    /// 每次更新神经元编队时随机旋转其位置的概率。
+    private static final float NEURON_HOME_ROTATION_CHANCE = 0.5F;
+    /// 二阶段重新定位时的移动速度，单位格/tick。
+    private static final double PHASE_TWO_REPOSITION_SPEED = 0.25;
+    /// 区块恢复后重新认领脑神经仆从的搜索半径，单位格。
+    private static final double NEURON_RECOVERY_RANGE = 96.0;
+    /// 受到击退后每 tick 保留的击退速度比例。
+    private static final double KNOCKBACK_MOMENTUM = 0.6;
+    /// 第一阶段靠近目标的状态持续时间，单位 tick。
+    private static final int PHASE1_APPROACH_TICKS = 200;
+    /// 第一阶段隐身离场动画的持续时间，单位 tick。
+    private static final int PHASE1_FADE_OUT_TICKS = 40;
+    /// 第一阶段重新显形动画的持续时间，单位 tick。
+    private static final int PHASE1_FADE_IN_TICKS = 40;
+    /// 进入第二阶段时变形状态的持续时间，单位 tick。
+    private static final int PHASE2_TRANSFORM_TICKS = 15;
+    /// 第二阶段追踪目标、准备突进的持续时间，单位 tick。
+    private static final int PHASE2_STALK_TICKS = 40;
+    /// 第二阶段单次冲刺的最长持续时间，单位 tick。
+    private static final int PHASE2_DASH_TICKS = 30;
+    /// 第二阶段冲刺开始前的蓄力时间，单位 tick。
+    private static final int PHASE2_DASH_WINDUP_TICKS = 10;
+    /// 第二阶段隐身离场动画的持续时间，单位 tick。
+    private static final int PHASE2_FADE_OUT_TICKS = 30;
+    /// 第二阶段重新显形动画的持续时间，单位 tick。
+    private static final int PHASE2_FADE_IN_TICKS = 100;
+    private static final String PHASE_TWO_TAG = "PhaseTwo";
+    private static final String PHASE_TWO_STATE_TAG = "PhaseTwoState";
+    private static final String PHASE_TWO_STATE_TICKS_TAG = "PhaseTwoStateTicks";
+    private static final String PHASE_TWO_DASH_REMAINING_TAG = "PhaseTwoDashRemaining";
+    private static final String PHASE_ONE_STATE_TAG = "PhaseOneState";
+    private static final String PHASE_ONE_STATE_TICKS_TAG = "PhaseOneStateTicks";
+    private static final String PHASE_ONE_INERTIA_X_TAG = "PhaseOneInertiaX";
+    private static final String PHASE_ONE_INERTIA_Y_TAG = "PhaseOneInertiaY";
+    private static final String PHASE_ONE_INERTIA_Z_TAG = "PhaseOneInertiaZ";
+    private static final String SUMMON_TICKS_TAG = "NeuronSummonTicks";
+    private static final String SPAWNED_NEURON_COUNT_TAG = "SpawnedNeuronCount";
+    private static final String TRACKED_NEURON_COUNT_TAG = "TrackedNeuronCount";
+    private static final String TRACKED_NEURON_TAG = "TrackedNeuron";
+
+    private int summonTicks;
+    private int spawnedNeuronCount;
+    private int aliveNeurons;
+    private boolean phase2;
+    private PhaseOneState phaseOneState = PhaseOneState.SUMMONING;
+    private int phaseOneStateTicks;
+    private Vec3 phaseOneInertia = Vec3.ZERO;
+    private Vec3 knockbackVelocity = Vec3.ZERO;
+    private PhaseTwoState phaseTwoState = PhaseTwoState.TRANSFORMING;
+    private int phaseTwoStateTicks;
+    private int phaseTwoDashRemaining;
+    private Vec3 phaseTwoCurveStart;
+    private Vec3 phaseTwoCurveControl;
+    private Vec3 phaseTwoCurveEnd;
+    private final Set<UUID> activeNeuronUUIDs = new HashSet<>();
+    private final BrainFake[] illusions = new BrainFake[3];
+
+    public BrainOfCthulhu(EntityType<? extends Monster> type, Level level) {
+        super(type, level);
+        moveControl = new FlyingMoveControl(this, 10, false);
+        setNoGravity(true);
+        noPhysics = true;
+        xpReward = 2000;
+    }
+
+    @Override
+    protected BossEvent.BossBarColor getBossBarColor() {
+        return BossEvent.BossBarColor.YELLOW;
+    }
+
+    @Override
+    protected BTRoot createBT() {
+        return new BTRoot() {
+            @Override
+            protected BTNode createTree() {
+                // 两个阶段都由本体的权威技能时序驱动，行为树不能同时修改速度或位置。
+                return new WaitAction(Integer.MAX_VALUE);
+            }
+        };
+    }
+
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (isRemoved() || level().isClientSide) return;
+
+        if (getTarget() == null && tickCount % 20 == 0) {
+            Player replacement = findCombatPlayer();
+            if (replacement != null) setTarget(replacement);
+        }
+
+        if (!phase2) {
+            applyRecordedNeuronDeaths();
+
+            List<VisualNeuron> loadedNeurons = findOwnedLoadedNeurons();
+            aliveNeurons = loadedNeurons.size();
+            updateNeuronHomes(loadedNeurons);
+            tickPhaseOneCycle(loadedNeurons);
+
+            if (summoningComplete() && activeNeuronUUIDs.isEmpty()) {
+                enterPhaseTwo();
+            }
+        } else {
+            ensureIllusions();
+            tickPhaseTwoCycle();
+            applyPhaseTwoKnockback();
+            tickForcedGravity();
+        }
+        Entity target = getTarget();
+        entityData.set(DATA_TARGET_ID, target != null && target.isAlive() ? target.getId() : -1);
+        tickEntityContactAttack();
+    }
+
+    @Override
+    protected boolean usesPostMovementContactAttack() {
+        // 曲线技能在常规实体 tick 之后直接提交位置，接触检测必须读取最终路径。
+        return true;
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_PHASE_TWO, false);
+        builder.define(DATA_OPAQUE_ILLUSIONS, false);
+        builder.define(DATA_PHASE_ONE_STATE, PhaseOneState.SUMMONING.id);
+        builder.define(DATA_PHASE_ONE_STATE_TICKS, 0);
+        builder.define(DATA_PHASE_TWO_STATE, PhaseTwoState.TRANSFORMING.id);
+        builder.define(DATA_PHASE_TWO_STATE_TICKS, 0);
+        builder.define(DATA_TARGET_ID, -1);
+    }
+
+    public @org.jetbrains.annotations.Nullable Entity getSyncedVisualTarget() {
+        Entity target = level().getEntity(entityData.get(DATA_TARGET_ID));
+        return target != null && target.isAlive() ? target : null;
+    }
+
+    /// 第一阶段依次执行靠近、惯性淡出、重新定位和淡入。
+    /// 飞眼怪不会随本体瞬移，而是继续追逐更新后的编队位置，形成跨越玩家的大范围扫掠轨迹。
+    private void tickPhaseOneCycle(List<VisualNeuron> loadedNeurons) {
+        switch (phaseOneState) {
+            case SUMMONING -> {
+                tickNeuronSummoning();
+                setDeltaMovement(0.0, 0.05, 0.0);
+                if (summoningComplete()) {
+                    enterPhaseOneState(PhaseOneState.APPROACHING);
+                }
+            }
+            case APPROACHING -> {
+                tickPhaseOneMovement(5.0);
+                dispatchReadyNeuron(loadedNeurons);
+                if (++phaseOneStateTicks >= PHASE1_APPROACH_TICKS) {
+                    phaseOneInertia = getDeltaMovement();
+                    enterPhaseOneState(PhaseOneState.FADING_OUT);
+                }
+            }
+            case FADING_OUT -> {
+                setDeltaMovement(phaseOneInertia);
+                if (++phaseOneStateTicks >= PHASE1_FADE_OUT_TICKS) {
+                    doTeleport();
+                    enterPhaseOneState(PhaseOneState.FADING_IN);
+                }
+            }
+            case FADING_IN -> {
+                setDeltaMovement(Vec3.ZERO);
+                if (++phaseOneStateTicks >= PHASE1_FADE_IN_TICKS) {
+                    enterPhaseOneState(PhaseOneState.APPROACHING);
+                }
+            }
+        }
+        entityData.set(DATA_PHASE_ONE_STATE_TICKS, phaseOneStateTicks);
+    }
+
+    private void enterPhaseOneState(PhaseOneState state) {
+        phaseOneState = state;
+        phaseOneStateTicks = 0;
+        entityData.set(DATA_PHASE_ONE_STATE, state.id);
+        entityData.set(DATA_PHASE_ONE_STATE_TICKS, 0);
+    }
+
+    /// 首次登场后第 21 刻开始，每两刻召唤一只神经元。
+    private void tickNeuronSummoning() {
+        if (summoningComplete()) return;
+        summonTicks++;
+        if (summonTicks < SUMMON_START_TICK || (summonTicks - SUMMON_START_TICK) % SUMMON_INTERVAL_TICKS != 0) {
+            return;
+        }
+        spawnNeuron(spawnedNeuronCount);
+    }
+
+    private void spawnNeuron(int index) {
+        if (!(level() instanceof ServerLevel serverLevel)) return;
+        VisualNeuron neuron = MonsterEntities.VISUAL_NEURON.get().create(level());
+        if (neuron == null) return;
+
+        Vec3 homeOffset = createNeuronHomeOffset();
+        Vec3 home = position().add(homeOffset);
+        neuron.setPos(home);
+        neuron.setOwner(this);
+        neuron.setHomeOffset(homeOffset);
+        neuron.setHomePosition(home);
+        if (serverLevel.addFreshEntity(neuron)) {
+            activeNeuronUUIDs.add(neuron.getUUID());
+            neuronHealth.put(neuron.getUUID(), new NeuronHealth(neuron.getHealth(), neuron.getMaxHealth()));
+            spawnedNeuronCount++;
+        } else {
+            neuron.cancelPendingSpawn();
+        }
+    }
+
+    /// 在限定球面范围内生成神经元的初始编队偏移。
+    private Vec3 createNeuronHomeOffset() {
+        double radius = random.nextFloat() + 5.0;
+        double theta = random.nextFloat() * Math.PI;
+        double beta = random.nextFloat() * Math.PI;
+        double sinBeta = Math.sin(beta);
+        return new Vec3(radius * sinBeta * Math.cos(theta), radius * Math.cos(beta), radius * sinBeta * Math.sin(theta));
+    }
+
+    private void updateNeuronHomes(List<VisualNeuron> loadedNeurons) {
+        for (VisualNeuron neuron : loadedNeurons) {
+            Vec3 baseOffset = neuron.getHomeOffset();
+            if (baseOffset == null) {
+                baseOffset = createNeuronHomeOffset();
+                neuron.setHomeOffset(baseOffset);
+            }
+            Vec3 currentOffset = baseOffset;
+            if (random.nextFloat() < NEURON_HOME_ROTATION_CHANCE) {
+                double angle = random.nextDouble() * 20.0;
+                double cosine = Math.cos(angle);
+                double sine = Math.sin(angle);
+                currentOffset = new Vec3(baseOffset.x * cosine + baseOffset.z * sine, baseOffset.y, -baseOffset.x * sine + baseOffset.z * cosine);
+            }
+            neuron.setHomePosition(position().add(currentOffset));
+        }
+    }
+
+    private void tickPhaseOneMovement(double verticalOffset) {
+        LivingEntity target = getTarget();
+        if (target == null || !target.isAlive()) return;
+
+        Vec3 away = position().subtract(target.position()).multiply(1.0, 0.0, 1.0);
+        if (away.lengthSqr() < 1.0E-6) {
+            away = new Vec3(1.0, 0.0, 0.0);
+        }
+        Vec3 destination = target.position().add(away.normalize().scale(PHASE_TWO_RETREAT_DISTANCE)).add(0.0, verticalOffset, 0.0);
+        Vec3 offset = destination.subtract(position());
+        if (offset.lengthSqr() > 2.0) {
+            setDeltaMovement(offset.normalize().scale(isFtw() ? 0.45 : 0.15));
+        }
+        faceCombatPosition(target.getEyePosition(), 10.0F, 30.0F);
+    }
+
+    private void dispatchReadyNeuron(List<VisualNeuron> loadedNeurons) {
+        if (!summoningComplete() || getTarget() == null) return;
+        int interval = isMaster() ? 5 : isExpert() ? 6 : 10;
+        if (tickCount % interval != 0) return;
+
+        for (VisualNeuron neuron : loadedNeurons) {
+            if (neuron.attack(getTarget())) return;
+        }
+    }
+
+    /// 第二阶段依次执行短暂变形、曲线绕行、冲刺、淡出、重新定位和淡入。
+    /// 额外冲刺前会重新经过绕行段，不能直接在上一段冲刺结束的位置再次启动冲刺。
+    private void tickPhaseTwoCycle() {
+        LivingEntity target = getTarget();
+        if (target == null || !target.isAlive() || !canAttack(target)) {
+            if (phaseTwoCurveStart != null || phaseTwoState == PhaseTwoState.DASHING) {
+                phaseTwoDashRemaining = phaseTwoDashCount() - 1;
+                enterPhaseTwoState(PhaseTwoState.STALKING);
+            }
+            setDeltaMovement(Vec3.ZERO);
+            return;
+        }
+
+        switch (phaseTwoState) {
+            case TRANSFORMING -> {
+                setDeltaMovement(Vec3.ZERO);
+                lookAtTarget(target);
+                if (++phaseTwoStateTicks >= PHASE2_TRANSFORM_TICKS) {
+                    enterPhaseTwoState(PhaseTwoState.STALKING);
+                }
+            }
+            case STALKING -> {
+                if (phaseTwoCurveStart == null) initializeStalkingCurve(target);
+                moveAlongPhaseTwoCurve((phaseTwoStateTicks + 1.0) / PHASE2_STALK_TICKS);
+                lookAtTarget(target);
+                if (++phaseTwoStateTicks >= PHASE2_STALK_TICKS) {
+                    enterPhaseTwoState(PhaseTwoState.DASHING);
+                }
+            }
+            case DASHING -> {
+                if (phaseTwoStateTicks < PHASE2_DASH_WINDUP_TICKS) {
+                    Vec3 away = position().subtract(target.position());
+                    setDeltaMovement(away.lengthSqr() > 1.0E-6
+                            ? away.normalize().scale(PHASE_TWO_RETREAT_SPEED)
+                            : Vec3.ZERO);
+                } else {
+                    if (phaseTwoCurveStart == null) initializeDashCurve(target);
+                    double dashTicks = phaseTwoStateTicks - PHASE2_DASH_WINDUP_TICKS + 1.0;
+                    moveAlongPhaseTwoCurve(dashTicks / (PHASE2_DASH_TICKS - PHASE2_DASH_WINDUP_TICKS));
+                }
+                lookAtTarget(target);
+                if (++phaseTwoStateTicks >= PHASE2_DASH_TICKS) {
+                    if (phaseTwoDashRemaining > 0) {
+                        phaseTwoDashRemaining--;
+                        enterPhaseTwoState(PhaseTwoState.STALKING);
+                    } else {
+                        phaseTwoDashRemaining = phaseTwoDashCount() - 1;
+                        enterPhaseTwoState(PhaseTwoState.FADING_OUT);
+                    }
+                }
+            }
+            case FADING_OUT -> {
+                Vec3 away = position().subtract(target.position());
+                setDeltaMovement(away.lengthSqr() > 1.0E-6
+                        ? away.normalize().scale(PHASE_TWO_RETREAT_SPEED)
+                        : Vec3.ZERO);
+                if (++phaseTwoStateTicks >= PHASE2_FADE_OUT_TICKS) {
+                    enterPhaseTwoState(PhaseTwoState.FADING_IN);
+                }
+            }
+            case FADING_IN -> {
+                setDeltaMovement(Vec3.ZERO);
+                lookAtTarget(target);
+                if (++phaseTwoStateTicks >= PHASE2_FADE_IN_TICKS) {
+                    enterPhaseTwoState(PhaseTwoState.APPROACHING);
+                }
+            }
+            case APPROACHING -> {
+                Vec3 offset = target.position().add(0.0, 1.0, 0.0).subtract(position());
+                if (offset.lengthSqr() > 16.0 && hurtTime == 0) {
+                    setDeltaMovement(offset.normalize().scale(PHASE_TWO_REPOSITION_SPEED));
+                } else if (hurtTime == 0) {
+                    setDeltaMovement(Vec3.ZERO);
+                }
+                lookAtTarget(target);
+                if (++phaseTwoStateTicks >= PHASE2_STALK_TICKS || offset.lengthSqr() <= 16.0) {
+                    enterPhaseTwoState(PhaseTwoState.STALKING);
+                }
+            }
+        }
+        entityData.set(DATA_PHASE_TWO_STATE_TICKS, phaseTwoStateTicks);
+    }
+
+    private void enterPhaseTwoState(PhaseTwoState state) {
+        phaseTwoState = state;
+        phaseTwoStateTicks = 0;
+        phaseTwoCurveStart = null;
+        phaseTwoCurveControl = null;
+        phaseTwoCurveEnd = null;
+        if (state == PhaseTwoState.FADING_IN) {
+            doPhaseTwoTeleport();
+        }
+        entityData.set(DATA_PHASE_TWO_STATE, state.id);
+        entityData.set(DATA_PHASE_TWO_STATE_TICKS, 0);
+    }
+
+    /// 构造第二阶段绕行曲线。控制点位于玩家周围，终点略高于控制点，形成掠过轨迹。
+    private void initializeStalkingCurve(LivingEntity target) {
+        double radius = 16.0 + random.nextDouble();
+        double angle = random.nextDouble() * Mth.TWO_PI;
+        phaseTwoCurveStart = position();
+        phaseTwoCurveControl = target.position().add(Math.sin(angle) * radius, 2.0, Math.cos(angle) * radius);
+        phaseTwoCurveEnd = phaseTwoCurveControl.add(0.0, 3.0, 0.0);
+        setDeltaMovement(Vec3.ZERO);
+    }
+
+    /// 冲刺曲线先穿过玩家附近，再延伸到玩家另一侧，避免自动索敌式折线追踪。
+    private void initializeDashCurve(LivingEntity target) {
+        Vec3 fromTarget = target.position().subtract(position());
+        Vec3 horizontal = fromTarget.multiply(1.0, 0.0, 1.0);
+        if (horizontal.lengthSqr() < 1.0E-6) horizontal = new Vec3(1.0, 0.0, 0.0);
+        phaseTwoCurveStart = position();
+        phaseTwoCurveControl = target.position().add(random.nextDouble() - 0.5, -2.0, random.nextDouble() - 0.5);
+        phaseTwoCurveEnd = target.position().add(horizontal.normalize().scale(PHASE_TWO_CURVE_DISTANCE)).add(0.0, 2.0, 0.0);
+        setDeltaMovement(Vec3.ZERO);
+    }
+
+    private void moveAlongPhaseTwoCurve(double progress) {
+        if (phaseTwoCurveStart == null || phaseTwoCurveControl == null || phaseTwoCurveEnd == null) {
+            return;
+        }
+        double t = Mth.clamp(progress, 0.0, 1.0);
+        double inverse = 1.0 - t;
+        Vec3 position = phaseTwoCurveStart.scale(inverse * inverse)
+                .add(phaseTwoCurveControl.scale(2.0 * inverse * t))
+                .add(phaseTwoCurveEnd.scale(t * t));
+        setDeltaMovement(Vec3.ZERO);
+        setPos(position);
+    }
+
+    private void lookAtTarget(LivingEntity target) {
+        faceCombatPosition(target.getEyePosition(), 10.0F, 30.0F);
+    }
+
+    private void enterPhaseTwo() {
+        phase2 = true;
+        entityData.set(DATA_PHASE_TWO, true);
+        aliveNeurons = 0;
+        broadcastPhaseTransition();
+        phaseTwoDashRemaining = phaseTwoDashCount() - 1;
+        enterPhaseTwoState(PhaseTwoState.TRANSFORMING);
+        setHealth(getMaxHealth());
+        ensureIllusions();
+    }
+
+    private int phaseTwoDashCount() {
+        return getHealth() / getMaxHealth() < 0.3F ? 3 : 2;
+    }
+
+    /// 第二阶段维持三个不同槽位的镜像幻象。
+    ///
+    /// 幻象不写入区块存档，因此本体从存档恢复、幻象被外部命令移除或实体生成暂时失败时，
+    /// 都由这里按槽位补齐。已有幻象会先从本体的部件列表中恢复引用，避免重复生成。
+    private void ensureIllusions() {
+        if (!phase2 || !isExpert() && !isFtw() || !(level() instanceof ServerLevel serverLevel)) {
+            return;
+        }
+
+        for (Entity entity : getSubEntities()) {
+            if (entity instanceof BrainFake fake && !fake.isRemoved() && fake.getOwner() == this) {
+                bindIllusion(fake);
+            }
+        }
+
+        for (int slot = 0; slot < illusions.length; slot++) {
+            BrainFake existing = illusions[slot];
+            if (existing != null && !existing.isRemoved()) {
+                continue;
+            }
+
+            BrainFake illusion = BossEntities.BRAIN_FAKE.get().create(level());
+            if (illusion == null) {
+                continue;
+            }
+            illusion.setPos(position());
+            // 所有者和槽位必须在生成包创建前完成绑定，客户端收到幻象的第一帧就能
+            // 解析本体并计算镜像位置，不会先在出生点停留一帧再跳走。
+            illusion.setMaster(this, slot + 1);
+            if (serverLevel.addFreshEntity(illusion)) {
+                illusions[slot] = illusion;
+            } else {
+                illusion.discard();
+            }
+        }
+    }
+
+    void bindIllusion(BrainFake illusion) {
+        int slot = illusion.getIllusionIndex() - 1;
+        if (slot >= 0 && slot < illusions.length) {
+            BrainFake previous = illusions[slot];
+            if (previous == null || previous.isRemoved() || previous.getId() > illusion.getId()) {
+                illusions[slot] = illusion;
+            } else if (previous != illusion && !illusion.isRemoved()) {
+                illusion.discard();
+            }
+        }
+    }
+
+    void onIllusionRemoved(BrainFake illusion) {
+        int slot = illusion.getIllusionIndex() - 1;
+        if (slot >= 0 && slot < illusions.length && illusions[slot] == illusion) {
+            illusions[slot] = null;
+        }
+    }
+
+    private void doTeleport() {
+        setDeltaMovement(Vec3.ZERO);
+        double minimumRadius = isExpert() ? 7.0 : 9.0;
+        teleportAroundTarget(minimumRadius, minimumRadius + 1.0, 0.0, Math.PI, 0.0, 16);
+    }
+
+    /// 第二阶段在玩家较远处重新显现，并保留安全碰撞检查，避免传送进方块或贴到玩家脸上。
+    private void doPhaseTwoTeleport() {
+        setDeltaMovement(Vec3.ZERO);
+        teleportAroundTarget(10.0, 11.0, Math.PI * 0.35, Math.PI * 0.65, 2.0, 24);
+    }
+
+    /// 在球坐标范围内取样，同时跳过会把实体放进方块或液体的位置。
+    private void teleportAroundTarget(double minimumRadius, double maximumRadius, double minimumBeta, double maximumBeta, double verticalOffset, int attempts) {
+        LivingEntity target = getTarget();
+        if (target == null || !(level() instanceof ServerLevel serverLevel)) return;
+
+        for (int attempt = 0; attempt < attempts; attempt++) {
+            double radius = Mth.lerp(random.nextDouble(), minimumRadius, maximumRadius);
+            double theta = random.nextDouble() * Mth.TWO_PI;
+            double beta = Mth.lerp(random.nextDouble(), minimumBeta, maximumBeta);
+            double sinBeta = Math.sin(beta);
+            Vec3 destination = target.position().add(radius * sinBeta * Math.cos(theta), radius * Math.cos(beta) + verticalOffset, radius * sinBeta * Math.sin(theta));
+            destination = new Vec3(destination.x, Mth.clamp(destination.y, serverLevel.getMinBuildHeight() + 1.0, serverLevel.getMaxBuildHeight() - getBbHeight() - 1.0), destination.z);
+            BlockPos blockPosition = BlockPos.containing(destination);
+            AABB destinationBounds = getBoundingBox().move(destination.x - getX(), destination.y - getY(), destination.z - getZ());
+            if (serverLevel.hasChunkAt(blockPosition) && serverLevel.noCollision(this, destinationBounds) && !serverLevel.containsAnyLiquid(destinationBounds)) {
+                teleportTo(destination.x, destination.y, destination.z);
+                return;
+            }
+        }
+    }
+
+    private List<VisualNeuron> findOwnedLoadedNeurons() {
+        Set<VisualNeuron> found = new LinkedHashSet<>();
+        for (Entity entity : getSubEntities()) {
+            if (entity instanceof VisualNeuron neuron && neuron.isAlive() && neuron.isOwnedBy(this)) {
+                found.add(neuron);
+            }
+        }
+        found.addAll(level().getEntitiesOfClass(VisualNeuron.class, getBoundingBox().inflate(NEURON_RECOVERY_RANGE), neuron -> neuron.isAlive() && neuron.isOwnedBy(this)));
+        return List.copyOf(found);
+    }
+
+    private void applyRecordedNeuronDeaths() {
+        if (level() instanceof ServerLevel serverLevel) {
+            activeNeuronUUIDs.removeAll(BossChildDeathLedger.consume(serverLevel, getUUID()));
+        }
+    }
+
+    public void onNeuronDefeated(VisualNeuron neuron) {
+        activeNeuronUUIDs.remove(neuron.getUUID());
+        neuronHealth.put(neuron.getUUID(), new NeuronHealth(0.0F, neuron.getMaxHealth()));
+    }
+
+    public static void recordDetachedNeuronDeath(ServerLevel level, UUID ownerUUID, UUID neuronUUID) {
+        BossChildDeathLedger.record(level, ownerUUID, neuronUUID);
+    }
+
+    @Override
+    protected float getBossBarProgress() {
+        return getEncounterProgress();
+    }
+
+    @Override
+    protected float getBossBarMaximumHealth() {
+        updateNeuronHealth();
+        double maximum = getMaxHealth() + Math.max(0, neuronCount() - neuronHealth.size()) * estimatedNeuronMaximum;
+        for (NeuronHealth health : neuronHealth.values()) maximum += health.maximum();
+        return (float) maximum;
+    }
+
+    /// 整场战斗共用本体与全部神经元的总生命上限，转阶段时不重置血条。
+    /// 卸载的神经元保留最后记录的生命，死亡成员只保留最大生命用于总量计算。
+    public float getEncounterProgress() {
+        updateNeuronHealth();
+        double health = getHealth();
+        if (!isPhase2()) {
+            health += Math.max(0, neuronCount() - spawnedNeuronCount) * estimatedNeuronMaximum;
+            for (UUID uuid : activeNeuronUUIDs) {
+                NeuronHealth snapshot = neuronHealth.get(uuid);
+                health += snapshot == null ? estimatedNeuronMaximum : snapshot.current();
+            }
+        }
+        float maximum = getBossBarMaximumHealth();
+        return maximum > 0.0F ? Mth.clamp((float) (health / maximum), 0.0F, 1.0F) : 0.0F;
+    }
+
+    private void updateNeuronHealth() {
+        if (neuronHealthUpdateTick == tickCount) return;
+        neuronHealthUpdateTick = tickCount;
+        if (estimatedNeuronMaximum <= 0.0F) {
+            VisualNeuron sample = MonsterEntities.VISUAL_NEURON.get().create(level());
+            if (sample != null) {
+                sample.setPos(position());
+                CreatureDifficultyScaling.apply(sample, true);
+                estimatedNeuronMaximum = sample.getMaxHealth();
+            } else
+                estimatedNeuronMaximum = (float) ModEntities.creatureAttributes(MonsterEntities.VISUAL_NEURON.get()).attributes().getBaseValue(Attributes.MAX_HEALTH);
+        }
+        for (VisualNeuron neuron : findOwnedLoadedNeurons()) {
+            neuronHealth.put(neuron.getUUID(), new NeuronHealth(neuron.getHealth(), neuron.getMaxHealth()));
+        }
+    }
+
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        return !isPhase2() || super.isInvulnerableTo(source);
+    }
+
+    public static void applyContactDebuff(LivingEntity attacker, LivingEntity living) {
+        if (!(attacker.level() instanceof ServerLevel level) || !LibUtils.isAtLeastExpert(level))
+            return;
+        boolean master = LibUtils.isMaster(level);
+        Holder<MobEffect> debuff;
+        float min;
+        int i = attacker.getRandom().nextInt(81);
+        if (i < 11) {
+            debuff = MobEffects.POISON;
+            min = master ? 6.56F : 5.25F;
+        } else if (i < 22) {
+            debuff = MobEffects.BLINDNESS;
+            min = master ? 3.75F : 3.0F;
+        } else if (i < 24) {
+            debuff = ModEffects.CURSED;
+            min = master ? 0.94F : 0.75F;
+        } else if (i < 35) {
+            debuff = ModEffects.BLEEDING;
+            min = master ? 9.38F : 7.5F;
+        } else if (i < 37) {
+            debuff = LibEffects.CONFUSED;
+            min = master ? 1.88F : 1.5F;
+        } else if (i < 48) {
+            debuff = MobEffects.MOVEMENT_SLOWDOWN;
+            min = master ? 6.56F : 5.25F;
+        } else if (i < 59) {
+            debuff = MobEffects.WEAKNESS;
+            min = master ? 14.06F : 11.25F;
+        } else if (i < 70) {
+            debuff = ModEffects.SILENCED;
+            min = master ? 1.88F : 1.5F;
+        } else {
+            debuff = ModEffects.BROKEN_ARMOR;
+            min = master ? 12.19F : 9.75F;
+        }
+        living.addEffect(new MobEffectInstance(debuff, (int) ((attacker.getRandom().nextFloat() * min + min) * 20)));
+    }
+
+
+    @Override
+    public boolean doHurtTarget(Entity target) {
+        boolean hit = super.doHurtTarget(target);
+        if (hit && target instanceof LivingEntity living && getRandom().nextFloat() < 0.3333F) {
+            applyContactDebuff(this, living);
+        }
+        return hit;
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        boolean damaged = isPhase2() && super.hurt(source, amount);
+        if (damaged && isFtw()) entityData.set(DATA_OPAQUE_ILLUSIONS, true);
+        return damaged;
+    }
+
+    @Override
+    public boolean isPickable() {
+        return isPhase2();
+    }
+
+    /// 脑的两阶段位移都由自身曲线控制，不叠加原版重力。
+    @Override
+    public boolean isNoGravity() {
+        return true;
+    }
+
+    @Override
+    public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
+        return false;
+    }
+
+
+    public boolean isPhase2() {
+        return level().isClientSide ? entityData.get(DATA_PHASE_TWO) : phase2;
+    }
+
+    /// 返回客户端插值后的显隐进度。第一阶段生成时由半透明逐渐显现，重新定位前后分别淡出和淡入。
+    public float getFadeProgress(float partialTick) {
+        if (isPhase2()) {
+            PhaseTwoState state = level().isClientSide
+                    ? PhaseTwoState.byId(entityData.get(DATA_PHASE_TWO_STATE))
+                    : phaseTwoState;
+            float ticks = (level().isClientSide
+                    ? entityData.get(DATA_PHASE_TWO_STATE_TICKS)
+                    : phaseTwoStateTicks) + partialTick;
+            return switch (state) {
+                case FADING_OUT -> 1.0F - Mth.clamp(ticks / PHASE2_FADE_OUT_TICKS, 0.0F, 1.0F);
+                case FADING_IN -> Mth.clamp(ticks / PHASE2_FADE_IN_TICKS, 0.0F, 1.0F);
+                default -> 1.0F;
+            };
+        }
+        PhaseOneState state = level().isClientSide
+                ? PhaseOneState.byId(entityData.get(DATA_PHASE_ONE_STATE))
+                : phaseOneState;
+        float ticks = (level().isClientSide
+                ? entityData.get(DATA_PHASE_ONE_STATE_TICKS)
+                : phaseOneStateTicks) + partialTick;
+        return switch (state) {
+            case SUMMONING -> Mth.clamp(tickCount / 51.0F, 0.0F, 1.0F);
+            case APPROACHING -> 1.0F;
+            case FADING_OUT -> 1.0F - Mth.clamp(ticks / PHASE1_FADE_OUT_TICKS, 0.0F, 1.0F);
+            case FADING_IN -> Mth.clamp(ticks / PHASE1_FADE_IN_TICKS, 0.0F, 1.0F);
+        };
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "Brain", 0, state -> state.setAndContinue(isPhase2() ? OPEN : CLOSED)));
+    }
+
+    int getPhaseTwoDashRemaining() {
+        return phaseTwoDashRemaining;
+    }
+
+    private int neuronCount() {
+        return isFtw() ? NEURON_COUNT * 2 : NEURON_COUNT;
+    }
+
+    public boolean hasOpaqueIllusions() {
+        return entityData.get(DATA_OPAQUE_ILLUSIONS);
+    }
+
+    @Override
+    public void knockback(double strength, double x, double z) {
+        if (!isPhase2() || level().isClientSide || strength <= 0.0) return;
+        Vec3 direction = new Vec3(x, 0.0, z);
+        if (direction.lengthSqr() > 1.0E-7)
+            knockbackVelocity = knockbackVelocity.add(direction.normalize().scale(-strength * 0.55));
+    }
+
+    /// 击退同时平移当前曲线，避免下一刻曲线求值把 Boss 拉回受击前的位置。
+    private void applyPhaseTwoKnockback() {
+        if (knockbackVelocity.lengthSqr() < 1.0E-5) {
+            knockbackVelocity = Vec3.ZERO;
+            return;
+        }
+        setPos(position().add(knockbackVelocity));
+        if (phaseTwoCurveStart != null)
+            phaseTwoCurveStart = phaseTwoCurveStart.add(knockbackVelocity);
+        if (phaseTwoCurveControl != null)
+            phaseTwoCurveControl = phaseTwoCurveControl.add(knockbackVelocity);
+        if (phaseTwoCurveEnd != null) phaseTwoCurveEnd = phaseTwoCurveEnd.add(knockbackVelocity);
+        knockbackVelocity = knockbackVelocity.scale(KNOCKBACK_MOMENTUM);
+    }
+
+    /// 短时强制效果持续刷新，离开战斗范围或 Boss 撤离后自动恢复，保留被覆盖的药水效果。
+    private void tickForcedGravity() {
+        if (!isFtw() || !isAlive() || isDisengageRetreating() || !(level() instanceof ServerLevel serverLevel))
+            return;
+        for (Player player : serverLevel.players()) {
+            if (player.isAlive() && !player.isCreative() && !player.isSpectator() && distanceToSqr(player) < NEARBY_PLAYER_SEARCH_RANGE * NEARBY_PLAYER_SEARCH_RANGE) {
+                player.addEffect(new MobEffectInstance(LibEffects.GRAVITATION, 3, 2, false, false, false));
+            }
+        }
+    }
+
+    private boolean summoningComplete() {
+        return spawnedNeuronCount >= neuronCount();
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean(PHASE_TWO_TAG, phase2);
+        tag.putBoolean("OpaqueIllusions", hasOpaqueIllusions());
+        tag.putInt(PHASE_TWO_STATE_TAG, phaseTwoState.id);
+        tag.putInt(PHASE_TWO_STATE_TICKS_TAG, phaseTwoStateTicks);
+        tag.putInt(PHASE_TWO_DASH_REMAINING_TAG, phaseTwoDashRemaining);
+        tag.putInt(PHASE_ONE_STATE_TAG, phaseOneState.id);
+        tag.putInt(PHASE_ONE_STATE_TICKS_TAG, phaseOneStateTicks);
+        tag.putDouble(PHASE_ONE_INERTIA_X_TAG, phaseOneInertia.x);
+        tag.putDouble(PHASE_ONE_INERTIA_Y_TAG, phaseOneInertia.y);
+        tag.putDouble(PHASE_ONE_INERTIA_Z_TAG, phaseOneInertia.z);
+        tag.putInt(SUMMON_TICKS_TAG, summonTicks);
+        tag.putInt(SPAWNED_NEURON_COUNT_TAG, spawnedNeuronCount);
+        tag.putFloat("EstimatedNeuronMaximum", estimatedNeuronMaximum);
+        ListTag healthSnapshots = new ListTag();
+        neuronHealth.forEach((uuid, health) -> {
+            CompoundTag entry = new CompoundTag();
+            entry.putUUID("UUID", uuid);
+            entry.putFloat("Health", health.current());
+            entry.putFloat("Maximum", health.maximum());
+            healthSnapshots.add(entry);
+        });
+        tag.put("NeuronHealth", healthSnapshots);
+
+        List<UUID> trackedNeurons = new ArrayList<>(activeNeuronUUIDs);
+        trackedNeurons.sort(Comparator.comparing(UUID::toString));
+        tag.putInt(TRACKED_NEURON_COUNT_TAG, trackedNeurons.size());
+        for (int index = 0; index < trackedNeurons.size(); index++) {
+            tag.putUUID(TRACKED_NEURON_TAG + index, trackedNeurons.get(index));
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        phase2 = tag.getBoolean(PHASE_TWO_TAG);
+        entityData.set(DATA_OPAQUE_ILLUSIONS, tag.getBoolean("OpaqueIllusions"));
+        phaseTwoState = PhaseTwoState.byId(tag.getInt(PHASE_TWO_STATE_TAG));
+        phaseTwoStateTicks = Math.max(0, tag.getInt(PHASE_TWO_STATE_TICKS_TAG));
+        phaseTwoDashRemaining = Math.max(0, tag.getInt(PHASE_TWO_DASH_REMAINING_TAG));
+        // 曲线控制点不写入存档；恢复后从当前位置重新开始当前曲线段，避免跨版本坐标残留。
+        if (phaseTwoState == PhaseTwoState.STALKING || phaseTwoState == PhaseTwoState.DASHING) {
+            phaseTwoStateTicks = 0;
+        }
+        phaseTwoCurveStart = null;
+        phaseTwoCurveControl = null;
+        phaseTwoCurveEnd = null;
+        phaseOneState = PhaseOneState.byId(tag.getInt(PHASE_ONE_STATE_TAG));
+        phaseOneStateTicks = Math.max(0, tag.getInt(PHASE_ONE_STATE_TICKS_TAG));
+        phaseOneInertia = new Vec3(tag.getDouble(PHASE_ONE_INERTIA_X_TAG), tag.getDouble(PHASE_ONE_INERTIA_Y_TAG), tag.getDouble(PHASE_ONE_INERTIA_Z_TAG));
+        entityData.set(DATA_PHASE_TWO, phase2);
+        entityData.set(DATA_PHASE_TWO_STATE, phaseTwoState.id);
+        entityData.set(DATA_PHASE_TWO_STATE_TICKS, phaseTwoStateTicks);
+        entityData.set(DATA_PHASE_ONE_STATE, phaseOneState.id);
+        entityData.set(DATA_PHASE_ONE_STATE_TICKS, phaseOneStateTicks);
+        summonTicks = Math.max(0, tag.getInt(SUMMON_TICKS_TAG));
+        spawnedNeuronCount = Mth.clamp(tag.getInt(SPAWNED_NEURON_COUNT_TAG), 0, neuronCount());
+        estimatedNeuronMaximum = tag.getFloat("EstimatedNeuronMaximum");
+        if (!Float.isFinite(estimatedNeuronMaximum) || estimatedNeuronMaximum < 0.0F)
+            estimatedNeuronMaximum = 0.0F;
+        neuronHealth.clear();
+        neuronHealthUpdateTick = Integer.MIN_VALUE;
+        ListTag healthSnapshots = tag.getList("NeuronHealth", Tag.TAG_COMPOUND);
+        for (int i = 0; i < healthSnapshots.size(); i++) {
+            CompoundTag entry = healthSnapshots.getCompound(i);
+            float maximum = entry.getFloat("Maximum");
+            float health = entry.getFloat("Health");
+            if (entry.hasUUID("UUID") && Float.isFinite(maximum) && maximum > 0.0F && Float.isFinite(health))
+                neuronHealth.put(entry.getUUID("UUID"), new NeuronHealth(Mth.clamp(health, 0.0F, maximum), maximum));
+        }
+
+        activeNeuronUUIDs.clear();
+        int savedTrackedCount = tag.getInt(TRACKED_NEURON_COUNT_TAG);
+        int trackedCount = Mth.clamp(savedTrackedCount, 0, spawnedNeuronCount);
+        for (int index = 0; index < trackedCount; index++) {
+            String key = TRACKED_NEURON_TAG + index;
+            if (tag.hasUUID(key)) activeNeuronUUIDs.add(tag.getUUID(key));
+        }
+
+        for (int index = 0; index < illusions.length; index++) {
+            illusions[index] = null;
+        }
+    }
+
+    @Override
+    public void die(DamageSource source) {
+        activeNeuronUUIDs.clear();
+        for (VisualNeuron neuron : findOwnedLoadedNeurons()) {
+            neuron.discard();
+        }
+        Arrays.fill(illusions, null);
+        super.die(source);
+        if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
+            if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
+                KillBoard.INSTANCE.defeat(getType());
+                if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, serverLevel) || !MeteoriteTracker.INSTANCE.spawnAtNextNight && serverLevel.random.nextBoolean()) {
+                    MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
+                }
+                for (var player : getOnlineCombatParticipants()) {
+                    TreasureBagItem.createItemEntity(this, player);
+                }
+            }
+        }
+    }
+
+    enum PhaseOneState {
+        /// 生成飞眼怪，准备一阶段战斗。
+        SUMMONING(0),
+        /// 接近玩家，等待下一次传送。
+        APPROACHING(1),
+        /// 传送前逐渐隐去。
+        FADING_OUT(2),
+        /// 传送到新位置后逐渐显现。
+        FADING_IN(3);
+
+        private final int id;
+
+        PhaseOneState(int id) {
+            this.id = id;
+        }
+
+        private static PhaseOneState byId(int id) {
+            return switch (id) {
+                case 1 -> APPROACHING;
+                case 2 -> FADING_OUT;
+                case 3 -> FADING_IN;
+                default -> SUMMONING;
+            };
+        }
+    }
+
+    enum PhaseTwoState {
+        /// 切换至下一形态的过渡阶段。
+        TRANSFORMING(0),
+        /// 二阶段追踪玩家，准备冲刺或传送。
+        STALKING(1),
+        /// 执行冲刺攻击。
+        DASHING(2),
+        /// 传送前逐渐隐去。
+        FADING_OUT(3),
+        /// 传送到新位置后逐渐显现。
+        FADING_IN(4),
+        /// 显形完成后接近目标，再进入追踪状态。
+        APPROACHING(5);
+
+        private final int id;
+
+        PhaseTwoState(int id) {
+            this.id = id;
+        }
+
+        private static PhaseTwoState byId(int id) {
+            return switch (id) {
+                case 1 -> STALKING;
+                case 2 -> DASHING;
+                case 3 -> FADING_OUT;
+                case 4 -> FADING_IN;
+                case 5 -> APPROACHING;
+                default -> TRANSFORMING;
+            };
+        }
+    }
+}

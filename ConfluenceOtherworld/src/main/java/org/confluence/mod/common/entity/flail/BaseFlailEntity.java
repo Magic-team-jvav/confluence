@@ -1,12 +1,18 @@
 package org.confluence.mod.common.entity.flail;
 
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -14,113 +20,89 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.component.FlailComponent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.common.LibEffects;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.enchantment.TurbineEnchantments;
-import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.mod.common.init.item.FlailItems;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
-import org.confluence.mod.common.item.flail.FlailStrategy;
+import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.HandPositionUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4x3f;
 import org.joml.Vector3f;
-import software.bernie.geckolib.animatable.GeoAnimatable;
+import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
+import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
-
-/**
- * <h1>连枷弹射物基类</h1>
- * 支持五阶段状态机：SPIN->THROWN->STAY->RETRACT
- * <p>
- * SPIN：绕玩家肩部 Z 轴圆周挥舞，造成 60% 伤害<br>
- * THROWN：沿视线方向发射，造成 100% 伤害，无限穿透<br>
- * STAY：受重力停留地面，造成 50% 伤害<br>
- * RETRACT：飞回玩家并消失
- */
-public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatable {
-    // ── 状态常数 ─
+/// # 连枷弹射物基类
+/// 支持五阶段状态机：SPIN->THROWN->STAY->RETRACT
+///
+/// SPIN：绕玩家肩部 Z 轴圆周挥舞，造成 60% 伤害
+/// THROWN：沿视线方向发射，造成 100% 伤害，无限穿透
+/// STAY：受重力停留地面，造成 50% 伤害
+/// RETRACT：飞回玩家并消失
+public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
+    /// ── 状态常量 ──
     public static final int PHASE_SPIN = 0;
     public static final int PHASE_THROWN = 1;
     public static final int PHASE_STAY = 2;
     public static final int PHASE_RETRACT = 3;
 
-    // ── 同步数据 ──
+    private static final float SUNFURY_EXPLOSION_RADIUS = 2.5F;
+
+    /// ── 同步数据 ──
     private static final EntityDataAccessor<Integer> DATA_PHASE =
             SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_SPIN_ANGLE =
             SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> DATA_LAUNCH_MODE =
+            SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_HIT_EFFECT_ENABLED =
+            SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.BOOLEAN);
 
-    // ── 运行时状态 ──
+    /// ── 运行时状态 ──
     public float spinAngle = 0.0F;
-    private int hitCooldown = 0;
-    /**
-     * 风爆附魔独立冷却，防止每 tick 多次触发
-     */
+    /// 风爆附魔独立冷却，防止每 tick 多次触发
     private int windBurstCooldown = 0;
     private int stayDuration = 0;
     private int bounceCount = 0;
+    private int lastSunfuryImpactTick = -3;
     private boolean playerDropped = false;
-    /**
-     * SPIN 阶段持续 tick 计数，供 {@link TurbineEnchantments} 等外部附魔效果查询
-     */
+    /// SPIN 阶段持续 tick 计数，供 {@link TurbineEnchantments} 等外部附魔效果查询
     private int spinTickCounter = 0;
-    /**
-     * 上一帧的阶段，用于检测阶段切换
-     */
+    /// 上一帧的阶段，用于检测阶段切换
     private int previousPhase = -1;
-    /**
-     * 发射模式：为 {@code true} 时跳过 SPIN/STAY，仅走 THROWN→RETRACT 简化流程。
-     */
-    private boolean launchMode = false;
-    /**
-     * 渲染用：帧间平滑后的链条方向，由 {@code BaseFlailRenderer} 逐帧 lerp 更新
-     */
-    public Vec3 smoothedChainDir = null;
     @Nullable
-    private FlailComponent cachedComponent;
-    /**
-     * 攻击策略，控制各阶段的额外攻击行为（如发射激光、追踪泡泡）。
-     * 子类可在构造函数中覆盖以绑定专属策略。
-     */
-    protected FlailStrategy attackStrategy = FlailStrategy.NULL;
-    private final AnimatableInstanceCache animatableCache = GeckoLibUtil.createInstanceCache(this);
+    private Parameters cachedParameters;
+    /// 客户端渲染链条时使用的平滑方向。
+    ///
+    /// 连枷阶段切换或服务端同步位置时，弹球位置可能在相邻帧内出现小幅跳变。如果链条
+    /// 直接使用瞬时方向，会表现为手部端点弹动；该字段只参与客户端渲染，不保存到实体数据。
+    @Nullable
+    public Vec3 smoothedChainDir;
+    private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
+    @Nullable
+    private ParticleEmitter flameEmitter;
 
-    /**
-     * 获取当前 SPIN 持续 tick 数
-     */
+    /// 获取当前 SPIN 持续 tick 数
     public int getSpinTickCounter() {
         return spinTickCounter;
-    }
-
-    /** 是否为发射模式（跳过 SPIN/STAY，仅 THROWN→RETRACT） */
-    public boolean isLaunchMode() {
-        return launchMode;
-    }
-
-    /** 设置发射模式（用于 Flairon 等动态切换形态的连枷） */
-    public void setLaunchMode(boolean launchMode) {
-        this.launchMode = launchMode;
-    }
-
-    /** 获取当前攻击策略 */
-    @NotNull
-    public FlailStrategy getAttackStrategy() {
-        return attackStrategy;
-    }
-
-    /** 设置攻击策略（通常在 {@link #init} 之前调用） */
-    public void setAttackStrategy(@NotNull FlailStrategy attackStrategy) {
-        this.attackStrategy = attackStrategy;
     }
 
     public BaseFlailEntity(EntityType<? extends BaseFlailEntity> entityType, Level level) {
@@ -128,39 +110,67 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         setNoGravity(true);
     }
 
-    /**
-     * 由物品调用，设置弹射物所有者、连枷组件和初始位置
-     */
-    public void init(@NotNull Player owner, ItemStack weapon, @NotNull FlailComponent component) {
+    /// 由物品调用，设置弹射物所有者、连枷参数和初始位置
+    public void init(Player owner, ItemStack weapon, Parameters parameters) {
         setOwner(owner);
-        this.cachedComponent = component;
+        this.cachedParameters = parameters;
+        setLaunchMode(parameters.behavior().launchMode());
         Vec3 palm = HandPositionUtils.getPalmPosition(owner, 1.0F);
-        // 几何中心对齐手掌
         setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
         setPhase(PHASE_SPIN);
+        if (startsLaunched()) {
+            launch(owner);
+        }
     }
 
-    /**
-     * 发射模式初始化：跳过 SPIN/STAY，直接沿视线方向发射。
-     *
-     * @param owner     持有者玩家
-     * @param weapon    武器物品堆
-     * @param component 连枷参数组件
-     */
-    public void initLaunch(@NotNull Player owner, ItemStack weapon, @NotNull FlailComponent component) {
+    public void initLaunch(Player owner, ItemStack weapon, Parameters parameters) {
         setOwner(owner);
-        this.cachedComponent = component;
-        this.launchMode = true;
+        this.cachedParameters = parameters;
+        setLaunchMode(true);
         Vec3 palm = HandPositionUtils.getPalmPosition(owner, 1.0F);
         setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
+        setPhase(PHASE_SPIN);
         launch(owner);
     }
 
-    // ── 数据同步 ──
+    /// ── 数据同步 ──
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(DATA_PHASE, PHASE_SPIN);
         builder.define(DATA_SPIN_ANGLE, 0.0F);
+        builder.define(DATA_LAUNCH_MODE, false);
+        builder.define(DATA_HIT_EFFECT_ENABLED, true);
+    }
+
+    /// 每个实体独立保存命中效果开关，新创建的链锤默认开启。
+    public boolean isHitEffectEnabled() {
+        return entityData.get(DATA_HIT_EFFECT_ENABLED);
+    }
+
+    /// 火焰粒子和链条受热颜色共用同步后的熄灭状态。
+    public boolean isBurningFlail() {
+        Parameters parameters = parameters();
+        return isHitEffectEnabled() && parameters != null
+                && (parameters.equals(FlailItems.FLAMING_MACE.get().parameters())
+                || parameters.equals(FlailItems.SUNFURY.get().parameters()));
+    }
+
+    public void setHitEffectEnabled(boolean enabled) {
+        entityData.set(DATA_HIT_EFFECT_ENABLED, enabled);
+    }
+
+    public @Nullable ResourceLocation getBallTexture() {
+        if (getOwner() instanceof LivingEntity owner && owner.getMainHandItem().getItem() instanceof BaseFlailItem item) {
+            return item.getFlailTexture(this);
+        }
+        Parameters parameters = parameters();
+        return parameters == null ? null : parameters.ballTexture();
+    }
+
+    private void tickItemBehavior(Player player) {
+        if (!level().isClientSide() && player.getMainHandItem().getItem() instanceof BaseFlailItem item) {
+            item.onFlailTick(player, this);
+        }
     }
 
     public int getPhase() {
@@ -168,36 +178,43 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
     }
 
     public void setPhase(int phase) {
+        int previous = entityData.get(DATA_PHASE);
         entityData.set(DATA_PHASE, phase);
+        if (!level().isClientSide() && previous == PHASE_THROWN && phase == PHASE_RETRACT && getOwner() instanceof Player player) {
+            Parameters parameters = parameters();
+            if (parameters != null) {
+                onThrownToRetract(player, parameters);
+            }
+        }
     }
 
     public float getSyncedSpinAngle() {
         return entityData.get(DATA_SPIN_ANGLE);
     }
 
-    @Nullable
-    public FlailComponent getComponent() {
-        if (cachedComponent != null) return cachedComponent;
-        Entity owner = getOwner();
-        if (!(owner instanceof LivingEntity living)) {
-            return cachedComponent;
-        }
-        ItemStack stack = living.getMainHandItem();
-        if (stack.getItem() instanceof BaseFlailItem flailItem) {
-            cachedComponent = flailItem.getComponent();
-            if (cachedComponent != null) return cachedComponent;
-        }
-        stack = living.getOffhandItem();
-        if (stack.getItem() instanceof BaseFlailItem flailItem) {
-            cachedComponent = flailItem.getComponent();
-        }
-        return cachedComponent;
+    public boolean isLaunchMode() {
+        return entityData.get(DATA_LAUNCH_MODE);
     }
 
-    /**
-     * 线段 a 的纯世界方向：玩家面朝水平方向，不含公转偏移
-     */
-    @NotNull
+    public void setLaunchMode(boolean launchMode) {
+        entityData.set(DATA_LAUNCH_MODE, launchMode);
+    }
+
+    @Nullable
+    public Parameters parameters() {
+        if (cachedParameters != null) return cachedParameters;
+        Entity owner = getOwner();
+        if (owner instanceof LivingEntity living) {
+            ItemStack stack = living.getMainHandItem();
+            cachedParameters = stack.getItem() instanceof BaseFlailItem item ? item.parameters() : null;
+            if (cachedParameters != null) return cachedParameters;
+            stack = living.getOffhandItem();
+            cachedParameters = stack.getItem() instanceof BaseFlailItem item ? item.parameters() : null;
+        }
+        return cachedParameters;
+    }
+
+    /// 线段 a 的纯世界方向：玩家面朝水平方向，不含公转偏移
     public Vector3f getSpinAxis() {
         Entity owner = getOwner();
         if (owner == null) return new Vector3f(0, 0, 1);
@@ -205,24 +222,22 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         return new Vector3f(-(float) Math.sin(yawRad), 0, (float) Math.cos(yawRad));
     }
 
-    /**
-     * 方块碰撞处理：RETRACT 阶段击中方块时直接落地
-     */
+    /// 方块碰撞处理：RETRACT 阶段击中方块时直接落地
     @Override
-    protected void onHitBlock(@NotNull BlockHitResult result) {
-        // THROWN 阶段的碰撞由 tickThrown 手动处理，此处忽略
-        if (level().isClientSide() || getPhase() != PHASE_RETRACT) {
-            return;
-        }
-        if (launchMode) {
-            discard();
-        } else {
-            setPos(result.getLocation());
-            playerDrop();
+    protected void onHitBlock(BlockHitResult result) {
+        /// THROWN 阶段的碰撞由 tickThrown 手动处理，此处忽略
+        if (!level().isClientSide() && getPhase() == PHASE_RETRACT) {
+            triggerSunfuryExplosion(result.getLocation());
+            if (isLaunchMode()) {
+                discard();
+            } else {
+                setPos(result.getLocation());
+                playerDrop();
+            }
         }
     }
 
-    // ── Tick ──
+    /// ── Tick ──
     @Override
     public void tick() {
         Entity owner = getOwner();
@@ -238,10 +253,10 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         }
 
         super.tick();
-        // 重新读取 phase：super.tick() 中的 onHitBlock 可能已改变阶段
+        /// 重新读取 phase：super.tick() 中的 onHitBlock 可能已改变阶段
         int phase = getPhase();
 
-        // 涡轮附魔：退出 SPIN 时重置计数
+        /// 涡轮附魔：退出 SPIN 时重置计数
         if (previousPhase == PHASE_SPIN && phase != PHASE_SPIN) {
             spinTickCounter = 0;
         }
@@ -249,177 +264,227 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
         if (!(owner instanceof Player player)) return;
 
-        FlailComponent component = getComponent();
-        if (component == null) return;
+        Parameters parameters = parameters();
+        if (parameters == null) return;
 
-        if (hitCooldown > 0) hitCooldown--;
+        tickItemBehavior(player);
         if (windBurstCooldown > 0) windBurstCooldown--;
 
-        this.noPhysics = false; // 默认启用碰撞，tickSpin 内部覆写为 true
+        this.noPhysics = false;
         switch (phase) {
-            case PHASE_SPIN -> {
-                tickSpin(player, component);
-                attackStrategy.onSpinTick(this, player, component);
-            }
-            case PHASE_THROWN -> {
-                tickThrown(player, component);
-                attackStrategy.onThrownTick(this, player, component);
-            }
-            case PHASE_STAY -> {
-                tickStay(player, component);
-                attackStrategy.onStayTick(this, player, component);
-            }
-            case PHASE_RETRACT -> {
-                tickRetract(player, component);
-                attackStrategy.onRetractTick(this, player, component);
-            }
+            case PHASE_SPIN -> tickSpin(player, parameters);
+            case PHASE_THROWN -> tickThrown(player, parameters);
+            case PHASE_STAY -> tickStay(player, parameters);
+            case PHASE_RETRACT -> tickRetract(player, parameters);
+        }
+        tickSpecialBehavior(player, parameters, phase);
+        tickItemBehavior(player);
+        if (level().isClientSide()) {
+            tickBurningParticles();
         }
 
-        if (!level().isClientSide() && hitCooldown <= 0) {
-            doCollisionCheck(player, phase, component);
+        if (!level().isClientSide()) {
+            /// 移动阶段可能因方块命中而切换为收回。碰撞伤害必须读取切换后的阶段，
+            /// 否则直接发射型链锤撞墙后仍会在同一 tick 以投出伤害命中附近实体。
+            doCollisionCheck(player, getPhase(), parameters);
         }
 
-        // 所有阶段：玩家超出最大距离时自动收回（仅服务端判断）
+        /// 所有阶段：玩家超出最大距离时自动收回（仅服务端判断）
         if (!level().isClientSide() && phase != PHASE_RETRACT
-                && position().distanceToSqr(player.position()) > component.maxDistance * component.maxDistance) {
-            if (phase == PHASE_THROWN) {
-                attackStrategy.onThrownToRetract(this, player, component);
-            }
+                && position().distanceToSqr(player.position()) > parameters.maxDistance() * parameters.maxDistance()) {
             setPhase(PHASE_RETRACT);
         }
 
         entityData.set(DATA_SPIN_ANGLE, spinAngle);
     }
 
-    private void tickSpin(Player player, FlailComponent component) {
+    private void tickBurningParticles() {
+        if (!isBurningFlail()) {
+            removeBurningParticles();
+            return;
+        }
+        if (flameEmitter == null || flameEmitter.isRemoved()) {
+            float radius = Math.max(getBbWidth(), getBbHeight()) * 0.55F;
+            flameEmitter = new ParticleEmitter(level(), getBoundingBox().getCenter(), Confluence.asResource("ball_of_fire_trail"),
+                    new MolangExp("variable.flail_head_radius", radius));
+            flameEmitter.attachEntity(this);
+            flameEmitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0));
+            MolangParticleEngine.INSTANCE.addEmitter(flameEmitter);
+        }
+    }
+
+    private void removeBurningParticles() {
+        if (flameEmitter != null) {
+            flameEmitter.remove();
+            flameEmitter = null;
+        }
+    }
+
+    /// 同步爆炸视听效果，并独立结算面板三分之一伤害，避免与链球直击共用无敌帧。
+    private void triggerSunfuryExplosion(Vec3 position) {
+        if (!(level() instanceof ServerLevel server) || !isHitEffectEnabled()
+                || !(getOwner() instanceof Player player)
+                || !FlailItems.SUNFURY.get().parameters().equals(parameters())
+                || tickCount - lastSunfuryImpactTick < 3) return;
+        lastSunfuryImpactTick = tickCount;
+        EmitterCreationPacketS2C packet = new EmitterCreationPacketS2C(
+                Confluence.asResource("bomb_spark"), position.toVector3f(),
+                new MolangExp("variable.radius", SUNFURY_EXPLOSION_RADIUS), -1);
+        PacketDistributor.sendToPlayersTrackingChunk(server, new net.minecraft.world.level.ChunkPos(blockPosition()), packet);
+        server.playSound(null, position.x, position.y, position.z,
+                SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 0.6F, 1.2F);
+
+        float damage = (float) (FlailItems.SUNFURY.get().getTooltipDamage(player.getMainHandItem(),
+                player.getAttributeValue(LibAttributes.getAttackDamage())) / 3.0);
+        DamageSource source = LibDamageTypes.of(server, LibDamageTypes.SWORD_PROJECTILE, this, player);
+        Immunity explosionHit = new Immunity() {
+            @Override
+            public Type confluence$getImmunityType() {return Type.LOCAL;}
+
+            @Override
+            public int confluence$getImmunityDuration(DamageSource source) {return 0;}
+        };
+        AABB area = new AABB(position, position).inflate(SUNFURY_EXPLOSION_RADIUS);
+        for (Entity target : LibEntityUtils.areaTargets(server, this, area,
+                entity -> LibEntityUtils.canHit(player, entity)
+                        && entity.getBoundingBox().distanceToSqr(position) <= SUNFURY_EXPLOSION_RADIUS * SUNFURY_EXPLOSION_RADIUS)) {
+            LivingEntity living = LibEntityUtils.logicalLivingTarget(target);
+            if (living != null) {
+                // 只结算爆炸伤害，不再次调用链球命中回调。
+                Immunity.hurt(explosionHit, target, living, source, damage);
+            }
+        }
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        if (level().isClientSide()) {
+            removeBurningParticles();
+        }
+        super.remove(reason);
+    }
+
+    private void tickSpin(Player player, Parameters parameters) {
         this.noPhysics = true;
         setNoGravity(true);
+        /// 默认 SPIN：绕玩家肩部，在玩家面朝方向的竖直平面内圆周运动
         spinTickCounter++;
+        /// 涡轮附魔：按旋转时长提升挥舞速度
         float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
-        spinAngle += component.getSpinSpeed(player) * (1.0F + turbineBonus);
-
+        spinAngle += parameters.getSpinSpeed(player) * (1.0F + turbineBonus);
         Vec3 pivot = HandPositionUtils.getPalmPosition(player, 1.0F, new Vec3(0.25, 0.25, -0.2));
-        // 与 getPalmPosition 保持一致，使用身体朝向而非头部朝向
         float yawRad = (float) Math.toRadians(player.yBodyRot);
         float cosYaw = (float) Math.cos(yawRad);
         float sinYaw = (float) Math.sin(yawRad);
-        double r = component.spinRadius;
+        double r = parameters.spinRadius();
         double localY = r * Math.sin(spinAngle);
         double localZ = r * Math.cos(spinAngle);
-        // MC 坐标系：forward = (-sin(yaw), 0, cos(yaw))
+        /// MC 坐标系：forward = (-sin(yaw), 0, cos(yaw))
         double x = pivot.x - localZ * sinYaw;
         double y = pivot.y + localY;
         double z = pivot.z + localZ * cosYaw;
         Vec3 targetPos = new Vec3(x, y - getBbHeight() * 0.5, z);
         Vec3 toTarget = targetPos.subtract(position());
-        double dist = toTarget.length();
-        double maxOrbitalSpeed = r * component.getSpinSpeed(player) * 1.5;
-        double maxSpeed = maxOrbitalSpeed + 0.5;
-        double k = 0.8;
-        double speed = 0.0;
-        if (dist > 1.0E-7) {
-            Vec3 dir = toTarget.normalize();
-            speed = Math.min(dist * k, maxSpeed);
-            setDeltaMovement(dir.scale(speed));
+        double distance = toTarget.length();
+        if (distance > 1.0E-7) {
+            double maxOrbitalSpeed = r * parameters.getSpinSpeed(player) * 1.5;
+            double speed = Math.min(distance * 0.8, maxOrbitalSpeed + 0.5);
+            setDeltaMovement(toTarget.normalize().scale(speed));
             move(MoverType.SELF, getDeltaMovement());
         }
         setDeltaMovement(Vec3.ZERO);
+        faceDirection(new Vec3(sinYaw * Math.sin(spinAngle), Math.cos(spinAngle), -cosYaw * Math.sin(spinAngle)));
 
-        // SPIN 阶段面朝轨道切线方向（forward * (-sinθ) + up * cosθ）
-        faceDirection(new Vec3(
-                sinYaw * Math.sin(spinAngle),
-                Math.cos(spinAngle),
-                -cosYaw * Math.sin(spinAngle)
-        ));
     }
 
-    /**
-     * 射线检测前方方块碰撞，返回 null 表示无碰撞
-     */
+    /// 射线检测前方方块碰撞，返回 null 表示无碰撞
     @Nullable
     private BlockHitResult clipBlock(Vec3 motion) {
         Vec3 start = position();
         Vec3 end = start.add(motion);
-        ClipContext context = new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this);
-        BlockHitResult hit = level().clip(context);
-        return hit.getType() == HitResult.Type.BLOCK ? hit : null;
+        HitResult hit = level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        return hit.getType() == HitResult.Type.BLOCK ? (BlockHitResult) hit : null;
     }
 
-    /** 使实体面朝指定方向，从 deltaMovement 或 toOwner 向量计算 yaw/pitch */
-    private void faceDirection(Vec3 dir) {
-        double hDist = Math.sqrt(dir.x * dir.x + dir.z * dir.z);
-        setYRot((float) Math.toDegrees(Math.atan2(-dir.x, dir.z)));
-        setXRot((float) Math.toDegrees(Math.atan2(-dir.y, hDist)));
-    }
+    private void tickThrown(Player player, Parameters parameters) {
+        Vec3 motion = getDeltaMovement().add(0.0, -getThrownGravity(), 0.0);
 
-    private void tickThrown(Player player, FlailComponent component) {
-        Vec3 motion = getDeltaMovement();
-        if (component.thrownGravity) {
-            motion = motion.add(0, -component.gravity, 0);
-        }
-
-        // 速度过低直接收回（仅服务端判断）
+        /// 速度过低直接收回（仅服务端判断）
         if (!level().isClientSide() && motion.lengthSqr() < 0.1) {
-            attackStrategy.onThrownToRetract(this, player, component);
             setPhase(PHASE_RETRACT);
             return;
         }
 
-        // 面朝飞行方向
         faceDirection(motion);
-
         BlockHitResult blockHit = clipBlock(motion);
-        if (blockHit == null) {
+        if (blockHit != null) {
+            Vec3 normal = Vec3.atLowerCornerOf(blockHit.getDirection().getNormal());
+            setPos(blockHit.getLocation().add(normal.scale(0.1)));
+            triggerSunfuryExplosion(position());
+
+            if (startsLaunched()) {
+                if (!level().isClientSide()) {
+                    onLaunchedBlockImpact(player, parameters, blockHit);
+                    setPhase(PHASE_RETRACT);
+                }
+                return;
+            }
+
+            /// 反射速度：仅当朝向墙面时反弹，防浅角度卡住
+            double dot = motion.dot(normal);
+            if (dot < 0) {
+                motion = motion.subtract(normal.scale(2.0 * dot));
+            }
+            motion = motion.scale(0.6);
             setDeltaMovement(motion);
-            move(MoverType.SELF, motion);
-            return;
-        }
 
-        Vec3 normal = Vec3.atLowerCornerOf(blockHit.getDirection().getNormal());
-        setPos(blockHit.getLocation().add(normal.scale(0.1)));
-
-        // 反射速度：仅当朝向墙面时反弹，防浅角度卡墙
-        double dot = motion.dot(normal);
-        if (dot < 0) {
-            motion = motion.subtract(normal.scale(2.0 * dot));
-        }
-        motion = motion.scale(0.6);
-        setDeltaMovement(motion);
-
-        // 反弹次数耗尽 或 反射后速度过低 → 直接收回（仅服务端判断）
-        if (!level().isClientSide() && (bounceCount >= component.maxBounces || motion.lengthSqr() < 0.1)) {
-            attackStrategy.onThrownToRetract(this, player, component);
-            setPhase(PHASE_RETRACT);
-            return;
-        }
-
-        if (!level().isClientSide()) {
-            bounceCount++;
-            if (launchMode) {
-                // 发射模式：撞墙直接飞回，跳过 STAY
-                attackStrategy.onThrownToRetract(this, player, component);
+            /// 反弹次数耗尽 或 反射后速度过低 直接收回（仅服务端判断）
+            if (!level().isClientSide() && (bounceCount >= parameters.maxBounces() || motion.lengthSqr() < 0.1)) {
                 setPhase(PHASE_RETRACT);
-            } else {
+                return;
+            }
+
+            if (!level().isClientSide()) {
+                bounceCount++;
                 setPhase(PHASE_STAY);
                 stayDuration = 0;
+            }
+            return;
+        }
+
+        setDeltaMovement(motion);
+        move(MoverType.SELF, motion);
+
+        if (horizontalCollision || verticalCollision) {
+            triggerSunfuryExplosion(getBoundingBox().getCenter());
+        }
+        if (isLaunchMode() && (horizontalCollision || verticalCollision)) {
+            if (!level().isClientSide()) {
+                onLaunchedBlockImpact(player, parameters, BlockHitResult.miss(position(), net.minecraft.core.Direction.UP, blockPosition()));
+                setPhase(PHASE_RETRACT);
             }
         }
     }
 
-    private void tickStay(Player player, FlailComponent component) {
-        // 手动施加重力并使用 move() 进行碰撞位移
-        Vec3 motion = getDeltaMovement().add(0, -component.gravity, 0);
+    private void tickStay(Player player, Parameters parameters) {
+        setNoGravity(true);
+        /// 手动施加重力并使用 move() 进行碰撞位移
+        Vec3 motion = getDeltaMovement().add(0, -parameters.gravity(), 0);
         setDeltaMovement(motion);
 
-        // 速度过低 → 收回（仅服务端判断，玩家主动丢出时不收回）
+        /// 速度过低 收回（仅服务端判断，玩家主动丢出时不收回）
         if (!level().isClientSide() && !playerDropped && getDeltaMovement().lengthSqr() < 0.1) {
             setPhase(PHASE_RETRACT);
             return;
         }
-
+        boolean wasHorizontalCollision = horizontalCollision;
+        boolean wasVerticalCollision = verticalCollision;
         move(MoverType.SELF, motion);
+        if ((horizontalCollision && !wasHorizontalCollision) || (verticalCollision && !wasVerticalCollision)) {
+            triggerSunfuryExplosion(getBoundingBox().getCenter());
+        }
 
-        // 着地时清零垂直速度 + 施加水平摩擦
+        /// 着地时清零垂直速度 + 施加水平摩擦，防止重力累积导致永不收回
         if (onGround()) {
             Vec3 vel = getDeltaMovement();
             setDeltaMovement(new Vec3(vel.x * 0.5, 0.0, vel.z * 0.5));
@@ -428,30 +493,31 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         stayDuration++;
     }
 
-    private void tickRetract(Player player, FlailComponent component) {
+    private void tickRetract(Player player, Parameters parameters) {
         setNoGravity(true);
         Vec3 target = HandPositionUtils.getPalmPosition(player, 1.0F);
         Vec3 toOwner = target.subtract(position());
-        if (toOwner.lengthSqr() < 1) {
+        double distance = toOwner.length();
+        if (distance < 1.0) {
             if (!level().isClientSide()) {
                 discard();
             }
             return;
         }
-        // 面朝玩家
-        faceDirection(toOwner);
-        Vec3 dir = toOwner.normalize();
-        Vec3 motion = dir.scale(component.retractSpeed);
+        Vec3 dir = toOwner.scale(1.0 / distance);
+        Vec3 motion = dir.scale(Math.min(parameters.retractSpeed(), distance));
+        faceDirection(motion);
         setDeltaMovement(motion);
         move(MoverType.SELF, motion);
 
-        // 卡墙时瞬移绕过方块
+        /// 卡墙时瞬移绕过方块，同时避免高速回收跨过玩家后往返振荡。
         if (horizontalCollision || verticalCollision) {
-            setPos(position().add(dir.scale(component.retractSpeed * 2)));
+            triggerSunfuryExplosion(getBoundingBox().getCenter());
+            setPos(position().add(dir.scale(Math.min(parameters.retractSpeed() * 2.0, distance))));
         }
     }
 
-    private void doCollisionCheck(Player player, int phase, FlailComponent component) {
+    private void doCollisionCheck(Player player, int phase, Parameters parameters) {
         float damageMultiplier = switch (phase) {
             case PHASE_SPIN -> 0.6f;
             case PHASE_THROWN -> 1.0f;
@@ -462,63 +528,146 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         if (damageMultiplier <= 0) return;
 
         AABB checkBox = getBoundingBox().inflate(0.5);
-        List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, checkBox,
-                e -> e != player && e.isAlive() && LibUtils.canHitEntity(this, e));
+        var entities = LibEntityUtils.areaTargets(level(), this, checkBox,
+                target -> LibEntityUtils.canHit(player, target));
 
         boolean anyHit = false;
         LivingEntity firstHit = null;
-        for (LivingEntity target : entities) {
-            // 基础伤害 × 外部近战加成（前缀/饰品/套装属性由底层自动注入）
-            float totalAttack = (float) player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
-            float baseDamage = Math.max(1.0F, totalAttack);
+        for (Entity target : entities) {
+            float baseDamage = (float) (parameters.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
+            /// 涡轮附魔：按旋转时长提升伤害
             float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
             float finalDamage = baseDamage * damageMultiplier * (1.0F + turbineBonus);
-            if (launchMode) {
-                finalDamage *= component.launchDamageRatio;
+            ItemStack held = player.getMainHandItem();
+            if (isLaunchMode() && held.getItem() instanceof BaseFlailItem flailItem) {
+                finalDamage *= flailItem.getLaunchDamageRatio(held);
             }
-            DamageSource source = ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, player);
+            DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
 
-            if (target.hurt(source, finalDamage)) {
-                if (!anyHit) firstHit = target;
+            LivingEntity immunityTarget = LibEntityUtils.logicalLivingTarget(target);
+            if (immunityTarget != null && Immunity.hurt(this, target, immunityTarget, source, finalDamage)) {
+                LivingEntity living = LibEntityUtils.effectTarget(target);
+                if (!anyHit) firstHit = living;
                 anyHit = true;
-                VectorUtils.knockBackA2B(this, target, component.knockback, 0.15f);
-                if (component.onHit != null) {
-                    component.onHit.accept(player, target);
+                LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(target), parameters.behavior().knockback(), 0.15f);
+                if (living != null && isHitEffectEnabled() && held.getItem() instanceof BaseFlailItem flailItem) {
+                    flailItem.onFlailHit(player, living, this);
                 }
                 if (level() instanceof ServerLevel serverLevel) {
                     EnchantmentHelper.doPostAttackEffects(serverLevel, target, source);
                 }
+                if (phase == PHASE_THROWN && startsLaunched()) {
+                    onLaunchedEntityImpact(player, parameters, target);
+                    if (parameters.behavior().retractOnHitEntity()) {
+                        setPhase(PHASE_RETRACT);
+                        break;
+                    }
+                }
             }
         }
 
-        if (!anyHit) {
-            return;
-        }
-
-        // 通知策略：命中实体
-        if (firstHit != null) {
-            attackStrategy.onHitEntity(this, player, component, firstHit);
-        }
-
-        float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
-        hitCooldown = phase == PHASE_THROWN ? 3 : (int) Math.max(4, 8 / (1.0F + turbineBonus));
-        if (!(player instanceof ServerPlayer serverPlayer) || windBurstCooldown > 0 || firstHit == null) {
-            return;
-        }
-        if (EnchantmentUtils.processFlailWindBurst(serverPlayer, firstHit,
-                ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, player))) {
-            windBurstCooldown = 60; // 3 秒冷却
-            serverPlayer.getCooldowns().addCooldown(serverPlayer.getMainHandItem().getItem(), 60);
+        if (anyHit) {
+            triggerSunfuryExplosion(getBoundingBox().getCenter());
+            /// 风爆附魔：命中实体后击飞命中点周围生物，独立 3 秒冷却
+            if (player instanceof ServerPlayer serverPlayer && windBurstCooldown <= 0 && firstHit != null) {
+                EnchantmentUtils.processFlailWindBurst(serverPlayer, firstHit,
+                        LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player));
+                windBurstCooldown = 60;
+                serverPlayer.getCooldowns().addCooldown(serverPlayer.getMainHandItem().getItem(), 60);
+            }
         }
     }
 
-    /**
-     * SPIN 切换THROWN
-     */
+    /// 返回当前连枷是否属于直接发射型。
+    ///
+    /// 普通链锤先旋转再投出；链刃、锚等直接发射型由实体子类覆盖，
+    /// 其参数和行为无需再写入物品注册或额外定义表。
+    protected boolean startsLaunched() {
+        return isLaunchMode();
+    }
+
+    /// 返回链锤头部是否按泰拉瑞亚原始平面精灵绘制。
+    public boolean usesSpriteHead() {
+        return false;
+    }
+
+    /// 返回投出阶段每 tick 额外施加的重力。
+    protected double getThrownGravity() {
+        return 0.0;
+    }
+
+    /// 按指定方向同步实体朝向。
+    ///
+    /// 渲染器会根据实体朝向决定球体姿态。旋转、投出和收回阶段都维护朝向后，
+    /// 连枷不会再因为服务端位置变化而出现球体横躺、正反面乱跳或链条接到模型侧面的错觉。
+    private void faceDirection(Vec3 direction) {
+        if (direction.lengthSqr() < 1.0E-7) {
+            return;
+        }
+        double horizontal = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
+        setYRot((float) Math.toDegrees(Math.atan2(-direction.x, direction.z)));
+        setXRot((float) Math.toDegrees(Math.atan2(-direction.y, horizontal)));
+    }
+
+    /// 在共享移动、碰撞和状态转换完成后执行具体武器行为。
+    ///
+    /// 特殊链锤只需覆盖此扩展点发射附属弹幕；普通链锤保持空实现。
+    protected void tickSpecialBehavior(Player player, Parameters parameters, int phase) {
+    }
+
+    /// 直接发射型链锤撞击方块时的扩展点。
+    protected void onLaunchedBlockImpact(Player player, Parameters parameters, BlockHitResult hit) {
+        if (parameters.equals(Parameters.GOLEM_FIST.get())) {
+            triggerGolemFistShockwave(player, parameters, null);
+        }
+    }
+
+    /// 直接发射型链锤命中实体时的扩展点。
+    protected void onLaunchedEntityImpact(Player player, Parameters parameters, Entity target) {
+        if (!parameters.equals(Parameters.GOLEM_FIST.get())) return;
+        applyGolemFistConfusion(target);
+        triggerGolemFistShockwave(player, parameters, target);
+    }
+
+    /// 投出阶段首次进入收回阶段时的扩展点。
+    protected void onThrownToRetract(Player player, Parameters parameters) {
+    }
+
+    private void triggerGolemFistShockwave(Player player, Parameters parameters, @Nullable Entity excluded) {
+        if (position().distanceTo(player.position()) <= 9.375) return;
+
+        float damage = (float) (parameters.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
+        DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
+        double inflate = Math.max(0.5, (12.5 - getBbWidth()) * 0.5);
+        AABB area = getBoundingBox().inflate(inflate);
+        for (Entity target : LibEntityUtils.areaTargets(level(), this, area,
+                entity -> LibEntityUtils.canHit(player, entity)
+                        && (excluded == null || LibEntityUtils.dedupeIdentity(entity) != LibEntityUtils.dedupeIdentity(excluded)))) {
+            if (target.hurt(source, damage)) {
+                LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(target), parameters.behavior().knockback(), 0.15F);
+                applyGolemFistConfusion(target);
+            }
+        }
+
+        level().playSound(null, blockPosition(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 1.0F, 1.25F);
+        if (level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    new BlockParticleOption(ParticleTypes.BLOCK, Blocks.COBBLESTONE.defaultBlockState()),
+                    getX(), getY() + 0.5, getZ(), 60, 4.0, 0.5, 4.0, 0.2);
+        }
+    }
+
+    private void applyGolemFistConfusion(Entity rawTarget) {
+        LivingEntity target = LibEntityUtils.effectTarget(rawTarget);
+        if (target != null && target.getRandom().nextFloat() < 1.0F / 3.0F) {
+            target.addEffect(new MobEffectInstance(LibEffects.CONFUSED, 40));
+        }
+    }
+
+    /// SPIN 切换THROWN
     public void launch(Player player) {
-        FlailComponent component = getComponent();
-        if (component == null) return;
-        attackStrategy.onLaunch(this, player, component);
+        Parameters parameters = parameters();
+        if (parameters == null) return;
 
         setPhase(PHASE_THROWN);
         bounceCount = 0;
@@ -526,25 +675,26 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
         Vec3 look = player.getViewVector(1.0F);
         Vec3 palm = HandPositionUtils.getPalmPosition(player, 1.0F);
-        // 几何中心对齐手掌，与 tickSpin 和渲染器 ballPos 一致
         setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
-
-        // 修正投掷方向：使几何中心在 maxDistance 处命中视角射线
-        // C0 + dir × maxDist = eye + look × maxDist  ⇒  dir = normalize((eye - C0) + look × maxDist)
         Vec3 eye = player.getEyePosition(1.0F);
-        Vec3 targetDir = look.scale(component.maxDistance).add(eye.subtract(palm));
-        Vec3 launchDir = targetDir.normalize();
+        Vec3 launchDirection = look.scale(parameters.maxDistance()).add(eye.subtract(palm)).normalize();
+        faceDirection(launchDirection);
 
-        float velocity = component.getVelocity(player) * (1.0F + TurbineEnchantments.getBonus(player, spinTickCounter));
-        setDeltaMovement(launchDir.scale(velocity));
+        /// 涡轮附魔：旋转越久投出越快
+        float velocity = parameters.getVelocity(player) * (1.0F + TurbineEnchantments.getBonus(player, spinTickCounter));
+        setDeltaMovement(launchDirection.scale(velocity));
+
+        /// 物品扩展点：投出瞬间的附属效果（如风锚在链球位置召唤痛苦飓风）
+        if (player.getMainHandItem().getItem() instanceof BaseFlailItem flailItem) {
+            flailItem.onFlailLaunch(player, this);
+        }
     }
 
-    /**
-     * 落地进入 STAY，不因低速自动收回。
-     * <p>用于玩家主动丢出（按 use）以及 RETRACT 途中撞墙落地。
-     */
+    /// 落地进入 STAY，不因低速自动收回。
+    ///
+    /// 用于玩家主动丢出（按 use）以及 RETRACT 途中撞墙落地。
     public void playerDrop() {
-        if (launchMode) {
+        if (startsLaunched()) {
             forceRetract();
             return;
         }
@@ -560,19 +710,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         playerDropped = false;
     }
 
-    @Override
-    public void remove(@NotNull RemovalReason reason) {
-        Entity owner = getOwner();
-        if (!level().isClientSide() && owner instanceof Player player) {
-            FlailComponent component = getComponent();
-            if (component != null) {
-                attackStrategy.onDiscard(this, player, component);
-            }
-        }
-        super.remove(reason);
-    }
-
-    private boolean isHoldingFlail(@NotNull Player player) {
+    private boolean isHoldingFlail(Player player) {
         ItemStack stack = player.getMainHandItem();
         return !stack.isEmpty()
                 && stack.getItem() instanceof BaseFlailItem;
@@ -585,7 +723,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         if (tag.contains("StayDuration")) stayDuration = tag.getInt("StayDuration");
         if (tag.contains("BounceCount")) bounceCount = tag.getInt("BounceCount");
         if (tag.contains("PlayerDropped")) playerDropped = tag.getBoolean("PlayerDropped");
-        if (tag.contains("LaunchMode")) launchMode = tag.getBoolean("LaunchMode");
+        if (tag.contains("LaunchMode")) setLaunchMode(tag.getBoolean("LaunchMode"));
+        if (tag.contains("HitEffectEnabled")) setHitEffectEnabled(tag.getBoolean("HitEffectEnabled"));
     }
 
     @Override
@@ -595,11 +734,11 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         tag.putInt("StayDuration", stayDuration);
         tag.putInt("BounceCount", bounceCount);
         tag.putBoolean("PlayerDropped", playerDropped);
-        tag.putBoolean("LaunchMode", launchMode);
+        tag.putBoolean("LaunchMode", isLaunchMode());
+        tag.putBoolean("HitEffectEnabled", isHitEffectEnabled());
     }
 
     @Override
-    @NotNull
     public EntityDimensions getDimensions(Pose pose) {
         return EntityDimensions.fixed(0.75f, 0.75f);
     }
@@ -611,21 +750,17 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
     @Override
     public int confluence$getImmunityDuration(DamageSource damageSource) {
-        return 7;
+        if (getPhase() == PHASE_THROWN) return 3;
+        float bonus = getOwner() instanceof Player player ? TurbineEnchantments.getBonus(player, spinTickCounter) : 0;
+        return (int) Math.max(4, 8 / (1.0F + bonus));
     }
-
-    // ── GeoAnimatable ──
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return animatableCache;
+        return animationCache;
     }
 
     @Override
-    public double getTick(Object animatable) {
-        return tickCount;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
 }

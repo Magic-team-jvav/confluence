@@ -20,6 +20,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
 import org.confluence.mod.common.entity.fishing.AbstractFishingHook;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
+import org.confluence.mod.common.item.yoyo.YoyoEquipment;
 
 public class BaseFishingHookRenderer<E extends BaseFishingHook> extends EntityRenderer<E> {
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[]{
@@ -77,7 +78,7 @@ public class BaseFishingHookRenderer<E extends BaseFishingHook> extends EntityRe
     static <E extends AbstractFishingHook> void renderString(EntityRenderDispatcher entityRenderDispatcher, E entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int color) {
         Player player = entity.getPlayerOwner();
         if (player != null) {
-            color = 0xFF << 24 | (color & 0xFFFFFF);
+            color = YoyoEquipment.animatedColor(YoyoEquipment.appearance(player, color, 0).stringColor(), (entity.level().getGameTime() % 120) + partialTicks);
 
             poseStack.pushPose();
             float f = player.getAttackAnim(partialTicks);

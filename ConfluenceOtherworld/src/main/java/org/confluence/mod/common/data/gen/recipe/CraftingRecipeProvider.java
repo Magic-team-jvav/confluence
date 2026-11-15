@@ -28,9 +28,8 @@ import org.confluence.mod.common.recipe.special.BoomBunnyRecipe;
 import org.confluence.mod.common.recipe.special.DragonPepperExtractingRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terraentity.init.TEItems;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TEYoyosItems;
+import org.confluence.mod.common.init.item.BoomerangItems;
+import org.confluence.mod.common.init.item.YoyoItems;
 
 import java.util.List;
 import java.util.Map;
@@ -135,15 +134,6 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " i ",
                 "iii"
         )), FunctionalBlocks.LEAD_ANVIL.toStack());
-        // 房屋探测器
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                'B', Ingredient.of(ItemTags.PLANKS),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                " B ",
-                "B/B",
-                "/ /"
-        )), TEItems.HOUSE_DETECTOR.toStack());
         // 蛛网
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '/', Ingredient.of(Items.STRING)
@@ -202,6 +192,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 new ItemStack(PotionItems.BOTTLE.get()),
                 Ingredient.of(Items.GLASS_BOTTLE)
         );
+        // 炼药瓶：不再提供合成配方，改为用玻璃瓶右键直接放置
         // 冰镇西瓜片 冰西瓜互换
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'I', Ingredient.of(FoodItems.ICE_MELON_SLICE)
@@ -407,7 +398,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " SS",
                 "/SS",
                 "/  "
-        )), TEYoyosItems.WOODEN_YOYO.toStack());
+        )), YoyoItems.WOODEN_YOYO.toStack());
         // 园艺剪
         registerShearsRecipe(output, Ingredient.of(ModTags.Items.INGOTS_COBALT), GardenShearsItems.COBALT_GARDEN_SHEARS);
         registerShearsRecipe(output, Ingredient.of(ModTags.Items.INGOTS_PALLADIUM), GardenShearsItems.PALLADIUM_GARDEN_SHEARS);
@@ -563,7 +554,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, DecorativeBlocks.FLINX_FUR_BLOCK.toStack(20), Ingredient.of(MaterialItems.FLINX_FUR));
         shapeless(output, new ItemStack(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.PLANKS, 4), Ingredient.of(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK));
 
-        shapeless(output, FlailItems.WIND_ANCHOR.toStack(), Ingredient.of(Items.HEAVY_CORE), Ingredient.of(FlailItems.MACE));
+        shapeless(output, FlailItems.WIND_ANCHOR.toStack(), Ingredient.of(Items.HEAVY_CORE), Ingredient.of(Items.WIND_CHARGE), Ingredient.of(Items.BREEZE_ROD), Ingredient.of(FlailItems.MACE));
         shapeless(output, FlailItems.FLAMING_MACE.toStack(), Ingredient.of(Items.LAVA_BUCKET), Ingredient.of(FlailItems.MACE));
         shapeless(output, ConsumableItems.RECALL_MANA_CRYSTAL.toStack(), Ingredient.of(ConsumableItems.MANA_CRYSTAL), Ingredient.of(Items.ECHO_SHARD));
         shapeless(output, ConsumableItems.RECALL_LIFE_CRYSTAL.toStack(), Ingredient.of(ConsumableItems.LIFE_CRYSTAL), Ingredient.of(Items.ECHO_SHARD));
@@ -612,8 +603,8 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ConsumableItems.STICKY_DYNAMITE.toStack(), Ingredient.of(ConsumableItems.DYNAMITE), Ingredient.of(MaterialItems.GEL));
         shapeless(output, ConsumableItems.STICKY_GRENADE.toStack(), Ingredient.of(ConsumableItems.GRENADE), Ingredient.of(MaterialItems.GEL));
         shapeless(output, ConsumableItems.SCARAB_BOMB.toStack(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.STURDY_FOSSIL));
-        shapeless(output, TEBoomerangItems.TRIMARANG.toStack(), Ingredient.of(TEBoomerangItems.ENCHANTED_BOOMERANG), Ingredient.of(TEBoomerangItems.ICE_BOOMERANG), Ingredient.of(TEBoomerangItems.SHROOMERANG));
-        shapeless(output, TEBoomerangItems.ENCHANTED_BOOMERANG.toStack(), Ingredient.of(TEBoomerangItems.WOOD_BOOMERANG), Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, BoomerangItems.TRIMARANG.toStack(), Ingredient.of(BoomerangItems.ENCHANTED_BOOMERANG), Ingredient.of(BoomerangItems.ICE_BOOMERANG), Ingredient.of(BoomerangItems.SHROOMERANG));
+        shapeless(output, BoomerangItems.ENCHANTED_BOOMERANG.toStack(), Ingredient.of(BoomerangItems.WOOD_BOOMERANG), Ingredient.of(MaterialItems.FALLING_STAR));
         shapeless(output, BaitItems.ENCHANTED_NIGHTCRAWLER.toStack(), Ingredient.of(BaitItems.WORM), Ingredient.of(MaterialItems.FALLING_STAR));
         // 宝石树苗
         shapeless(output, NatureBlocks.RUBY_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_RUBY));
@@ -1012,9 +1003,10 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ConsumableItems.HONEY_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(ToolItems.HONEY_BUCKET));
         shapeless(output, ConsumableItems.LAVA_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(Items.LAVA_BUCKET));
 
-//        shapeless(output, ConsumableItems.FALLEN_SOUL_CORE.toStack(), Ingredient.of(Items.BONE), Ingredient.of(Items.ROTTEN_FLESH), Ingredient.of(MaterialItems.FALLING_STAR));
+        // 堕魂星核：坠落之星 + 骨头 + 腐肉（工作台无序）
+        shapeless(output, SoulItems.FALLEN_SOUL_CORE.toStack(), Ingredient.of(Items.BONE), Ingredient.of(Items.ROTTEN_FLESH), Ingredient.of(MaterialItems.FALLING_STAR));
 
-        shapeless(output, DecorativeBlocks.POO_BLOCK.toStack(4), Ingredient.of(ModBlocks.POO));
+        shapeless(output, DecorativeBlocks.POO_BLOCK.toStack(4), Ingredient.of(NatureBlocks.POO));
 
         // 暗影蜡烛 shapeless(output, ToolItems.SHADOW_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3,ModTags.Items.EVIL_INGOT));
         // 钱币
@@ -1023,6 +1015,147 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ModItems.GOLD_COIN.toStack(100), Ingredient.of(ModItems.PLATINUM_COIN));
 
         shapeless(output, MaterialItems.RAW_ASPHALT.toStack(), AmountIngredient.of(2, ItemTags.STONE_CRAFTING_MATERIALS), Ingredient.of(MaterialItems.GEL));
+
+        // 魂灯
+        shapeless(output, SoulItems.SOUL_CONDUIT.toStack(), Ingredient.of(Items.LANTERN), Ingredient.of(SoulItems.FALLEN_SOUL_CORE));
+        shapeless(output, SoulItems.PILLAGING_FLAME.toStack(), Ingredient.of(Items.EMERALD), Ingredient.of(MaterialItems.JADE), Ingredient.of(Items.OMINOUS_BOTTLE), Ingredient.of(SoulItems.SOUL_CONDUIT));
+        shapeless(output, SoulItems.STAR_SPIRIT.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(SoulItems.SOUL_CHANT_GUIDE));
+
+        // 祈灵之刃：堕魂星核 + 铁短剑/铅短剑
+        shapeless(output, SoulItems.SPIRITWARD_BLADE.toStack(), Ingredient.of(SoulItems.FALLEN_SOUL_CORE), Ingredient.of(SwordItems.IRON_SHORT_SWORD, SwordItems.LEAD_SHORT_SWORD));
+
+        // 灵魂手环：星力手环 + 堕魂星核，可反向拆回
+        shapeless(output, AccessoryItems.BAND_OF_SOUL.toStack(), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER), Ingredient.of(SoulItems.FALLEN_SOUL_CORE));
+        shapeless(output, AccessoryItems.BAND_OF_STARPOWER.toStack(), Ingredient.of(AccessoryItems.BAND_OF_SOUL));
+
+        // 灵魂短弓 / 灵魂弓：堕魂星核 + 铁短弓/铅短弓、铁弓/铅弓
+        shaped(output, "", "_from_iron_or_lead_short_bow", ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(SoulItems.FALLEN_SOUL_CORE),
+                'b', Ingredient.of(BowItems.IRON_SHORT_BOW, BowItems.LEAD_SHORT_BOW)
+        ), List.of(
+                "a",
+                "b"
+        )), BowItems.SOUL_SHORT_BOW.toStack());
+        shaped(output, "", "_from_iron_or_lead_bow", ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(SoulItems.FALLEN_SOUL_CORE),
+                'b', Ingredient.of(BowItems.IRON_BOW, BowItems.LEAD_BOW)
+        ), List.of(
+                "a",
+                "b"
+        )), BowItems.SOUL_BOW.toStack());
+
+        // 风弦：沉重核心 + 铁/铅弓 + 风棒（旋风棒），无序
+        shapeless(output, BowItems.WIND_STRING.toStack(),
+                Ingredient.of(Items.HEAVY_CORE), Ingredient.of(BowItems.IRON_BOW, BowItems.LEAD_BOW),
+                Ingredient.of(Items.BREEZE_ROD));
+        // 附魔弓：附魔剑 + 铂金/金弓，无序
+        shapeless(output, BowItems.ENCHANTED_BOW.toStack(),
+                Ingredient.of(SwordItems.ENCHANTED_SWORD), Ingredient.of(BowItems.PLATINUM_BOW, BowItems.GOLDEN_BOW));
+        // 怒星核：星怒在工作台无序拆出，再无序装回，可逆
+        shapeless(output, "", "_from_starfury", MaterialItems.STARFURY_CORE.toStack(), Ingredient.of(SwordItems.STARFURY));
+        shapeless(output, "", "_from_starfury_core", SwordItems.STARFURY.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE));
+        // 星泣：怒星核 + 金/铂金弓，无序
+        shapeless(output, BowItems.STAR_WEEP.toStack(),
+                Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(BowItems.GOLDEN_BOW, BowItems.PLATINUM_BOW));
+
+        // 星乐：怒星核 + 钻石/红玉法杖，无序
+        shapeless(output, ManaWeaponItems.STAR_MUSIC.toStack(),
+                Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(ManaWeaponItems.DIAMOND_STAFF, ManaWeaponItems.RUBY_STAFF));
+        // 星惧：怒星核 + 钻石/红玉鞭，无序
+        shapeless(output, WhipItems.STAR_FEAR.toStack(),
+                Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(WhipItems.DIAMOND_WHIP, WhipItems.RUBY_WHIP));
+
+        // 灵魂头套 / 灵魂长袍：皮革帽子、长袍 + 魂瓶
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(Items.LEATHER_HELMET),
+                'b', Ingredient.of(FunctionalBlocks.SOUL_BOTTLE)
+        ), List.of(
+                "bbb",
+                "bab"
+        )), ArmorItems.SOUL_HOOD.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'b', Ingredient.of(FunctionalBlocks.SOUL_BOTTLE),
+                'c', Ingredient.of(VanityArmorItems.ROBE)
+        ), List.of(
+                "bcb"
+        )), ArmorItems.SOUL_ROBE.toStack());
+
+        // 隐匿者套装：黑橡木原木 + 紫水晶碎片（或紫晶） + 绿宝石（或翡翠）
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(Items.DARK_OAK_LOG),
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST),
+                'c', Ingredient.of(Items.EMERALD, MaterialItems.JADE)
+        ), List.of(
+                "aba",
+                "c c"
+        )), ArmorItems.HERMIT_HELMET.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(Items.DARK_OAK_LOG),
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST),
+                'c', Ingredient.of(Items.EMERALD, MaterialItems.JADE)
+        ), List.of(
+                "a a",
+                "aba",
+                "cac"
+        )), ArmorItems.HERMIT_CHESTPLATE.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(Items.DARK_OAK_LOG),
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST)
+        ), List.of(
+                "aaa",
+                "b b",
+                "a a"
+        )), ArmorItems.HERMIT_LEGGINGS.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(Items.DARK_OAK_LOG),
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST)
+        ), List.of(
+                "b b",
+                "a a"
+        )), ArmorItems.HERMIT_BOOTS.toStack());
+
+        // 蓝隐匿者套装：发光蘑菇 + 紫水晶碎片（或紫晶） + 绿宝石（或翡翠）
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.GLOWING_MUSHROOM),
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST),
+                'c', Ingredient.of(Items.EMERALD, MaterialItems.JADE)
+        ), List.of(
+                "aba",
+                "c c"
+        )), ArmorItems.BLUE_HERMIT_HELMET.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.GLOWING_MUSHROOM),
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST),
+                'c', Ingredient.of(Items.EMERALD, MaterialItems.JADE)
+        ), List.of(
+                "a a",
+                "aba",
+                "cac"
+        )), ArmorItems.BLUE_HERMIT_CHESTPLATE.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.GLOWING_MUSHROOM),
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST)
+        ), List.of(
+                "aaa",
+                "b b",
+                "a a"
+        )), ArmorItems.BLUE_HERMIT_LEGGINGS.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.GLOWING_MUSHROOM),
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST)
+        ), List.of(
+                "b b",
+                "a a"
+        )), ArmorItems.BLUE_HERMIT_BOOTS.toStack());
+
+        // 大马林鱼刺剑：海沫 + 欧泊
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.HEIM),
+                '/', Ingredient.of(MaterialItems.OPAL)
+        ), List.of(
+                "  a",
+                "/  "
+        )), SwordItems.MARLIN_SPIKE_SWORD.toStack());
 
         output.accept(Confluence.asResource("boom_bunny"), BoomBunnyRecipe.getInstance(), null);
         output.accept(Confluence.asResource("dragon_pepper_extracting"), DragonPepperExtractingRecipe.getInstance(), null);

@@ -9,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import org.confluence.lib.common.menu.EitherAmountContainerMenu4x;
 import org.confluence.lib.common.menu.ToggleAmountResultSlot;
-import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
 import org.confluence.lib.common.recipe.MenuRecipeInput;
@@ -20,6 +19,7 @@ import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentRecipeInput, HeavyWorkBenchRecipe, HeavyWorkBenchMenu.ResultSlot, EnvironmentLevelAccess> {
@@ -35,12 +35,7 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                     access.initializeIfNeeded(inventory.player);
                     return new EnvironmentRecipeInput(menu, size, access);
                 },
-                (input, container, slot, x, y, setup) -> new ResultSlot(input, container, slot, x, y) {
-                    @Override
-                    protected void updateMenu() {
-                        setup.run();
-                    }
-                });
+                ResultSlot::new);
     }
 
     @Override
@@ -54,7 +49,7 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
         if (index == -1) return result.getItem(0);
         int recipesSize = recipes.size();
         if (index < recipesSize) {
-            return recipes.get(index).value().getResultItem(player.registryAccess());
+            return recipes.get(index).value().getResult();
         }
         return craftingRecipes.get(index - recipesSize).value().getResultItem(player.registryAccess());
     }
@@ -65,17 +60,21 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
         if (index == -1) return result.getItem(0);
         int recipesSize = recipes.size();
         if (index < recipesSize) {
-            return recipes.get(index).value().getResultItem(player.registryAccess());
+            return recipes.get(index).value().getResult();
         }
         return craftingRecipes.get(index - recipesSize).value().getResultItem(player.registryAccess());
     }
 
     @Override
     public void slotsChanged(Container container) {
-        this.craftingRecipes = player.level().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, input.asCraftingInput(true), player.level()).stream().filter(holder -> {
-            Class<?> clazz = holder.value().getClass();
-            return clazz == ShapedRecipe.class || clazz == ShapelessRecipe.class;
-        }).toList();
+        CraftingInput craftingInput = input.asCraftingInput(true);
+        // Filter before matching: special mod recipes may assume a fixed 3x3 grid.
+        this.craftingRecipes = craftingInput.isEmpty() ? List.of() : player.level().getRecipeManager()
+                .getAllRecipesFor(RecipeType.CRAFTING).stream()
+                .filter(holder -> holder.value().getClass() == ShapedRecipe.class || holder.value().getClass() == ShapelessRecipe.class)
+                .filter(holder -> holder.value().matches(craftingInput, player.level()))
+                .sorted(Comparator.comparing(holder -> holder.value().getResultItem(player.registryAccess()).getDescriptionId()))
+                .toList();
         this.recipes = player.level().getRecipeManager().getRecipesFor(recipeType, input, player.level());
         int totalSize = recipes.size() + craftingRecipes.size();
         if (selectedRecipeIndex.get() >= totalSize) selectedRecipeIndex.set(totalSize - 1);
@@ -84,20 +83,23 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                 ItemStack itemStack = ItemStack.EMPTY;
                 if (!recipes.isEmpty() || !craftingRecipes.isEmpty()) {
                     if (selectedRecipeIndex.get() == -1) selectedRecipeIndex.set(0);
-                    if (recipes.isEmpty()) {
-                        CraftingRecipe recipe = craftingRecipes.get(selectedRecipeIndex.get()).value();
+                    int index = selectedRecipeIndex.get();
+                    if (index >= recipes.size()) {
+                        CraftingRecipe recipe = craftingRecipes.get(index - recipes.size()).value();
                         itemStack = recipe.getResultItem(player.registryAccess()).copy();
                         resultSlot.setAltRecipe(recipe);
                     } else {
-                        HeavyWorkBenchRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
-                        itemStack = recipe.getResultItem(player.registryAccess()).copy();
+                        HeavyWorkBenchRecipe recipe = recipes.get(index).value();
+                        itemStack = recipe.getResult().copy();
                         resultSlot.setCurrentRecipe(recipe);
                     }
+                } else {
+                    resultSlot.setCurrentRecipe(null);
                 }
                 result.setItem(0, itemStack);
                 setRemoteSlot(0, itemStack);
                 serverPlayer.connection.send(new ClientboundContainerSetSlotPacket(containerId, incrementStateId(), 0, itemStack));
-            } else if (!recipes.isEmpty()) {
+            } else if (totalSize > 0) {
                 if (selectedRecipeIndex.get() == -1) selectedRecipeIndex.set(0);
             }
         });
@@ -113,7 +115,7 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                 ItemStack itemStack;
                 if (index < recipesSize) {
                     HeavyWorkBenchRecipe recipe = recipes.get(index).value();
-                    itemStack = recipe.getResultItem(player.registryAccess());
+                    itemStack = recipe.getResult();
                     if (!itemStack.isItemEnabled(player.level().enabledFeatures())) break inner;
                     resultSlot.setCurrentRecipe(recipe);
                 } else {
@@ -135,22 +137,16 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
         return stillValid(access, player, FunctionalBlocks.HEAVY_WORK_BENCH.get());
     }
 
-    public static class ResultSlot extends ToggleAmountResultSlot<HeavyWorkBenchRecipe> {
+    public static class ResultSlot extends ToggleAmountResultSlot.For4x<HeavyWorkBenchRecipe> {
         private CraftingRecipe altRecipe;
 
-        public ResultSlot(MenuRecipeInput input, Container result, int pSlot, int pX, int pY) {
-            super(input, result, pSlot, pX, pY);
+        public ResultSlot(MenuRecipeInput input, Container container, int slot, int x, int y, Runnable setup) {
+            super(input, container, slot, x, y, setup);
         }
 
         @Override
         public void onTake(Player player, ItemStack stack) {
-            if (recipe != null) {
-                recipe.either
-                        .ifLeft(pattern -> AbstractAmountRecipe.consumeShaped(input, 4, 4, pattern))
-                        .ifRight(ingredients -> AbstractAmountRecipe.consumeShapeless(input, ingredients));
-                input.setChanged();
-                updateMenu();
-            }
+            super.onTake(player, stack);
             if (altRecipe != null && (altRecipe.getClass() == ShapedRecipe.class || altRecipe.getClass() == ShapelessRecipe.class)) {
                 for (ItemStack itemStack : input.getItems()) {
                     itemStack.shrink(1);

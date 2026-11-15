@@ -1,0 +1,163 @@
+package org.confluence.mod.common.data.spawner;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.phys.AABB;
+import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.ReturnException;
+import org.confluence.mod.common.ModCommonConfigs;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.EyeOfCthulhu;
+import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.gameevent.LanternNightGameEvent;
+import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.OverworldUtils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.ToIntFunction;
+
+public enum BossDelaySpawner {
+    INSTANCE;
+    public static final int SUCCESS = 0;
+    public static final int CONTINUE = -1;
+    public static final int CANCEL = -2;
+    private final List<Delayed<BaseBoss>> bossQueue = new ArrayList<>();
+
+    public void tick(ServerLevel level) {
+        if (bossQueue.isEmpty()) return;
+        Iterator<Delayed<BaseBoss>> iterator = bossQueue.iterator();
+        while (iterator.hasNext()) l:{
+            Delayed<BaseBoss> delayed = iterator.next();
+            if (--delayed.delay >= 0) continue;
+            for (ServerPlayer player : level.players()) {
+                int state = delayed.predicate.applyAsInt(player);
+                if (state == SUCCESS) {
+                    ModUtils.summonBoss(level, player.blockPosition(), delayed.entity.create(level));
+                    iterator.remove();
+                    break l;
+                } else if (state == CANCEL) {
+                    iterator.remove();
+                    break l;
+                } else if (state != CONTINUE) {
+                    delayed.delay = state;
+                    break l;
+                }
+            }
+            iterator.remove();
+        }
+    }
+
+    /// @param predicate 等于[BossDelaySpawner#SUCCESS]时成功,等于[BossDelaySpawner#CONTINUE]时跳过该玩家,等于[BossDelaySpawner#CANCEL]时取消生成,大于0时设置下次检测延时
+    public void pushBoss(int delay, EntityType<? extends BaseBoss> boss, ToIntFunction<ServerPlayer> predicate) {
+        if (bossQueue.size() == 8) bossQueue.removeFirst();
+        bossQueue.add(new Delayed<>(delay, boss, predicate));
+    }
+
+    public boolean hasSameTypeInQueue(EntityType<?> type) {
+        if (bossQueue.isEmpty()) return false;
+        return bossQueue.stream().anyMatch(delayed -> delayed.entity == type);
+    }
+
+    public void clear() {
+        bossQueue.clear();
+    }
+
+    public static void spawnEyeOfCthulhu(ServerLevel level) {
+        if (!ModCommonConfigs.EYE_OF_CTHULHU_NATURE_SPAWNING.get()) return;
+        /// 必须用实时状态判定：事件系统里的计数是「上一 tick 的快照」，
+        /// 会漏掉本 tick 内刚启动的事件，从而在血月/灯笼夜的同一夜里把 EoC 也排进队列。
+        if (GameEventSystem.INSTANCE.getStartedEventAmount(true, true) > 0) return;
+        if (LanternNightGameEvent.INSTANCE.started()) return;
+        if (BloodMoonGameEvent.INSTANCE.started()) return;
+        EntityType<EyeOfCthulhu> type = BossEntities.EYE_OF_CTHULHU.get();
+        if (KillBoard.INSTANCE.isDefeated(type) || BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
+            return;
+        }
+        for (ServerPlayer player : level.players()) {
+            if (!BossDelaySpawner.eyeOfCthulhuChecker(player) || level.random.nextFloat() >= 0.3333F) {
+                continue;
+            }
+            BossDelaySpawner.INSTANCE.pushBoss(1350, BossEntities.EYE_OF_CTHULHU.get(), player1 -> {
+                // 天亮了说明这一夜已经过去，本次自然生成作废，避免残留队列一直压着后续夜晚的血月
+                if (!LibDateUtils.isNight(player1.level())) return BossDelaySpawner.CANCEL;
+                if (OverworldUtils.belowSurface(player1.getY()) || !BossDelaySpawner.eyeOfCthulhuChecker(player1)) {
+                    return 20;
+                }
+                return BossDelaySpawner.SUCCESS;
+            });
+            level.getServer().getPlayerList().broadcastSystemMessage(
+                    Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()),
+                    false
+            );
+            break;
+        }
+    }
+
+    public static boolean eyeOfCthulhuChecker(ServerPlayer player) {
+        if (player.getMaxHealth() < 40 || player.getArmorValue() < 10) return false;
+        NPCSpawner.Region region = NPCSpawner.getNpcSpawnRegion(player);
+        if (NPCSpawner.INSTANCE.getAliveNpcCount(region, type -> true) < 4) {
+            return false; // todo 骷髅商人不计入
+        }
+        return Boss.noBossInWorld(player.serverLevel());
+    }
+
+    public static void spawnDeerClops(ServerLevel level) {
+        if (!ModCommonConfigs.DEERCLOPS_NATURE_SPAWNING.get()) return;
+        if (!level.isRaining()) return;
+        if (BossDelaySpawner.INSTANCE.hasSameTypeInQueue(BossEntities.DEERCLOPS.get())) return;
+        for (ServerPlayer player : level.players()) {
+            if (!BossDelaySpawner.deerclopsChecker(player)) continue;
+            BossDelaySpawner.INSTANCE.pushBoss(0, BossEntities.DEERCLOPS.get(), player1 ->
+                    BossDelaySpawner.deerclopsChecker(player1)
+                            ? BossDelaySpawner.SUCCESS
+                            : BossDelaySpawner.CONTINUE
+            );
+            break;
+        }
+    }
+
+    public static boolean deerclopsChecker(ServerPlayer player) {
+        if (!OverworldUtils.inSurface(player.getY())) return false;
+        if (player.getMaxHealth() < 40 && player.getArmorValue() < 9) return false;
+        ServerLevel level = player.serverLevel();
+        if (!OverworldUtils.isSnowy(level.getBiome(player.blockPosition()))) return false;
+        int amount = GameEventSystem.INSTANCE.getStartedEventAmount(true, false);
+        if (amount != 0 && (amount != 1 || !BloodMoonGameEvent.INSTANCE.started())) {
+            return false;
+        }
+        try {
+            level.getEntities().get(new AABB(player.blockPosition()).inflate(80), entity -> {
+                if (entity instanceof BaseNPC) {
+                    throw new ReturnException();
+                }
+            });
+        } catch (Exception ignored) {
+            return false;
+        }
+        return Boss.noBossInWorld(player.serverLevel());
+    }
+
+    static class Delayed<E extends Entity> {
+        int delay;
+        final EntityType<? extends E> entity;
+        final ToIntFunction<ServerPlayer> predicate;
+
+        Delayed(int delay, EntityType<? extends E> entity, ToIntFunction<ServerPlayer> predicate) {
+            this.delay = delay;
+            this.entity = entity;
+            this.predicate = predicate;
+        }
+    }
+}

@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.texture.SpriteLoader;
 import net.minecraft.client.resources.metadata.animation.FrameSize;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.lib.util.LibClientUtils;
-import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.ModStartupConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.util.ClientUtils;
 import org.spongepowered.asm.mixin.Final;
@@ -28,12 +28,12 @@ public abstract class SpriteLoaderMixin {
 
     @ModifyVariable(method = "stitch", at = @At("HEAD"), argsOnly = true)
     private List<SpriteContents> generateGraySprites(List<SpriteContents> contents) {
-        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture()) return contents;
+        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !ModStartupConfigs.paintsReplaceTexture()) return contents;
 
         if (ModClientSetups.VANILLA_BLOCK_ATLAS.equals(location)) {
             ClientUtils.clearCache();
             List<SpriteContents> neoContents = Lists.newArrayListWithExpectedSize(contents.size() * 2);
-            Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.bannedModForPaints());
+            Set<String> bannedModForPaints = new HashSet<>(ModStartupConfigs.bannedModForPaints());
             for (SpriteContents content : contents) {
                 neoContents.add(content);
                 ResourceLocation name = content.name();

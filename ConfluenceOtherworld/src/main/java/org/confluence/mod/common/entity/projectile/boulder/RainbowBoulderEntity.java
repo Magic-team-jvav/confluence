@@ -5,7 +5,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
@@ -13,11 +12,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import org.confluence.lib.api.entity.Boss;
-import org.confluence.lib.color.IntegerRGB;
-import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.LibMathUtils;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.terra_curio.common.init.TCCommonConfigs;
-import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -25,6 +25,8 @@ import java.util.List;
 
 // TODO 彩虹
 public class RainbowBoulderEntity extends BoulderEntity {
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_ONLY);
+
     private Player protectedPlayer = null;
     private Object target = null;
     private BlockPos targetPos = null;
@@ -101,7 +103,7 @@ public class RainbowBoulderEntity extends BoulderEntity {
         }
 
         if (target instanceof Entity entityTarget) {
-            if (!entityTarget.isAlive()) {
+            if (!TARGETING.canKeep(protectedPlayer, entityTarget)) {
                 target = null;
                 targetPos = null;
             } else {
@@ -119,7 +121,7 @@ public class RainbowBoulderEntity extends BoulderEntity {
         if (protectedPlayer != null && target == null) {
             if (tickCount % 100 == 0) {
                 AABB area = new AABB(protectedPlayer.blockPosition()).inflate(64);
-                cachedEnemies = level().getEntities((Entity) null, area, e -> e instanceof Enemy && e.isAlive());
+                cachedEnemies = LibEntityUtils.queryHitCandidates(level(), null, area, e -> TARGETING.canAcquire(protectedPlayer, e));
 
                 cachedRareBlocks.clear();
                 BlockPos.betweenClosedStream(area).forEach(pos -> {
@@ -130,6 +132,7 @@ public class RainbowBoulderEntity extends BoulderEntity {
                 });
             }
 
+            cachedEnemies.removeIf(entity -> !TARGETING.canAcquire(protectedPlayer, entity));
             if (!cachedEnemies.isEmpty() && (cachedRareBlocks.isEmpty() || level().random.nextBoolean())) {
                 target = cachedEnemies.get(level().random.nextInt(cachedEnemies.size()));
                 targetTo((Entity) target);
@@ -197,14 +200,8 @@ public class RainbowBoulderEntity extends BoulderEntity {
         } else if (direction == Direction.DOWN) {
             setDeltaMovement(x, -1.5f, z);
         } else {
-            Vec3 motion = VectorUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
+            Vec3 motion = LibMathUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
             setDeltaMovement(motion);
-        }
-        if (targetPos != null){
-            if (targetPos.equals(blockHitResult.getBlockPos())) {
-                IntegerRGB rgb = IntegerRGB.of(getGlowingColor());
-                DebugBlocksHelper.Singleton().addDebugBlock(targetPos, new DebugBlocksHelper.DebugInfo(rgb.red(), rgb.green(), rgb.blue(), 200));
-            }
         }
         target = null;
         targetPos = null;

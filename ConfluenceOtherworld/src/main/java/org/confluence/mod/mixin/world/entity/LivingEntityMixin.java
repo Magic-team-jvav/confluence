@@ -1,8 +1,8 @@
 package org.confluence.mod.mixin.world.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -13,16 +13,17 @@ import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.confluence.lib.common.effect.HoneyEffect;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.natural.ThinIceBlock;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
@@ -32,26 +33,34 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.hook.BaseHookItem;
+import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
-import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.FlushArmorSetBonusPacketS2C;
-import org.confluence.terra_curio.common.effect.HoneyEffect;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
+import java.util.Stack;
+
+import static org.confluence.mod.common.util.VoidSeaConstants.*;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntity {
-    @Shadow
-    public abstract Map<Holder<MobEffect>, MobEffectInstance> getActiveEffectsMap();
+    @Shadow(remap = false)
+    protected Stack<DamageContainer> damageContainers;
+
+    @Override
+    public DamageContainer confluence$getCurrentDamageContainer() {
+        return damageContainers == null || damageContainers.empty() ? null : damageContainers.peek();
+    }
 
     @Shadow
     public abstract ItemStack getLastArmorItem(EquipmentSlot slot);
@@ -115,13 +124,53 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
             }
             instance = instance.scale(0.8);
         } else if (fluidType == ModFluids.SHIMMER.type().get()) {
-            ShimmerEffect.applyShimmerEffect(self);
+            if (self.getEyeInFluidType() == ModFluids.SHIMMER.type().get()) {
+                ShimmerEffect.applyShimmerEffect(self, 0);
+            }
             instance = instance.add(0, -0.03, 0);
         }
         if (self.hasEffect(ModEffects.FLIPPER)) {
             return original.call(instance, 0.96, 0.96, 0.96);
         }
+        if (confluence$isInVoidSea()) {
+            return original.call(instance, (double) HORIZONTAL_MOVEMENT_RESISTANCE, factorY, (double) HORIZONTAL_MOVEMENT_RESISTANCE);
+        }
         return original.call(instance, factorX, factorY, factorZ);
+    }
+
+    @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z"))
+    private boolean confluence$voidSeaWater(boolean original) {
+        return original || confluence$isInVoidSea();
+    }
+
+    @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"))
+    private float confluence$voidSeaMovementSpeed(float original) {
+        if (confluence$isInVoidSea()) {
+            return original * (confluence$self().isSwimming() ? SWIMMING_SPEED : MOVEMENT_SPEED);
+        }
+        return original;
+    }
+
+    @Unique
+    private boolean confluence$isInVoidSea() {
+        LivingEntity self = confluence$self();
+        return VoidSeaHelper.isTrigger(self);
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void confluence$moveWithVoidSea(CallbackInfo ci) {
+        LivingEntity self = confluence$self();
+        if (!VoidSeaHelper.isTrigger(self)) {
+            return;
+        }
+
+        float height = VoidSeaHelper.getHeight();
+        float heightO = VoidSeaHelper.getHeightO();
+        if (self.getY() >= Math.min(height, heightO) - TIDE_SURFACE_RANGE
+                && self.getY() <= Math.max(height, heightO)
+                && height != heightO) {
+            self.move(MoverType.SELF, new Vec3(0.0, height - heightO, 0.0));
+        }
     }
 
     @ModifyExpressionValue(method = "handleOnClimbable", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSuppressingSlidingDownLadder()Z"))
@@ -157,21 +206,6 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
         return original || (confluence$self() instanceof Player player && !player.isCrouching() && BaseHookItem.hasAnyHooked(player));
     }
 
-    @WrapWithCondition(method = "onEffectUpdated", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffect;addAttributeModifiers(Lnet/minecraft/world/entity/ai/attributes/AttributeMap;I)V"))
-    private boolean shouldAdd(MobEffect mobEffect, AttributeMap entry, int i, @Local(argsOnly = true) MobEffectInstance instance) {
-        return IMobEffectInstance.of(instance).confluence$isEnabled();
-    }
-
-    @WrapMethod(method = "hasEffect")
-    private boolean hasEffect(Holder<MobEffect> effect, Operation<Boolean> original) {
-        return ILivingEntity.hasEffect(getActiveEffectsMap(), effect);
-    }
-
-    @WrapMethod(method = "getEffect")
-    private MobEffectInstance getEffect(Holder<MobEffect> effect, Operation<MobEffectInstance> original) {
-        return ILivingEntity.getEffect(getActiveEffectsMap(), effect);
-    }
-
     @Inject(method = "handleEquipmentChanges", at = @At("HEAD"))
     private void handleArmorChanges(Map<EquipmentSlot, ItemStack> equipments, CallbackInfo ci) {
         if (confluence$self() instanceof ServerPlayer player) {
@@ -183,6 +217,15 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
                     break;
                 }
             }
+        }
+    }
+
+    @Inject(method = "onBelowWorld", at = @At("HEAD"), cancellable = true)
+    private void confluence$onBelowWorld(CallbackInfo ci) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        if (VoidSeaHelper.isTrigger(livingEntity)
+                && VoidSeaHelper.isDimensionalOverlapEffect(livingEntity)) {
+            ci.cancel();
         }
     }
 }

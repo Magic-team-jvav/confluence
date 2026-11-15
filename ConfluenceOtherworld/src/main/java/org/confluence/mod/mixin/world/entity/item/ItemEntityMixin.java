@@ -1,6 +1,5 @@
 package org.confluence.mod.mixin.world.entity.item;
 
-import net.minecraft.Util;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -14,15 +13,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.init.ModAdvancements;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
+import org.confluence.mod.common.recipe.ShimmerDecompositionInputs;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.IItemEntity;
-import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,7 +31,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Mixin(ItemEntity.class)
@@ -133,12 +131,12 @@ public abstract class ItemEntityMixin implements IItemEntity {
             return;
         }
 
-        if (!CommonConfigs.SHIMMER_DECOMPOSE.get()) return;
+        if (!ModCommonConfigs.SHIMMER_DECOMPOSE.get()) return;
 
         if (sourceItem.getDamageValue() != 0) return;
         RegistryAccess registryAccess = source.level().registryAccess();
         MinecraftServer server = ((ServerLevel) source.level()).getServer();
-        boolean isHardmode = IMinecraftServer.isHardmode(server);
+        boolean isHardmode = ModUtils.isHardmode();
         RandomSource random = source.level().random;
         for (RecipeHolder<?> recipeHolder : server.getRecipeManager().getRecipes()) {
             Recipe<?> recipe = recipeHolder.value();
@@ -151,17 +149,8 @@ public abstract class ItemEntityMixin implements IItemEntity {
                 List<ItemStack> results = new ArrayList<>();
                 for (Ingredient ingredient : recipe.getIngredients()) {
                     ItemStack[] itemStacks = ingredient.getItems();
-                    if (itemStacks.length == 0) continue;
-                    if (!isHardmode && Arrays.stream(itemStacks).allMatch(itemStack -> itemStack.is(ModTags.Items.HARDMODE))) {
-                        continue;
-                    }
-                    ItemStack input = Util.getRandom(itemStacks, random);
-                    if (!isHardmode && input.is(ModTags.Items.HARDMODE)) {
-                        for (int i = 0; i < itemStacks.length && input.is(ModTags.Items.HARDMODE); i++) {
-                            input = itemStacks[i];
-                        }
-                        if (input.is(ModTags.Items.HARDMODE)) continue;
-                    }
+                    ItemStack input = ShimmerDecompositionInputs.choose(itemStacks, isHardmode, random, ModCommonConfigs.SHIMMER_DECOMPOSE_FIRST_TAG_ITEM.get());
+                    if (input == null) continue;
                     ItemStack result = input.copy();
                     if (result.getItem().hasCraftingRemainingItem(result)) continue;
                     int count = result.getCount() * times;

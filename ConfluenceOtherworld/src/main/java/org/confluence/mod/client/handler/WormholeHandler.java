@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.data.Team;
 import org.confluence.mod.network.c2s.WormholeRequestPlayerDataPacketC2S;
 import org.confluence.mod.network.s2c.WormholePlayerDataSyncPacketS2C;
 import org.jetbrains.annotations.NotNull;

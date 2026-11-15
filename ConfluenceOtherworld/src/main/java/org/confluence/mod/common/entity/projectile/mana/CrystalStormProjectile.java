@@ -5,7 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class CrystalStormProjectile extends AbstractManaProjectile {
     public CrystalStormProjectile(EntityType<CrystalStormProjectile> entityType, Level level) {
@@ -15,7 +15,7 @@ public class CrystalStormProjectile extends AbstractManaProjectile {
     }
 
     public CrystalStormProjectile(LivingEntity living) {
-        this(ModEntities.CRYSTAL_STORM_PROJECTILE.get(), living.level());
+        this(ModEntities.CRYSTAL_STORM.get(), living.level());
     }
 
     @Override

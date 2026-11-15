@@ -38,6 +38,7 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBlock {
@@ -117,7 +118,7 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
         public BItem(SkyMillBlock block) {
-            super(block, new Properties(), ModRarity.BLUE, "tooltip.item.confluence.sky_mill.0");
+            super(block, new Properties(), ModRarity.BLUE, List.of());
         }
 
         @Override

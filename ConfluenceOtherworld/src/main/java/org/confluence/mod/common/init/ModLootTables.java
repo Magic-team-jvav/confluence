@@ -4,12 +4,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.loot.DateLootItemCondition;
-import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
-import org.confluence.mod.common.loot.SecretFlagLootItemCondition;
+import org.confluence.mod.common.loot.*;
 
 import java.util.function.Supplier;
 
@@ -57,6 +57,12 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> FISHING_LAVA = register("gameplay/fishing/lava");
     public static final ResourceKey<LootTable> FISHING_HONEY = register("gameplay/fishing/honey");
     public static final ResourceKey<LootTable> FISHING = register("gameplay/fishing");
+    public static final ResourceKey<LootTable> FISH_PLENTIFUL = register("gameplay/fishing/plentiful");
+    public static final ResourceKey<LootTable> FISH_COMMON = register("gameplay/fishing/common");
+    public static final ResourceKey<LootTable> FISH_UNCOMMON = register("gameplay/fishing/uncommon");
+    public static final ResourceKey<LootTable> FISH_RARE = register("gameplay/fishing/rare");
+    public static final ResourceKey<LootTable> FISH_VERY_RARE = register("gameplay/fishing/very_rare");
+    public static final ResourceKey<LootTable> FISH_LEGENDARY = register("gameplay/fishing/legendary");
     public static final ResourceKey<LootTable> FISH = register("gameplay/fishing/fish");
     public static final ResourceKey<LootTable> JUNK = register("gameplay/fishing/junk");
     public static final ResourceKey<LootTable> TREASURE = register("gameplay/fishing/treasure");
@@ -81,6 +87,9 @@ public final class ModLootTables {
 
     public static final ResourceKey<LootTable> LIVING_MAHOGANY_CARRY = register("gameplay/living_mahogany_carry");
 
+    // 蘑菇套装（Mushroom set）四件套：被发光蘑菇地下小屋金箱作为嵌套子表引用，一次发放整套。
+    public static final ResourceKey<LootTable> MUSHROOM_SET = register("chests/mushroom_set");
+
     public static final ResourceKey<LootTable> OPAL_BLOCK = register("archaeology/opal_ore");
 
     public static final ResourceKey<LootTable> GOLDEN_LOCK_BOX = register("gameplay/crate/golden_lock_box");
@@ -90,11 +99,26 @@ public final class ModLootTables {
         return Confluence.asResourceKey(Registries.LOOT_TABLE, name);
     }
 
+    // 注册战利品条目类型，使数据包能够通过 type 字段使用自定义的子规则组。
+    public static class EntryTypes {
+        public static final DeferredRegister<LootPoolEntryType> TYPES = DeferredRegister.create(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE, Confluence.MODID);
+        public static final Supplier<LootPoolEntryType> PERCENTAGE = TYPES.register("percentage", () -> new LootPoolEntryType(PercentageLootEntry.CODEC));
+    }
+
     public static class ItemConditions {
         public static final DeferredRegister<LootItemConditionType> TYPES = DeferredRegister.create(BuiltInRegistries.LOOT_CONDITION_TYPE, Confluence.MODID);
 
         public static final Supplier<LootItemConditionType> DATE = TYPES.register("date", () -> new LootItemConditionType(DateLootItemCondition.CODEC));
         public static final Supplier<LootItemConditionType> GAME_PHASE = TYPES.register("game_phase", () -> new LootItemConditionType(GamePhaseLootItemCondition.CODEC));
         public static final Supplier<LootItemConditionType> SECRET_FLAG = TYPES.register("secret_flag", () -> new LootItemConditionType(SecretFlagLootItemCondition.CODEC));
+        public static final Supplier<LootItemConditionType> DIFFICULTY_CHANCE = TYPES.register("difficulty_chance", () -> new LootItemConditionType(DifficultyChanceLootItemCondition.CODEC));
+        public static final Supplier<LootItemConditionType> ENTITY_VARIANT = TYPES.register("entity_variant", () -> new LootItemConditionType(EntityVariantLootItemCondition.CODEC));
+    }
+
+    public static class ItemFunctions {
+        public static final DeferredRegister<LootItemFunctionType<?>> TYPES = DeferredRegister.create(BuiltInRegistries.LOOT_FUNCTION_TYPE, Confluence.MODID);
+
+        public static final Supplier<LootItemFunctionType<LootingBonusCountFunction>> LOOTING_BONUS_COUNT =
+                TYPES.register("looting_bonus_count", () -> new LootItemFunctionType<>(LootingBonusCountFunction.CODEC));
     }
 }

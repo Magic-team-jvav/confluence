@@ -1,19 +1,15 @@
 package org.confluence.mod.integration.prism_lib;
 
 import com.mojang.datafixers.util.Either;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.TriState;
-import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.util.PrefixUtils;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -25,20 +21,6 @@ public class PrismLibHelper {
     public static final boolean IS_LOADED = LibUtils.isModLoaded("prism");
     public static final boolean LEGENDARY_TOOLTIPS = LibUtils.isModLoaded("legendarytooltips");
     private static TriState renderItemModel = TriState.DEFAULT;
-
-    public static @Nullable TextColor getRarityColor(ItemStack itemStack) {
-        ModRarity rarity = ModRarity.getModRarity(itemStack, false);
-        return rarity == null ? null : rarity.asTextColor();
-    }
-
-    public static @Nullable Pair<Supplier<Integer>, Supplier<Integer>> getSpecialColor(ItemStack itemStack) {
-        ModRarity rarity = ModRarity.getModRarity(itemStack, false);
-        if (rarity != null && rarity.isSpecial()) {
-            Supplier<Integer> supplier = rarity::color;
-            return new Pair<>(supplier, supplier);
-        }
-        return null;
-    }
 
     public static boolean shouldDisableAltImageTooltip() {
         if (LEGENDARY_TOOLTIPS) {

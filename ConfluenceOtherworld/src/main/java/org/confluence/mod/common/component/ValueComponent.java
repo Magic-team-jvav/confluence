@@ -4,11 +4,15 @@ import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.util.ClientUtils;
@@ -55,8 +59,32 @@ public record ValueComponent(int value) implements DataComponentType<ValueCompon
         return getValue(itemStack, defaultValue, false);
     }
 
-    public static void addTooltip(ItemStack stack, List<Component> toolTip) {
-        int price = getValue(stack, 0);
+    ///
+    public static long getValueLong(ItemStack stack, int defaultValue, boolean prototype) {
+        DataComponentType<ValueComponent> type = ModDataComponentTypes.VALUE.get();
+        ValueComponent value = prototype ? stack.getPrototype().get(type) : stack.get(type);
+        if (value == null) {
+            value = stack.getItemHolder().getData(ModDataMaps.VALUE);
+            return (long) (value == null ? defaultValue : value.value()) * stack.getCount();
+        }
+        return (long) value.value() * stack.getCount();
+    }
+
+    public static long getValueLong(ItemStack itemStack, int defaultValue) {
+        return getValueLong(itemStack, defaultValue, false);
+    }
+
+    public static void addTooltip(ItemStack stack, List<Component> toolTip, Player player) {
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        if (customData != null && customData.contains(NPCTradeMenu.BUY_PRICE_TAG)) {
+            long buyPrice = customData.copyTag().getLong(NPCTradeMenu.BUY_PRICE_TAG);
+            if (buyPrice > 0) {
+                toolTip.add(Component.translatable("tooltip.price.buy").withStyle(ChatFormatting.GRAY).append(ClientUtils.formatPrice(buyPrice)));
+            }
+            return;
+        }
+        long price = player != null && player.containerMenu instanceof NPCTradeMenu menu
+                ? menu.getDisplayedSellPrice(stack) : getValueLong(stack, 0);
         if (price > 0) {
             toolTip.add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ClientUtils.formatPrice(price)));
         }

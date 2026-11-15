@@ -1,7 +1,6 @@
 package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,13 +10,14 @@ import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
-import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
+import org.confluence.mod.common.init.entity.NpcEntities;
 
 public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPacketS2C {
     public static final Type<AvailableHouseSelectPacketS2C> TYPE = Confluence.createType("available_house_select");
     public static final int size = 25;
     public static final int traveling_merchant = 20;
+    public static final int angler = 21;
     public static final StreamCodec<ByteBuf, AvailableHouseSelectPacketS2C> STREAM_CODEC = LibStreamCodecUtils.booleanArray(size)
             .map(AvailableHouseSelectPacketS2C::new, AvailableHouseSelectPacketS2C::available);
     private static EntityType<?>[] TYPES;
@@ -36,47 +36,53 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPac
         if (TYPES == null) {
             TYPES = new EntityType[]{
                     EntityType.PLAYER,
-                    TENpcEntities.GUIDE.get(),
-                    TENpcEntities.MERCHANT.get(),
-                    TENpcEntities.NURSE.get(),
-                    TENpcEntities.DEMOLITIONIST.get(),
-                    TENpcEntities.DRYAD.get(),
-                    TENpcEntities.ARMS_DEALER.get(),
-                    TENpcEntities.CLOTHIER.get(),
-                    TENpcEntities.MECHANIC.get(),
-                    TENpcEntities.GOBLIN_TINKERER.get(),
-                    TENpcEntities.WIZARD.get(),
+                    NpcEntities.GUIDE.get(),
+                    NpcEntities.MERCHANT.get(),
+                    NpcEntities.NURSE.get(),
+                    NpcEntities.DEMOLITIONIST.get(),
+                    NpcEntities.DRYAD.get(),
+                    NpcEntities.ARMS_DEALER.get(),
+                    NpcEntities.CLOTHIER.get(),
+                    NpcEntities.MECHANIC.get(),
+                    NpcEntities.GOBLIN_TINKERER.get(),
+                    NpcEntities.WIZARD.get(),
+                    NpcEntities.DYE_TRADER.get(), // 染料商，头像取 npc_head 第二行第五个
+                    NpcEntities.TRUFFLE.get(),
                     null,
-                    TENpcEntities.TRUFFLE.get(),
+                    NpcEntities.PARTY_GIRL.get(),
                     null,
-                    TENpcEntities.PARTY_GIRL.get(),
-                    null,
-                    TENpcEntities.PAINTER.get(),
-                    TENpcEntities.WITCH_DOCTOR.get(),
+                    NpcEntities.PAINTER.get(),
+                    NpcEntities.WITCH_DOCTOR.get(),
 
                     null,
                     null,
-                    TENpcEntities.TRAVELING_MERCHANT.get(),
-                    TENpcEntities.ANGLER.get(),
+                    NpcEntities.TRAVELING_MERCHANT.get(),
+                    NpcEntities.ANGLER.get(),
                     null,
                     null,
-                    TENpcEntities.ZOOLOGIST.get()
+                    NpcEntities.ZOOLOGIST.get()
             };
         }
         return TYPES;
     }
 
     public static CustomPacketPayload collectPacket(ServerPlayer player) {
-        Object2BooleanMap<EntityType<?>> details = NPCSpawner.INSTANCE.getRegionAliveDetails(new NPCSpawner.Region(player.chunkPosition()));
+        NPCSpawner.Region region = new NPCSpawner.Region(player.chunkPosition());
         boolean[] values = new boolean[size];
         for (int i = 0; i < size; i++) {
             EntityType<?> type = getTypes()[i];
             if (type == EntityType.PLAYER) {
                 values[i] = true;
             } else if (type != null) {
-                values[i] = details.getBoolean(type);
+                values[i] = NPCSpawner.INSTANCE.hasNPCAlive(region, type);
             }
         }
         return new AvailableHouseSelectPacketS2C(values);
+    }
+
+    /// 判断实体类型是否属于指定住房槽位。
+    public static boolean matchesSelection(int selected, EntityType<?> type) {
+        return selected >= 0 && selected < getTypes().length
+                && NpcEntities.isSameProfession(type, getTypes()[selected]);
     }
 }

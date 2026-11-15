@@ -38,7 +38,10 @@ public class BlockPostFeature extends Feature<BlockPostFeature.Config> {
         BlockPos placePos = baseBlockPos;
         if (toGround && (direction.getAxis() == Direction.Axis.Y) && !replace) {
             while (level.getBlockState(placePos).canBeReplaced()) {
+                if (placePos.getY() < level.getMinBuildHeight() || placePos.getY() > level.getMaxBuildHeight())
+                    return false;
                 level.setBlock(placePos, block.trySetValue(WATERLOGGED, level.getFluidState(placePos).is(FluidTags.WATER)), 3);
+                // Why is it possible to place at minus 100 million blocks?
                 placePos = placePos.relative(direction);
             }
             return true;

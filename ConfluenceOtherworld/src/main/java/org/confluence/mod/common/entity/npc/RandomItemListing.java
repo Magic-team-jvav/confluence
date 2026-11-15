@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.ItemCost;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.ItemLike;
-import org.apache.commons.lang3.IntegerRange;
+import org.confluence.lib.util.range.IntegerRange;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -74,19 +74,19 @@ public class RandomItemListing implements VillagerTrades.ItemListing {
     public @Nullable MerchantOffer getOffer(Entity trader, RandomSource random) {
         if (priceStack == null) {
             this.priceStack = price.getDefaultInstance();
-            if (Objects.equals(priceRange.getMinimum(), priceRange.getMaximum())) {
-                priceStack.setCount(priceRange.getMinimum());
+            if (Objects.equals(priceRange.min(), priceRange.max())) {
+                priceStack.setCount(priceRange.min());
             } else {
-                priceStack.setCount(random.nextInt(priceRange.getMinimum(), priceRange.getMaximum()));
+                priceStack.setCount(random.nextInt(priceRange.min(), priceRange.max()));
             }
         }
         ItemCost cost = new ItemCost(priceStack.getItemHolder(), priceStack.getCount(), DataComponentPredicate.EMPTY, priceStack);
         if (forSaleStack == null) {
             this.forSaleStack = forSale.getDefaultInstance();
-            if (Objects.equals(forSaleRange.getMinimum(), forSaleRange.getMaximum())) {
-                forSaleStack.setCount(forSaleRange.getMinimum());
+            if (Objects.equals(forSaleRange.min(), forSaleRange.max())) {
+                forSaleStack.setCount(forSaleRange.min());
             } else {
-                forSaleStack.setCount(random.nextInt(forSaleRange.getMinimum(), forSaleRange.getMaximum()));
+                forSaleStack.setCount(random.nextInt(forSaleRange.min(), forSaleRange.max()));
             }
         }
         return new MerchantOffer(cost, Optional.empty(), forSaleStack, maxTrades, xp, priceMult);

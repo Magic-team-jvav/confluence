@@ -1,0 +1,196 @@
+package org.confluence.mod.common.entity.ai.bt.leaf;
+
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
+import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.monster.BaseMonster;
+
+/// 实体先在待机阶段按指定速度朝向目标。进入触发角后持续加速；当目标离开可转向角时，
+/// 实体保留冲刺方向、逐渐减速并向上抬升一段时间。贴身命中后则先沿当前正面远离目标，
+/// 拉开足够距离后才重新对准。转向速度、触发角和冲刺中的最大转向角是三个独立参数，
+/// 不能互相代替。
+///
+/// 本动作只负责冲刺运动；公共接触伤害由飞行实体独立计时，不能绑在某个行为树节点上，
+/// 否则切换动作时会错误暂停。
+public final class SteeringDashAction extends BTNode {
+    private static final int POINT_BLANK_COOLDOWN = 30;
+
+    private final BaseMonster mob;
+    private final double friction;
+    private final double maxSpeed;
+    private final double acceleration;
+    private final float turnSpeedDegrees;
+    private final double triggerAngle;
+    private final double steeringAngle;
+    private final int backDuration;
+    private final boolean lookDuringBack;
+
+    private Phase phase = Phase.IDLE;
+    private int backTicks;
+    private int pointBlankCooldown;
+    private Vec3 lastDirection = Vec3.ZERO;
+
+    public SteeringDashAction(BaseMonster mob, double friction, double maxSpeed, double acceleration,
+                              double turnSpeedDegrees, double triggerAngleDegrees, double steeringAngleDegrees, int backDuration) {
+        this(mob, friction, maxSpeed, acceleration, turnSpeedDegrees, triggerAngleDegrees, steeringAngleDegrees, backDuration, false);
+    }
+
+    public SteeringDashAction(BaseMonster mob, double friction, double maxSpeed, double acceleration,
+                              double turnSpeedDegrees, double triggerAngleDegrees, double steeringAngleDegrees, int backDuration,
+                              boolean lookDuringBack) {
+        if (friction < 0.0 || friction > 1.0 || maxSpeed <= 0.0
+                || acceleration < 0.0 || turnSpeedDegrees <= 0.0
+                || triggerAngleDegrees <= 0.0 || triggerAngleDegrees > 180.0
+                || steeringAngleDegrees <= 0.0 || steeringAngleDegrees > 180.0 || backDuration < 0) {
+            throw new IllegalArgumentException("Steering dash parameters are outside their valid ranges");
+        }
+        this.mob = mob;
+        this.friction = friction;
+        this.maxSpeed = maxSpeed;
+        this.acceleration = acceleration;
+        this.turnSpeedDegrees = (float) turnSpeedDegrees;
+        this.triggerAngle = Math.toRadians(triggerAngleDegrees);
+        this.steeringAngle = Math.toRadians(steeringAngleDegrees);
+        this.backDuration = backDuration;
+        this.lookDuringBack = lookDuringBack;
+    }
+
+    @Override
+    public void start() {
+        phase = Phase.IDLE;
+        backTicks = 0;
+        lastDirection = mob.getDeltaMovement();
+    }
+
+    @Override
+    public BTStatus execute() {
+        LivingEntity target = mob.getTarget();
+        if (target == null || !target.isAlive()) {
+            return BTStatus.FAILURE;
+        }
+
+        pointBlankCooldown--;
+        mob.hasImpulse = true;
+
+        if (mob.hurtTime > 0) {
+            phase = Phase.IDLE;
+            lastDirection = mob.getDeltaMovement();
+        }
+
+        double distance = mob.getEyePosition().distanceTo(target.getEyePosition());
+        if (distance < 0.5 && pointBlankCooldown <= 0) {
+            phase = Phase.AWAY;
+            pointBlankCooldown = POINT_BLANK_COOLDOWN;
+            return BTStatus.RUNNING;
+        }
+
+        if (phase == Phase.AWAY) {
+            Vec3 away = mob.position().subtract(target.position()).multiply(1.0, 0.0, 1.0);
+            if (away.lengthSqr() > 1.0E-8) {
+                Vec3 velocity = mob.getDeltaMovement().scale(friction).add(away.normalize().scale(0.1));
+                if (velocity.lengthSqr() > maxSpeed * maxSpeed)
+                    velocity = velocity.normalize().scale(maxSpeed);
+                mob.faceCombatDirection(velocity, turnSpeedDegrees, 85.0F);
+                mob.setDeltaMovement(velocity);
+            }
+            if (distance > 5.0) {
+                phase = Phase.IDLE;
+            } else {
+                return BTStatus.RUNNING;
+            }
+        }
+
+        if (phase == Phase.DASHING_BACK) {
+            tickDashingBack(target);
+            return BTStatus.RUNNING;
+        }
+        if (phase == Phase.IDLE) {
+            tickIdle(target);
+            return BTStatus.RUNNING;
+        }
+
+        tickDash(target);
+        return BTStatus.RUNNING;
+    }
+
+    @Override
+    public void stop() {
+        phase = Phase.IDLE;
+        backTicks = 0;
+        lastDirection = mob.getDeltaMovement();
+    }
+
+    private void tickIdle(LivingEntity target) {
+        lookAtTarget(target);
+        if (mob.hurtTime > 0) {
+            return;
+        }
+
+        slowLastDirection();
+        if (mob.getDeltaMovement().length() <= 0.1) {
+            mob.setDeltaMovement(mob.getForward().normalize().scale(0.1));
+        }
+        if (angleToTarget(target) < triggerAngle) {
+            phase = Phase.DASHING;
+        }
+    }
+
+    private void tickDash(LivingEntity target) {
+        if (angleToTarget(target) >= steeringAngle) {
+            backTicks = 0;
+            phase = Phase.DASHING_BACK;
+            lastDirection = mob.getDeltaMovement();
+            return;
+        }
+
+        lookAtTarget(target);
+        Vec3 velocity = mob.getDeltaMovement();
+        double speed = Math.min(maxSpeed, velocity.add(velocity.normalize().scale(acceleration)).length());
+        if (speed < 0.1) {
+            mob.setDeltaMovement(mob.getForward().normalize().scale(0.1));
+            return;
+        }
+
+        Vec3 forward = mob.getForward().normalize();
+        Vec3 towardTarget = target.getEyePosition().subtract(mob.getEyePosition()).normalize();
+        mob.setDeltaMovement(forward.add(towardTarget).normalize().scale(speed));
+    }
+
+    private void tickDashingBack(LivingEntity target) {
+        backTicks++;
+        slowLastDirection();
+        mob.addDeltaMovement(new Vec3(0.0, 0.05, 0.0));
+        if (lookDuringBack) lookAtTarget(target);
+        if (backTicks >= backDuration) {
+            phase = Phase.IDLE;
+        }
+    }
+
+    private void lookAtTarget(LivingEntity target) {
+        mob.faceCombatPosition(target.getEyePosition(), turnSpeedDegrees, 85.0F);
+    }
+
+    private void slowLastDirection() {
+        lastDirection = lastDirection.scale(friction);
+        mob.setDeltaMovement(lastDirection);
+    }
+
+    private double angleToTarget(LivingEntity target) {
+        Vec3 targetDirection = target.getEyePosition().subtract(mob.getEyePosition());
+        Vec3 forward = mob.getForward();
+        if (targetDirection.lengthSqr() < 1.0E-6 || forward.lengthSqr() < 1.0E-6) {
+            return 0.0;
+        }
+        double dot = targetDirection.normalize().dot(forward.normalize());
+        return Math.acos(Math.max(-1.0, Math.min(1.0, dot)));
+    }
+
+    /// 让包含本动作的复合攻击在冲刺阶段之外也继续推进公共碰撞攻击计时。
+    private enum Phase {
+        IDLE,
+        DASHING,
+        DASHING_BACK,
+        AWAY
+    }
+}

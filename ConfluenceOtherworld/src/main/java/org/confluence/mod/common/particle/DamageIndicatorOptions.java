@@ -15,12 +15,14 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.mixed.ILibDamageSource;
 import org.confluence.lib.util.ScheduledForMove;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.init.ModParticleTypes;
-import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
 
 import java.util.Objects;
 
@@ -57,7 +59,11 @@ public record DamageIndicatorOptions(
         String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
         Vec3 pos;
         double y;
-        if (victim instanceof WallOfFlesh) {
+        if (victim instanceof BaseBoss boss && boss.getDamageFeedbackTarget() != victim) {
+            Entity hitPart = boss.getDamageFeedbackTarget();
+            pos = hitPart.position();
+            y = hitPart.getBoundingBox().maxY;
+        } else if (victim instanceof WallOfFlesh) {
             Vec3 sourcePosition = Objects.requireNonNullElseGet(damageSource.getSourcePosition(), victim::position);
             if (damageSource.getEntity() == null) {
                 pos = sourcePosition;
@@ -77,14 +83,22 @@ public record DamageIndicatorOptions(
     }
 
     public static void sendHealParticle(float amount, ServerLevel level, LivingEntity living) {
-        if (living.getHealth() < living.getMaxHealth()) {
+        amount = effectiveHealAmount(amount, living);
+        if (amount > 0) {
             double y = living.getBoundingBoxForCulling().maxY;
             Vec3 pos = living.position();
             amount = Math.round(amount * 10.0F) / 10.0F;
+            if (amount <= 0) return;
             String text = amount % 1 == 0 ? Integer.toString((int) amount) : Float.toString(amount);
             Component component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
             level.sendParticles(new DamageIndicatorOptions(component, false, Type.HEAL), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
         }
+    }
+
+    /// 治疗数字只显示实际可恢复的血量，满血、死亡、无效和非正治疗均不生成数值。
+    public static float effectiveHealAmount(float amount, LivingEntity living) {
+        if (!living.isAlive() || !Float.isFinite(amount) || amount <= 0) return 0;
+        return Math.max(0, Math.min(amount, living.getMaxHealth() - living.getHealth()));
     }
 
     public enum Type {

@@ -29,7 +29,7 @@ public abstract class CropBlockMixin {
     @Inject(method = "entityInside", at = @At("TAIL"))
     private void explode(CallbackInfo ci, @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos) {
         if (state.is(Blocks.POTATOES) && state.getValue(AGE) == MAX_AGE && level instanceof ServerLevel serverLevel && ModSecretSeeds.NO_TRAPS.match(serverLevel)) {
-            level.explode(null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, false, Level.ExplosionInteraction.BLOCK);
+            level.explode(null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, false, Level.ExplosionInteraction.NONE);
         }
     }
 }

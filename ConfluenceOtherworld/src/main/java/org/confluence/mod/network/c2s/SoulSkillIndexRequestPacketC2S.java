@@ -1,0 +1,42 @@
+package org.confluence.mod.network.c2s;
+
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.server.level.ServerPlayer;
+import org.confluence.lib.network.IPacketC2S;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.network.s2c.SoulSkillIndexSyncPacketS2C;
+import org.confluence.mod.network.s2c.SoulSkillSyncPacketS2C;
+import org.confluence.mod.util.SoulcererUtils;
+
+public record SoulSkillIndexRequestPacketC2S(int index) implements IPacketC2S {
+    public static final Type<SoulSkillIndexRequestPacketC2S> TYPE = Confluence.createType("soulcerer_skill_index_request");
+    public static final StreamCodec<ByteBuf, SoulSkillIndexRequestPacketC2S> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.VAR_INT, SoulSkillIndexRequestPacketC2S::index,
+            SoulSkillIndexRequestPacketC2S::new
+    );
+
+    @Override
+    public Type<SoulSkillIndexRequestPacketC2S> type() {
+        return TYPE;
+    }
+
+    /// 在服务端设置索引，并回传实际选中值。
+    ///
+    /// 若切到的槽位是未解锁技能，服务端会把它回退到手持武器提供的同标签技能（或同标签已装备槽位），
+    /// 因此回传的是修正后的索引。刷新时「武器专属技能槽跟随手持武器」也可能改动槽内容，
+    /// 这时要一并补发技能数据同步，避免客户端还显示旧槽位。
+    @Override
+    public void work(ServerPlayer player) {
+        if (Confluence.SOUL_SKILLS) {
+            SoulcererUtils.setCurrentSoulSkillIndex(player, index);
+            boolean changed = SoulcererUtils.refreshSoulSkills(player);
+            changed |= SoulcererUtils.ensureHeldWeaponSkill(player);
+            if (changed) {
+                SoulSkillSyncPacketS2C.sendToClient(player);
+            }
+        }
+        SoulSkillIndexSyncPacketS2C.sendToClient(player);
+    }
+}

@@ -16,20 +16,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 
 import java.util.Collections;
 import java.util.function.Predicate;
 
-public class SpongeItem extends TooltipItem {
+public class SpongeItem extends CustomRarityItem {
     private final Predicate<BlockState> fluidPredicate;
 
     public SpongeItem(ModRarity rarity, String name, int blockInteractionRange, Predicate<BlockState> fluidPredicate) {
         super(new Properties().stacksTo(1).attributes(new ItemAttributeModifiers(Collections.singletonList(
                 new ItemAttributeModifiers.Entry(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(
                         Confluence.asResource(name), blockInteractionRange, AttributeModifier.Operation.ADD_VALUE
-                ), EquipmentSlotGroup.MAINHAND)), true)), rarity, "tooltip.item.confluence." + name + ".0");
+                ), EquipmentSlotGroup.MAINHAND)), true)), rarity);
         this.fluidPredicate = fluidPredicate;
     }
 

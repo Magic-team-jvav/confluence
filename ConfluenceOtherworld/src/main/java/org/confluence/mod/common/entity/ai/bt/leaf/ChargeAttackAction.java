@@ -1,0 +1,86 @@
+package org.confluence.mod.common.entity.ai.bt.leaf;
+
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
+import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.monster.BaseMonster;
+
+/// 带短暂蓄力的直线冲锋动作。
+///
+/// 蓄力阶段允许实体继续面向目标，以便玩家能够读出即将冲锋的方向；进入冲锋阶段时
+/// 会保存一次目标方向，后续只沿该方向加速。这样玩家横向闪避后，冲锋者会从身旁掠过，
+/// 而不会在高速移动期间持续自动追踪。
+public class ChargeAttackAction extends BTNode {
+    protected final BaseMonster mob;
+    protected final double speed;
+    private final int windupTicks;
+    protected int tick;
+    protected static final int DASH_DURATION = 20;
+    private Vec3 lockedDirection = Vec3.ZERO;
+
+    public ChargeAttackAction(BaseMonster mob, double speed) {
+        this(mob, speed, 10);
+    }
+
+    public ChargeAttackAction(BaseMonster mob, double speed, int windupTicks) {
+        if (speed <= 0.0) {
+            throw new IllegalArgumentException("Charge speed must be positive");
+        }
+        if (windupTicks < 0) {
+            throw new IllegalArgumentException("Charge windup must be non-negative");
+        }
+        this.mob = mob;
+        this.speed = speed;
+        this.windupTicks = windupTicks;
+    }
+
+    @Override
+    public void start() {
+        tick = 0;
+        lockedDirection = Vec3.ZERO;
+    }
+
+    @Override
+    public BTStatus execute() {
+        tick++;
+        LivingEntity target = mob.getTarget();
+        if (target == null || !target.isAlive() || !mob.canAttack(target)) return BTStatus.FAILURE;
+
+        if (tick <= windupTicks) {
+            Vec3 dir = target.position().subtract(mob.position()).normalize();
+            mob.faceCombatDirection(dir, 30.0F, 30.0F);
+            mob.setDeltaMovement(dir.scale(speed * 0.02));
+            mob.hasImpulse = true;
+            return BTStatus.RUNNING;
+        }
+
+        if (tick > windupTicks + DASH_DURATION) return BTStatus.SUCCESS;
+
+        if (lockedDirection.lengthSqr() < 1.0E-8) {
+            lockedDirection = target.position().subtract(mob.position()).normalize();
+            if (lockedDirection.lengthSqr() < 1.0E-8) {
+                return BTStatus.FAILURE;
+            }
+        }
+        mob.faceCombatDirection(lockedDirection, 180.0F, 180.0F);
+        Vec3 acceleration = lockedDirection.scale(speed * 0.08);
+        mob.setDeltaMovement(mob.getDeltaMovement().add(acceleration).scale(0.95));
+        mob.hasImpulse = true;
+
+        return BTStatus.RUNNING;
+    }
+
+    @Override
+    public void stop() {
+        tick = 0;
+        lockedDirection = Vec3.ZERO;
+        mob.setDeltaMovement(Vec3.ZERO);
+        mob.hasImpulse = true;
+    }
+
+    /// 仅在锁定方向后的高速推进阶段启用扫掠接触判定。
+    public boolean isDashing() {
+        return tick > windupTicks && tick <= windupTicks + DASH_DURATION;
+    }
+}

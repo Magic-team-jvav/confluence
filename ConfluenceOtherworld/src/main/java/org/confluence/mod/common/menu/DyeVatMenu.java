@@ -61,7 +61,7 @@ public class DyeVatMenu extends AbstractContainerMenu {
                 ItemStack itemStack = ItemStack.EMPTY;
                 DyeVatRecipe recipe = level.getRecipeManager().getRecipeFor(ModRecipes.DYE_VAT_TYPE.get(), input, level).map(RecipeHolder::value).orElse(null);
                 if (recipe != null) {
-                    itemStack = recipe.getResultItem(null).copy();
+                    itemStack = recipe.getResult().copy();
                     resultSlot.setCurrentRecipe(recipe);
                 }
                 result.setItem(0, itemStack);

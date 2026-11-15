@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -78,8 +78,8 @@ public class TheHallowSkyRender {
     public static void render(LocalPlayer player, RenderLevelStageEvent event, float alphaMul) {
         if (alphaMul < 0.01F) return;
 
-        boolean change = ClientConfigs.rainbowGradient;
-        int rainbowCount = ClientConfigs.rainbowCount;
+        boolean change = ModClientConfigs.rainbowGradient;
+        int rainbowCount = ModClientConfigs.rainbowCount;
 
         PoseStack poseStack = new PoseStack();
         poseStack.mulPose(event.getModelViewMatrix());

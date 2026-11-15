@@ -45,10 +45,6 @@ enumExtensions = "META-INF/enumextensions.json"
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
 [[mixins]]
 config = "${mod_id}.mixins.json"
-[[mixins]]
-config = "${mod_id}.integration.lithium.mixins.json"
-[[mixins]]
-config = "${mod_id}.integration.citadel.mixins.json"
 
 # The [[accessTransformers]] block allows you to declare where your AT file is.
 # If this block is omitted, a fallback attempt will be made to load an AT from META-INF/accesstransformer.cfg
@@ -92,16 +88,9 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
-modId = "touhou_little_maid"
-type = "optional"
-versionRange = "[1.3.5,)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies."${mod_id}"]]
-modId = "waystones"
-type = "optional"
-versionRange = "[21.1.19,)"
+modId = "geckolib"
+type = "required"
+versionRange = "[${geckolib_version},)"
 ordering = "NONE"
 side = "BOTH"
 

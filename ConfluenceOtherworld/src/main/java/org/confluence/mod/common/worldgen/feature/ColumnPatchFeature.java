@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.FeatureUtils;
+import org.confluence.lib.util.LibFeatureUtils;
 
 import java.util.HashSet;
 import java.util.function.Predicate;
@@ -34,16 +34,16 @@ public class ColumnPatchFeature extends Feature<ColumnPatchFeature.Config> {
         WorldGenLevel level = pContext.level();
         RandomSource random = pContext.random();
         BlockPos blockPos = pContext.origin();
-        if (FeatureUtils.isPosAir(level, blockPos)) {
+        if (LibFeatureUtils.isPosAir(level, blockPos)) {
             BlockPos.MutableBlockPos mutablePos = blockPos.mutable();
-            for (int v = 1; v <= config.maxSearchHeight && FeatureUtils.isPosAir(level, mutablePos); v++) {
+            for (int v = 1; v <= config.maxSearchHeight && LibFeatureUtils.isPosAir(level, mutablePos); v++) {
                 if (v == config.maxSearchHeight) return false;
                 mutablePos.move(Direction.DOWN);
             }
             return carvePatch(config, level, random, mutablePos, pContext.chunkGenerator().getMinY());
         } else {
             BlockPos.MutableBlockPos mutablePos = blockPos.mutable();
-            for (int v = 1; v <= config.maxSearchHeight && !FeatureUtils.isPosAir(level, mutablePos); v++) {
+            for (int v = 1; v <= config.maxSearchHeight && !LibFeatureUtils.isPosAir(level, mutablePos); v++) {
                 if (v == config.maxSearchHeight) return false;
                 mutablePos.move(Direction.UP);
             }

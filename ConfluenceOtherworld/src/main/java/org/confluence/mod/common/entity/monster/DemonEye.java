@@ -1,0 +1,271 @@
+package org.confluence.mod.common.entity.monster;
+
+import com.mojang.serialization.Codec;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibDateUtils;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.IVariant;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
+import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
+import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeLeaveAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeSurroundAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeWanderAction;
+import org.confluence.mod.util.DateUtils;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+
+
+public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<DemonEye.Variant> {
+    public static final String VARIANT_KEY = "Variant";
+    private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(DemonEye.class, EntityDataSerializers.INT);
+    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
+    private Variant appliedVariant;
+
+
+
+    private boolean variantLoadedFromSave;
+
+    public DemonEye(EntityType<? extends DemonEye> type, Level level) {
+        this(type, level, Variant.NORMAL);
+    }
+
+    public DemonEye(EntityType<? extends DemonEye> type, Level level, Variant variant) {
+        super(type, level);
+        setVariant(variant);
+    }
+
+    private void applyVariantStats(Variant variant) {
+        if (level().isClientSide) return;
+        boolean full = getHealth() > 0 && getHealth() >= getMaxHealth();
+        if (appliedVariant != null && appliedVariant != variant)
+            setSpecialState(appliedVariant, false);
+        appliedVariant = variant;
+        setSpecialState(variant, true);
+        if (tickCount == 0 && full) setHealth(getMaxHealth());
+    }
+
+
+
+    /// 恶魔眼体型决定受击后的位移幅度。
+    ///
+    /// 普通体型使用两倍击退，大型体型使用一点五倍击退；倍率先作用于原始强度，
+    /// 再交给原版击退公式处理，保持伤害来源、附魔和其他模组施加的击退语义。
+    @Override
+    public void knockback(double strength, double x, double z) {
+        super.knockback(strength * (getVariant().isLarge() ? 1.5 : 2.0), x, z);
+    }
+
+    @Override
+    protected Vec3 reboundVelocity(Vec3 requested, Vec3 allowed) {
+        Vec3 rebound = requested;
+        if (allowed.x != requested.x) {
+            rebound = new Vec3(Math.copySign(Math.max(Math.abs(requested.x) * 0.5D, 0.375D), -requested.x), rebound.y, rebound.z);
+        }
+        if (allowed.y != requested.y) {
+            rebound = new Vec3(rebound.x, Math.copySign(Math.max(Math.abs(requested.y) * 0.5D, 0.1875D), -requested.y), rebound.z);
+        }
+        if (allowed.z != requested.z) {
+            rebound = new Vec3(rebound.x, rebound.y, Math.copySign(Math.max(Math.abs(requested.z) * 0.5D, 0.375D), -requested.z));
+        }
+        return rebound;
+    }
+
+    // 白天离场时不能被共用索敌重新选回玩家或反击目标。
+    @Override
+    public boolean shouldDiscardFriction() {
+        // 泰拉的追击不会每刻叠加地面生物的空气阻力，保留冲过目标后的飞行惯性。
+        return super.shouldDiscardFriction() || (getTarget() != null && LibDateUtils.isNight(level()));
+    }
+
+    @Override
+    protected boolean usesSharedTargeting() {
+        return LibDateUtils.isNight(level());
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        return LibDateUtils.isNight(level()) && super.canAttack(target);
+    }
+
+    @Override
+    protected BTRoot createBT() {
+        DemonEyeSurroundAction surroundAction = new DemonEyeSurroundAction(this);
+        BTNode night = new ConditionalSwitchNode(() -> getTarget() != null && getTarget().isAlive(), surroundAction, new DemonEyeWanderAction(this));
+
+        BTNode root = new ConditionalSwitchNode(() -> LibDateUtils.isDay(level()), new DemonEyeLeaveAction(this), night);
+
+        return new BTRoot() {
+            @Override
+            protected BTNode createTree() { return root; }
+        };
+    }
+
+    @Override
+    public Variant getVariant() {
+        return Variant.byId(this.entityData.get(DATA_VARIANT));
+    }
+
+    @Override
+    public void setVariant(Variant variant) {
+        this.entityData.set(DATA_VARIANT, variant.ordinal());
+        applyVariantStats(variant);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_VARIANT, Variant.NORMAL.ordinal());
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        getVariant().serialize(tag);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (!tag.contains(VARIANT_KEY)) {
+            setVariant(Variant.NORMAL);
+            return;
+        }
+        variantLoadedFromSave = true;
+        Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)).ifSuccess(this::setVariant);
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
+        SpawnGroupData result = super.finalizeSpawn(level, difficulty, spawnType, data);
+        if (!variantLoadedFromSave) {
+            setVariant(Variant.random(random));
+            setHealth(getMaxHealth());
+        }
+        return result;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "Fly", 0, state -> state.setAndContinue(FLY)));
+    }
+
+    @Override
+    public void tick() {
+        if (!level().isClientSide && LibDateUtils.isDay(level())) setTarget(null);
+        super.tick();
+        if (!level().isClientSide && tickCount % 20 == 0) applyVariantStats(getVariant());
+        if (level().isClientSide) return;
+        if (LibDateUtils.isDay(level())) setTarget(null);
+        if (isAlive()) {
+            faceCombatMovement(360.0F, 180.0F);
+        }
+    }
+
+
+    public enum Variant implements IVariant {
+        NORMAL("normal", false, 1.0F),
+        NORMAL_BIG("normal_big", true, 1.3F),
+        CATARACT("cataract", false, 1.0F),
+        CATARACT_BIG("cataract_big", true, 1.3F),
+        SLEEPY("sleepy", false, 1.0F),
+        SLEEPY_BIG("sleepy_big", true, 1.3F),
+        DILATED("dilated", true, 1.0F),
+        DILATED_SMALL("dilated_small", false, 0.7F),
+        GREEN("green", true, 1.0F),
+        GREEN_SMALL("green_small", false, 0.7F),
+        PURPLE("purple", false, 1.0F),
+        PURPLE_BIG("purple_big", true, 1.3F),
+        OWL("owl", false, 1.0F),
+        SPACESHIP("spaceship", false, 1.0F);
+
+        public static final Codec<Variant> CODEC = StringRepresentable.fromEnum(Variant::values);
+
+        private final String name;
+        private final boolean large;
+        private final float scale;
+
+        Variant(String name, boolean large, float scale) {
+            this.name = name;
+            this.large = large;
+            this.scale = scale;
+        }
+
+        @Override
+        public String getSerializedName() { return name; }
+
+        public float scale() { return scale; }
+
+        public boolean isLarge() {
+            return large;
+        }
+
+        @Override
+        public Codec<Variant> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public String serializeKey() {
+            return VARIANT_KEY;
+        }
+
+        @Override
+        public ResourceLocation modelPath() {
+            return Confluence.asResource("geo/entity/demon_eye.geo.json");
+        }
+
+        @Override
+        public ResourceLocation texturePath() {
+            String textureName = switch (this) {
+                case NORMAL, NORMAL_BIG -> "normal";
+                case CATARACT, CATARACT_BIG -> "cataract";
+                case SLEEPY, SLEEPY_BIG -> "sleepy";
+                case DILATED, DILATED_SMALL -> "dilated";
+                case GREEN, GREEN_SMALL -> "green";
+                case PURPLE, PURPLE_BIG -> "purple";
+                case OWL -> "owl";
+                case SPACESHIP -> "spaceship";
+            };
+            return Confluence.asResource("textures/entity/demon_eye/" + textureName + ".png");
+        }
+
+        public ResourceLocation animationPath() {
+            return Confluence.asResource("animations/entity/demon_eye.animation.json");
+        }
+
+        public static Variant byId(int id) {
+            Variant[] variants = values();
+            return id >= 0 && id < variants.length ? variants[id] : NORMAL;
+        }
+
+        public static Variant random(RandomSource random) {
+            return random(random, DateUtils.isHalloween(DateUtils.getCalendar()));
+        }
+
+        /// 按节日状态选择自然生成变种。
+        ///
+        /// 万圣节期间只生成猫头鹰和太空船外观，其余日期只从十二种常规恶魔眼中选择。
+        static Variant random(RandomSource random, boolean halloween) {
+            if (halloween) {
+                return random.nextBoolean() ? OWL : SPACESHIP;
+            }
+            return values()[random.nextInt(12)];
+        }
+    }
+}

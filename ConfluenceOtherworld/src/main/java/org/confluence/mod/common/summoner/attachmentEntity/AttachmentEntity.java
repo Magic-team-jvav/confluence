@@ -1,0 +1,446 @@
+package org.confluence.mod.common.summoner.attachmentEntity;
+
+import net.minecraft.core.Holder;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.component.prefix.ModPrefix;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.summoner.LyraStreamCodecs;
+import org.confluence.mod.common.summoner.attachment.TargetCache;
+import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.mixed.Immunity;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@SuppressWarnings("unused")
+public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
+
+    protected final Holder<AttachmentEntityType<? extends AttachmentEntity>> type;
+    protected final ArrayList<PathNode> historyNodes = new ArrayList<>();
+    protected final AttachmentEntityGoalSelector goalSelector = new AttachmentEntityGoalSelector();
+    protected final SyncFieldDispatcher syncFields = SyncFieldDispatcher.create(this::registerSyncFields);
+    protected final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
+    protected UUID uuid = UUID.randomUUID();
+    protected Player owner = null;
+    protected PlannedPath currentPlannedPath = null;
+    protected boolean remove = false;
+    protected int immunityDuration = 0;
+    protected ModPrefix prefix = null;
+    protected int tickCount = 0;
+    protected float damage = 0;
+    protected float knockback = 0;
+    protected float armorPierce = 0;
+    protected boolean clientInit = false;
+    protected PathNode currentPathNode = null;
+    private List<RenderKeyframe> renderKeyframes = List.of();
+    private int lastRenderTick = -1;
+    private boolean renderKeyframesActive;
+
+    protected void registerSyncFields(SyncFieldDispatcher fields) {
+        fields.field(LyraStreamCodecs.FLOAT, this::getDamage, this::setDamage);
+        fields.field(LyraStreamCodecs.FLOAT, this::getKnockback, this::setKnockback);
+        fields.field(LyraStreamCodecs.FLOAT, this::getArmorPierce, this::setArmorPierce);
+        fields.field(LyraStreamCodecs.INT, this::getTickCount, this::setTickCount);
+        fields.field(LyraStreamCodecs.PATH_NODE, this::getCurrentPathNode, this::setCurrentPathNode);
+        fields.field(LyraStreamCodecs.RENDER_KEYFRAMES, this::getRenderKeyframes, this::setRenderKeyframes);
+    }
+
+    public AttachmentEntity(Holder<AttachmentEntityType<? extends AttachmentEntity>> type) {
+        this.type = type;
+        init(new PathNode(Vec3.ZERO, 0, 0, 0));
+        registerGoals(goalSelector);
+    }
+
+    public void registerGoals(AttachmentEntityGoalSelector goalSelector) {
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return animationCache;
+    }
+
+    @Override
+    public double getTick(Object object) {
+        return tickCount;
+    }
+
+    @NotNull
+    public AttachmentEntityDamageSource getDamageSource() {
+        return new AttachmentEntityDamageSource(getLevel().damageSources().generic().typeHolder(), null, owner, getPos(), this);
+    }
+
+    @Override
+    public Type confluence$getImmunityType() {
+        return Type.LOCAL;
+    }
+
+    @Override
+    public int confluence$getImmunityDuration(DamageSource damageSource) {
+        return immunityDuration;
+    }
+
+    public TargetCache getTargetCache() {
+        return owner.getData(SummonerAttachmentTypes.TARGET_CACHE);
+    }
+
+    public boolean attack(@NotNull Entity target, float damageAmount, int invincibleTime) {
+        LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(target);
+        if (logicalTarget != null && LibEntityUtils.allowsAttack(owner, target)) {
+            AttachmentEntityDamageSource damageSource = getDamageSource();
+            WhipMarkTracker tracker = owner.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
+            if (tracker.isSummonMarkTarget(logicalTarget)) {
+                damageAmount = tracker.getDamageModifier(damageSource, damageAmount);
+            }
+            /// 猎手弓留下的狩猎标记：召唤物对被标记的敌人额外多打出 50% 伤害。
+            if (logicalTarget.hasEffect(ModEffects.HUNTER)) {
+                damageAmount *= 1.5F;
+            }
+            damageAmount = (float) (damageAmount * owner.getAttributeValue(LibAttributes.getSummonDamage()));
+            immunityDuration = invincibleTime;
+            try {
+                return Immunity.hurt(this, target, logicalTarget, damageSource, damageAmount);
+            } finally {
+                immunityDuration = 0;
+            }
+        }
+
+        return false;
+    }
+
+    public void copyAttributes(AttachmentEntity other) {
+        setDamage(other.getDamage());
+        setKnockback(other.getKnockback());
+        setArmorPierce(other.getArmorPierce());
+        setPrefix(other.getPrefix());
+    }
+
+    public float getDamage() {
+        return damage;
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
+    }
+
+    public float getKnockback() {
+        return knockback;
+    }
+
+    public void setKnockback(float knockback) {
+        this.knockback = knockback;
+    }
+
+    public float getArmorPierce() {
+        return armorPierce;
+    }
+
+    public void setArmorPierce(float armorPierce) {
+        this.armorPierce = armorPierce;
+    }
+
+    public SyncFieldDispatcher getSyncFieldDispatcher() {
+        return syncFields;
+    }
+
+    public void tick() {
+    }
+
+    public final void tickCurrentPathNode() {
+        Level level = getLevel();
+        if (!level.isClientSide()) {
+            tickCount++;
+            if (this instanceof IBlockCollision<?> blockCollision) {
+                blockCollision.blockCollision();
+            }
+
+            if (this instanceof IEntityCollision<?> iEntityCollision) {
+                iEntityCollision.entityCollision();
+            }
+            renderKeyframes = List.of();
+            renderKeyframesActive = false;
+        } else {
+            renderKeyframesActive = tickCount != lastRenderTick;
+            lastRenderTick = tickCount;
+        }
+
+        historyNodes.add(0, currentPathNode);
+        if (historyNodes.size() > 16) {
+            historyNodes.remove(historyNodes.size() - 1);
+        }
+
+        if (!level.isClientSide() && currentPlannedPath != null && !currentPlannedPath.isFinished()) {
+            List<RenderKeyframe> frames = currentPlannedPath.getRenderKeyframes(currentPlannedPath.getCurrentIndex());
+            PathNode from = currentPathNode;
+            currentPathNode = currentPlannedPath.advance();
+            if (!frames.isEmpty()) {
+                List<RenderKeyframe> segment = new ArrayList<>(frames.size() + 2);
+                segment.add(new RenderKeyframe(0f, from));
+                segment.addAll(frames);
+                segment.add(new RenderKeyframe(1f, currentPathNode));
+                renderKeyframes = List.copyOf(segment);
+                renderKeyframesActive = true;
+            }
+        }
+    }
+
+    public void onRemove() {
+    }
+
+    public void onLevelChange() {
+    }
+
+    public void setPlannedPath(PlannedPath path) {
+        currentPlannedPath = path;
+        renderKeyframes = List.of();
+    }
+
+    public PlannedPath getCurrentPath() {
+        return currentPlannedPath;
+    }
+
+    public PathNode getCurrentPathNode() {
+        return currentPathNode;
+    }
+
+    public boolean isExecutingPath() {
+        return this.currentPlannedPath != null && !this.currentPlannedPath.isFinished();
+    }
+
+    public void setPath(List<PathNode> nodes) {
+        setPath(new PlannedPath(nodes));
+    }
+
+    public void setPath(PlannedPath plannedPath) {
+        setPlannedPath(plannedPath);
+        List<PathNode> nodes = plannedPath.getNodes();
+        if (!nodes.isEmpty()) {
+            this.currentPathNode = nodes.get(0);
+        }
+    }
+
+    public boolean isRemove() {
+        return remove;
+    }
+
+    public void setRemove() {
+        this.remove = true;
+    }
+
+    public void init(PathNode node) {
+        this.clientInit = false;
+        this.currentPathNode = node;
+        this.historyNodes.clear();
+        this.historyNodes.add(node);
+        this.renderKeyframes = List.of();
+        this.lastRenderTick = -1;
+        this.renderKeyframesActive = false;
+    }
+
+    public ArrayList<PathNode> getHistoryNodes() {
+        return historyNodes;
+    }
+
+    public PathNode getRenderNode(float partialTick) {
+        if (renderKeyframesActive && !renderKeyframes.isEmpty()) {
+            return RenderKeyframe.interpolate(renderKeyframes, partialTick);
+        }
+        if (historyNodes.size() > 1) {
+            return historyNodes.get(1).lerp(currentPathNode, partialTick);
+        }
+
+        return currentPathNode;
+    }
+
+    public List<RenderKeyframe> getRenderKeyframes() {
+        return renderKeyframes;
+    }
+
+    public void setRenderKeyframes(List<RenderKeyframe> frames) {
+        renderKeyframes = frames;
+    }
+
+    public void setCurrentPathNode(PathNode currentPathNode) {
+        this.currentPathNode = currentPathNode;
+    }
+
+    /// tick后进行的存在性检查，返回false移除
+    public boolean isAlive() {
+        return true;
+    }
+
+    public void setPrefix(ModPrefix prefix) {
+        this.prefix = prefix;
+    }
+
+    public ModPrefix getPrefix() {
+        return prefix;
+    }
+
+    /// @return 当前位置
+    public Vec3 getPos() {
+        return currentPathNode.pos();
+    }
+
+    public void setPos(Vec3 pos) {
+        currentPathNode = new PathNode(pos, getYaw(), getPitch(), getRoll());
+    }
+
+    /// @return 当前偏航角（度）
+    public float getYaw() {
+        return currentPathNode.yaw();
+    }
+
+    /// @return 当前俯仰角（度）
+    public float getPitch() {
+        return currentPathNode.pitch();
+    }
+
+    /// @return 当前翻滚角（度）
+    public float getRoll() {
+        return currentPathNode.roll();
+    }
+
+    /// @return 实体 UUID
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    /// 设置 UUID，用于从网络数据恢复。
+    ///
+    /// @param uuid UUID值
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    /// @return 虚拟实体所在世界
+    public Level getLevel() {
+        return owner.level();
+    }
+
+    /// @return 当前维度的随机源
+    public RandomSource getRandom() {
+        return getLevel().getRandom();
+    }
+
+    public int getTickCount() {
+        return tickCount;
+    }
+
+    public void setTickCount(int tickCount) {
+        this.tickCount = tickCount;
+    }
+
+    public boolean isClientInit() {
+        return clientInit;
+    }
+
+    public void setClientInit(boolean clientInit) {
+        this.clientInit = clientInit;
+    }
+
+    public Player getOwner(){
+        return owner;
+    }
+
+    public void setOwner(Player owner){
+        this.owner = owner;
+    }
+
+    /// 计算贝塞尔曲线上的点（De Casteljau算法，支持任意数量控制点）
+    public Vec3 calculateBezierPoint(float delta, Vec3... P) {
+        if (P.length == 0) {
+            return Vec3.ZERO;
+        }
+
+        if (P.length == 1) {
+            return P[0];
+        }
+
+        Vec3[] pts = P.clone();
+        for (int k = P.length - 1; k > 0; k--) {
+            for (int i = 0; i < k; i++) {
+                pts[i] = pts[i].lerp(pts[i + 1], delta);
+            }
+        }
+
+        return pts[0];
+    }
+
+    public Vec3 getLookAngle() {
+        return Vec3.directionFromRotation(getPitch(), getYaw()).normalize();
+    }
+
+    /// 获取当前速度向量
+    public Vec3 getCurrentVelocity() {
+        Vec3 currentPos = getPos();
+        ArrayList<PathNode> history = getHistoryNodes();
+        if (history.size() > 1) {
+            Vec3 rawVel = currentPos.subtract(history.get(0).pos());
+            if (rawVel.lengthSqr() > 1e-5) {
+                return rawVel.normalize();
+            }
+        }
+
+        return Vec3.directionFromRotation(getPitch(), getYaw()).normalize();
+    }
+
+    /// 获取当前法线向量（基于旋转）
+    public Vec3 getCurrentNormal() {
+        Quaternionf q = new Quaternionf()
+                .rotateY((float) Math.toRadians(-getYaw()))
+                .rotateX((float) Math.toRadians(getPitch()))
+                .rotateZ((float) Math.toRadians(getRoll()));
+        Vector3f upV = new Vector3f(0, 1, 0).rotate(q);
+        return new Vec3(upV.x(), upV.y(), upV.z()).normalize();
+    }
+
+    public PathNode getEulerNode(Vec3 pos, Vec3 direction, Vec3 normal) {
+        direction = direction.normalize();
+        normal = normal.normalize();
+        float yaw = (float) Math.toDegrees(Math.atan2(-direction.x, direction.z));
+        float pitch = (float) Math.toDegrees(Math.asin(-direction.y));
+        /// 已偏转yaw/pitch后，局部Y轴（无roll时法向量）的世界方向
+        float pr = (float) Math.toRadians(pitch);
+        float yr = (float) Math.toRadians(yaw);
+        float cp = (float) Math.cos(pr);
+        float sp = (float) Math.sin(pr);
+        float cy = (float) Math.cos(yr);
+        float sy = (float) Math.sin(yr);
+        Vec3 localY = new Vec3(-sy * sp, cp, cy * sp);
+        /// 投影到垂直于direction的平面
+        Vec3 projLocalY = localY.subtract(direction.scale(localY.dot(direction))).normalize();
+        Vec3 projNormal = normal.subtract(direction.scale(normal.dot(direction))).normalize();
+        /// 不翻转projNormal：atan2自然处理正负，避免dot≈0时翻转振荡
+        double d = projLocalY.dot(projNormal);
+        Vec3 c = projLocalY.cross(projNormal);
+        float roll = (float) Math.toDegrees(Math.atan2(c.dot(direction), d));
+        return new PathNode(pos, yaw, pitch, roll);
+    }
+
+    public AttachmentEntityType<?> getType() {
+        return type.value();
+    }
+}

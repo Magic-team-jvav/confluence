@@ -62,4 +62,14 @@ public class BaseDraggingStaffItem<E extends BaseDraggingProjectile> extends Man
 
     @Override
     protected void rayTrace(ServerPlayer player, ItemStack stack, E projectile) {}
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / Math.max(1, cooldown);
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue, Player player) {
+        return getTooltipAttackSpeed(stack, attributeValue);
+    }
 }

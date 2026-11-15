@@ -14,13 +14,13 @@ import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.block.common.TombstoneBlock;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
@@ -73,7 +73,7 @@ public class TombstoneBoulderEntity extends BoulderEntity {
     }
 
     public static void createTombstoneEntity(LivingEntity living) {
-        if (!CommonConfigs.DROPS_TOMBSTONE.get()) {
+        if (!ModCommonConfigs.DROPS_TOMBSTONE.get()) {
             return;
         }
         BlockState blockState = selectTombstone(living);
@@ -93,8 +93,8 @@ public class TombstoneBoulderEntity extends BoulderEntity {
     public static @Nullable BlockState selectTombstone(LivingEntity living) {
         boolean isGolden;
         if (living instanceof Player player) {
-            isGolden = PlayerUtils.getMoney(player, true) >= 100 * 100 * 10;
-        } else if (living instanceof AbstractTerraNPC && living.level().getLevelData().isHardcore()) {
+            isGolden = PlayerUtils.getMoney(player, false) >= 100 * 100 * 10;
+        } else if (living instanceof BaseNPC && living.level().getLevelData().isHardcore()) {
             isGolden = false;
         } else {
             return null;

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.data.gen.tag;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -12,6 +13,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.TorchBlock;
+import net.minecraft.world.level.block.WallTorchBlock;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -26,16 +29,10 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.potion.AbstractPotionItem;
+import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terra_guns.common.init.TGTags;
-import org.confluence.terraentity.init.TEItems;
-import org.confluence.terraentity.init.TETags;
-import org.confluence.terraentity.init.block.TEFigureBlocks;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TESpawnEggItems;
-import org.confluence.terraentity.init.item.TESummonItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,6 +63,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             foods.add(item.get());
         });
 
+        IntrinsicTagAppender<Item> quickBuffFoods = tag(ModTags.Items.QUICK_BUFF_FOODS);
+        FoodItems.ITEMS.getEntries().forEach(entry -> {
+            var food = entry.get().getDefaultInstance().getFoodProperties(null);
+            if (food == null) return;
+            var effects = food.effects();
+            boolean beneficial = effects.stream().anyMatch(effect -> effect.probability() >= 1
+                    && effect.effect().getEffect().value().isBeneficial() && !effect.effect().getEffect().value().isInstantenous());
+            boolean harmful = effects.stream().anyMatch(effect -> effect.probability() > 0 && !effect.effect().getEffect().value().isBeneficial());
+            if (beneficial && !harmful) quickBuffFoods.add(entry.get());
+        });
+
         IntrinsicTagAppender<Item> notFlammableWood = tag(ItemTags.NON_FLAMMABLE_WOOD);
         for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
             if (blockSet.ignitedByLava) continue;
@@ -90,10 +98,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(ModTags.Items.REPEATER_ENCHANTABLE);
         tag(ModTags.Items.TOOLS_REPEATER);
-        tag(ModTags.Items.MOUNT).addOptionalTag(TETags.Items.CURIOS_MOUNT);
-        tag(ModTags.Items.PET).addOptionalTag(TETags.Items.CURIOS_PET);
-        tag(ModTags.Items.LIGHT_PET).addOptionalTag(TETags.Items.CURIOS_LIGHT_PET);
-        LightPetItems.ITEMS.getEntries().forEach(item -> tag(TETags.Items.CURIOS_LIGHT_PET).add(item.get()));
+        tag(ModTags.Items.MOUNT).add(MountItems.SLIMY_SADDLE.get(), MountItems.HONEYED_GOGGLES.get(), MountItems.BLESSED_APPLE.get(), MountItems.SUPERHEATED_BLOOD.get());
+        PetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.PET).add(item.get()));
+        LightPetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.LIGHT_PET).add(item.get()));
 
         IntrinsicTagAppender<Item> boats = tag(ItemTags.BOATS);
         BoatItems.BOAT_ITEMS.getEntries().forEach(item -> boats.add(item.get()));
@@ -108,7 +115,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.SLUSH).add(NatureBlocks.SLUSH.asItem());
         tag(ModTags.Items.SILT_BLOCK).add(NatureBlocks.SILT_BLOCK.asItem());
         tag(ModTags.Items.MARINE_GRAVEL).add(NatureBlocks.MARINE_GRAVEL.asItem());
-        tag(ModTags.Items.POO).add(DecorativeBlocks.POO_BLOCK.asItem(), ModBlocks.POO.asItem());
+        tag(ModTags.Items.POO).add(DecorativeBlocks.POO_BLOCK.asItem(), NatureBlocks.POO.asItem());
         tag(ModTags.Items.EXTRACT_SAND).add(Items.OBSIDIAN);
         tag(ModTags.Items.EXTRACT_HONEY_BLOCK).add(Items.BEE_NEST, NatureBlocks.JUNGLE_HIVE_BLOCK.asItem());
         tag(ModTags.Items.EXTRACT_MOSS).add(NatureBlocks.HELIUM_MOSS.asItem(), NatureBlocks.NEON_MOSS.asItem(), NatureBlocks.ARGON_MOSS.asItem(), NatureBlocks.XENON_MOSS.asItem(), NatureBlocks.KRYPTON_MOSS.asItem(), NatureBlocks.LAVA_MOSS.asItem());
@@ -128,6 +135,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.SEA_BASS.get(),
                 FoodItems.ATLANTIC_COD.get(),
                 FoodItems.TROUT.get()
+        );
+        tag(Tags.Items.FOODS_COOKED_FISH).add(
+                FoodItems.COOKED_SHRIMP.get(),
+                FoodItems.COOK_FISH.get()
         );
         tag(ModTags.Items.SEAFOOD_DINNER_MATERIALS).add(
                 FoodItems.FROSTY_MINNOW.get(),
@@ -283,7 +294,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);
         torch.add(Items.TORCH, Items.SOUL_TORCH);
-//        for (Torches torches : Torches.values()) torch.add(torches.item.get());
+        for (var holder : TorchBlocks.BLOCKS.getEntries()) {
+            Block block = holder.value();
+            if (block instanceof TorchBlock && !(block instanceof WallTorchBlock)) {
+                torch.add(block.asItem());
+            }
+        }
         tag(ModTags.Items.PROVIDE_LIGHT).addTag(ModTags.Items.TORCH).add(
                 Items.LANTERN,
                 Items.SOUL_LANTERN,
@@ -370,7 +386,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.OBSIDIAN_BRICKS.FULL.asItem(),
                 DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.asItem(),
                 DecorativeBlocks.CRYSTAL_BLOCK.asItem(),
-                DecorativeBlocks.RAINBOW_BRICKS.FULL.asItem(),
                 DecorativeBlocks.BLUE_BRICKS.FULL.asItem(),
                 DecorativeBlocks.CHISELED_BLUE_BRICKS.asItem(),
                 FunctionalBlocks.FRAGILE_BLUE_BRICKS.asItem(),
@@ -512,18 +527,31 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> tools_crossbow = tag(Tags.Items.TOOLS_CROSSBOW);
         IntrinsicTagAppender<Item> tools_repeater = tag(ModTags.Items.TOOLS_REPEATER);
         IntrinsicTagAppender<Item> repeater_crossbow = tag(ModTags.Items.TOOLS_REPEATER_CROSSBOW);
+        IntrinsicTagAppender<Item> prefix_ranged_only = tag(ModTags.Items.PREFIX_RANGED_ONLY);
+
+        IntrinsicTagAppender<Item> yoyo = tag(ModTags.Items.YOYO);
+        YoyoItems.ITEMS.getEntries().forEach(item -> yoyo.add(item.get()));
 
         tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY)
-                .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW)
-                .add(TEBoomerangItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
+                .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW, ModTags.Items.YOYO)
+                .add(BoomerangItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         tag(ModTags.Items.PREFIX_MELEE_ONLY)
-                .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES, ModTags.Items.FLAIL)
+                .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES, ModTags.Items.FLAIL, ModTags.Items.WHIP)
                 .add(Items.MACE);
-        tag(ModTags.Items.PREFIX_RANGED_ONLY)
-                .addTags(Tags.Items.RANGED_WEAPON_TOOLS, TGTags.GUN)
+        prefix_ranged_only
+                .addTags(Tags.Items.RANGED_WEAPON_TOOLS, ModTags.Items.GUN)
                 .add(Items.TRIDENT);
         tag(ModTags.Items.PREFIX_MAGIC_ONLY)
-                .addTags(ModTags.Items.MANA_WEAPON, ModTags.Items.SUMMONER_WEAPON);
+                .addTags(ModTags.Items.MANA_WEAPON);
+        IntrinsicTagAppender<Item> prefix_soul_only = tag(ModTags.Items.PREFIX_SOUL_ONLY);
+        SoulItems.ITEMS.getEntries().forEach(item -> {
+            if (item.get() instanceof SoulWeaponItem) {
+                prefix_soul_only.add(item.get());
+            }
+        });
+        IntrinsicTagAppender<Item> prefix_summon_only = tag(ModTags.Items.PREFIX_SUMMON_ONLY);
+        SummonItems.ITEMS.getEntries().forEach(item -> prefix_summon_only.add(item.get()));
+        tag(ModTags.Items.SUMMONER_WEAPON).addTags(ModTags.Items.PREFIX_SUMMON_ONLY);
         tag(ModTags.Items.PREFIX_ACCESSORY_ONLY)
                 .addTag(TCTags.Items.ACCESSORY);
 
@@ -541,8 +569,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> arrows = tag(ItemTags.ARROWS);
         ArrowItems.ITEMS.getEntries().forEach(item -> arrows.add(item.get()));
 
-        IntrinsicTagAppender<Item> gun = tag(TGTags.GUN);
-        GunItems.ITEMS.getEntries().forEach(item -> gun.add(item.get()));
+        IntrinsicTagAppender<Item> gun = tag(ModTags.Items.GUN);
+        GunItems.GUN_ITEMS.forEach(item -> gun.add(item.get()));
 
         IntrinsicTagAppender<Item> mana_weapon = tag(ModTags.Items.MANA_WEAPON);
         ManaWeaponItems.ITEMS.getEntries().forEach(item -> mana_weapon.add(item.get()));
@@ -614,6 +642,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> tools_bows = tag(Tags.Items.TOOLS_BOW);
         IntrinsicTagAppender<Item> bow_enchantable = tag(ItemTags.BOW_ENCHANTABLE);
+        Item[] soul_bow = {
+                BowItems.SOUL_BOW.get(),
+                BowItems.SOUL_SHORT_BOW.get()
+        };
+        for (Item value : soul_bow) {
+            durability_enchantable.add(value);
+            bow_enchantable.add(value);
+            ranged_weapon_tools.add(value);
+            tools_bows.add(value);
+            skip_using_slowdown.add(value);
+        }
         BowItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();
             durability_enchantable.add(value);
@@ -627,6 +666,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             Item value = item.get();
             crossbow_enchantable.add(value);
             tools_crossbow.add(value);
+            prefix_ranged_only.add(value);
             if (value instanceof BaseTerraRepeaterItem) {
                 repeater_enchantable.add(value);
                 tools_repeater.add(value);
@@ -677,6 +717,35 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.FLAIL_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
         FlailItems.ITEMS.getEntries().forEach(item -> flail.add(item.get()));
 
+        // 本轮新增/改动、尚未定稿的武器（不含大马林鱼刺剑与海床崩裂者）
+        tag(ModTags.Items.WIP).add(
+                SoulItems.SPIRITWARD_BLADE.get(),
+                BowItems.SOUL_BOW.get(),
+                BowItems.SOUL_SHORT_BOW.get(),
+                ManaWeaponItems.OPAL_STAFF.get(),
+                ManaWeaponItems.MAGIC_DAGGER.get(),
+                ManaWeaponItems.FLOWER_OF_FROST.get(),
+                ManaWeaponItems.CURSED_FLAMES.get(),
+                ManaWeaponItems.CRYSTAL_STORM.get(),
+                ManaWeaponItems.DUSK_DAWN.get(),
+                ManaWeaponItems.WIND_PAGE.get(),
+                ManaWeaponItems.WIND_EYE.get(),
+                ManaWeaponItems.STAR_MUSIC.get(),
+                BowItems.WIND_STRING.get(),
+                BowItems.ENCHANTED_BOW.get(),
+                BowItems.STAR_WEEP.get(),
+                BowItems.POLAR_DAY.get(),
+                BowItems.BLADE_BOW.get(),
+                WhipItems.WIND_WHIP.get(),
+                WhipItems.STAR_FEAR.get(),
+                ArrowItems.WIND_ARROW.get()
+        );
+        IntrinsicTagAppender<Item> whip = tag(ModTags.Items.WHIP);
+        WhipItems.ITEMS.getEntries().forEach(item -> whip.add(item.get()));
+
+        IntrinsicTagAppender<Item> boomerang = tag(ModTags.Items.BOOMERANG);
+        BoomerangItems.ITEMS.getEntries().forEach(item -> boomerang.add(item.get()));
+
         IntrinsicTagAppender<Item> spear = tag(ModTags.Items.SPEAR);
         skip_reset_strength.addTag(ModTags.Items.SPEAR);
         melee_weapon_tools.addTag(ModTags.Items.SPEAR);
@@ -691,7 +760,36 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         TreasureBagItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.TREASURE_BAG).add(item.get()));
 
-        TESummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
+        SummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
+
+        /// 附魔可用性标签只做聚合，具体物品归属仍由各自的分类标签决定，避免每个附魔各写一长串。
+        tag(ModTags.Items.GENERAL_WEAPON_ENCHANTABLE).addTags(
+                ItemTags.SWORDS,
+                ItemTags.AXES,
+                ModTags.Items.SPEAR,
+                ModTags.Items.TOOLS_LANCE,
+                ModTags.Items.YOYO,
+                ModTags.Items.BOOMERANG,
+                ModTags.Items.FLAIL,
+                ModTags.Items.WHIP,
+                ModTags.Items.MANA_WEAPON,
+                ModTags.Items.SUMMONER_WEAPON,
+                ModTags.Items.PREFIX_SOUL_ONLY,
+                ItemTags.BOW_ENCHANTABLE,
+                ItemTags.CROSSBOW_ENCHANTABLE,
+                ModTags.Items.GUN,
+                ModTags.Items.REPEATER_ENCHANTABLE
+        );
+        tag(ModTags.Items.MELEE_WEAPON_ENCHANTABLE).addTags(
+                ItemTags.SWORDS,
+                ItemTags.AXES,
+                ModTags.Items.SPEAR,
+                ModTags.Items.TOOLS_LANCE,
+                ModTags.Items.YOYO,
+                ModTags.Items.BOOMERANG,
+                ModTags.Items.FLAIL,
+                ModTags.Items.WHIP
+        );
 
         copy(ModTags.Blocks.COINS, ModTags.Items.COINS);
         tag(ModTags.Items.HARDMODE_RAW_MATERIALS).add(
@@ -945,8 +1043,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(ModTags.Items.AMMO)
                 .add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get())
-                .addTag(ItemTags.ARROWS)
-                .addOptionalTag(TGTags.AMMO);
+                .addTag(ItemTags.ARROWS);
 
         tag(ModTags.Items.HARDMODE)
                 .addTag(ModTags.Items.HARDMODE_RAW_MATERIALS)
@@ -964,6 +1061,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                         QuestedFishes.UNICORN_FISH.get()
                 );
 
+        // 标签本身即为公开扩展点；本体目前没有额外的普通自动发射弓。
+        tag(ModTags.Items.AUTOMATIC_BOW);
         tag(ModTags.Items.ABLE_TO_DESTROY_ALTAR).add(
                 HammerItems.PWNHAMMER.get(),
                 HammerItems.HAMMUSH.get()
@@ -987,6 +1086,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.RAW_SQUIRREL.get(),
                 FoodItems.RAW_BIRD.get(),
                 FoodItems.RAW_DUCK.get()
+        );
+        tag(Tags.Items.FOODS_COOKED_MEAT).add(
+                FoodItems.COOKED_FROG.get(),
+                FoodItems.COOKED_SQUIRREL.get(),
+                FoodItems.COOKED_BIRD.get(),
+                FoodItems.COOKED_DUCK.get(),
+                FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.get()
         );
         tag(Tags.Items.FERTILIZERS).add(ConsumableItems.FERTILIZER.get());
         tag(ItemTags.PARROT_POISONOUS_FOOD).add(
@@ -1192,6 +1298,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 VanityArmorItems.MUMMY_SHIRT.get(),
                 VanityArmorItems.MUMMY_PANTS.get(),
                 VanityArmorItems.MUMMY_SHOES.get(),
+                // 蘑菇套装（Mushroom set）：发光蘑菇地下小屋金箱掉落的新时装，四件套，模型与贴图待补
+                VanityArmorItems.MUSHROOM_HELMET.get(),
+                VanityArmorItems.MUSHROOM_CHESTPLATE.get(),
+                VanityArmorItems.MUSHROOM_LEGGINGS.get(),
+                VanityArmorItems.MUSHROOM_BOOTS.get(),
                 ArmorItems.GOGGLES.get(),
                 ArmorItems.GREEN_CAP.get(),
                 ArmorItems.WIZARD_HAT.get(),
@@ -1274,7 +1385,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.ENCHANTED_GREEN_BRICKS.asItem(),
                 DecorativeBlocks.ENCHANTED_PINK_BRICKS.asItem(),
                 DecorativeBlocks.LIHZAHRD_DOOR.asItem(),
-                DecorativeBlocks.RAINBOW_BRICKS.FULL.asItem(),
                 DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.asItem(),
                 DecorativeBlocks.SANDSTONE_BRICKS.FULL.asItem(),
                 DecorativeBlocks.SANDSTONE_BRICKS.STAIRS.asItem(),
@@ -1387,30 +1497,24 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HookItems.ANTI_GRAVITY_HOOK.get(),
                 HookItems.LUNAR_HOOK.get(),
                 HookItems.STATIC_HOOK.get(),
-                TEItems.DEBUG_ITEM.get(),
                 DrillItems.CHLOROPHYTE_DRILL.get(),
                 DrillItems.DRAX.get(),
                 DrillItems.SOLAR_FLARE_DRILL.get(),
                 DrillItems.VORTEX_DRILL.get(),
                 DrillItems.NEBULA_DRILL.get(),
                 DrillItems.STARDUST_DRILL.get(),
-                TEFigureBlocks.FIGURE.asItem(),
-                TEFigureBlocks.FIGURE2.asItem(),
-                TEFigureBlocks.FIGURE3.asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
                 DecorativeBlocks.THE_TWINS_RELIC.asItem(),
                 DecorativeBlocks.SKELETRON_PRIME_RELIC.asItem(),
                 LanceItems.HALLOWED_JOUSTING_LANCE.get(),
                 LanceItems.SHADOW_JOUSTING_LANCE.get(),
                 CrossbowItems.STAKE_LAUNCHER.get(),
-                TESpawnEggItems.RETINAZER_SPAWN_EGG.get(),
-                TESpawnEggItems.SPAZMATISM_SPAWN_EGG.get(),
-                TESpawnEggItems.THE_DESTROYER_SPAWN_EGG.get(),
-                TESpawnEggItems.THE_TWINS_SPAWN_EGG.get(),
-                TESpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
-                TESpawnEggItems.PLANTERA_SPAWN_EGG.get(),
-                TreasureBagItems.THE_TWINS_TREASURE_BAG.get(),
+                SpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
+                SpawnEggItems.PLANTERA_SPAWN_EGG.get(),
                 TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(),
+                TreasureBagItems.THE_DESTROYER_TREASURE_BAG.get(),
+                TreasureBagItems.PLANTERA_TREASURE_BAG.get(),
+                TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get(),
                 HoeShovelItems.COBALT_HOE_SHOVEL.get(),
                 HoeShovelItems.PALLADIUM_HOE_SHOVEL.get(),
                 HoeShovelItems.MYTHRIL_HOE_SHOVEL.get(),
@@ -1418,19 +1522,38 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HoeShovelItems.ADAMANTITE_HOE_SHOVEL.get(),
                 HoeShovelItems.TITANIUM_HOE_SHOVEL.get(),
                 HoeShovelItems.HALLOWED_HOE_SHOVEL.get(),
-                HoeShovelItems.CHLOROPHYTE_HOE_SHOVEL.get()
+                HoeShovelItems.CHLOROPHYTE_HOE_SHOVEL.get(),
+                MountItems.FUZZY_CARROT.get(),
+                ConsumableItems.GLOWSTICK.get(),
+                ConsumableItems.STICKY_GLOWSTICK.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
-        tag(TGTags.AUTOMATIC_GUN).add(
+        tag(ModTags.Items.AUTOMATIC_GUN).add(
                 ManaWeaponItems.BEE_GUN.get(),
                 ManaWeaponItems.SPACE_GUN.get(),
-                GunItems.STAR_CANNON.get()
+                GunItems.STAR_CANNON.get(),
+                GunItems.MINISHARK.get(),
+                GunItems.SNOWBALL_CANNON.get(),
+                GunItems.BLOWGUN.get(),
+                GunItems.TACTICAL_SHOTGUN.get()
         );
-        tag(TGTags.AMMO).add(
-                MaterialItems.FALLING_STAR.get()
+        tag(ModTags.Items.MANUAL_GUN).add(
+                GunItems.HAND_GUN.get(),
+                GunItems.PHOENIX_BLASTER.get(),
+                GunItems.SHOTGUN.get(),
+                GunItems.FLINTLOCK_PISTOL.get(),
+                GunItems.BOOMSTICK.get(),
+                GunItems.THE_UNDERTAKER.get(),
+                GunItems.MUSKET.get()
         );
+        IntrinsicTagAppender<Item> bullet = tag(ModTags.Items.BULLET);
+        GunItems.BULLET_ITEMS.forEach(item -> bullet.add(item.get()));
+        tag(ModTags.Items.SNOW_AMMO).add(Items.SNOWBALL);
+        tag(ModTags.Items.SEED_AMMO).addTag(Tags.Items.SEEDS);
+        tag(ModTags.Items.AMMO)
+                .addTags(ModTags.Items.SEED_AMMO, ModTags.Items.SNOW_AMMO, ModTags.Items.BULLET);
         IntrinsicTagAppender<Item> death = tag(ModTags.Items.DEATH);
         death.add(
                 FunctionalBlocks.SHIMMER_TRAP.asItem(),
@@ -1542,7 +1665,22 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.ORICHALCUM_SWORD.get(),
                 SwordItems.ADAMANTITE_SWORD.get(),
                 SwordItems.TITANIUM_SWORD.get(),
-                SwordItems.MURAMASA.get()
+                SwordItems.MURAMASA.get(),
+                SwordItems.MARLIN_SPIKE_SWORD.get(),
+                SwordItems.BLADETONGUE.get()
+        );
+        // 刃弓：弓类武器，但走阔剑式的自动空挥与特殊横扫
+        tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(BowItems.BLADE_BOW.get());
+        // 祈灵之刃：魂师副武器，自带自动挥舞
+        tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(SoulItems.SPIRITWARD_BLADE.get());
+        // 祈灵之刃不参与 SwordItems 的注册循环，需要单独登记近战词缀与剑类附魔可用性
+        tag(ModTags.Items.PREFIX_MELEE_ONLY).add(SoulItems.SPIRITWARD_BLADE.get());
+        weapon_enchantable.add(SoulItems.SPIRITWARD_BLADE.get());
+        sharp_weapon_enchantable.add(SoulItems.SPIRITWARD_BLADE.get());
+        // 灵魂弓 / 灵魂短弓：显式挂到远程词缀，避免只依赖 c:tools/ranged_weapon 的间接登记
+        tag(ModTags.Items.PREFIX_RANGED_ONLY).add(
+                BowItems.SOUL_BOW.get(),
+                BowItems.SOUL_SHORT_BOW.get()
         );
         tag(ModTags.Items.MIMIC_SUMMON_KEY).add(
                 ToolItems.KEY_OF_LIGHT.get(),
@@ -1560,11 +1698,185 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.CROSSBOW_ENCHANTABLE).addTag(
                 ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE
         );
+        prefix_ranged_only.addTag(
+                Tags.Items.TOOLS_CROSSBOW
+        );
         IntrinsicTagAppender<Item> short_sword = tag(ModTags.Items.SHORT_SWORD);
         for (DeferredHolder<Item, ? extends Item> holder : SwordItems.ITEMS.getEntries()) {
             if (SwordItems.isShortSword(holder)) {
                 short_sword.add(holder.get());
             }
         }
+        // 祈灵之刃在魂师体系里属于短剑
+        short_sword.add(SoulItems.SPIRITWARD_BLADE.get());
+        // 大马林鱼刺剑：命名不带 short_sword 后缀，但定位就是短剑
+        short_sword.add(SwordItems.MARLIN_SPIKE_SWORD.get());
+
+        PylonBlocks.BLOCKS.getEntries().forEach(holder -> wip.add(holder.get().asItem()));
+
+        // 贴图缺失的物品（模型回退到占位图标 / 引用了不存在的贴图 / 完全没有模型）统一标记为 WIP。
+        // 清单由 tools/audit_missing_item_textures.py 检索得到，补齐贴图后重新运行脚本即可刷新。
+        wip.add(
+                Confluence.asResourceKey(Registries.ITEM, "aetherium_cauldron"),
+                Confluence.asResourceKey(Registries.ITEM, "archaeologists_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "archaeologists_jacket"),
+                Confluence.asResourceKey(Registries.ITEM, "archaeologists_pants"),
+                Confluence.asResourceKey(Registries.ITEM, "archaeologists_shoes"),
+                Confluence.asResourceKey(Registries.ITEM, "archers_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "archers_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "archers_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "archers_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "aviators"),
+                Confluence.asResourceKey(Registries.ITEM, "balla_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "battle_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "battle_collar"),
+                Confluence.asResourceKey(Registries.ITEM, "battle_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "battle_robe"),
+                Confluence.asResourceKey(Registries.ITEM, "black_spot_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "black_spot_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "black_spot_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "black_spot_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "chain_guillotines"),
+                Confluence.asResourceKey(Registries.ITEM, "chiseled_gaze_planks"),
+                Confluence.asResourceKey(Registries.ITEM, "chiseled_moonglow_willow_planks"),
+                Confluence.asResourceKey(Registries.ITEM, "chiseled_void_planks"),
+                Confluence.asResourceKey(Registries.ITEM, "climbing_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "climbing_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "climbing_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "climbing_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "cloudweaver"),
+                Confluence.asResourceKey(Registries.ITEM, "clown_attire"),
+                Confluence.asResourceKey(Registries.ITEM, "clown_pants"),
+                Confluence.asResourceKey(Registries.ITEM, "clown_shirt"),
+                Confluence.asResourceKey(Registries.ITEM, "clown_shoes"),
+                Confluence.asResourceKey(Registries.ITEM, "coldblood_pumpkin_pie"),
+                Confluence.asResourceKey(Registries.ITEM, "deadly_sphere_staff"),
+                Confluence.asResourceKey(Registries.ITEM, "desert_tiger_staff"),
+                Confluence.asResourceKey(Registries.ITEM, "dummy_bullet"),
+                Confluence.asResourceKey(Registries.ITEM, "ember_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "ember_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "ember_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "ember_robe"),
+                Confluence.asResourceKey(Registries.ITEM, "end_dragon_pepper"),
+                Confluence.asResourceKey(Registries.ITEM, "end_dragon_pepper_seed"),
+                Confluence.asResourceKey(Registries.ITEM, "entertainers_garb_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "entertainers_garb_pants"),
+                Confluence.asResourceKey(Registries.ITEM, "entertainers_garb_shirt"),
+                Confluence.asResourceKey(Registries.ITEM, "entertainers_garb_shoes"),
+                Confluence.asResourceKey(Registries.ITEM, "evocation_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "evocation_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "evocation_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "evocation_robe"),
+                Confluence.asResourceKey(Registries.ITEM, "eye_patch"),
+                Confluence.asResourceKey(Registries.ITEM, "gangsta_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "garden_gnome"),
+                Confluence.asResourceKey(Registries.ITEM, "gaze_door"),
+                Confluence.asResourceKey(Registries.ITEM, "gaze_hanging_sign"),
+                Confluence.asResourceKey(Registries.ITEM, "gaze_sign"),
+                Confluence.asResourceKey(Registries.ITEM, "gaze_tuber"),
+                Confluence.asResourceKey(Registries.ITEM, "ghastly_glaive"),
+                Confluence.asResourceKey(Registries.ITEM, "golem_fist"),
+                Confluence.asResourceKey(Registries.ITEM, "guards_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "guards_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "guards_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "guards_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "hallowed_crown"),
+                Confluence.asResourceKey(Registries.ITEM, "highland_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "highland_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "highland_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "highland_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "huang_li"),
+                Confluence.asResourceKey(Registries.ITEM, "hunters_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "hunters_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "hunters_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "hunters_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "ko_cannon"),
+                Confluence.asResourceKey(Registries.ITEM, "mercenary_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "mercenary_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "mercenary_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "mercenary_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "moonglow_willow_door"),
+                Confluence.asResourceKey(Registries.ITEM, "moonglow_willow_hanging_sign"),
+                Confluence.asResourceKey(Registries.ITEM, "moonglow_willow_sign"),
+                Confluence.asResourceKey(Registries.ITEM, "mushroom_spear"),
+                Confluence.asResourceKey(Registries.ITEM, "north_pole"),
+                Confluence.asResourceKey(Registries.ITEM, "peddlers_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "pirate_map"),
+                Confluence.asResourceKey(Registries.ITEM, "rainbow_boulder"),
+                Confluence.asResourceKey(Registries.ITEM, "rainbow_sheep_spawn_egg"),
+                Confluence.asResourceKey(Registries.ITEM, "red_desert_tapered_block"),
+                Confluence.asResourceKey(Registries.ITEM, "reinforced_mail_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "reinforced_mail_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "reinforced_mail_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "reinforced_mail_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "renegade_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "renegade_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "renegade_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "renegade_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "root_rot_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "root_rot_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "root_rot_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "root_rot_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "rune_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "rune_robe"),
+                Confluence.asResourceKey(Registries.ITEM, "sailor_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "sailor_pants"),
+                Confluence.asResourceKey(Registries.ITEM, "sailor_shirt"),
+                Confluence.asResourceKey(Registries.ITEM, "scale_mail_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "scale_mail_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "scale_mail_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "scale_mail_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "shimmer_coral_tube"),
+                Confluence.asResourceKey(Registries.ITEM, "shimmer_rice"),
+                Confluence.asResourceKey(Registries.ITEM, "sparkle_slime_balloon"),
+                Confluence.asResourceKey(Registries.ITEM, "spelunker_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "spelunker_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "spelunker_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "spelunker_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "spider_boulder"),
+                Confluence.asResourceKey(Registries.ITEM, "spider_staff"),
+                Confluence.asResourceKey(Registries.ITEM, "splendid_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "splendid_collar"),
+                Confluence.asResourceKey(Registries.ITEM, "splendid_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "splendid_robe"),
+                Confluence.asResourceKey(Registries.ITEM, "stalwart_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "stalwart_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "stalwart_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "stalwart_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "stellar_blossom"),
+                Confluence.asResourceKey(Registries.ITEM, "stress_ball"),
+                Confluence.asResourceKey(Registries.ITEM, "sunglasses"),
+                Confluence.asResourceKey(Registries.ITEM, "superheated_blood"),
+                Confluence.asResourceKey(Registries.ITEM, "test_block"),
+                Confluence.asResourceKey(Registries.ITEM, "thief_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "thief_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "thief_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "thief_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "top_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "troubadour_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "troubadour_pants"),
+                Confluence.asResourceKey(Registries.ITEM, "troubadour_shirt"),
+                Confluence.asResourceKey(Registries.ITEM, "troubadour_shoes"),
+                Confluence.asResourceKey(Registries.ITEM, "tuxedo_pants"),
+                Confluence.asResourceKey(Registries.ITEM, "tuxedo_shirt"),
+                Confluence.asResourceKey(Registries.ITEM, "tuxedo_shoes"),
+                Confluence.asResourceKey(Registries.ITEM, "vampire_frog_staff"),
+                Confluence.asResourceKey(Registries.ITEM, "verdant_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "verdant_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "verdant_leggings"),
+                Confluence.asResourceKey(Registries.ITEM, "verdant_robe"),
+                Confluence.asResourceKey(Registries.ITEM, "void_bucket"),
+                Confluence.asResourceKey(Registries.ITEM, "void_door"),
+                Confluence.asResourceKey(Registries.ITEM, "void_hanging_sign"),
+                Confluence.asResourceKey(Registries.ITEM, "void_sign"),
+                Confluence.asResourceKey(Registries.ITEM, "wedding_dress"),
+                Confluence.asResourceKey(Registries.ITEM, "wedding_veil"),
+                Confluence.asResourceKey(Registries.ITEM, "white_pumpkin_seed"),
+                Confluence.asResourceKey(Registries.ITEM, "wizards_hat"),
+                Confluence.asResourceKey(Registries.ITEM, "wolf_boots"),
+                Confluence.asResourceKey(Registries.ITEM, "wolf_chestplate"),
+                Confluence.asResourceKey(Registries.ITEM, "wolf_helmet"),
+                Confluence.asResourceKey(Registries.ITEM, "wolf_leggings")
+        );
     }
 }

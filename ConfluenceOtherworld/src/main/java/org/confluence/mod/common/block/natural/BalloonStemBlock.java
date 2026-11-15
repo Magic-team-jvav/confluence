@@ -11,7 +11,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -56,7 +55,8 @@ public class BalloonStemBlock extends StemBlock {
         if (!level.isAreaLoaded(pos, 1)) return;
 
         if (level.getRawBrightness(pos, 0) >= 9) {
-            float f = CropBlock.getGrowthSpeed(state, level, pos);
+            /// 与其它空岛作物共用生长速度：+80%，种在雨中云上再 ×3；长茎与结瓜共用这一次判定。
+            float f = BaseCropBlock.getSkylandGrowthSpeed(state, level, pos);
             if (CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / f) + 1) == 0)) {
                 int i = state.getValue(AGE);
                 if (i < 7) {

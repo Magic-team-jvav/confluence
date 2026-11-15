@@ -1,0 +1,28 @@
+{
+    "blocks": {
+        "confluence:johnny_o_lantern": {
+            "color": [
+                1.0,
+                0.66666667,
+                0.33333333
+            ],
+            "light_level": 7
+        },
+        "confluence:white_paper_pane_lamp": {
+            "color": [
+                1.0,
+                0.94117647,
+                0.8
+            ],
+            "light_level": 7
+        },
+        "confluence:malachite_paper_pane_lamp": {
+            "color": [
+                0.52549,
+                1.0,
+                0.909804
+            ],
+            "light_level": 7
+        }
+    }
+}

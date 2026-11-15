@@ -1,0 +1,28 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"idle": {
+			"loop": true
+		},
+		"active": {
+			"loop": true,
+			"animation_length": 0.7083,
+			"bones": {
+				"bone": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.5833": {
+							"vector": [0, -7, 0],
+							"easing": "easeInCirc"
+						},
+						"0.7083": {
+							"vector": [0, 1, 0]
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -26,10 +26,10 @@ import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.ModStartupConfigs;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
@@ -71,7 +71,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new HellforgeCategory(jeiHelpers));
         registration.addRecipeCategories(new HeavyWorkBenchCategory(jeiHelpers));
         registration.addRecipeCategories(new AlchemyTableCategory(jeiHelpers));
-        if (CommonConfigs.FLETCHING_MENU.get()) {
+        if (ModCommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipeCategories(new FletchingTableCategory(jeiHelpers));
         }
         registration.addRecipeCategories(new CookingPotCategory(jeiHelpers));
@@ -84,7 +84,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new LoomCategory(jeiHelpers));
         registration.addRecipeCategories(new DyeVatCategory(jeiHelpers));
         registration.addRecipeCategories(new CrystalBallCategory(jeiHelpers));
-        if (StartupConfigs.brewingStandRecipe()) {
+        if (ModStartupConfigs.brewingStandRecipe()) {
             registration.addRecipeCategories(new BrewingStandTerraPotionCategory());
         }
         registration.addRecipeCategories(new ArmorSetBonusCategory(jeiHelpers));
@@ -101,7 +101,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(HellforgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HELLFORGE_TYPE.get()));
         registration.addRecipes(HeavyWorkBenchCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HEAVY_WORK_BENCH_TYPE.get()));
         registration.addRecipes(AlchemyTableCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.ALCHEMY_TABLE_TYPE.get()));
-        if (CommonConfigs.FLETCHING_MENU.get()) {
+        if (ModCommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipes(FletchingTableCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.FLETCHING_TABLE_TYPE.get()));
         }
         registration.addRecipes(CookingPotCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.COOKING_POT_TYPE.get()));
@@ -114,7 +114,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(LoomCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.LOOM_TYPE.get()));
         registration.addRecipes(DyeVatCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.DYE_VAT_TYPE.get()));
         registration.addRecipes(CrystalBallCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.CRYSTAL_BALL_TYPE.get()));
-        if (StartupConfigs.brewingStandRecipe()) {
+        if (ModStartupConfigs.brewingStandRecipe()) {
             registration.addRecipes(BrewingStandTerraPotionCategory.TYPE, BrewingStandTerraPotionCategory.Recipe.getAllRecipes());
         }
         registration.addRecipes(ArmorSetBonusCategory.TYPE, ModArmorBonus.getValueMap().entrySet().stream().map(ArmorSetBonusCategory.Holder::new).toList());
@@ -129,7 +129,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.HELLFORGE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
         registration.addRecipeCatalyst(FunctionalBlocks.HEAVY_WORK_BENCH, HeavyWorkBenchCategory.TYPE, RecipeTypes.CRAFTING);
         registration.addRecipeCatalyst(FunctionalBlocks.ALCHEMY_TABLE, AlchemyTableCategory.TYPE);
-        if (CommonConfigs.FLETCHING_MENU.get()) {
+        if (ModCommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipeCatalyst(Blocks.FLETCHING_TABLE, FletchingTableCategory.TYPE);
         }
         registration.addRecipeCatalyst(FunctionalBlocks.LEAD_ANVIL, RecipeTypes.ANVIL);
@@ -146,7 +146,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.LOOM, LoomCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.DYE_VAT, DyeVatCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.CRYSTAL_BALL, CrystalBallCategory.TYPE);
-        if (StartupConfigs.brewingStandRecipe()) {
+        if (ModStartupConfigs.brewingStandRecipe()) {
             registration.addRecipeCatalyst(Items.BREWING_STAND, BrewingStandTerraPotionCategory.TYPE);
         }
     }
@@ -156,7 +156,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(HeavyWorkBenchScreen.class, 95, 32, 28, 23, HeavyWorkBenchCategory.TYPE);
         registration.addRecipeClickArea(SawmillScreen.class, 95, 32, 28, 23, SawmillCategory.TYPE);
         registration.addRecipeClickArea(SolidifierScreen.class, 95, 32, 28, 23, SolidifierCategory.TYPE);
-        if (CommonConfigs.FLETCHING_MENU.get()) {
+        if (ModCommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipeClickArea(FletchingTableScreen.class, 87, 31, 28, 23, FletchingTableCategory.TYPE);
         }
         registration.addRecipeClickArea(HellforgeScreen.class, 89, 31, 28, 23, HellforgeCategory.TYPE);
@@ -217,7 +217,7 @@ public final class ModJeiPlugin implements IModPlugin {
             addInput(builder, 33, -1, ingredients.get(2), true);
             addInput(builder, 33, 17, ingredients.get(3), true);
         }
-        builder.addOutputSlot(88, 8).addItemStack(recipe.value().getResultItem(null)).setOutputSlotBackground();
+        builder.addOutputSlot(88, 8).addItemStack(recipe.value().getResult()).setOutputSlotBackground();
         builder.setShapeless();
     }
 

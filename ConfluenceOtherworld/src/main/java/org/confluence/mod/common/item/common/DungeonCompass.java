@@ -24,14 +24,15 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.item.ToolItems;
 
 import java.util.List;
 
-public class DungeonCompass extends TooltipItem {
+public class DungeonCompass extends CustomRarityItem {
     public static final int[][] CRYSTALS = {
             new int[]{3, 0},
             new int[]{2, 2},
@@ -51,7 +52,7 @@ public class DungeonCompass extends TooltipItem {
             .build();
 
     public DungeonCompass() {
-        super(new Properties().fireResistant().stacksTo(1), ModRarity.GREEN, Component.translatable("tooltip.item.confluence.dungeon_compass.0").withStyle(ChatFormatting.GRAY));
+        super(new Properties().fireResistant().stacksTo(1), ModRarity.GREEN);
     }
 
     @Override
@@ -90,7 +91,7 @@ public class DungeonCompass extends TooltipItem {
                         BlockPos pos = pair.getFirst();
                         tag.putIntArray("pos", new int[]{pos.getX(), pos.getY(), pos.getZ()});
                     });
-                    LibUtils.createItemEntity(stack, blockPos.getX() + 0.5, blockPos.getY() + 1.5, blockPos.getZ() + 0.5, level, 0);
+                    LibEntityUtils.createItemEntity(stack, blockPos.getX() + 0.5, blockPos.getY() + 1.5, blockPos.getZ() + 0.5, level, 0);
                 }
             }
             player.swing(hand);

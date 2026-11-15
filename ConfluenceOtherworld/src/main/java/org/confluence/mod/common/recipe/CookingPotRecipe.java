@@ -94,11 +94,11 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
         @Override
         protected MapCodec<CookingPotRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                    INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients),
-                    Ingredient.CODEC.fieldOf("container").forGetter(recipe -> recipe.container),
-                    HeatSourcePredicate.CODEC.fieldOf("heat_source").forGetter(recipe -> recipe.heatSource),
-                    Codec.INT.fieldOf("cookingtime").forGetter(recipe -> recipe.cookingTime)
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(CookingPotRecipe::getResult),
+                    INGREDIENTS_CODEC.forGetter(CookingPotRecipe::getIngredients),
+                    Ingredient.CODEC.fieldOf("container").forGetter(CookingPotRecipe::getContainer),
+                    HeatSourcePredicate.CODEC.fieldOf("heat_source").forGetter(CookingPotRecipe::getHeatSource),
+                    Codec.INT.fieldOf("cookingtime").forGetter(CookingPotRecipe::getCookingTime)
             ).apply(instance, CookingPotRecipe::new));
         }
 
@@ -118,11 +118,11 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
 
                 @Override
                 public void encode(RegistryFriendlyByteBuf buffer, CookingPotRecipe recipe) {
-                    buffer.writeVarInt(recipe.ingredients.size());
-                    for (Ingredient ingredient : recipe.ingredients) {
+                    buffer.writeVarInt(recipe.getIngredients().size());
+                    for (Ingredient ingredient : recipe.getIngredients()) {
                         Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
                     }
-                    ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
+                    ItemStack.STREAM_CODEC.encode(buffer, recipe.getResult());
                     Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.container);
                     HeatSourcePredicate.STREAM_CODEC.encode(buffer, recipe.heatSource);
                     buffer.writeVarInt(recipe.cookingTime);

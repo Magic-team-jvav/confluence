@@ -65,7 +65,7 @@ public class CookingPotCategory implements IRecipeCategory<RecipeHolder<CookingP
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CookingPotRecipe> recipe, IFocusGroup focuses) {
         int i = 0;
         int j = 0;
-        for (Ingredient ingredient : recipe.value().ingredients) {
+        for (Ingredient ingredient : recipe.value().getIngredients()) {
             addInput(builder, 13 + i * 18, 7 + j * 18, ingredient);
             if (i == 1) {
                 j++;
@@ -95,7 +95,7 @@ public class CookingPotCategory implements IRecipeCategory<RecipeHolder<CookingP
                         }
                     }));
         }
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 121, 16).addItemStack(recipe.value().getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 121, 16).addItemStack(recipe.value().getResult());
     }
 
     @Override
@@ -111,6 +111,6 @@ public class CookingPotCategory implements IRecipeCategory<RecipeHolder<CookingP
 
     @Override
     public ResourceLocation getRegistryName(RecipeHolder<CookingPotRecipe> recipe) {
-        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResult().getItem()).getPath());
     }
 }

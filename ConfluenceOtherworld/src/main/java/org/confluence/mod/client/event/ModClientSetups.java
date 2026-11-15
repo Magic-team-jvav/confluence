@@ -1,10 +1,9 @@
 package org.confluence.mod.client.event;
 
+import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -44,7 +43,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.IItemDecorator;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -62,7 +60,11 @@ import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
 import org.confluence.mod.client.renderer.item.MutableRenderTypeItemExtension;
+import org.confluence.mod.client.security.SecurityFace;
+import org.confluence.mod.common.attachment.LeftClickCooldowns;
+import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.init.ModArmPoses;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -71,22 +73,23 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
-import org.confluence.mod.mixed.IPlayer;
-import org.confluence.mod.util.RepeaterContentsComponentHandler;
+import org.confluence.mod.common.item.fishing.IBait;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
+import org.confluence.mod.common.summoner.SummonerHelper;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
+import org.confluence.mod.util.EnchantmentUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.awt.*;
-import java.util.Iterator;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.function.Supplier;
-
-import static net.minecraft.client.renderer.RenderStateShard.*;
 
 @SuppressWarnings("deprecation")
 public final class ModClientSetups {
     public static final ResourceLocation VANILLA_BLOCK_ATLAS = InventoryMenu.BLOCK_ATLAS;
-    public static final ResourceLocation ENTITY_BLOOD_ATLAS = Confluence.asResource("textures/atlas/entity_blood.png");
 
     public static final WidgetSprites EXTRA_INVENTORY_BUTTON = new WidgetSprites(Confluence.asResource("widget/extra_inventory_button"), Confluence.asResource("widget/extra_inventory_button_highlighted"));
     public static final ResourceLocation BLOOM_TEXTURE = Confluence.asResource("textures/misc/bloom.png");
@@ -97,7 +100,7 @@ public final class ModClientSetups {
     public static final ResourceLocation BOULDER_SUN_TEXTURE = Confluence.asResource("textures/environment/boulder.png");
     public static final ResourceLocation SUNGLASSES_BOULDER_TEXTURE = Confluence.asResource("textures/environment/sunglasses_boulder.png");
     // endregion
-    private static final NormalNoise normalNoise = NormalNoise.create(RandomSource.create(0), new NormalNoise.NoiseParameters(-5, 1.0, 1.0, 1.0, 1.0));
+    private static final NormalNoise normalNoise = NormalNoise.create(RandomSource.create(260318), -5, 1.0, 1.0, 1.0, 1.0);
     static final IClientFluidTypeExtensions HONEY_CLIENT_EXTENSIONS = new IClientFluidTypeExtensions() {
         private static final ResourceLocation STILL = Confluence.asResource("block/fluid/honey_still");
         private static final ResourceLocation FLOWING = Confluence.asResource("block/fluid/honey_flowing");
@@ -182,7 +185,9 @@ public final class ModClientSetups {
             return true;
         }
     };
-    static final IClientItemExtensions ENTITY_DISPLAY = new IClientItemExtensions() {
+    static final EntityDisplayExtensions ENTITY_DISPLAY = new EntityDisplayExtensions();
+
+    static final class EntityDisplayExtensions implements IClientItemExtensions {
         private EntityDisplayItemRenderer renderer;
 
         @Override
@@ -192,7 +197,14 @@ public final class ModClientSetups {
             }
             return renderer;
         }
-    };
+
+        void clear() {
+            if (renderer != null) {
+                renderer.clear();
+            }
+        }
+    }
+
     static final IClientItemExtensions BREATHING_REED = simpleArmPose(ModArmPoses.BREATHING_REED::getValue);
     static final IClientItemExtensions SPEAR = simpleArmPose(ModArmPoses.SPEAR::getValue);
     static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA::getValue);
@@ -200,8 +212,8 @@ public final class ModClientSetups {
     static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE::getValue);
     static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null && player.getMainHandItem() == itemStack) {
-            ItemStack stack = IPlayer.of(player).confluence$getCurrentBait();
+        if (player != null && (player.getMainHandItem() == itemStack || player.getOffhandItem() == itemStack)) {
+            ItemStack stack = IBait.getFirstBait(player.getInventory());
             if (!stack.isEmpty()) {
                 PoseStack pose = guiGraphics.pose();
                 pose.pushPose();
@@ -213,21 +225,43 @@ public final class ModClientSetups {
         }
         return false;
     };
+    static final IItemDecorator LEFT_CLICK_COOLDOWN = (guiGraphics, font, stack, x, y) -> {
+        Minecraft minecraft = Minecraft.getInstance();
+        LocalPlayer player = minecraft.player;
+        if (player == null) {
+            return false;
+        }
+
+        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
+        float leftClick = LeftClickCooldowns.of(player).getCooldownPercent(stack.getItem(), partialTick);
+        if (leftClick <= 0f) {
+            return false;
+        }
+
+        float vanilla = player.getCooldowns().getCooldownPercent(stack.getItem(), partialTick);
+        if (leftClick <= vanilla) {
+            return false;
+        }
+
+        // 原版已绘制自己的遮罩，只补齐左键冷却多出的部分，避免重叠加深。
+        int top = y + Mth.floor(16.0F * (1.0F - leftClick));
+        int bottom = y + Mth.floor(16.0F * (1.0F - vanilla));
+        if (top < bottom) {
+            guiGraphics.fill(RenderType.guiOverlay(), x, top, x + 16, bottom, Integer.MAX_VALUE);
+        }
+        return false;
+    };
     static final IItemDecorator REPEATER_AMMO = (guiGraphics, font, itemStack, x, y) -> {
-        if (itemStack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler) {
-            Iterator<ItemStack> itemIterator = handler.getAllItemIterator();
-            if (itemIterator.hasNext()) {
-                ItemStack stack = itemIterator.next();
-                if (!stack.isEmpty()) {
-                    PoseStack pose = guiGraphics.pose();
-                    pose.pushPose();
-                    pose.translate(x + 8, y + 8, 100);
-                    pose.mulPose(Axis.ZN.rotation(Mth.HALF_PI));
-                    pose.translate(-7, -9, 0);
-                    guiGraphics.renderItem(stack, 0, 0);
-                    pose.popPose();
-                }
-            }
+        RepeaterContents contents = itemStack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+        ItemStack stack = contents.nonEmptyStream().findFirst().orElse(ItemStack.EMPTY);
+        if (!stack.isEmpty()) {
+            PoseStack pose = guiGraphics.pose();
+            pose.pushPose();
+            pose.translate(x + 8, y + 8, 100);
+            pose.mulPose(Axis.ZN.rotation(Mth.HALF_PI));
+            pose.translate(-7, -9, 0);
+            guiGraphics.renderItem(stack, 0, 0);
+            pose.popPose();
         }
         return false;
     };
@@ -347,36 +381,37 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.EVER_POWERED_RAIL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURE_GLASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.ECHO_BLOCK.get(), cutout);
+        /// 炼药瓶：玻璃瓶身有透明度，需要 cutout 才能正确镂空
+        ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.BREWING_VIAL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.CURSED_FLAME_BLOCK.get(), cutout);
     }
 
     static void registerItemProperties() {
         ResourceLocation enable = Confluence.asResource("enable");
+        ItemProperties.register(SummonItems.FINCH_STAFF.get(), enable, ((itemStack, clientLevel, livingEntity, seed) -> {
+            if (livingEntity instanceof Player player && !SummonerHelper.get(player).getEntityData().get(SummonerAttachmentEntityTypes.FINCH.get()).isEmpty()) {
+                return 0;
+            }
+            return 1;
+        }));
         ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
+        ItemProperties.register(ToolItems.VOID_BAG.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(ToolItems.METEOR_COMPASS.get(), ResourceLocation.withDefaultNamespace("angle"), new CompassItemPropertyFunction((level, stack, entity) -> MeteorLandingHandler.getGlobalPos()));
+        // 技能书按绑定组件切换书皮，序号为 0 时回落到通用书皮
+        ItemProperties.register(SoulItems.SOUL_SKILL_BOOK.get(), Confluence.asResource("soul_book"), (stack, level, entity, seed) -> SoulBooks.styleIndex(stack));
     }
 
     public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = LibUtils.isModLoaded("ctm") || LibUtils.isModLoaded("fusion") || LibUtils.isModLoaded("continuity");
-
-    public static final RenderType TERRA_SWORD_RENDER_TYPE = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
-                    .setTextureState(new TextureStateShard(Confluence.asResource("textures/mask/sword.png"), true, false))
-                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                    .setWriteMaskState(COLOR_WRITE)
-                    .setCullState(NO_CULL)
-                    .setOverlayState(OVERLAY)
-                    .createCompositeState(false));
 
     public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
     public static final ColoredGlintContext GLINT_RAINBOW = ColoredGlintContext.create("rainbow", 0, 0, 0);
 
     public static void registerBowProperties() {
         ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");
-        ClampedItemPropertyFunction shortBowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks()) / ShortBowItem.MAX_DRAW_DURATION : 0.0F;
-        ClampedItemPropertyFunction bowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks()) / BowItem.MAX_DRAW_DURATION : 0.0F;
+        ClampedItemPropertyFunction shortBowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? EnchantmentUtils.applyRapidCharge(itemStack, (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks())) / ShortBowItem.MAX_DRAW_DURATION : 0.0F;
+        ClampedItemPropertyFunction bowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? EnchantmentUtils.applyRapidCharge(itemStack, (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks())) / BowItem.MAX_DRAW_DURATION : 0.0F;
         ResourceLocation pulling = ResourceLocation.withDefaultNamespace("pulling");
         ClampedItemPropertyFunction bowPulling = (itemStack, clientLevel, living, speed) -> living != null && living.isUsingItem() && living.getUseItem() == itemStack ? 1.0F : 0.0F;
 
@@ -389,17 +424,17 @@ public final class ModClientSetups {
             ItemProperties.register(item.get(), pulling, bowPulling);
         });
 
-        ClampedItemPropertyFunction crossbowPulling = (itemStack, clientLevel, living, speed) -> {
-            if (living == null || (!(itemStack.getItem() instanceof BaseTerraRepeaterItem repeater))) {
+        ClampedItemPropertyFunction repeaterPulling = (itemStack, clientLevel, living, speed) -> {
+            if (!(itemStack.getItem() instanceof BaseTerraRepeaterItem)) {
                 return 0.0F;
             }
-            var projectiles = repeater.getHandler(itemStack);
-            if (projectiles != null && !projectiles.isEmpty()) {
+            if (living != null && living.isUsingItem() && living.getUseItem() == itemStack) {
                 return 1.0F;
             }
-            return 0.0F;
+            RepeaterContents contents = itemStack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+            return contents.isEmpty() ? 0.0F : 1.0F;
         };
-        CrossbowItems.ITEMS.getEntries().forEach(item -> ItemProperties.register(item.get(), pulling, crossbowPulling));
+        CrossbowItems.ITEMS.getEntries().forEach(item -> ItemProperties.register(item.get(), pulling, repeaterPulling));
     }
 
     public static void registerFishingPoleProperties() {
@@ -415,5 +450,35 @@ public final class ModClientSetups {
             }
         };
         FishingPoleItems.ITEMS.getEntries().forEach(pole -> ItemProperties.register(pole.get(), cast, function));
+    }
+
+    private static Supplier<String> seKey;
+
+    private static boolean shouldSe(ResourceLocation location, String result) {
+        String namespace = location.getNamespace();
+        if (!namespace.equals(Confluence.MODID)) {
+            return false;
+        }
+        return !result.startsWith("{");
+    }
+
+    public static String wrapFile(String result, ResourceLocation location) {
+        // Please respect the copyright of the model and do not attempt to publicly disseminate encrypted files.
+        // 请尊重模型的著作权，加密文件请不要试图公开传播。
+        if (shouldSe(location, result)) {
+            if (seKey == null) {
+                seKey = Suppliers.memoize(() -> {
+                    try {
+                        ResourceLocation location1 = Confluence.asResource("license.bin");
+                        InputStream inputStream = Minecraft.getInstance().getResourceManager().open(location1);
+                        return SecurityFace.readKey(inputStream, i -> location1.hashCode());
+                    } catch (IOException e) {
+                        throw new RuntimeException("License Key Error");
+                    }
+                });
+            }
+            return SecurityFace.S3.decrypt(result, seKey.get());
+        }
+        return result;
     }
 }

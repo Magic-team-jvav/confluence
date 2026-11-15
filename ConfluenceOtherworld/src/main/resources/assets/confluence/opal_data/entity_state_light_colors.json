@@ -1,0 +1,45 @@
+{
+    "entities": {
+        "confluence:fairy": [
+            {
+                "color": [
+                    0.294118,
+                    0.635294,
+                    1.0
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fairy_variant": "blue"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.258824,
+                    1.0,
+                    0.537255
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fairy_variant": "green"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.32549,
+                    0.662745
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fairy_variant": "pink"
+                    }
+                }
+            }
+        ]
+    }
+}

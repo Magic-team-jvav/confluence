@@ -37,7 +37,6 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.recipe.WorkshopRecipe;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_furniture.common.init.TFTags;
-import org.confluence.terra_guns.common.init.TGItems;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -66,7 +65,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.DIAMOND_ORE_SMELTING), Items.DIAMOND.getDefaultInstance(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.EMERALD_ORE_SMELTING), Items.EMERALD.getDefaultInstance(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.REDSTONE_ORE_SMELTING), Items.REDSTONE.getDefaultInstance(), 0.7F, 100);
-        cooking(recipeOutput, SmeltingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.LAPIS_ORE_SMELTING), Items.LAPIS_ORE.getDefaultInstance(), 0.7F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.LAPIS_ORE_SMELTING), Items.LAPIS_ORE.getDefaultInstance(), 0.7F, 100);
 
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.TIN_ORE_SMELTING), MaterialItems.TIN_INGOT.toStack(), 0.7F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.LEAD_ORE_SMELTING), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 100);
@@ -83,7 +82,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.WINTER_MARROW_BLOCK), MaterialItems.WINTER_MARROW.toStack(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.LUNARTEAR_ORE), MaterialItems.LUNARTEAR.toStack(), 2.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.DRAGONSAL_ORE), MaterialItems.DRAGONSAL.toStack(), 2.0F, 100);
-        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(Items.GUNPOWDER), Items.BLAZE_POWDER.getDefaultInstance(), 2.0F, 100);
         // 熔炉
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.ORES_AMBER), MaterialItems.AMBER.toStack(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.ORES_RUBY), MaterialItems.RUBY.toStack(), 1.0F, 200);
@@ -114,8 +112,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.SPORE_ROOT_BLOCK), MaterialItems.SPORE_ROOT.toStack(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.OPAL_ORE), MaterialItems.OPAL.toStack(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.WINTER_MARROW_BLOCK), MaterialItems.WINTER_MARROW.toStack(), 1.0F, 200);
-        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.LUNARTEAR_ORE), MaterialItems.LUNARTEAR.toStack(), 2.0F, 200);
-        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.DRAGONSAL_ORE), MaterialItems.DRAGONSAL.toStack(), 2.0F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.LUNARTEAR_ORE), MaterialItems.LUNARTEAR.toStack(), 2.0F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.DRAGONSAL_ORE), MaterialItems.DRAGONSAL.toStack(), 2.0F, 200);
 
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_EBONSAND_BLOCK), NatureBlocks.EBONSAND.toStack(), 0.15F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_PEARLSAND_BLOCK), NatureBlocks.PEARLSAND.toStack(), 0.15F, 200);
@@ -147,8 +145,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
 
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(Items.SOUL_SAND), DecorativeBlocks.SOUL_GLASS.toStack(), 0.1F, 200);
-
-        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(Items.GUNPOWDER), Items.BLAZE_POWDER.getDefaultInstance(), 0.1F, 200);
 
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.35F, 100);
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 100);
@@ -238,6 +234,13 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         skyMill(recipeOutput, DecorativeBlocks.MOON_PLATE.WALL.toStack(), Ingredient.of(DecorativeBlocks.MOON_PLATE.FULL));
         skyMill(recipeOutput, DecorativeBlocks.MOON_PLATE.STAIRS.toStack(), Ingredient.of(DecorativeBlocks.MOON_PLATE.FULL));
         skyMill(recipeOutput, DecorativeBlocks.MOON_PLATE.SLAB.toStack(2), Ingredient.of(DecorativeBlocks.MOON_PLATE.FULL));
+        // 星怒相关：天磨也能做（与工作台同一套配方）
+        skyMill(recipeOutput, MaterialItems.STARFURY_CORE.toStack(), Ingredient.of(SwordItems.STARFURY));
+        skyMill(recipeOutput, SwordItems.STARFURY.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE));
+        skyMill(recipeOutput, BowItems.STAR_WEEP.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(BowItems.GOLDEN_BOW, BowItems.PLATINUM_BOW));
+        skyMill(recipeOutput, ManaWeaponItems.STAR_MUSIC.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(ManaWeaponItems.DIAMOND_STAFF, ManaWeaponItems.RUBY_STAFF));
+        skyMill(recipeOutput, WhipItems.STAR_FEAR.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(WhipItems.DIAMOND_WHIP, WhipItems.RUBY_WHIP));
+        skyMill(recipeOutput, SoulItems.STAR_SPIRIT.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(SoulItems.SOUL_CHANT_GUIDE));
 
         loom(recipeOutput, ModBlocks.SILK_ROPE.toStack(30), Ingredient.of(MaterialItems.SILK));
         loom(recipeOutput, MaterialItems.SILK.toStack(), Ingredient.of(Items.COBWEB));
@@ -299,6 +302,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(recipeOutput, AccessoryItems.GLOWING_FISHING_BOBBER.toStack(), Ingredient.of(AccessoryItems.FISHING_BOBBER), AmountIngredient.of(5, MaterialItems.FALLING_STAR));
         workshop(recipeOutput, AccessoryItems.COIN_RING.toStack(), Ingredient.of(AccessoryItems.LUCKY_COIN), Ingredient.of(AccessoryItems.GOLD_RING));
         workshop(recipeOutput, AccessoryItems.GREEDY_RING.toStack(), Ingredient.of(AccessoryItems.COIN_RING), Ingredient.of(AccessoryItems.DISCOUNT_CARD));
+        workshop(recipeOutput, AccessoryItems.HARVEST_TOTEM.toStack(), Ingredient.of(AccessoryItems.HUNTING_TOTEM), Ingredient.of(AccessoryItems.STICKY_CRYSTAL_PENDANT)); // 收获图腾 = 狩猎图腾 + 黏晶吊坠
         workshop(recipeOutput, AccessoryItems.CHARM_OF_MYTHS.toStack(), Ingredient.of(TCItems.BAND_OF_REGENERATION), Ingredient.of(AccessoryItems.PHILOSOPHERS_STONE));
         workshop(recipeOutput, AccessoryItems.PAPYRUS_SCARAB.toStack(), Ingredient.of(AccessoryItems.NECROMANTIC_SCROLL), Ingredient.of(AccessoryItems.HERCULES_BEETLE));
         workshop(recipeOutput, TCItems.AVENGER_EMBLEM.toStack(), Ingredient.of(ModTags.Items.EMBLEM), AmountIngredient.of(5, MaterialItems.SOUL_OF_MIGHT), AmountIngredient.of(5, MaterialItems.SOUL_OF_SIGHT), AmountIngredient.of(5, MaterialItems.SOUL_OF_FRIGHT));
@@ -316,6 +320,10 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(recipeOutput, TCItems.ANKH_CHARM.toStack(), Ingredient.of(AccessoryItems.ARMOR_BRACING), Ingredient.of(AccessoryItems.MEDICATED_BANDAGE), Ingredient.of(TCItems.THE_PLAN), Ingredient.of(AccessoryItems.COUNTERCURSE_MANTRA), Ingredient.of(AccessoryItems.REFLECTIVE_SHADES));
         workshop(recipeOutput, AccessoryItems.BAND_OF_STARPOWER.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.MANA_CRYSTAL), Ingredient.of(TCItems.PANIC_NECKLACE));
         workshop(recipeOutput, TCItems.PANIC_NECKLACE.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.LIFE_CRYSTAL), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER));
+        // 魂师饰品（工匠作坊 + 灵雾）
+        workshop(recipeOutput, AccessoryItems.BAND_OF_SOUL_REGENERATION.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(AccessoryItems.BAND_OF_SOUL), Ingredient.of(TCItems.BAND_OF_REGENERATION));
+        workshop(recipeOutput, AccessoryItems.BAND_OF_MEDIUMSHIP.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(AccessoryItems.BAND_OF_SOUL), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER));
+        workshop(recipeOutput, AccessoryItems.SOULCERER_EMBLEM.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(TCItems.WARRIOR_EMBLEM, TCItems.RANGER_EMBLEM, TCItems.SORCERER_EMBLEM, AccessoryItems.SUMMONER_EMBLEM));
         workshop(recipeOutput, TCItems.CELL_PHONE.toStack(), Ingredient.of(TCItems.PDA), Ingredient.of(ToolItems.ICE_MIRROR));
 
         solidifier(recipeOutput, DecorativeBlocks.BLUE_GEL_BLOCK.toStack(),
@@ -362,26 +370,31 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         hellforge(recipeOutput, DecorativeBlocks.HELLSTONE_BRICKS.FULL.toStack(), 0.1F, 200, false, AmountIngredient.of(5, Items.COBBLESTONE), Ingredient.of(ModTags.Items.RAW_MATERIALS_HELLSTONE));
 
         hellforge(recipeOutput, ArmorItems.OBSIDIAN_HELMET.toStack(), 0.5F, 200, true,
-                AmountIngredient.of(10, MaterialItems.SILK),
+                AmountIngredient.of(3, MaterialItems.SILK),
                 AmountIngredient.of(5, ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE),
                 AmountIngredient.of(20, Items.OBSIDIAN),
                 Ingredient.of(Items.IRON_HELMET));
         hellforge(recipeOutput, ArmorItems.OBSIDIAN_CHESTPLATE.toStack(), 0.5F, 200, true,
-                AmountIngredient.of(10, MaterialItems.SILK),
+                AmountIngredient.of(3, MaterialItems.SILK),
                 AmountIngredient.of(5, ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE),
                 AmountIngredient.of(20, Items.OBSIDIAN),
                 Ingredient.of(Items.IRON_CHESTPLATE));
         hellforge(recipeOutput, ArmorItems.OBSIDIAN_LEGGINGS.toStack(), 0.5F, 200, true,
-                AmountIngredient.of(10, MaterialItems.SILK),
+                AmountIngredient.of(3, MaterialItems.SILK),
                 AmountIngredient.of(5, ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE),
                 AmountIngredient.of(20, Items.OBSIDIAN),
                 Ingredient.of(Items.IRON_LEGGINGS));
         hellforge(recipeOutput, ArmorItems.OBSIDIAN_BOOTS.toStack(), 0.5F, 200, true,
-                AmountIngredient.of(10, MaterialItems.SILK),
+                AmountIngredient.of(3, MaterialItems.SILK),
                 AmountIngredient.of(5, ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE),
                 AmountIngredient.of(20, Items.OBSIDIAN),
                 Ingredient.of(Items.IRON_BOOTS));
         hellforge(recipeOutput, TCItems.OBSIDIAN_SKULL.toStack(), 0.5F, 200, false, AmountIngredient.of(10, Items.OBSIDIAN), Ingredient.of(Items.SKELETON_SKULL));
+        hellforge(recipeOutput, SoulItems.DAY_AND_NIGHT_ALIKE.toStack(), 0.5F, 200, false,
+                Ingredient.of(Items.NETHERITE_INGOT),
+                AmountIngredient.of(10, MaterialItems.HELLSTONE_INGOT),
+                Ingredient.of(SoulItems.SOUL_CHANT_GUIDE),
+                AmountIngredient.of(2, Items.GHAST_TEAR));
 
         fletchingTable(recipeOutput, ArrowItems.FLAMING_ARROW.toStack(25), Ingredient.EMPTY, AmountIngredient.of(25, Items.ARROW), Ingredient.of(ModTags.Items.TORCH));
         fletchingTable(recipeOutput, "_from_feather", new ItemStack(Items.ARROW, 20), Ingredient.of(Items.FEATHER), AmountIngredient.of(5, Items.STICK), Ingredient.of(Items.FLINT));
@@ -389,16 +402,49 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         fletchingTable(recipeOutput, ArrowItems.FLY_FISH_ARROW.toStack(10), Ingredient.of(MaterialItems.FILAMENTOUS_FIN), AmountIngredient.of(10, Items.ARROW), Ingredient.of());
         fletchingTable(recipeOutput, ArrowItems.FOSSIL_ARROW.toStack(25), Ingredient.of(), AmountIngredient.of(25, Items.ARROW), Ingredient.of(MaterialItems.STURDY_FOSSIL));
         fletchingTable(recipeOutput, ArrowItems.HELLFIRE_ARROW.toStack(64), Ingredient.of(), AmountIngredient.of(64, Items.ARROW), Ingredient.of(MaterialItems.HELLSTONE_INGOT));
+        fletchingTable(recipeOutput, ArrowItems.FROSTBURN_ARROW.toStack(64), Ingredient.of(), AmountIngredient.of(64, Items.ARROW), Ingredient.of(MaterialItems.WINTER_MARROW));
         fletchingTable(recipeOutput, ArrowItems.STAR_ARROW.toStack(10), Ingredient.of(), AmountIngredient.of(10, Items.ARROW), Ingredient.of(MaterialItems.FALLING_STAR));
+        // 制箭台：1 风棒（旋风棒）+ 25 箭 -> 25 风矢（沉重风箭）
+        fletchingTable(recipeOutput, ArrowItems.WIND_ARROW.toStack(25), Ingredient.of(), AmountIngredient.of(25, Items.ARROW), Ingredient.of(Items.BREEZE_ROD));
+        // 恶魔祭坛：永夜刃 + 极昼 -> 昏晓
+        altar(recipeOutput, ManaWeaponItems.DUSK_DAWN.toStack(), Ingredient.of(SwordItems.NIGHTS_EDGE), Ingredient.of(BowItems.POLAR_DAY));
+        // 恶魔祭坛：熔火之怒 + 星泣 + 恶魔弓/肌腱弓 + 附魔弓 -> 极昼
+        altar(recipeOutput, BowItems.POLAR_DAY.toStack(),
+                Ingredient.of(BowItems.MOLTEN_FURY),
+                Ingredient.of(BowItems.STAR_WEEP),
+                Ingredient.of(BowItems.DEMON_BOW, BowItems.TENDON_BOW),
+                Ingredient.of(BowItems.ENCHANTED_BOW));
+        // 水晶球：风页 / 风眼 / 星乐
+        crystalBlock(recipeOutput, ManaWeaponItems.WIND_PAGE.toStack(),
+                Ingredient.of(Items.HEAVY_CORE), Ingredient.of(Items.WIND_CHARGE),
+                Ingredient.of(MaterialItems.SPELL_TOME), Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
+        crystalBlock(recipeOutput, ManaWeaponItems.WIND_EYE.toStack(),
+                Ingredient.of(ManaWeaponItems.WIND_PAGE), AmountIngredient.of(4, Items.BREEZE_ROD),
+                AmountIngredient.of(4, MaterialItems.FALLING_STAR));
+        crystalBlock(recipeOutput, ManaWeaponItems.STAR_MUSIC.toStack(),
+                AmountIngredient.of(8, MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.SPELL_TOME),
+                Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
         fletchingTable(recipeOutput, ArrowItems.UNHOLY_ARROW.toStack(5), Ingredient.of(), AmountIngredient.of(5, Items.ARROW), Ingredient.of(ModTags.Items.EVIL_MATERIAL));
 
         altar(recipeOutput, ConsumableItems.BLOODY_SPINE.toStack(), AmountIngredient.of(30, ConsumableItems.VICIOUS_POWDER), AmountIngredient.of(15, MaterialItems.VERTEBRA));
         altar(recipeOutput, ConsumableItems.WORM_FOOD.toStack(), AmountIngredient.of(30, ConsumableItems.VILE_POWDER), AmountIngredient.of(15, MaterialItems.ROTTEN_CHUNK));
         altar(recipeOutput, ConsumableItems.SUSPICIOUS_LOOKING_EYE.toStack(), AmountIngredient.of(6, MaterialItems.LENS));
         altar(recipeOutput, SwordItems.NIGHTS_EDGE.toStack(), Ingredient.of(SwordItems.BLOOD_BUTCHERER, SwordItems.LIGHTS_BANE), Ingredient.of(SwordItems.MURAMASA), Ingredient.of(SwordItems.BLADE_OF_GRASS), Ingredient.of(SwordItems.VOLCANO));
+        altar(recipeOutput, ToolItems.VOID_BAG.toStack(), AmountIngredient.of(30, ConsumableItems.DUNGEON_DEMON_BONE), AmountIngredient.of(15, MaterialItems.JUNGLE_SPORE), AmountIngredient.of(30, Ingredient.of(MaterialItems.SHADOW_SCALE, MaterialItems.TISSUE_SAMPLE)));
+        altar(recipeOutput, FunctionalBlocks.VOID_VAULT.toStack(), AmountIngredient.of(15, ConsumableItems.DUNGEON_DEMON_BONE), AmountIngredient.of(8, MaterialItems.JUNGLE_SPORE), AmountIngredient.of(15, Ingredient.of(MaterialItems.SHADOW_SCALE, MaterialItems.TISSUE_SAMPLE)));
         altar(recipeOutput, ToolItems.METEOR_COMPASS.toStack(), AmountIngredient.of(4, ModDataGenerator.INGOTS_EVIL), AmountIngredient.of(4, MaterialItems.FALLING_STAR));
         altar(recipeOutput, ConsumableItems.SLIME_CROWN.toStack(), AmountIngredient.of(20, MaterialItems.GEL), Ingredient.of(VanityArmorItems.GOLD_CROWN, VanityArmorItems.PLATINUM_CROWN));
         altar(recipeOutput, ConsumableItems.DEER_THING.toStack(), AmountIngredient.of(3, MaterialItems.FLINX_FUR), AmountIngredient.of(5, Ingredient.of(ModTags.Items.EVIL_MATERIAL)));
+        altar(recipeOutput, SoulItems.SENIOR_PATHFINDER_PRO.toStack(),
+                AmountIngredient.of(20, ConsumableItems.DUNGEON_DEMON_BONE),
+                Ingredient.of(ToolItems.DUNGEON_COMPASS),
+                AmountIngredient.of(5, Items.COBWEB));
+
+        // 幻翼套装：邪恶祭坛无序，幻翼膜 + 同级银制部件
+        altar(recipeOutput, ArmorItems.PHANTOM_HELMET.toStack(), Ingredient.of(Items.PHANTOM_MEMBRANE), Ingredient.of(ArmorItems.SILVER_HELMET));
+        altar(recipeOutput, ArmorItems.PHANTOM_CHESTPLATE.toStack(), Ingredient.of(Items.PHANTOM_MEMBRANE), Ingredient.of(ArmorItems.SILVER_CHESTPLATE));
+        altar(recipeOutput, ArmorItems.PHANTOM_LEGGINGS.toStack(), Ingredient.of(Items.PHANTOM_MEMBRANE), Ingredient.of(ArmorItems.SILVER_LEGGINGS));
+        altar(recipeOutput, ArmorItems.PHANTOM_BOOTS.toStack(), Ingredient.of(Items.PHANTOM_MEMBRANE), Ingredient.of(ArmorItems.SILVER_BOOTS));
 
         alchemyTable(recipeOutput, PotionItems.ARCHERY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.LENS), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(recipeOutput, PotionItems.SWIFTNESS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(Items.CACTUS));
@@ -408,7 +454,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         alchemyTable(recipeOutput, PotionItems.DANGERSENSE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.SHIVERTHORN), Ingredient.of(Items.COBWEB));
         alchemyTable(recipeOutput, PotionItems.ENDURANCE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.ARMORED_CAVE_FISH), Ingredient.of(MaterialItems.BLINKROOT));
         alchemyTable(recipeOutput, PotionItems.FEATHERFALL_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(MaterialItems.MOONGLOW), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(Items.FEATHER));
-        alchemyTable(recipeOutput, ConsumableItems.FERTILIZER.toStack(), Ingredient.of(ModBlocks.POO.get()), AmountIngredient.of(3, NatureBlocks.ASH_BLOCK), AmountIngredient.of(3, Items.BONE));
+        alchemyTable(recipeOutput, ConsumableItems.FERTILIZER.toStack(), Ingredient.of(NatureBlocks.POO.get()), AmountIngredient.of(3, NatureBlocks.ASH_BLOCK), AmountIngredient.of(3, Items.BONE));
         alchemyTable(recipeOutput, PotionItems.FISHING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(DecorativeBlocks.CRISPY_HONEY_BLOCK), Ingredient.of(MaterialItems.WATERLEAF));
         alchemyTable(recipeOutput, PotionItems.FLIPPER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.SHIVERTHORN), Ingredient.of(MaterialItems.WATERLEAF));
         alchemyTable(recipeOutput, PotionItems.GILLS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.WATERLEAF), Ingredient.of(ModTags.Items.CORALS));
@@ -452,7 +498,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         alchemyTable(recipeOutput, PotionItems.GREATER_HEALING_POTION.toStack(3), AmountIngredient.of(3, PotionItems.BOTTLED_WATER), AmountIngredient.of(3, MaterialItems.PIXIE_DUST), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
 
         Ingredient emptyDropper = Ingredient.of(ToolItems.EMPTY_DROPPER);
-        crystalBlock(recipeOutput, TGItems.ENDLESS_MUSKET_POUCH.toStack(), AmountIngredient.of(9999, TGItems.MUSKET_BULLET));
+        crystalBlock(recipeOutput, GunItems.ENDLESS_MUSKET_POUCH.toStack(), AmountIngredient.of(9999, GunItems.MUSKET_BULLET));
         crystalBlock(recipeOutput, ManaWeaponItems.CURSED_FLAMES.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.CURSED_FLAME), AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
         crystalBlock(recipeOutput, ManaWeaponItems.CRYSTAL_STORM.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.CRYSTAL_SHARDS), AmountIngredient.of(15, MaterialItems.SOUL_OF_LIGHT));
         crystalBlock(recipeOutput, ManaWeaponItems.GOLDEN_SHOWER.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.ICHOR), AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));

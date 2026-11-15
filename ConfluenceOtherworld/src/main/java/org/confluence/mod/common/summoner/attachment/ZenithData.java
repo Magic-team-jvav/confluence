@@ -1,0 +1,119 @@
+package org.confluence.mod.common.summoner.attachment;
+
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
+
+import org.confluence.mod.common.item.sword.ZenithItem;
+import org.confluence.mod.common.summoner.SummonerHelper;
+import org.confluence.mod.common.summoner.projectile.Zenith;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.common.summoner.util.ZenithTargeting;
+import org.confluence.mod.common.summoner.register.SummonerSoundEvents;
+
+import java.util.List;
+import java.util.function.Predicate;
+
+public class ZenithData {
+    private final Player owner;
+    private ZenithItem zenithItem = null;
+    private float power = 0;
+
+    public ZenithData(IAttachmentHolder holder) {
+        if (holder instanceof Player player) {
+            this.owner = player;
+        } else {
+            throw new IllegalArgumentException("ZenithData can only be used with an Player");
+        }
+    }
+
+    public void tick() {
+        /// 换手、死亡或旁观后及时清除持键状态，不依赖客户端一定能送达松开包。
+        if (zenithItem == null) return;
+        if (!owner.isAlive() || owner.isSpectator() || owner.getMainHandItem().getItem() != zenithItem) {
+            reset();
+            return;
+        }
+        power = (float) (power + owner.getAttributeValue(Attributes.ATTACK_SPEED));
+        if (power > 3.33f) {
+            playZenithSound();
+            Vec3 lookAngle = owner.getLookAngle();
+            Vec3 center = owner.getBoundingBox().getCenter();
+            Vec3 eyePos = owner.getEyePosition();
+            int reach = 32;
+            Vec3 endEndPos = eyePos.add(lookAngle.scale(reach));
+            EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(owner, eyePos, endEndPos, owner.getBoundingBox().inflate(reach), entity -> Zenith.TARGETING.canAcquire(owner, entity), reach * reach);
+            if (entityHit != null) {
+                endEndPos = entityHit.getLocation();
+            }
+            TargetCache targetCache = owner.getData(SummonerAttachmentTypes.TARGET_CACHE);
+            Predicate<Entity> predicate = target -> Zenith.TARGETING.canAcquire(owner, target);
+            List<Entity> targetList = targetCache.getHitTargets(endEndPos, 32, predicate);
+            Entity best = null;
+            if (!targetList.isEmpty()) {
+                int searchRange = 32;
+                double fovAngle = 30;
+                double bestScore = Double.MAX_VALUE;
+                for (Entity living : targetList) {
+                    Vec3 targetPoint = living.getBoundingBox().getCenter();
+                    double score = ZenithTargeting.score(center, lookAngle, targetPoint, searchRange, fovAngle);
+                    if (Double.isFinite(score)) {
+                        if (score < bestScore) {
+                            bestScore = score;
+                            best = living;
+                        }
+                    }
+                }
+            }
+            do {
+                power -= 3.33f;
+                Zenith zenith = zenithItem.createZenith(owner);
+                RandomSource random = owner.getRandom();
+                float distance = (float) eyePos.distanceTo(endEndPos);
+                Vec3 endPos = endEndPos.offsetRandom(random, distance * 0.1f);
+                if (zenith.renderType != Zenith.RenderType.ZENITH) {
+                    List<Entity> radius = zenith.getTargetCache().getHitTargets(endPos, 10, predicate);
+                    if (!radius.isEmpty()) {
+                        Entity living = radius.get(random.nextInt(radius.size()));
+                        endPos = living.getBoundingBox().getCenter();
+                        zenith.target = living;
+                    } else {
+                        if (best != null) {
+                            endPos = best.getBoundingBox().getCenter();
+                            zenith.target = best;
+                        }
+                    }
+                }
+                zenith.offest = endPos.subtract(center);
+                zenith.init(zenith.getRenderNode(1));
+                SummonerHelper.get(owner).add(zenith);
+            } while (power > 3.33f);
+        }
+    }
+
+    public void update(ZenithItem item) {
+        zenithItem = item;
+    }
+
+    public void reset() {
+        power = 0;
+        zenithItem = null;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    private void playZenithSound() {
+        SoundEvent soundEvent = SummonerSoundEvents.ZENITH.get();
+        RandomSource random = owner.level().getRandom();
+        Vec3 pos = owner.position();
+        owner.level().playSound(null, pos.x, pos.y, pos.z, soundEvent, owner.getSoundSource(), 0.9f + random.nextFloat() * 0.2f, 0.9f + random.nextFloat() * 0.2f);
+    }
+}

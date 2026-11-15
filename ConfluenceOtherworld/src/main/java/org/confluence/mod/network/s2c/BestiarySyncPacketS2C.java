@@ -15,15 +15,14 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.data.saved.Bestiary;
-import org.confluence.mod.common.data.saved.BestiaryEntry;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public record BestiarySyncPacketS2C(Either<Map<String, BestiaryEntry>, String> either) implements IPacketS2C {
+public record BestiarySyncPacketS2C(Either<Map<String, Bestiary.Entry>, String> either) implements IPacketS2C {
     public static final Type<BestiarySyncPacketS2C> TYPE = Confluence.createType("bestiary_sync");
     public static final StreamCodec<RegistryFriendlyByteBuf, BestiarySyncPacketS2C> STREAM_CODEC = ByteBufCodecs.either(
-            LibStreamCodecUtils.map(HashMap::new, ByteBufCodecs.STRING_UTF8, BestiaryEntry.STREAM_CODEC),
+            LibStreamCodecUtils.map(HashMap::new, ByteBufCodecs.STRING_UTF8, Bestiary.Entry.STREAM_CODEC),
             ByteBufCodecs.STRING_UTF8
     ).map(BestiarySyncPacketS2C::new, BestiarySyncPacketS2C::either);
 
@@ -47,7 +46,7 @@ public record BestiarySyncPacketS2C(Either<Map<String, BestiaryEntry>, String> e
         }
     }
 
-    public static void syncEntry(LivingEntity living, BestiaryEntry entry) {
+    public static void syncEntry(LivingEntity living, Bestiary.Entry entry) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             PacketDistributor.sendToAllPlayers(new BestiarySyncPacketS2C(Either.left(Map.of(RegisterBestiaryKeyEvent.getKey(living), entry))));
         }

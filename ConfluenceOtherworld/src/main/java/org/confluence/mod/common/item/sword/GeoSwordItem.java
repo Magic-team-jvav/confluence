@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.sword;
 
+import java.util.function.Consumer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Tier;
@@ -12,14 +13,9 @@ import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.function.Consumer;
 
 public class GeoSwordItem extends BaseSwordItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
-    public GeoSwordItem(Tier tier, Properties properties) {
-        super(tier, properties);
-    }
 
     public GeoSwordItem(Tier tier, int rawDamage, float rawSpeed) {
         super(tier, rawDamage, rawSpeed);
@@ -29,8 +25,8 @@ public class GeoSwordItem extends BaseSwordItem implements GeoItem {
         super(tier, rarity, rawDamage, rawSpeed);
     }
 
-    public GeoSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, ModifierBuilder modifier) {
-        super(tier, rarity, rawDamage, rawSpeed, modifier);
+    public GeoSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, SwordDefinition.Builder definition) {
+        super(tier, rarity, rawDamage, rawSpeed, definition);
     }
 
     @Override

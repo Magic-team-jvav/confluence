@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.neoforged.neoforge.common.Tags;
-import org.confluence.lib.util.FeatureUtils;
+import org.confluence.lib.util.LibFeatureUtils;
 import org.confluence.mod.common.init.block.OreBlocks;
 
 import java.util.function.Supplier;
@@ -57,11 +57,11 @@ public class GemstoneCaveFeature extends Feature<GemstoneCaveFeature.Config> {
         float rotation = Mth.TWO_PI * random.nextFloat();
         int x = Mth.floor(Mth.sin(rotation) * radius);
         int z = Mth.floor(Mth.cos(rotation) * radius);
-        FeatureUtils.ball(radius + 2, blockPos, state -> determineGems(state, index0), true, level);
-        FeatureUtils.ball(radius + 2, blockPos, state -> determineGems(state, index1), true, level, 0.5F, random);
-        FeatureUtils.ball(radius + 2, blockPos, state -> isDeepslate(state) ? deepslate : stone, true, level, 0.7F, random);
-        FeatureUtils.ball(radius, blockPos, air, true, level);
-        FeatureUtils.ellipsoid(radius - 1, radius + 1, radius - 1, blockPos.offset(x, 0, z), air, true, level);
+        LibFeatureUtils.ball(radius + 2, blockPos, state -> determineGems(state, index0), true, level);
+        LibFeatureUtils.ball(radius + 2, blockPos, state -> determineGems(state, index1), true, level, 0.5F, random);
+        LibFeatureUtils.ball(radius + 2, blockPos, state -> isDeepslate(state) ? deepslate : stone, true, level, 0.7F, random);
+        LibFeatureUtils.ball(radius, blockPos, air, true, level);
+        LibFeatureUtils.ellipsoid(radius - 1, radius + 1, radius - 1, blockPos.offset(x, 0, z), air, true, level);
 
         return true;
     }

@@ -7,7 +7,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -29,7 +29,7 @@ public abstract class AbstractSpellMixin {
 
     @ModifyReturnValue(method = "getManaCost", at = @At("RETURN"))
     private int getManaCost(int original) {
-        if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
+        if (ModCommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
             return (int) (original * IronSpellHelper.toConfluence());
         }
         return original;

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "confluence:block/dual_flash_lighthouse"
+        }
+    }
+}

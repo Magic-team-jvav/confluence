@@ -13,18 +13,22 @@ import org.confluence.mod.common.block.functional.network.NetworkService;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.wind.WindField;
 import org.confluence.mod.common.worldgen.TheEndBiomeHolder;
+import org.confluence.mod.common.worldgen.biome.injector.ConfluenceBiomeInjector;
 import org.confluence.mod.util.OverworldUtils;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class ServerEvents {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void serverAboutToStart(ServerAboutToStartEvent event) {
-        PathService.INSTANCE.onServerStart();
         NetworkService.INSTANCE.onServerStart();
         MinecraftServer server = event.getServer();
-        TheEndBiomeHolder.open(server);
+        if (Confluence.THE_END_BIOMES) {
+            TheEndBiomeHolder.open(server);
+        }
         OverworldUtils.open(server);
+        ConfluenceBiomeInjector.install(server);
     }
 
     @SubscribeEvent
@@ -36,8 +40,12 @@ public final class ServerEvents {
     @SubscribeEvent
     public static void serverStopping(ServerStoppingEvent event) {
         GameEventSystem.INSTANCE.close(event.getServer());
-        TheEndBiomeHolder.close();
+        if (Confluence.THE_END_BIOMES) {
+            TheEndBiomeHolder.close();
+        }
+        ConfluenceBiomeInjector.uninstall();
         OverworldUtils.close();
+        WindField.reset();
     }
 
     @SubscribeEvent

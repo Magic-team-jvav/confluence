@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init;
 
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -12,13 +13,19 @@ public final class ModAttachmentTypes {
     public static final DeferredRegister<AttachmentType<?>> TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, Confluence.MODID);
 
     public static final Supplier<AttachmentType<ManaStorage>> MANA_STORAGE = TYPES.register("mana", () -> AttachmentType.serializable(ManaStorage::new).copyOnDeath().build());
-//    public static final Supplier<AttachmentType<SoulStorage>> SOUL_STORAGE = TYPES.register("soul", () -> AttachmentType.serializable(SoulStorage::new).copyOnDeath().build());
+    public static final Supplier<AttachmentType<SoulStorage>> SOUL_STORAGE = TYPES.register("soul", () -> AttachmentType.serializable(SoulStorage::new).copyOnDeath().sync(SoulStorage.SYNC_HANDLER).build());
+    public static final Supplier<AttachmentType<SoulSkillStorage>> SOUL_SKILL_STORAGE = TYPES.register("soulcerer_skill", () -> AttachmentType.serializable(SoulSkillStorage::new).copyOnDeath().build());
     public static final Supplier<AttachmentType<EverBeneficial>> EVER_BENEFICIAL = TYPES.register("ever_beneficial", () -> AttachmentType.serializable(EverBeneficial::new).copyOnDeath().build());
     public static final Supplier<AttachmentType<ExtraInventory>> EXTRA_INVENTORY = TYPES.register("extra_inventory", () -> AttachmentType.serializable(() -> new ExtraInventory(true)).copyOnDeath().build());
     public static final Supplier<AttachmentType<PlayerPiggyBankContainer>> PIGGY_BANK = TYPES.register("piggy_bank", () -> AttachmentType.serializable(PlayerPiggyBankContainer::new).copyOnDeath().build());
+    public static final Supplier<AttachmentType<PlayerVoidVaultContainer>> VOID_VAULT = TYPES.register("void_vault", () -> AttachmentType.serializable(PlayerVoidVaultContainer::new).copyOnDeath().build());
     public static final Supplier<AttachmentType<PlayerSafeContainer>> SAFE = TYPES.register("safe", () -> AttachmentType.serializable(PlayerSafeContainer::new).copyOnDeath().build());
     public static final Supplier<AttachmentType<PlayerSpecialData>> SPECIAL_DATA = TYPES.register("special_data", () -> AttachmentType.serializable(PlayerSpecialData::new).copyOnDeath().build());
 
     public static final Supplier<AttachmentType<ChunkBrushData>> CHUNK_BRUSH_DATA = TYPES.register("chunk_brush_data", () -> AttachmentType.serializable(ChunkBrushData::new).build());
     public static final Supplier<AttachmentType<ChunkDropletsData>> CHUNK_DROPLETS_DATA = TYPES.register("chunk_droplets_data", () -> AttachmentType.serializable(ChunkDropletsData::new).build());
+
+    public static final Supplier<AttachmentType<YoyoSession>> YOYO_SESSION = TYPES.register("yoyo_session", () -> AttachmentType.builder(YoyoSession::new).build());
+    public static final Supplier<AttachmentType<LeftClickState>> LEFT_CLICK_STATE = TYPES.register("left_click_state", () -> AttachmentType.builder(LeftClickState::new).build());
+    public static final Supplier<AttachmentType<LeftClickCooldowns>> LEFT_CLICK_COOLDOWNS = TYPES.register("left_click_cooldowns", () -> AttachmentType.builder(holder -> new LeftClickCooldowns((Player) holder)).build());
 }

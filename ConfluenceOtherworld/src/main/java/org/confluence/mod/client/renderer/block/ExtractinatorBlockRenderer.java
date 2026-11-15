@@ -7,13 +7,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.block.functional.crafting.ExtractinatorBlock;
 import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class ExtractinatorBlockRenderer extends GeoBlockRenderer<ExtractinatorBlock.BEntity> {
+public class ExtractinatorBlockRenderer extends GeoBlockRenderer<ExtractinatorBlock.BEntity> implements ColoredGeoRenderer<ExtractinatorBlock.BEntity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/extractinator.geo.json");
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/extractinator.png");
     public static final ResourceLocation ANIMATION = Confluence.asResource("animations/block/extractinator.animation.json");

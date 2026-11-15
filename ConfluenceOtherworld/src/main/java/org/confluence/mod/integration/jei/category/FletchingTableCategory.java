@@ -58,7 +58,7 @@ public class FletchingTableCategory implements IRecipeCategory<RecipeHolder<Flet
         addInput(builder, 7, 42, recipe.value().getTail());
         addInput(builder, 25, 24, recipe.value().getBody());
         addInput(builder, 43, 6, recipe.value().getHead());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 24).addItemStack(recipe.value().getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 24).addItemStack(recipe.value().getResult());
     }
 
     @Override
@@ -68,6 +68,6 @@ public class FletchingTableCategory implements IRecipeCategory<RecipeHolder<Flet
 
     @Override
     public ResourceLocation getRegistryName(RecipeHolder<FletchingTableRecipe> recipe) {
-        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResult().getItem()).getPath());
     }
 }

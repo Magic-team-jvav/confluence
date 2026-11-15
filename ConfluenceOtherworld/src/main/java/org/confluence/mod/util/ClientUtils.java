@@ -24,7 +24,7 @@ import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
@@ -44,6 +44,10 @@ public final class ClientUtils {
     private static final Set<ResourceLocation> failed = new HashSet<>();
     public static final int LEGACY_SIZE = 128;
     public static final int OVERLAY_SIZE = 128;
+    /// 魂师资源（灵魂条、灵魂不足以支付时的生命条）统一使用的淡蓝色 #ABFFFE。
+    public static final float SOUL_TINT_RED = 0xAB / 255.0F;
+    public static final float SOUL_TINT_GREEN = 1.0F;
+    public static final float SOUL_TINT_BLUE = 0xFE / 255.0F;
     /// 以这个命名的bone就是专门的死亡模型
     public static final String DEATH_BONE_NAME = "_death";
     /// 以这个后缀命名的bone需要爆整个bone
@@ -244,10 +248,14 @@ public final class ClientUtils {
     }
 
     public static Component formatPrice(int price) {
-        int platinum = 0;
-        int gold = 0;
-        int silver = 0;
-        int copper;
+        return formatPrice((long) price);
+    }
+
+    public static Component formatPrice(long price) {
+        long platinum = 0;
+        long gold = 0;
+        long silver = 0;
+        long copper;
         if (price >= 1000000) {
             platinum = price / 1000000;
             price -= platinum * 1000000;

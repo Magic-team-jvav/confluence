@@ -6,10 +6,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
 import org.confluence.lib.mixed.SelfGetter;
+import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.client.effect.GlowingHelper;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.terraentity.api.entity.IMinion;
-import org.confluence.terraentity.api.entity.ISummonMob;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,7 +21,7 @@ public abstract class LocalEntityMixin implements SelfGetter<Entity> {
     @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
     private void getTeamColor(CallbackInfoReturnable<Integer> cir) {
         Entity thiz = confluence$self();
-        if (thiz instanceof IMinion || thiz instanceof ISummonMob) return;
+        if (thiz instanceof OwnedSummon) return;
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (!player.hasEffect(ModEffects.HUNTER)) return;

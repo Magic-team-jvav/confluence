@@ -53,7 +53,7 @@ public final class HookThrowingHandler {
                 Input input = player.input;
                 if (input.jumping || player.vehicle != null) {
                     HookThrowingPacketC2S.pop(id);
-                    PlayerJumpHandler.multiJump(player, 1.25F);
+                    PlayerJumpHandler.multiJump(player, 1.25F, PlayerJumpPacketC2S.JUMP_NONE);
                     return;
                 }
 
@@ -88,7 +88,7 @@ public final class HookThrowingHandler {
         }
         if (shouldSync) {
             PlayerJumpHandler.reset(true);
-            PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) player.getDeltaMovement().y));
+            PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) player.getDeltaMovement().y, PlayerJumpPacketC2S.JUMP_NONE));
         }
     }
 }

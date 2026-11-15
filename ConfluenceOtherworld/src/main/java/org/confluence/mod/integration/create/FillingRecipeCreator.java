@@ -11,7 +11,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.apache.commons.lang3.mutable.MutableObject;
-import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;

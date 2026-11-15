@@ -75,6 +75,6 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
 
     @Override
     public ResourceLocation getRegistryName(RecipeHolder<HeavyWorkBenchRecipe> recipe) {
-        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResult().getItem()).getPath());
     }
 }

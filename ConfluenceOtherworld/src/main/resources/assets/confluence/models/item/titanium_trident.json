@@ -52,7 +52,7 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/spear/titanium_trident_item"
+            "particle": "confluence:item/spear/titanium_trident"
         }
     },
     "gui_light": "front",

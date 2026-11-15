@@ -1,0 +1,14 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "confluence:glowing_mushroom_underground_cabins/glowing_mushroom_underground_cabins",
+        "processors": "confluence:underground_cabins"
+      }
+    }
+  ]
+}

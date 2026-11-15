@@ -1,0 +1,73 @@
+{
+    "format_version": "1.12.0",
+    "minecraft:geometry": [
+        {
+            "description": {
+                "identifier": "geometry.animal.truffle_worm",
+                "texture_width": 32,
+                "texture_height": 32,
+                "visible_bounds_width": 1,
+                "visible_bounds_height": 1.5,
+                "visible_bounds_offset": [
+                    0,
+                    0.25,
+                    0
+                ]
+            },
+            "bones": [
+                {
+                    "name": "Body",
+                    "pivot": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -1,
+                                0,
+                                -7
+                            ],
+                            "size": [
+                                2,
+                                2,
+                                14
+                            ],
+                            "uv": [
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -1.25,
+                                0.78108,
+                                4.98215
+                            ],
+                            "size": [
+                                3,
+                                1,
+                                3
+                            ],
+                            "pivot": [
+                                -0.25,
+                                1.5,
+                                7.25
+                            ],
+                            "rotation": [
+                                -42.5,
+                                0,
+                                0
+                            ],
+                            "uv": [
+                                0,
+                                17
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

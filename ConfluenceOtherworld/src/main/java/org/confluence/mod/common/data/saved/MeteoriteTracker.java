@@ -1,5 +1,8 @@
 package org.confluence.mod.common.data.saved;
 
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongList;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -8,37 +11,37 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ChunkHolder;
-import net.minecraft.server.level.ChunkMap;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
+import org.confluence.mod.common.worldgen.feature.MeteoriteFeature;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
-import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public enum MeteoriteTracker {
+public enum MeteoriteTracker implements IGlobalData {
     INSTANCE;
     public static final ResourceKey<ConfiguredFeature<?, ?>> METEORITE = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "meteorite");
 
     private transient boolean shouldGenerate = true;
     public boolean spawnAtNextNight = false;
-    @NotNull BlockPos location = BlockPos.ZERO;
-    int tickUntilLanding = 0;
+    private BlockPos location = BlockPos.ZERO;
+    private int tickUntilLanding = 0;
+
+    private final LongSet unavailableChunks = new LongOpenHashSet();
 
     public void tick(ServerLevel level) {
-        if (!CommonConfigs.DO_METEORITE_SPAWNING.get()) return;
+        if (!ModCommonConfigs.DO_METEORITE_SPAWNING.get()) return;
         if (spawnAtNextNight && LibDateUtils.getDayTime(level) == LibDateUtils._00$00) {
             this.spawnAtNextNight = false;
             generateLandingDetail(level, Mth.randomBetweenInclusive(level.random, 200, 400));
@@ -52,14 +55,13 @@ public enum MeteoriteTracker {
             tickUntilLanding--;
             if (tickUntilLanding == 0) {
                 ChunkPos chunkPos = new ChunkPos(location);
-                place(level, chunkPos.x, chunkPos.z, !level.getForcedChunks().contains(chunkPos.toLong()), new BlockPos(location));
-                ConfluenceData.get(level).setDirty();
+                place(level, chunkPos.x, chunkPos.z, new BlockPos(location));
             }
         }
     }
 
     public void generateLandingDetail(ServerLevel level, int landingTime) {
-        if (!shouldGenerate || !CommonConfigs.DO_METEORITE_SPAWNING.get()) return;
+        if (!shouldGenerate || !ModCommonConfigs.DO_METEORITE_SPAWNING.get()) return;
         this.shouldGenerate = false;
 
         // 获取玩家数量最小的象限
@@ -79,7 +81,6 @@ public enum MeteoriteTracker {
         // 获取未被加载的区块
         int x = 0, z = 0;
         List<ServerPlayer> players = new ArrayList<>(level.players());
-        ChunkHolder chunkHolder;
         ChunkMap chunkMap = level.getChunkSource().chunkMap;
         do {
             if (!players.isEmpty()) {
@@ -105,12 +106,13 @@ public enum MeteoriteTracker {
             }
             x += xStep;
             z += zStep;
-        } while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null && chunkHolder.getTicketLevel() >= 34);
+        } while (isUnAvailableChunk(chunkMap, x, z));
         // 获取能放陨石的区块
         BlockPos.MutableBlockPos landingPos = new BlockPos.MutableBlockPos();
         LongSet forcedChunks = level.getForcedChunks();
+        boolean liquidSurface;
         do {
-            while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null && chunkHolder.getTicketLevel() >= 34) {
+            while (isUnAvailableChunk(chunkMap, x, z)) {
                 if (level.random.nextBoolean()) x += xStep;
                 else z += zStep;
             }
@@ -119,26 +121,58 @@ public enum MeteoriteTracker {
             int bx = SectionPos.sectionToBlockCoord(x, 7);
             int bz = SectionPos.sectionToBlockCoord(z, 7);
             landingPos.set(bx, level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, bx, bz), bz);
+            liquidSurface = !level.getBlockState(landingPos).getFluidState().isEmpty();
+
             if (requires) level.setChunkForced(x, z, false);
-            x += xStep;
-            z += zStep;
-        } while (!level.getBlockState(landingPos).getFluidState().isEmpty());
+            if (liquidSurface) {
+                x += xStep;
+                z += zStep;
+            }
+        } while (liquidSurface);
 
         this.shouldGenerate = true;
         this.location = landingPos;
         this.tickUntilLanding = landingTime;
+        markUnavailable(ChunkPos.asLong(x, z));
         MeteoriteLocationPacketS2C.sendToAll(location, landingTime);
-        ConfluenceData.get(level).setDirty();
     }
 
-    private void place(ServerLevel level, int chunkX, int chunkZ, boolean withForceChunk, BlockPos origin) {
+    private boolean isUnAvailableChunk(ChunkMap chunkMap, int x, int z) {
+        long pos = ChunkPos.asLong(x, z);
+        ChunkHolder chunkHolder;
+        return unavailableChunks.contains(pos)
+                && (chunkHolder = chunkMap.getVisibleChunkIfPresent(pos)) != null
+                && chunkHolder.getTicketLevel() >= ChunkLevel.byStatus(ChunkStatus.FEATURES);
+    }
+
+    /// 陨石落地时覆盖的区块半径：1 表示 3×3 区块（与 [MeteoriteFeature.Config#radius()] 对应）。
+    public static final int LANDING_CHUNK_RADIUS = 1;
+
+    /// 落地时把整片 3×3 区域强制加载再放方块。
+    ///
+    /// 必须这样：陨石现在横跨 3 个区块（半径 23，坑心对齐到区块内 local (7,7)），
+    /// 隔着未加载的区块写方块轻则写入丢失，重则在 tick 里触发级联加载。
+    /// 只强制/释放**本来没被强制**的区块，不动别人的 ticket。
+    private void place(ServerLevel level, int chunkX, int chunkZ, BlockPos origin) {
+        LongList forced = new LongArrayList();
+        for (int dx = -LANDING_CHUNK_RADIUS; dx <= LANDING_CHUNK_RADIUS; dx++) {
+            for (int dz = -LANDING_CHUNK_RADIUS; dz <= LANDING_CHUNK_RADIUS; dz++) {
+                int cx = chunkX + dx;
+                int cz = chunkZ + dz;
+                long key = ChunkPos.asLong(cx, cz);
+                if (!level.getForcedChunks().contains(key) && level.setChunkForced(cx, cz, true)) {
+                    forced.add(key);
+                }
+            }
+        }
         boolean placed = false;
-        if (withForceChunk) level.setChunkForced(chunkX, chunkZ, true);
         try {
             level.registryAccess().holderOrThrow(METEORITE).value().place(level, level.getChunkSource().getGenerator(), level.random, origin);
             placed = true;
         } catch (Exception ignored) {}
-        if (withForceChunk) level.setChunkForced(chunkX, chunkZ, false);
+        for (long key : forced) {
+            level.setChunkForced(ChunkPos.getX(key), ChunkPos.getZ(key), false);
+        }
 
         if (placed) {
             Component message = Component.translatable("event.confluence.meteorite").withColor(GlobalColors.MESSAGE.get());
@@ -147,21 +181,56 @@ public enum MeteoriteTracker {
         }
     }
 
-    public void deserialize(CompoundTag nbt) {
-        this.spawnAtNextNight = nbt.getBoolean("spawnAtNextNight");
-        this.location = NbtUtils.readBlockPos(nbt, "meteoriteLocation").orElse(BlockPos.ZERO);
-        this.tickUntilLanding = nbt.getInt("tickUtilMeteoriteLanding");
-    }
-
-    public void serialize(CompoundTag nbt) {
-        nbt.putBoolean("spawnAtNextNight", spawnAtNextNight);
-        nbt.put("meteoriteLocation", NbtUtils.writeBlockPos(location));
-        nbt.putInt("tickUtilMeteoriteLanding", tickUntilLanding);
-    }
-
     public static void spawnMeteor(ServerLevel level) {
-        if (KillBoard.INSTANCE.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get()) && level.random.nextFloat() < 0.02F) {
+        if (KillBoard.INSTANCE.isEvilDefeated() && level.random.nextInt(50) == 0) {
             INSTANCE.spawnAtNextNight = true;
         }
+    }
+
+    public void setMeteorite(BlockPos location, int tickUntilLanding) {
+        this.location = location;
+        this.tickUntilLanding = tickUntilLanding;
+        MeteoriteLocationPacketS2C.sendToAll(location, tickUntilLanding);
+    }
+
+    public BlockPos getLocation() {
+        return location;
+    }
+
+    public void markUnavailable(long pos) {
+        unavailableChunks.add(pos);
+    }
+
+    @Override
+    public void decode(CompoundTag tag) {
+        this.spawnAtNextNight = tag.getBoolean("spawnAtNextNight");
+        this.location = NbtUtils.readBlockPos(tag, "meteoriteLocation").orElse(BlockPos.ZERO);
+        this.tickUntilLanding = tag.getInt("tickUtilMeteoriteLanding");
+        unavailableChunks.clear();
+        for (long pos : tag.getLongArray("unavailableChunks")) {
+            markUnavailable(pos);
+        }
+    }
+
+    @Override
+    public void encode(CompoundTag tag) {
+        tag.putBoolean("spawnAtNextNight", spawnAtNextNight);
+        tag.put("meteoriteLocation", NbtUtils.writeBlockPos(location));
+        tag.putInt("tickUtilMeteoriteLanding", tickUntilLanding);
+        tag.putLongArray("unavailableChunks", unavailableChunks.longStream().toArray());
+    }
+
+    @Override
+    public String serializeKey() {
+        return "confluence:meteorite_tracker";
+    }
+
+    @Override
+    public void clear() {
+        this.shouldGenerate = true;
+        this.spawnAtNextNight = false;
+        this.location = BlockPos.ZERO;
+        this.tickUntilLanding = 0;
+        unavailableChunks.clear();
     }
 }

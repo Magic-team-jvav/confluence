@@ -1,15 +1,17 @@
 package org.confluence.mod.mixin.world.entity.player;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.PlayerVoidVaultContainer;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
+import org.confluence.mod.common.item.storage.VoidBagItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.spongepowered.asm.mixin.Final;
@@ -60,8 +62,8 @@ public abstract class InventoryMixin {
                 cir.setReturnValue(true);
             }
         } else if (stack.is(ModTags.Items.AMMO)) {
-            if (CommonConfigs.ammoSlotsItemBlackList.stream().anyMatch(stack.getItemHolder()::is) ||
-                    CommonConfigs.ammoSlotsTagBlackList.stream().anyMatch(stack::is)) return;
+            if (ModCommonConfigs.ammoSlotsItemBlackList.stream().anyMatch(stack.getItemHolder()::is) ||
+                    ModCommonConfigs.ammoSlotsTagBlackList.stream().anyMatch(stack::is)) return;
             ExtraInventory extraInventory = ExtraInventory.of(player);
             if (confluence$insert2Extra(SIZE_AMMO, extraInventory, stack, extraInventory2 -> {}, extraInventory::getAmmo, extraInventory::setAmmo)) {
                 cir.setReturnValue(true);
@@ -71,6 +73,28 @@ public abstract class InventoryMixin {
         }
     }
 
+    // 主背包和额外槽位先收纳，剩余部分才进入开启的虚空袋。
+    @ModifyReturnValue(method = "add(ILnet/minecraft/world/item/ItemStack;)Z", at = @At("RETURN"))
+    private boolean confluence$collectOverflow(boolean original, int slot, ItemStack stack) {
+        if (slot != -1 || player.level().isClientSide || stack.isEmpty() || !VoidBagItem.hasOpenBag(player))
+            return original;
+        int before = stack.getCount();
+        Inventory inventory = (Inventory) (Object) this;
+        // 钱币和弹药的额外槽位可能提前返回，先填满主背包再收纳剩余部分。
+        while (!stack.isEmpty()) {
+            int target = inventory.getSlotWithRemainingSpace(stack);
+            if (target < 0) target = inventory.getFreeSlot();
+            if (target < 0) break;
+            int count = stack.getCount();
+            inventory.add(target, stack);
+            if (stack.getCount() == count) break;
+        }
+        if (stack.isEmpty()) return original || before > 0;
+        ItemStack remainder = PlayerVoidVaultContainer.of(player).addItem(stack);
+        stack.setCount(remainder.getCount());
+        return original || stack.getCount() < before;
+    }
+
     @Inject(method = "setItem", at = @At("HEAD"))
     private void initPrefix(int index, ItemStack stack, CallbackInfo ci) {
         if (!stack.isEmpty() && PrefixUtils.canInit(stack)) {
@@ -78,11 +102,9 @@ public abstract class InventoryMixin {
         }
     }
 
-    @Inject(method = "clearOrCountMatchingItems", at = @At("RETURN"), cancellable = true)
-    private void withExtra(Predicate<ItemStack> stackPredicate, int maxCount, Container inventory, CallbackInfoReturnable<Integer> cir, @Local boolean simulate) {
-        int count = cir.getReturnValue();
-        count += ContainerHelper.clearOrCountMatchingItems(ExtraInventory.of(player), stackPredicate, maxCount - count, simulate);
-        cir.setReturnValue(count);
+    @ModifyReturnValue(method = "clearOrCountMatchingItems", at = @At("RETURN"))
+    private int withExtra(int original, Predicate<ItemStack> stackPredicate, int maxCount, @Local boolean simulate) {
+        return original + ContainerHelper.clearOrCountMatchingItems(ExtraInventory.of(player), stackPredicate, maxCount - original, simulate);
     }
 
     @Unique

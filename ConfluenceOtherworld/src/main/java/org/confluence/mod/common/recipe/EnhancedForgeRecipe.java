@@ -44,7 +44,7 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<RecipeInp
 
     public static <R extends EnhancedForgeRecipe> MapCodec<R> codec(Factory<R> factory) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(R::getResult),
                 INGREDIENTS_CODEC.forGetter(R::getIngredients),
                 Codec.FLOAT.lenientOptionalFieldOf("experience", 0.0F).forGetter(R::getExperience),
                 Codec.INT.lenientOptionalFieldOf("cookingtime", 100).forGetter(R::getCookingTime),
@@ -65,11 +65,11 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<RecipeInp
 
             @Override
             public void encode(RegistryFriendlyByteBuf buffer, R recipe) {
-                buffer.writeVarInt(recipe.ingredients.size());
-                for (Ingredient ingredient : recipe.ingredients) {
+                buffer.writeVarInt(recipe.getIngredients().size());
+                for (Ingredient ingredient : recipe.getIngredients()) {
                     Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
                 }
-                ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
+                ItemStack.STREAM_CODEC.encode(buffer, recipe.getResult());
                 buffer.writeFloat(recipe.experience);
                 buffer.writeVarInt(recipe.cookingTime);
                 buffer.writeBoolean(recipe.requiresFuel);

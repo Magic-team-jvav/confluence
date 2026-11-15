@@ -49,7 +49,7 @@ public abstract class EnhancedForgeCategory<R extends EnhancedForgeRecipe> imple
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<R> recipe, IFocusGroup focuses) {
         int i = 0;
         int j = 0;
-        for (Ingredient ingredient : recipe.value().ingredients) {
+        for (Ingredient ingredient : recipe.value().getIngredients()) {
             addInput(builder, 4 + i * 18, 7 + j * 18, ingredient);
             if (i == 1) {
                 j++;
@@ -58,7 +58,7 @@ public abstract class EnhancedForgeCategory<R extends EnhancedForgeRecipe> imple
                 i++;
             }
         }
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 16).addItemStack(recipe.value().getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 16).addItemStack(recipe.value().getResult());
     }
 
     @Override
@@ -75,6 +75,6 @@ public abstract class EnhancedForgeCategory<R extends EnhancedForgeRecipe> imple
 
     @Override
     public ResourceLocation getRegistryName(RecipeHolder<R> recipe) {
-        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResult().getItem()).getPath());
     }
 }

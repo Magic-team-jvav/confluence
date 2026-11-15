@@ -57,7 +57,7 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/spear/orichalcum_halberd_item"
+            "particle": "confluence:item/spear/orichalcum_halberd"
         }
     },
     "gui_light": "front",

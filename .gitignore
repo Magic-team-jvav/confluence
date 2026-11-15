@@ -35,3 +35,11 @@ run-data/
 generated/
 build/
 .vscode/settings.json
+
+#python
+__pycache__/
+*.*~
+notes/_tmp_**/*
+notes/codex-backups
+# Local lightning development checks and probes
+/ConfluenceOtherworld/src/test/

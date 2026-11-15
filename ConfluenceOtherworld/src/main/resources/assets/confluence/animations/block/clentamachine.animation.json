@@ -1,0 +1,536 @@
+{
+    "format_version": "1.8.0",
+    "animations": {
+        "left_inserting": {
+            "animation_length": 1.25,
+            "loop": "hold_on_last_frame",
+            "bones": {
+                "left_battery": {
+                    "rotation": {
+                        "0": [
+                            -0.0,
+                            -0.0,
+                            0.0
+                        ],
+                        "0.5": {
+                            "vector": [
+                                -0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        },
+                        "0.83333": {
+                            "vector": [
+                                -0.0,
+                                55.0,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        },
+                        "1.08333": {
+                            "vector": [
+                                -0.0,
+                                55.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        },
+                        "1.20833": {
+                            "vector": [
+                                -0.0,
+                                90.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        }
+                    }
+                },
+                "left_point": {
+                    "rotation": {
+                        "0": [
+                            -0.0,
+                            -0.0,
+                            20.0
+                        ]
+                    },
+                    "position": {
+                        "0": [
+                            -0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "0.5": {
+                            "vector": [
+                                -3.75,
+                                -10.5,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        }
+                    },
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                },
+                "left_solutions": {
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
+                }
+            }
+        },
+        "left_insert": {
+            "animation_length": 0.5,
+            "loop": "hold_on_last_frame",
+            "bones": {
+                "left_battery": {
+                    "rotation": {
+                        "0": {
+                            "vector": [
+                                -0.0,
+                                90.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        }
+                    }
+                },
+                "left_point": {
+                    "rotation": {
+                        "0": [
+                            -0.0,
+                            -0.0,
+                            20.0
+                        ]
+                    },
+                    "position": {
+                        "0": {
+                            "vector": [
+                                -3.75,
+                                -10.5,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        }
+                    },
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+        },
+                "left_solutions": {
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
+                }
+            }
+        },
+        "left_idle": {
+            "animation_length": 0.16667,
+            "loop": "hold_on_last_frame",
+            "bones": {
+                "left_point": {
+                    "scale": {
+                        "0": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+        },
+                "left_solutions": {
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
+                },
+                "left_battery": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                }
+            }
+        },
+        "right_inserting": {
+            "animation_length": 1.25,
+            "loop": "hold_on_last_frame",
+            "bones": {
+                "right_battery": {
+                    "rotation": {
+                        "0": [
+                            -0.0,
+                            -0.0,
+                            0.0
+                        ],
+                        "0.5": {
+                            "vector": [
+                                -0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        },
+                        "0.83333": {
+                            "vector": [
+                                -0.0,
+                                55.0,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        },
+                        "1.08333": {
+                            "vector": [
+                                -0.0,
+                                55.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        },
+                        "1.20833": {
+                            "vector": [
+                                -0.0,
+                                90.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        }
+                    }
+                },
+                "right_point": {
+                    "rotation": {
+                        "0": [
+                            -0.0,
+                            -0.0,
+                            -20.0
+                        ]
+                    },
+                    "position": {
+                        "0": [
+                            -0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "0.5": {
+                            "vector": [
+                                3.75,
+                                -10.5,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        }
+                    },
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                },
+                "right_solutions": {
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
+                }
+            }
+        },
+        "right_insert": {
+            "animation_length": 0.5,
+            "loop": "hold_on_last_frame",
+            "bones": {
+                "right_battery": {
+                    "rotation": {
+                        "0": {
+                            "vector": [
+                                -0.0,
+                                90.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        }
+                    }
+                },
+                "right_point": {
+                    "rotation": {
+                        "0": [
+                            -0.0,
+                            -0.0,
+                            -20.0
+                        ]
+                    },
+                    "position": {
+                        "0": {
+                            "vector": [
+                                3.75,
+                                -10.5,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        }
+                    },
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                },
+                "right_solutions": {
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
+                }
+            }
+        },
+        "right_idle": {
+            "animation_length": 0.16667,
+            "loop": "hold_on_last_frame",
+            "bones": {
+                "right_point": {
+                    "scale": {
+                        "0": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+        },
+                "right_solutions": {
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
+                },
+                "right_battery": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                }
+            }
+        },
+        "back_inserting": {
+            "animation_length": 1.25,
+            "loop": "hold_on_last_frame",
+            "bones": {
+                "back_battery": {
+                    "rotation": {
+                        "0": [
+                            -0.0,
+                            -0.0,
+                            0.0
+                        ],
+                        "0.5": {
+                            "vector": [
+                                -0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        },
+                        "0.83333": {
+                            "vector": [
+                                -0.0,
+                                55.0,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        },
+                        "1.08333": {
+                            "vector": [
+                                -0.0,
+                                55.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        },
+                        "1.20833": {
+                            "vector": [
+                                -0.0,
+                                90.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        }
+                    }
+                },
+                "back_point": {
+                    "rotation": {
+                        "0": [
+                            -20.0,
+                            -0.0,
+                            0.0
+                        ]
+                    },
+                    "position": {
+                        "0": [
+                            -0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "0.5": {
+                            "vector": [
+                                -0.0,
+                                -10.5,
+                                -3.75
+                            ],
+                            "easing": "easeInElastic"
+                        }
+                    },
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+                },
+                "back_solutions": {
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
+                }
+            }
+        },
+        "back_insert": {
+            "animation_length": 0.5,
+            "loop": "hold_on_last_frame",
+            "bones": {
+                "back_battery": {
+                    "rotation": {
+                        "0": {
+                            "vector": [
+                                -0.0,
+                                90.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        }
+                    }
+                },
+                "back_point": {
+                    "rotation": {
+                        "0": [
+                            -20.0,
+                            -0.0,
+                            0.0
+                        ]
+                    },
+                    "position": {
+                        "0": {
+                            "vector": [
+                                -0.0,
+                                -10.5,
+                                -3.75
+                            ],
+                            "easing": "easeInElastic"
+                        }
+                    },
+                    "scale": [
+                        1,
+                        1,
+                        1
+                    ]
+        },
+                "back_solutions": {
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
+                }
+            }
+        },
+        "back_idle": {
+            "animation_length": 0.16667,
+            "loop": "hold_on_last_frame",
+            "bones": {
+                "back_point": {
+                    "scale": {
+                        "0": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+        },
+                "back_solutions": {
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
+                },
+                "back_battery": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                }
+            }
+        }
+    }
+}

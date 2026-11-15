@@ -18,7 +18,6 @@ import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.integration.mrcrayfish.furniture.MrCrayfishFurnitureHelper;
-import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -188,7 +187,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         tag(BlockTags.LEAVES).add(YELLOW_WILLOW_DROOPING_LEAVES.get());
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(BlockTags.LEAVES);
-        tag(TETags.Blocks.HONEY).add(HONEY.get());
+        tag(ModTags.Blocks.HONEY).add(HONEY.get());
 
         tag(ModTags.Blocks.CATTAIL_CAN_SURVIVE).add(
                 Blocks.GRASS_BLOCK,
@@ -435,6 +434,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 COOKING_POT.get(),
                 HELLFORGE.get(),
                 ALCHEMY_TABLE.get(),
+                BREWING_VIAL.get(),
                 WEATHER_VANE.get(),
                 SOLIDIFIER.get(),
                 CAULDRON.get(),
@@ -466,6 +466,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 THIN_ICE_BLOCK.get(),
                 WINTER_MARROW_BLOCK.get(),
                 SAFE.get(),
+                VOID_VAULT.get(),
                 ANNOUNCEMENT_BOX.get(),
                 WALL_ANNOUNCEMENT_BOX.get(),
                 AETHERIUM_BRICKS.FULL.get(),
@@ -514,10 +515,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 GRANITE.get(),
                 MARBLE.get(),
+                NatureBlocks.SPIDER_NEST_STONE.get(),
 
                 TUFF_BOOTH.get(),
                 HEART_LANTERN.get(),
                 STAR_IN_A_BOTTLE.get(),
+                SOUL_BOTTLE.get(),
                 SOUL_OF_FLIGHT_IN_A_BOTTLE.get(),
                 SOUL_OF_LIGHT_IN_A_BOTTLE.get(),
                 SOUL_OF_FRIGHT_IN_A_BOTTLE.get(),
@@ -734,7 +737,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL).addTag(ModTags.Blocks.NEEDS_4_LEVEL);
         tag(BlockTags.INCORRECT_FOR_NETHERITE_TOOL).addTag(ModTags.Blocks.NEEDS_6_LEVEL);
 
-        tag(ModTags.Blocks.NEEDS_1_LEVEL).addTags(
+        IntrinsicTagAppender<Block> needs1Level = tag(ModTags.Blocks.NEEDS_1_LEVEL);
+        needs1Level.addTags(
                 Tags.Blocks.STORAGE_BLOCKS_COAL,
                 Tags.Blocks.ORES_COAL,
 
@@ -987,6 +991,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 THIN_ICE_BLOCK.get(),
                 CRISPY_HONEY_BLOCK.get(),
                 NatureBlocks.GRANITE.get(),
+                NatureBlocks.SPIDER_NEST_STONE.get(),
                 MARBLE.get(),
                 POLISHED_GRANITE.get(),
                 CHISELED_GRANITE_BRICKS.get(),
@@ -1012,6 +1017,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 MARBLE_ETERNAL_CHESSBOARD_BRICKS.get(),
 
                 SAFE.get(),
+                VOID_VAULT.get(),
                 SPIKE.get(),
                 ASPHALT_BLOCK.get(),
                 REMAINS_BLOCK.get(),
@@ -1039,6 +1045,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HEART_LANTERN.get(),
                 STAR_IN_A_BOTTLE.get(),
                 TUFF_BOOTH.get(),
+                SOUL_BOTTLE.get(),
                 SOUL_OF_FLIGHT_IN_A_BOTTLE.get(),
                 SOUL_OF_LIGHT_IN_A_BOTTLE.get(),
                 SOUL_OF_FRIGHT_IN_A_BOTTLE.get(),
@@ -1167,7 +1174,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         ).add(
                 DRAGONSAL_ORE.get()
         );
-        tag(ModTags.Blocks.NEEDS_1_LEVEL).addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
+        needs1Level.addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_3_LEVEL).addTags(ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_4_LEVEL).addTags(ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
@@ -1351,7 +1358,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                         OBSIDIAN_SMALL_BRICKS.get(),
                         CHISELED_OBSIDIAN_BRICKS.get(),
                         GLOOM_OBSIDIAN_BRICKS.FULL.get(),
-                        RAINBOW_BRICKS.FULL.get(),
                         GRANITE_BRICKS.FULL.get(),
                         GRANITE_BRICKS.SLAB.get(),
                         GRANITE_BRICKS.STAIRS.get(),
@@ -1973,10 +1979,34 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SANCTIFICATION_DEMONITE_ORE.get(),
                 SANCTIFICATION_CRIMTANE_ORE.get()
         );
-        tag(TETags.Blocks.NPC_HOUSE_CONSTITUTE).add(
+        tag(ModTags.Blocks.NPC_HOUSE_CONSTITUTE).add(
                 WHITE_PAPER_PANE_LAMP.get(),
                 MALACHITE_PAPER_PANE_LAMP.get()
-        );
+                )
+                .addTag(ModTags.Blocks.NPC_HOUSE_CHAIR)
+                .addTag(ModTags.Blocks.NPC_HOUSE_TABLE)
+                .add(
+                        Blocks.TORCH,
+                        Blocks.WALL_TORCH,
+                        Blocks.LIGHT,
+                        Blocks.SHROOMLIGHT,
+                        Blocks.LANTERN,
+                        Blocks.SEA_LANTERN,
+                        Blocks.SOUL_LANTERN,
+                        Blocks.JACK_O_LANTERN,
+                        Blocks.PEARLESCENT_FROGLIGHT,
+                        Blocks.OCHRE_FROGLIGHT,
+                        Blocks.VERDANT_FROGLIGHT,
+                        Blocks.REDSTONE_LAMP
+                )
+                /// 模组火把同样算作 NPC 房屋的光源，直立与墙挂都要加进来。
+                .add(TorchBlocks.BLOCKS.getEntries().stream().map(entry -> (Block) entry.get()).toArray(Block[]::new));
+        tag(ModTags.Blocks.NPC_HOUSE_CHAIR)
+                .addTag(BlockTags.BEDS)
+                .addOptionalTag(ResourceLocation.parse("terra_furniture:house_chair"));
+        tag(ModTags.Blocks.NPC_HOUSE_TABLE)
+                .add(Blocks.CRAFTING_TABLE)
+                .addOptionalTag(ResourceLocation.parse("terra_furniture:house_table"));
         tag(ModTags.Blocks.CACTUS).add(
                 Blocks.CACTUS,
                 CRIMSON_CACTUS.get(),
@@ -2088,5 +2118,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 LIFE_CAMPFIRE.get()
         );
         MrCrayfishFurnitureHelper.blockTags(this::tag);
+
+        PylonBlocks.BLOCKS.getEntries().forEach(holder -> {
+            mineableWithPickaxe.add(holder.get());
+            needs1Level.add(holder.get());
+        });
     }
 }

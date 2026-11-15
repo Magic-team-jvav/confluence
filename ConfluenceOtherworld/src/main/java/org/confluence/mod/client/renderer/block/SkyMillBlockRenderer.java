@@ -3,12 +3,13 @@ package org.confluence.mod.client.renderer.block;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.block.functional.crafting.SkyMillBlock;
 import org.confluence.mod.util.ClientUtils;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class SkyMillBlockRenderer extends GeoBlockRenderer<SkyMillBlock.BEntity> {
+public class SkyMillBlockRenderer extends GeoBlockRenderer<SkyMillBlock.BEntity> implements ColoredGeoRenderer<SkyMillBlock.BEntity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/sky_mill.geo.json");
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/sky_mill.png");
     public static final ResourceLocation ANIMATION = Confluence.asResource("animations/block/sky_mill.animation.json");

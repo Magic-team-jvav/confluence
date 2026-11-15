@@ -26,7 +26,7 @@ public class PearlstoneBlock extends SpreadingBlock {
     }
 
     public static void generateCrystal(ServerLevel level, BlockPos pos, RandomSource random) {
-        if (pos.getY() <= OverworldUtils.getUndergroundY() && random.nextInt(100) == 0) {
+        if (OverworldUtils.inCave(pos.getY()) && random.nextInt(100) == 0) {
             Direction direction = Util.getRandom(AVAILABLE, random);
             BlockPos relative = pos.relative(direction);
             AmethystClusterBlock crystalShards = NatureBlocks.CRYSTAL_SHARDS.get();

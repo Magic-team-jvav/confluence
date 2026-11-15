@@ -6,25 +6,38 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
-import org.confluence.lib.util.LibUtils;
+import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
+import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
+import org.confluence.mod.common.entity.boss.BossProjectileReflection;
+import org.confluence.mod.common.entity.monster.MonsterAttributeScaling;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
+import org.confluence.mod.common.entity.projectile.FireworksRocketProjectile;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
+import org.confluence.mod.common.soulcerer.artifact.ArtifactEffects;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
@@ -32,6 +45,45 @@ import org.jetbrains.annotations.Nullable;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class EntityEvents {
+    @SubscribeEvent
+    public static void projectileImpact(ProjectileImpactEvent event) {
+        if (!event.isCanceled() && event.getRayTraceResult() instanceof EntityHitResult hit
+                && BossProjectileReflection.reflect(event.getProjectile(), hit.getEntity()))
+            event.setCanceled(true);
+    }
+
+    /// 统一处理所有生成路径最终都会触发的实体加入事件。
+    ///
+    ///
+    @SubscribeEvent
+    public static void joinLevel(EntityJoinLevelEvent event) {
+        Entity entity = event.getEntity();
+        /// 烟火之箭：被法器标记的下一支箭整支替换成烟花火箭射弹（箭矢本身不再存在）。
+        if (!event.isCanceled() && !event.loadedFromDisk() && entity instanceof AbstractArrow arrow
+                && arrow.getOwner() instanceof ServerPlayer owner && !arrow.level().isClientSide
+                && ArtifactEffects.takeFireworkPayload(owner)) {
+            event.setCanceled(true);
+            arrow.discard();
+            arrow.level().addFreshEntity(new FireworksRocketProjectile(arrow));
+        }
+        if (!event.isCanceled() && entity instanceof LivingEntity living) {
+            if (CreatureDifficultyScaling.isManaged(living)) {
+                GamePhase2AttributeModifiers.applyModifiers(living, !event.loadedFromDisk());
+            }
+            CreatureDifficultyScaling.apply(living, !event.loadedFromDisk());
+            MonsterAttributeScaling.apply(living, !event.loadedFromDisk());
+        }
+        if (!(entity instanceof Boss boss) || entity.level().isClientSide) {
+            return;
+        }
+        if (!event.loadedFromDisk()) {
+            Boss.sendBossSpawnMessage(entity);
+        }
+        if (boss.isMainBody() && boss.shouldEnhanceMultiplayer() && entity instanceof LivingEntity living) {
+            BossMultiplayerEnhancement.apply(living, !event.loadedFromDisk());
+        }
+    }
+
     @SubscribeEvent
     public static void mount(EntityMountEvent event) {
         Entity beingMounted = event.getEntityBeingMounted();
@@ -41,7 +93,7 @@ public final class EntityEvents {
         if (beingMounted instanceof LivingEntity) {
             AchievementUtils.awardAchievement(player, "the_cavalry");
         }
-        if (CommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() && event.isDismounting() && beingMounted instanceof AbstractMinecart minecart) {
+        if (ModCommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() && event.isDismounting() && beingMounted instanceof AbstractMinecart minecart) {
             MinecartAbilityEvent.DismountOnMinecart e = NeoForge.EVENT_BUS.post(new MinecartAbilityEvent.DismountOnMinecart(player, minecart));
             ItemStack itemStack = e.getMinecartItem();
             if (e.isCanceled() || itemStack == null) return;
@@ -64,12 +116,13 @@ public final class EntityEvents {
         if (ILivingEntity.of(victim).confluence$getExtraInvulnerableTicks() > 0) return;
 
         DamageSource damageSource = event.getSource();
-        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
+        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)
+                || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return;
         }
         @Nullable Entity attacker = damageSource.getEntity();
 
-        if (damageSource.is(ModDamageTypes.BOULDER) && victim.getType().is(Tags.EntityTypes.BOSSES)) {
+        if (damageSource.is(LibDamageTypes.BOULDER) && victim.getType().is(Tags.EntityTypes.BOSSES)) {
             event.setInvulnerable(true); // boss 免疫巨石
             return;
         }
@@ -78,6 +131,11 @@ public final class EntityEvents {
             return;
         }
         if (damageSource.is(DamageTypeTags.IS_FIRE)) {
+            if (victim.getVehicle() instanceof org.confluence.mod.common.entity.mount.RideableLavaSharkMountEntity) {
+                victim.clearFire();
+                event.setInvulnerable(true);
+                return;
+            }
             if (victim.hasEffect(ModEffects.OBSIDIAN_SKIN) || (victim instanceof Player player && ModArmorBonus.hasType(player, ModArmorBonus.LAVA$IMMUNE))) {
                 victim.clearFire();
                 event.setInvulnerable(true); // 免疫熔岩/着火
@@ -87,7 +145,7 @@ public final class EntityEvents {
         if (attacker instanceof Player player &&
                 !PlayerSpecialData.of(player).isCouldHurtCritters() &&
                 !victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST) &&
-                (LibUtils.isAnimal(victim) || victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
+                (LibEntityUtils.isAnimal(victim) || victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
         ) {
             event.setInvulnerable(true);
             return;
@@ -96,9 +154,9 @@ public final class EntityEvents {
             event.setInvulnerable(true);
             return;
         }
-        if (CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() &&
-                victim.getType().is(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER) &&
-                LibUtils.getOwner(damageSource) instanceof Player player &&
+        if ((victim instanceof Villager ? ModCommonConfigs.VILLAGER_INVULNERABLE_TO_PLAYER.get() :
+                ModCommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() && victim.getType().is(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER)) &&
+                LibEntityUtils.getOwner(damageSource) instanceof Player player &&
                 !player.isCreative()
         ) {
             event.setInvulnerable(true);

@@ -13,10 +13,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibRenderUtils;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.item.common.EverBeneficialItem;
+import org.confluence.mod.common.item.common.PermanentUpgrade;
+import org.confluence.mod.util.SoulcererUtils;
 
 import java.util.Locale;
 
@@ -29,13 +30,13 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        if (!ClientConfigs.terraStyleHealth) return;
+        if (!ModClientConfigs.terraStyleHealth) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !LibRenderUtils.shouldDrawSurvivalElements(minecraft)) return;
         LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
-        ClientConfigs.healthStyle.render(guiGraphics, minecraft);
+        ModClientConfigs.healthStyle.render(guiGraphics, minecraft);
 
         minecraft.getProfiler().pop();
     }
@@ -44,8 +45,8 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
         LEGACY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                int widthHealth = guiGraphics.guiWidth() - 128 + ClientConfigs.healthOffsetX;
-                int heightHealth = 4 + ClientConfigs.healthOffsetY;
+                int widthHealth = guiGraphics.guiWidth() - 128 + ModClientConfigs.healthOffsetX;
+                int heightHealth = 4 + ModClientConfigs.healthOffsetY;
                 float maxHealth = 0.0F;
                 float currentHealth = 0.0F;
                 int heartBuff = 0;
@@ -60,12 +61,12 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                     absorptionHealth = player.getAbsorptionAmount();
                     maxHealth = player.getMaxHealth();
                     currentHealth = player.getHealth();
-                    AttributeModifier modifier = player.getAttribute(Attributes.MAX_HEALTH).getModifier(EverBeneficialItem.LIFE_FRUITS.id());
+                    AttributeModifier modifier = player.getAttribute(Attributes.MAX_HEALTH).getModifier(PermanentUpgrade.LIFE_FRUITS.id());
                     if (modifier != null) {
                         lifeFruitHealth = (int) modifier.amount();
                     }
                 }
-                int countHeart = (int) ((maxHealth - (float) lifeFruitHealth) / 4);
+                int countHeart = heartCount(maxHealth, lifeFruitHealth);
                 int countHeartAbsorptionHealth = (int) (absorptionHealth / 4.0F) + ((((int) absorptionHealth) % 4 == 0) ? 0 : 1);
                 int yLine = 4 + (int) (6.0F / (float) ((countHeart - 1) / 20 + (countHeartAbsorptionHealth - 1) / 20 + 1));
                 int heightToAbsorption = blit(heartBuff, maxHealth, currentHealth, lifeFruitHealth, guiGraphics, widthHealth, heightHealth, 0, yLine);
@@ -91,12 +92,14 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
             private static int blit(int heartBuff, float maxHealth, float currentHealth, int lifeFruitHealth, GuiGraphics guiGraphics, int width, int height, int typeHeart, int yLine) {
                 heartBuff *= 20;
                 int heightUV = (typeHeart * 17);
-                int countHeart = (int) ((maxHealth - (float) lifeFruitHealth) / 4);
+                int countHeart = heartCount(maxHealth, lifeFruitHealth);
                 int countLine;
                 int type;
                 int blitX;
                 int blitY = 0;
                 int blitXFirst;
+                // 按实际生命上限分配金色心，避免召回水晶后遗漏生命果提供的容量。
+                lifeFruitHealth = Math.min(countHeart, Math.max(0, (int) Math.ceil(maxHealth - countHeart * 4.0F)));
                 FloatArrayList heartNumList = getHeartNumList(currentHealth, lifeFruitHealth, countHeart);
                 for (int countToBlit = 0; countToBlit < countHeart; countToBlit++) {
                     countLine = countToBlit / 10;
@@ -121,6 +124,10 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                     blitHeart(guiGraphics, type, typeHeart, heartNumList.getFloat(countToBlit), width + blitX + blitXFirst + 1, height + blitY, heartBuff);
                 }
                 return (height + blitY + yLine);
+            }
+
+            private static int heartCount(float maxHealth, int lifeFruitHealth) {
+                return Math.max((int) Math.ceil(maxHealth / 5.0F), (int) Math.ceil((maxHealth - lifeFruitHealth) / 4.0F));
             }
 
             private static FloatArrayList getHeartNumList(float currentHealth, int lifeFruitHealth, int countHeart) {
@@ -163,14 +170,22 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                     hardcore = player.level().getLevelData().isHardcore();
                 }
                 int white = 0xFFFFFF;
-                int widthHealth = guiGraphics.guiWidth() / 2 - 91 + ClientConfigs.healthOffsetX;
-                int heightHealth = guiGraphics.guiHeight() - minecraft.gui.leftHeight + ClientConfigs.healthOffsetY;
+                int widthHealth = guiGraphics.guiWidth() / 2 - 91 + ModClientConfigs.healthOffsetX;
+                int heightHealth = guiGraphics.guiHeight() - minecraft.gui.leftHeight + ModClientConfigs.healthOffsetY;
                 String abHealth = String.format("%.1f", absorptionHealth);
                 int healthI = Math.min((int) Math.ceil(currentHealth), 20);
                 int absorptionHealthI = Math.min((int) Math.ceil(absorptionHealth), 20);
                 minecraft.gui.leftHeight += 10;
                 RandomSource random = RandomSource.create(114514);
+                /// 灵魂不足以支付下一次施法时，生命条染成灵魂条的淡蓝色，提示这一下会扣血。
+                boolean soulOverdraft = SoulcererUtils.isSoulOverdraftPending(player);
+                if (soulOverdraft) {
+                    guiGraphics.setColor(SOUL_TINT_RED, SOUL_TINT_GREEN, SOUL_TINT_BLUE, 1.0F);
+                }
                 colorDraw(guiGraphics, minecraft, random, ModClientSetups.OVERLAY_SPRITE, HEALTH, HEALTH_HIGH, HEALTH_LOW, maxHealth, currentHealth, widthHealth, heightHealth, OVERLAY_SIZE, hardcore ? 40 : 0, true);
+                if (soulOverdraft) {
+                    guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+                }
                 if (absorptionHealth > 0.0F) {
                     draw(widthHealth, heightHealth, guiGraphics, absorptionHealthI, white, white, white, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, 0, 50, true, 1, 20);
                 }

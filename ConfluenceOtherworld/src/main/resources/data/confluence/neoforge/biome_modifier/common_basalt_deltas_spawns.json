@@ -3,25 +3,25 @@
     "biomes": "basalt_deltas",
     "spawners": [
         {
-            "type": "terra_entity:lava_slime",
+            "type": "confluence:lava_slime",
             "maxCount": 1,
             "minCount": 1,
             "weight": 10
         },
         {
-            "type": "terra_entity:hell_bat",
+            "type": "confluence:hell_bat",
             "maxCount": 1,
             "minCount": 1,
             "weight": 10
         },
         {
-            "type": "terra_entity:bone_serpent",
+            "type": "confluence:bone_serpent",
             "maxCount": 1,
             "minCount": 1,
             "weight": 1
         },
         {
-            "type": "terra_entity:demon",
+            "type": "confluence:demon",
             "maxCount": 1,
             "minCount": 1,
             "weight": 5

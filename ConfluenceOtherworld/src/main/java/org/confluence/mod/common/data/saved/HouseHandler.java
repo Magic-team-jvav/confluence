@@ -8,32 +8,28 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibCodecUtils;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.entity.npc.house.House;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
+import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.house.House;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
-/// 生物模块移到主模块之后使用这个
 public enum HouseHandler implements IGlobalData {
-    @Deprecated
     INSTANCE;
     private static final Codec<Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>>> DATA_CODEC = LibCodecUtils.notStringKeyMap(
             "dimension", ResourceKey.codec(Registries.DIMENSION),
             "regions", LibCodecUtils.notStringKeyMap(
                     "region", NPCSpawner.Region.CODEC,
                     "houses", LibCodecUtils.notStringKeyMap(
-                            "uuid", UUIDUtil.CODEC,
-                            "house", House.CODEC
-                    )
-            )
-    );
+                            "uuid", UUIDUtil.CODEC, "house", House.CODEC)));
 
     private Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> data = new Object2ObjectOpenHashMap<>();
+    private final Set<UUID> townPets = new HashSet<>();
 
     public Map<NPCSpawner.Region, Map<UUID, House>> getOrCreateRegions(ResourceKey<Level> dimension) {
         return data.computeIfAbsent(dimension, d -> new Object2ObjectOpenHashMap<>());
@@ -41,6 +37,33 @@ public enum HouseHandler implements IGlobalData {
 
     public Map<UUID, House> getOrCreateHouses(ResourceKey<Level> dimension, NPCSpawner.Region region) {
         return getOrCreateRegions(dimension).computeIfAbsent(region, r -> new Object2ObjectOpenHashMap<>());
+    }
+
+    /// 按房屋中心统计附近实际存活的入住者，不把整个 256 格 region 当成同一个小镇。
+    public int countNearbyResidents(ServerLevel level, BlockPos pos, int horizontalRadius, int verticalRadius) {
+        var regions = data.get(level.dimension());
+        if (regions == null) return 0;
+        NPCSpawner.Region first = new NPCSpawner.Region(pos.offset(-horizontalRadius, 0, -horizontalRadius));
+        NPCSpawner.Region last = new NPCSpawner.Region(pos.offset(horizontalRadius, 0, horizontalRadius));
+        int count = 0;
+        for (int x = first.x(); x <= last.x(); x += 16) {
+            for (int z = first.z(); z <= last.z(); z += 16) {
+                var houses = regions.get(new NPCSpawner.Region(x, z));
+                if (houses == null) continue;
+                for (var entry : houses.entrySet()) {
+                    House house = entry.getValue();
+                    if (!house.isValid() || townPets.contains(entry.getKey())) continue;
+                    BlockPos center = house.center();
+                    if (Math.abs(center.getY() - pos.getY()) > verticalRadius) continue;
+                    long dx = center.getX() - pos.getX();
+                    long dz = center.getZ() - pos.getZ();
+                    if (dx * dx + dz * dz > (long) horizontalRadius * horizontalRadius) continue;
+                    if (level.getEntity(entry.getKey()) instanceof BaseNPC npc && npc.isAlive())
+                        count++;
+                }
+            }
+        }
+        return count;
     }
 
     public void setHouse(ResourceKey<Level> dimension, NPCSpawner.Region region, UUID uuid, House house) {
@@ -55,26 +78,100 @@ public enum HouseHandler implements IGlobalData {
         return map1.get(uuid);
     }
 
-    public void setHouse(AbstractTerraNPC npc, House house) {
-        setHouse(npc.level().dimension(), new NPCSpawner.Region(house.center()), npc.getUUID(), house);
+    public void setHouse(BaseNPC npc, House house) {
+        if (npc.isTownPet()) townPets.add(npc.getUUID());
+        else townPets.remove(npc.getUUID());
+        ResourceKey<Level> dimension = npc.level().dimension();
+        NPCSpawner.Region region = new NPCSpawner.Region(house.center());
+        UUID uuid = npc.getUUID();
+        if (house == House.EMPTY) {
+            removeHouse(dimension, region, uuid);
+        } else {
+            setHouse(dimension, region, uuid, house);
+        }
     }
 
-    public @Nullable House getHouse(AbstractTerraNPC npc) {
-        BlockPos pos = npc.getSpawnAtPos();
-        if (pos == null) return null;
-        return getHouse(npc.level().dimension(), new NPCSpawner.Region(pos), npc.getUUID());
+    public @Nullable House getHouse(BaseNPC npc) {
+        return getHouse(npc.level().dimension(), new NPCSpawner.Region(npc.blockPosition()), npc.getUUID());
+    }
+
+    public void removeHouse(ResourceKey<Level> dimension, NPCSpawner.Region region, UUID uuid) {
+        Map<NPCSpawner.Region, Map<UUID, House>> map = data.get(dimension);
+        if (map == null) return;
+        Map<UUID, House> map1 = map.get(region);
+        if (map1 == null) return;
+        map1.remove(uuid);
+        if (map1.isEmpty()) map.remove(region);
+        if (map.isEmpty()) data.remove(dimension);
+    }
+
+    /// 在一个维度的所有区域中解除指定 NPC 的房屋。
+    ///
+    /// 清空房屋时已经没有可用于反推区域的房屋中心，不能再拿 {@link House#EMPTY}
+    /// 的零坐标删除，否则只会清理世界原点区域并留下幽灵占用记录。
+    public void removeHouse(ResourceKey<Level> dimension, UUID uuid) {
+        Map<NPCSpawner.Region, Map<UUID, House>> regions = data.get(dimension);
+        if (regions == null) return;
+        regions.values().forEach(houses -> houses.remove(uuid));
+        regions.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+        if (regions.isEmpty()) data.remove(dimension);
+    }
+
+    public @Nullable House findHouseAt(ResourceKey<Level> dimension, BlockPos pos) {
+        Map<NPCSpawner.Region, Map<UUID, House>> regions = data.get(dimension);
+        if (regions == null) return null;
+        for (Map<UUID, House> houses : regions.values()) {
+            for (House house : houses.values()) {
+                if (house.contains(pos)) return house;
+            }
+        }
+        return null;
+    }
+
+    public boolean isOccupiedByOther(ResourceKey<Level> dimension, House candidate, UUID uuid) {
+        return isOccupiedByOther(dimension, candidate, uuid, false);
+    }
+
+    public boolean isOccupiedByOther(ResourceKey<Level> dimension, House candidate, UUID uuid, boolean townPet) {
+        Map<NPCSpawner.Region, Map<UUID, House>> regions = data.get(dimension);
+        if (regions == null) return false;
+        for (Map<UUID, House> houses : regions.values()) {
+            for (Map.Entry<UUID, House> entry : houses.entrySet()) {
+                if (!entry.getKey().equals(uuid) && townPets.contains(entry.getKey()) == townPet && intersects(candidate, entry.getValue()))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean intersects(House first, House second) {
+        return first.min().getX() <= second.max().getX() && first.max().getX() >= second.min().getX()
+                && first.min().getY() <= second.max().getY() && first.max().getY() >= second.min().getY()
+                && first.min().getZ() <= second.max().getZ() && first.max().getZ() >= second.min().getZ();
     }
 
     @Override
     public void decode(CompoundTag tag) {
-        DATA_CODEC.parse(NbtOps.INSTANCE, tag.get("data"))
-                .ifSuccess(result -> this.data = new Object2ObjectOpenHashMap<>(result));
+        townPets.clear();
+        if (tag.contains("townPets"))
+            UUIDUtil.CODEC.listOf().parse(NbtOps.INSTANCE, tag.get("townPets")).result().ifPresent(townPets::addAll);
+        DATA_CODEC.parse(NbtOps.INSTANCE, tag.get("data")).ifSuccess(decoded -> {
+            Object2ObjectOpenHashMap<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> mutableData = new Object2ObjectOpenHashMap<>();
+            decoded.forEach((dimension, regions) -> {
+                Object2ObjectOpenHashMap<NPCSpawner.Region, Map<UUID, House>> mutableRegions = new Object2ObjectOpenHashMap<>();
+                regions.forEach((region, houses) -> mutableRegions.put(region, new Object2ObjectOpenHashMap<>(houses)));
+                mutableData.put(dimension, mutableRegions);
+            });
+            // Codec 可能返回不可变的嵌套映射；住房数据在运行期需要增删，三层都必须复制。
+            this.data = mutableData;
+        });
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        DATA_CODEC.encodeStart(NbtOps.INSTANCE, data)
-                .ifSuccess(nbt -> tag.put("data", nbt));
+        townPets.removeIf(uuid -> data.values().stream().flatMap(regions -> regions.values().stream()).noneMatch(houses -> houses.containsKey(uuid)));
+        UUIDUtil.CODEC.listOf().encodeStart(NbtOps.INSTANCE, List.copyOf(townPets)).result().ifPresent(nbt -> tag.put("townPets", nbt));
+        DATA_CODEC.encodeStart(NbtOps.INSTANCE, data).ifSuccess(nbt -> tag.put("data", nbt));
     }
 
     @Override
@@ -85,5 +182,6 @@ public enum HouseHandler implements IGlobalData {
     @Override
     public void clear() {
         data.clear();
+        townPets.clear();
     }
 }

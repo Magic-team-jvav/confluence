@@ -1,0 +1,414 @@
+package org.confluence.mod.common.entity.boss;
+
+import net.minecraft.core.Holder;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.entity.PartHitTarget;
+import org.confluence.mod.common.data.map.CreatureDefinition;
+import org.confluence.mod.common.entity.EnemyDamageRules;
+import org.confluence.mod.common.entity.ai.SweptContactAttack;
+import org.confluence.mod.common.entity.monster.WormSegment;
+import org.confluence.mod.util.OverworldUtils;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.List;
+import java.util.UUID;
+
+/// 由 {@link BaseWormBoss} 头部管理的临时身体或尾部实体。
+///
+/// 体节把伤害转交给具有权威状态的头部；区块重新加载后也由头部重建整条体节链。
+/// 因此体节只保存恢复归属所需的最小信息，不能独立决定 Boss 生命周期。
+public class BossWormPart extends Monster implements WormSegment, GeoEntity, PartHitTarget {
+    /// 一次接触命中后的冷却（tick）。
+    private static final int COLLISION_COOLDOWN = 10;
+    private static final String OWNER_TAG = "Owner";
+    private static final String INDEX_TAG = "SegmentIndex";
+    private static final String TAIL_TAG = "Tail";
+    private static final String HEALTH_TAG = "SegmentHealth";
+
+    private static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> TAIL = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> SEGMENT_HEALTH = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> HURT_FLASH_TICKS = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.INT);
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private @Nullable BaseWormBoss owner;
+    private @Nullable UUID ownerUUID;
+    private int hurtCooldown;
+    private @Nullable Vec3 contactSweepStart;
+    private int clientLerpSteps;
+    private double clientLerpX;
+    private double clientLerpY;
+    private double clientLerpZ;
+    private float clientLerpYaw;
+    private float clientLerpPitch;
+
+    public BossWormPart(EntityType<? extends BossWormPart> type, Level level) {
+        super(type, level);
+        this.noPhysics = true;
+        this.noCulling = true;
+        this.setNoGravity(true);
+    }
+
+    public void bindTo(BaseWormBoss owner, int index, boolean tail) {
+        bindTo(owner, index, tail, true);
+    }
+
+    /// 断节后复用存活体节，只同步归属与索引，保留坐标、朝向和客户端插值。
+    void rebindTo(BaseWormBoss owner, int index, boolean tail) {
+        bindTo(owner, index, tail, false);
+    }
+
+    private void bindTo(BaseWormBoss owner, int index, boolean tail, boolean initializePosition) {
+        if (index < 1) throw new IllegalArgumentException("Worm body indices start at 1");
+        this.owner = owner;
+        this.ownerUUID = owner.getUUID();
+        this.entityData.set(OWNER_ID, owner.getId());
+        this.entityData.set(INDEX, index);
+        this.entityData.set(TAIL, tail);
+        this.entityData.set(SEGMENT_HEALTH, owner.getInitialSegmentHealth(index));
+        refreshDimensions();
+        if (initializePosition) this.setPos(owner.position());
+    }
+
+    public @Nullable BaseWormBoss getOwner() {
+        resolveOwner();
+        if (owner != null && level().isClientSide) owner.trackClientSegment(this);
+        return owner;
+    }
+
+    public boolean isTail() {
+        return entityData.get(TAIL);
+    }
+
+    @Override
+    public double getAttributeValue(Holder<Attribute> attribute) {
+        if ((attribute == Attributes.ATTACK_DAMAGE || attribute == Attributes.ARMOR || attribute == Attributes.ARMOR_TOUGHNESS) && owner instanceof EaterOfWorlds eater) {
+            return eater.segmentCombatAttribute(isTail(), attribute, CreatureDefinition.attributeValue(this, attribute, getAttributeBaseValue(attribute)));
+        }
+        return super.getAttributeValue(attribute);
+    }
+
+    public float getPartHealth() {
+        return entityData.get(SEGMENT_HEALTH);
+    }
+
+    public void setPartHealth(float health) {
+        entityData.set(SEGMENT_HEALTH, Math.max(0.0F, health));
+    }
+
+    public void indicateHurt() {
+        markHurt();
+        entityData.set(HURT_FLASH_TICKS, 10);
+    }
+
+    public boolean isHurtFlashing() {
+        BaseWormBoss head = getOwner();
+        /// 共享生命的链条跟随本体闪红，独立体节仍保留自身的受伤反馈。
+        return head != null && head.sharesHurtAnimation() && head.hurtTime > 0 || entityData.get(HURT_FLASH_TICKS) > 0;
+    }
+
+    @Override
+    public Entity encounterOwner() {
+        BaseWormBoss head = getOwner();
+        return head == null ? this : head;
+    }
+
+    @Override
+    public Entity dedupeIdentity() {
+        BaseWormBoss head = getOwner();
+        return getPartHealth() > 0.0F || head == null ? this : head;
+    }
+
+    @Override
+    public boolean acceptsDirectHit() {
+        return isPickable();
+    }
+
+    @Override
+    public boolean supportsDigSound() {
+        BaseWormBoss head = getOwner();
+        return head != null && head.isAlive() && head.supportsDigSound();
+    }
+
+    @Override
+    public int getSegmentIndex() {
+        return entityData.get(INDEX);
+    }
+
+    @Override
+    public @Nullable WormSegment getPrev() {
+        BaseWormBoss head = getOwner();
+        return head == null ? null : head.getSegment(getSegmentIndex() - 1);
+    }
+
+    @Override
+    public @Nullable WormSegment getNext() {
+        BaseWormBoss head = getOwner();
+        return head == null ? null : head.getSegment(getSegmentIndex() + 1);
+    }
+
+    public void orientAlongChain(Vec3 tangent) {
+        WormSegment.orientAlong(this, tangent);
+    }
+
+    public void moveToChainPosition(Vec3 destination) {
+        Vec3 previousPosition = position();
+        if (!level().isClientSide) contactSweepStart = previousPosition;
+        setPos(destination.x, destination.y, destination.z);
+    }
+
+    /// 体节只沿头部给出的链条位置移动，不再叠加生物惯性或受击位移。
+    @Override
+    public void travel(Vec3 travelVector) {}
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (level().isClientSide) {
+            tickClientInterpolation();
+        }
+        if (!level().isClientSide && entityData.get(HURT_FLASH_TICKS) > 0) {
+            entityData.set(HURT_FLASH_TICKS, entityData.get(HURT_FLASH_TICKS) - 1);
+        }
+        BaseWormBoss head = getOwner();
+        if (head == null) {
+            if (!level().isClientSide)
+                discard();
+            return;
+        }
+        if (!head.isAlive()) {
+            /// 已确认本体死亡，立即清理体节，不保留静止的链条。
+            discard();
+            return;
+        }
+
+        if (!level().isClientSide) {
+            tickCollisionAttack(head);
+            tickEaterRangedAttack(head);
+        }
+    }
+
+    private void tickCollisionAttack(BaseWormBoss head) {
+        if (head.getTarget() == null) return;
+        Vec3 sweepStart = contactSweepStart;
+        contactSweepStart = null;
+        if (hurtCooldown > 0) {
+            hurtCooldown--;
+            return;
+        }
+        List<Entity> contacts = sweepStart == null
+                ? SweptContactAttack.findTargets(this, 0.5D, SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
+                candidate -> candidate instanceof LivingEntity living && candidate != head && head.canAttack(living))
+                : SweptContactAttack.findTargets(this, sweepStart, 0.5D, SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
+                candidate -> candidate instanceof LivingEntity living && candidate != head && head.canAttack(living));
+        for (Entity entity : contacts) {
+            if (entity instanceof LivingEntity target) {
+                float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
+                target.hurt(damageSources().mobAttack(head), damage);
+                hurtCooldown = COLLISION_COOLDOWN;
+                return;
+            }
+        }
+    }
+
+    /// 只有专家以上的身体体节能随机吐射；尾节不射击，FTW 允许地下体节参与。
+    private void tickEaterRangedAttack(BaseWormBoss head) {
+        if (!(head instanceof EaterOfWorlds eater) || !eater.isExpert() || isTail()) return;
+        LivingEntity target = eater.getTarget();
+        if (target == null || !target.isAlive() || !hasLineOfSight(target)) return;
+        if (!eater.isFtw() && OverworldUtils.belowSurface(getY())) return;
+        if (random.nextInt(eater.isFtw() ? 150 : 300) == 0)
+            eater.shootVileSpit(getBoundingBox().getCenter());
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (EnemyDamageRules.blocks(this, source)) return false;
+        BaseWormBoss head = getOwner();
+        return head != null && head.isAlive() && head.hurtSegment(this, source, amount);
+    }
+
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        return WormSegment.isWormDamage(source) || source == damageSources().inWall() || super.isInvulnerableTo(source);
+    }
+
+    @Override
+    public boolean isPickable() {return !isRemoved();}
+
+    @Override
+    public boolean isAttackable() {
+        BaseWormBoss head = getOwner();
+        return head != null && head.isAlive() && !isRemoved();
+    }
+
+    @Override
+    public float getPickRadius() {
+        return 1.0F;
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return false;
+    }
+
+    @Override
+    public boolean isPushable() {return false;}
+
+    @Override
+    public void push(Entity entity) {}
+
+    /// 使用当前节与相邻连接点的平均位置采样光照，减弱长链跨越明暗边界时的逐节跳变。
+    @Override
+    public Vec3 getLightProbePosition(float partialTick) {
+        Vec3 sum = getPosition(partialTick);
+        int samples = 1;
+        WormSegment previous = getPrev();
+        if (previous instanceof Entity entity) {
+            sum = sum.add(entity.getPosition(partialTick));
+            samples++;
+        }
+        WormSegment next = getNext();
+        if (next instanceof Entity entity) {
+            sum = sum.add(entity.getPosition(partialTick));
+            samples++;
+        }
+        return sum.scale(1.0D / samples).add(0.0D, getBbHeight() * 0.5D, 0.0D);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(OWNER_ID, -1);
+        builder.define(INDEX, 0);
+        builder.define(TAIL, false);
+        builder.define(SEGMENT_HEALTH, 0.0F);
+        builder.define(HURT_FLASH_TICKS, 0);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        ownerUUID = tag.hasUUID(OWNER_TAG) ? tag.getUUID(OWNER_TAG) : null;
+        entityData.set(INDEX, tag.getInt(INDEX_TAG));
+        entityData.set(TAIL, tag.getBoolean(TAIL_TAG));
+        entityData.set(SEGMENT_HEALTH, tag.getFloat(HEALTH_TAG));
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        UUID uuid = owner == null ? ownerUUID : owner.getUUID();
+        if (uuid != null) tag.putUUID(OWNER_TAG, uuid);
+        tag.putInt(INDEX_TAG, getSegmentIndex());
+        tag.putBoolean(TAIL_TAG, isTail());
+        tag.putFloat(HEALTH_TAG, getPartHealth());
+    }
+
+    private void resolveOwner() {
+        if (owner != null && !owner.isRemoved() && owner.getId() == entityData.get(OWNER_ID))
+            return;
+        owner = null;
+
+        Entity byNetworkId = level().getEntity(entityData.get(OWNER_ID));
+        if (byNetworkId instanceof BaseWormBoss head) {
+            owner = head;
+            ownerUUID = head.getUUID();
+            return;
+        }
+        if (!level().isClientSide && ownerUUID != null && level() instanceof ServerLevel serverLevel) {
+            Entity byUuid = serverLevel.getEntity(ownerUUID);
+            if (byUuid instanceof BaseWormBoss head) {
+                owner = head;
+                entityData.set(OWNER_ID, head.getId());
+            }
+        }
+    }
+
+    @Override
+    public boolean shouldBeSaved() {return false;}
+
+    @Override
+    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
+        /// 1.21 的 `Entity#getAddEntityPacket(ServerEntity)` 新增了 `ServerEntity` 形参（`Entity.java:3428`）。
+        return new ClientboundAddEntityPacket(this, entity);
+    }
+
+    @Override
+    public void lerpTo(double x, double y, double z, float yaw, float pitch,
+                       int steps) {
+        if (!level().isClientSide || distanceToSqr(x, y, z) > 4096.0D) {
+            setPos(x, y, z);
+            setRot(yaw, pitch);
+            yRotO = yaw;
+            xRotO = pitch;
+            clientLerpSteps = 0;
+            return;
+        }
+        clientLerpX = x;
+        clientLerpY = y;
+        clientLerpZ = z;
+        clientLerpYaw = yaw;
+        clientLerpPitch = pitch;
+        clientLerpSteps = Math.max(1, steps);
+    }
+
+    private void tickClientInterpolation() {
+        /// 每 tick 推进渲染插值起点；俯仰和偏航都按最短角路径跨越正负一百八十度。
+        yRotO = getYRot();
+        xRotO = getXRot();
+        if (clientLerpSteps <= 0) return;
+        double progress = 1.0D / clientLerpSteps;
+        setPos(
+                Mth.lerp(progress, getX(), clientLerpX),
+                Mth.lerp(progress, getY(), clientLerpY),
+                Mth.lerp(progress, getZ(), clientLerpZ));
+        setRot(
+                Mth.rotLerp((float) progress, getYRot(), clientLerpYaw),
+                Mth.rotLerp((float) progress, getXRot(), clientLerpPitch));
+        clientLerpSteps--;
+    }
+
+    @Override
+    protected EntityDimensions getDefaultDimensions(Pose pose) {
+        EntityDimensions base = getType().getDimensions();
+        BaseWormBoss head = getOwner();
+        float ownerScale = head == null ? 1.0F : head.getScale();
+        float ownScale = getScale();
+        return base.scale(ownScale == 0.0F ? ownerScale : ownerScale / ownScale);
+    }
+
+    @Override
+    public boolean is(Entity entity) {
+        return this == entity || getOwner() == entity;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {}
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+}

@@ -6,12 +6,14 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.init.ModParticleTypes;
+import org.confluence.lib.common.LibDamageTypes;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -23,9 +25,9 @@ public class GrassSwordProjectile extends SwordProjectile {
 
     public GrassSwordProjectile(EntityType<GrassSwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
-        this.canPenalize = true;
-        this.hitCount = 99999;
-        this.collisionProperties = new CollisionProperties(10, 10, 1);
+        survivesBlockHit = true;
+        remainingHits = 2;
+        configureCollision(10, 1.0);
     }
 
     @Override
@@ -53,8 +55,7 @@ public class GrassSwordProjectile extends SwordProjectile {
         if (tickCount > 5) {
             Vec3 motion = getDeltaMovement();
             float yaw = Mth.HALF_PI - (float) Mth.atan2(motion.z, motion.x);
-            float pitch = (float) -Mth.atan2(motion.y,
-                    Math.sqrt(motion.x * motion.x + motion.z * motion.z));
+            float pitch = (float) -Mth.atan2(motion.y, Math.sqrt(motion.x * motion.x + motion.z * motion.z));
             Quaternionf q = new Quaternionf()
                     .rotateY(yaw)
                     .rotateX(pitch)
@@ -63,9 +64,6 @@ public class GrassSwordProjectile extends SwordProjectile {
 
             Vec3 transformed = new Vec3(q.transform(new Vector3f(0, 0, 1)));
             setDeltaMovement(transformed);
-        }
-        if (tickCount % 2 == 0 && level().isClientSide) {
-            level().addParticle(ModParticleTypes.LEAVES.get(), getX(), getY(), getZ(), 0, 0, 0);
         }
     }
 
@@ -80,6 +78,18 @@ public class GrassSwordProjectile extends SwordProjectile {
 
     @Override
     public DamageSource damageSource() {
-        return ModDamageTypes.of(level(), DamageTypes.GENERIC, this, getOwner());
+        return LibDamageTypes.of(level(), DamageTypes.GENERIC, this, getOwner());
+    }
+
+    @Override
+    protected void applyHitEffect(Entity target) {
+        if (target instanceof LivingEntity living && random.nextFloat() < 0.25F) {
+            living.addEffect(new MobEffectInstance(MobEffects.POISON, 140, 0), getOwner());
+        }
+    }
+
+    @Override
+    public int confluence$getImmunityDuration(DamageSource damageSource) {
+        return 10;
     }
 }

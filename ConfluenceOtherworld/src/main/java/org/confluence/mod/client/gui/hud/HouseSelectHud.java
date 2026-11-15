@@ -31,10 +31,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.GuiSprite;
+import org.confluence.mod.common.entity.npc.house.HouseValidater;
 import org.confluence.mod.network.c2s.HouseSelectPacketC2S;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
-import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
-import org.confluence.terraentity.entity.npc.house.IHouseDetector;
 import org.jetbrains.annotations.Nullable;
 
 public class HouseSelectHud implements LayeredDraw.Layer {
@@ -56,11 +55,11 @@ public class HouseSelectHud implements LayeredDraw.Layer {
         a[8] = new GuiSprite(i, w, h, 104, 0, 11, 10);
         a[9] = new GuiSprite(i, w, h, 116, 0, 11, 9);
 
-        a[10] = null;
-        a[11] = null;
+        a[10] = new GuiSprite(i, w, h, 0, 15, 17, 21); // 巫师：npc_head 第二行第一个
+        a[11] = new GuiSprite(i, w, h, 59, 15, 11, 11); // 染料商：npc_head 第二行第五个
         a[12] = new GuiSprite(i, w, h, 31, 15, 15, 15);
         a[13] = null;
-        a[14] = new GuiSprite(i, w, h, 59, 15, 11, 11);
+        a[14] = new GuiSprite(i, w, h, 71, 15, 15, 10); // 派对女孩：npc_head 第二行第六个
         a[15] = null;
         a[16] = new GuiSprite(i, w, h, 99, 15, 10, 10);
         a[17] = new GuiSprite(i, w, h, 110, 15, 16, 12);
@@ -147,13 +146,7 @@ public class HouseSelectHud implements LayeredDraw.Layer {
         if (selected < 0) return;
         BlockHitResult result = Item.getPlayerPOVHitResult(player.level(), player, ClipContext.Fluid.NONE);
         BlockPos pos = result.getBlockPos().relative(result.getDirection());
-        IHouseDetector detect = IHouseDetector.detect(pos, player.level());
-        if (selected == 0 && !detect.isError()) {
-            for (BlockPos blockPos : detect.list()) {
-                DebugBlocksHelper.Singleton().addDebugBlock(blockPos, new DebugBlocksHelper.DebugInfo(255, 255, 30, 100));
-            }
-            DebugBlocksHelper.Singleton().addDebugBlock(pos, new DebugBlocksHelper.DebugInfo(255, 0, 120, 120));
-        }
+        HouseValidater.Result detect = HouseValidater.scan(player.level(), pos);
         HouseSelectPacketC2S.sendToServer(selected, pos);
     }
 
@@ -216,7 +209,6 @@ public class HouseSelectHud implements LayeredDraw.Layer {
         if (cullEnabled) {
             RenderSystem.disableCull();
         }
-        // TODO 极低视距下区域墙会被远裁剪成随视角变化的三角形或四边形，不要误认为是虚空海渲染。
         BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         float x = (float) camera.getPosition().x;
         float z = (float) camera.getPosition().z;

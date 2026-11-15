@@ -1,0 +1,67 @@
+package org.confluence.mod.common.init.block;
+
+import com.mojang.datafixers.DSL;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.functional.BasePylonBlock;
+import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.util.OverworldUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
+
+public class PylonBlocks {
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
+    public static final Map<ResourceLocation, ResourceLocation> TYPE_TO_TEXTURE = new HashMap<>();
+
+    // todo 目前只是占位符
+    public static final DeferredBlock<BasePylonBlock> FOREST_PYLON = register("forest_pylon", "森林晶塔", DyeColor.CYAN, (world, pos, biome) -> OverworldUtils.isForest(biome));
+    public static final DeferredBlock<BasePylonBlock> SNOW_PYLON = register("snow_pylon", "雪原晶塔", DyeColor.WHITE, (world, pos, biome) -> OverworldUtils.isSnowy(biome));
+    public static final DeferredBlock<BasePylonBlock> DESERT_PYLON = register("desert_pylon", "沙漠晶塔", DyeColor.YELLOW, (world, pos, biome) -> OverworldUtils.isDesert(biome));
+    public static final DeferredBlock<BasePylonBlock> CAVERN_PYLON = register("cavern_pylon", "洞穴晶塔", DyeColor.GRAY, (world, pos, biome) -> OverworldUtils.inCave(pos.getY()));
+    public static final DeferredBlock<BasePylonBlock> OCEAN_PYLON = register("ocean_pylon", "海洋晶塔", DyeColor.BLUE, (world, pos, biome) -> OverworldUtils.isOcean(biome));
+    public static final DeferredBlock<BasePylonBlock> JUNGLE_PYLON = register("jungle_pylon", "丛林晶塔", DyeColor.GREEN, (world, pos, biome) -> OverworldUtils.isJungle(biome));
+    public static final DeferredBlock<BasePylonBlock> HALLOW_PYLON = register("hallow_pylon", "神圣晶塔", DyeColor.LIGHT_BLUE, (world, pos, biome) -> OverworldUtils.isHallow(biome));
+    public static final DeferredBlock<BasePylonBlock> MUSHROOM_PYLON = register("mushroom_pylon", "蘑菇晶塔", DyeColor.PURPLE, (world, pos, biome) -> OverworldUtils.isMushroom(biome));
+    public static final DeferredBlock<BasePylonBlock> UNIVERSAL_PYLON = register("universal_pylon", "万能晶塔", DyeColor.BROWN, (world, pos, biome) -> true);
+    // todo 地狱晶塔 // todo 以太晶塔+晶塔微光转换配方
+    public static final Supplier<BlockEntityType<BasePylonBlock.BEntity>> PYLON_ENTITY = ModBlocks.BLOCK_ENTITIES.register("pylon_entity", () -> BlockEntityType.Builder.of(BasePylonBlock.BEntity::new, BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(DSL.remainderType()));
+
+    private static DeferredBlock<BasePylonBlock> register(String name, BlockBehaviour.Properties properties, BasePylonBlock.Survive survive) {
+        int count = BLOCKS.getEntries().size();
+        DeferredBlock<BasePylonBlock> block = BLOCKS.register(name, () -> new BasePylonBlock(count, properties, survive));
+        ModItems.BLOCK_ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
+        TYPE_TO_TEXTURE.put(block.getId(), Confluence.asResource("textures/gui/pylon/" + block.getId().getPath() + ".png"));
+        return block;
+    }
+
+    private static DeferredBlock<BasePylonBlock> register(String name, DyeColor dyeColor, BasePylonBlock.Survive survive) {
+        return register(name, BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(dyeColor).lightLevel(state -> 10), survive);
+    }
+
+    private static DeferredBlock<BasePylonBlock> register(String registryId, String chineseName, BlockBehaviour.Properties properties, BasePylonBlock.Survive survive) {
+        DeferredBlock<BasePylonBlock> entry = register(registryId, properties, survive);
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+
+    private static DeferredBlock<BasePylonBlock> register(String registryId, String chineseName, DyeColor dyeColor, BasePylonBlock.Survive survive) {
+        DeferredBlock<BasePylonBlock> entry = register(registryId, BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(dyeColor).lightLevel(state -> 10), survive);
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+}

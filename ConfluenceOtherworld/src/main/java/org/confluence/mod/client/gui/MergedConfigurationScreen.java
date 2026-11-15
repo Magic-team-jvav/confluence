@@ -10,14 +10,10 @@ import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import nowebsite.makertechno.the_trackers.TheTrackers;
-import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.TerraCurio;
-import org.confluence.terra_furniture.TerraFurniture;
-import org.confluence.terra_guns.TerraGuns;
-import org.confluence.terraentity.TerraEntity;
+import org.mesdag.opallight.OpalLight;
 import org.mesdag.particlestorm.ParticleStorm;
-import org.mesdag.thr_dim_particle.TDP;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,14 +37,9 @@ public class MergedConfigurationScreen extends Screen {
             Optional<? extends ModContainer> optionalContainer = ModList.get().getModContainerById(modid);
             if (optionalContainer.isEmpty()) continue;
             ModContainer container = optionalContainer.get();
-            IConfigScreenFactory factory;
-            if (Confluence.MODID.equals(modid)) {
-                factory = ConfigurationScreen::new;
-            } else {
-                Optional<IConfigScreenFactory> optionalFactory = IConfigScreenFactory.getForMod(container.getModInfo());
-                if (optionalFactory.isEmpty()) continue;
-                factory = optionalFactory.get();
-            }
+            IConfigScreenFactory factory = Confluence.MODID.equals(modid)
+                    ? ConfigurationScreen::new
+                    : IConfigScreenFactory.getForMod(container.getModInfo()).orElseGet(() -> ConfigurationScreen::new);
 
             buttons.add(addRenderableWidget(Button.builder(Component.translatable("modid.name." + modid), button -> {
                 assert minecraft != null;
@@ -89,14 +80,10 @@ public class MergedConfigurationScreen extends Screen {
     public static Screen factory(ModContainer container, Screen parent) {
         return new MergedConfigurationScreen(parent,
                 Confluence.MODID,
-                ConfluenceMagicLib.LIB_ID,
                 TerraCurio.MODID,
-                TerraEntity.MODID,
-                TerraFurniture.MODID,
-                TerraGuns.MODID,
                 TheTrackers.MOD_ID,
                 ParticleStorm.MODID,
-                TDP.MODID
+                OpalLight.MODID
         );
     }
 }

@@ -9,10 +9,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModParticleTypes;
-import org.confluence.mod.mixed.ILevelChunkSection;
-import org.confluence.mod.util.DynamicBiomeUtils;
 import software.bernie.geckolib.animation.EasingType;
 
 @EventBusSubscriber(modid = Confluence.MODID, value = Dist.CLIENT)
@@ -25,7 +24,7 @@ public class EctoMistHelper {
     private static boolean turnOn = true;
 
     public static void tick(Minecraft minecraft, LocalPlayer player) {
-        if (ClientConfigs.minEctoMistEffectRadius <= 0) {
+        if (ModClientConfigs.minEctoMistEffectRadius <= 0) {
             if (turnOn) {
                 effectiveTombstones = 0;
                 turnOn = false;
@@ -34,8 +33,7 @@ public class EctoMistHelper {
         }
         turnOn = true;
         if (player.level().getGameTime() % 40 == 2) {
-            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(player.level(), player.blockPosition());
-            effectiveTombstones = iSection == null ? 0 : iSection.confluence$getBlockCounts().tomb - iSection.confluence$getBlockCounts().sunflower;
+            effectiveTombstones = ModBlockCounters.effectiveTombstones(player.level(), player.blockPosition());
         }
         if (isGraveyard() && !minecraft.isPaused() && player.getRandom().nextInt(10) == 0) {
             player.level().addParticle(ModParticleTypes.ECTO_MIST.get(),
@@ -79,7 +77,7 @@ public class EctoMistHelper {
     public static void renderFog(ViewportEvent.RenderFog event) {
         if (isGraveyard()) {
             float exp = (float) EasingType.exp(ectoMistStep);
-            lastStart = Math.max(ClientConfigs.minEctoMistEffectRadius, 28.0F / (effectiveTombstones - 6));
+            lastStart = Math.max(ModClientConfigs.minEctoMistEffectRadius, 28.0F / (effectiveTombstones - 6));
             event.setNearPlaneDistance(Mth.lerp(exp, lastStart, originalNearFog));
             event.setFarPlaneDistance(Mth.lerp(exp, lastStart + lastStart, originalFarFog));
             event.setFogShape(FogShape.SPHERE);

@@ -3,7 +3,6 @@ package org.confluence.mod.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.AgeableHierarchicalModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,9 +19,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.client.effect.death.GeoDeathModelAdapter;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
-import org.confluence.mod.mixin.client.model.AgeableListModelAccessor;
 import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererAccessor;
+import org.joml.Matrix3f;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -53,6 +53,9 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
         EntityRenderer<?> renderer = minecraft.getEntityRenderDispatcher().getRenderer(dying);
         // Geo生物
         if (renderer instanceof GeoEntityRenderer geoRenderer && dying instanceof GeoAnimatable animatable) {
+            if (!(entity.geoRenderData instanceof GeoDeathModelAdapter.RenderSnapshot snapshot))
+                return;
+            BakedGeoModel bakedGeoModel = snapshot.model();
             if (cube instanceof GeoCube geoCube) {
                 // 把计算Y轴中心放到前面，如果cube有问题就提前返回
                 GeoQuad[] twoQuads = new GeoQuad[2];
@@ -82,11 +85,10 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
 
                 poseStack.pushPose();
 
-                BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
                 geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0);
                 // GeoGeo的奇妙Y轴旋转
-                poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
-                poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
+                poseStack.mulPose(Axis.YP.rotationDegrees(-entity.deathYaw + 180));
+                poseStack.mulPose(Axis.XP.rotationDegrees(entity.deathPitch));
                 // GeoGeo的奇妙Y轴偏移
                 poseStack.translate(0, 0.01f, 0);
                 // 还原bone的各级旋转
@@ -107,8 +109,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 applyRandomRotation(entity, poseStack, partialTick);
                 poseStack.translate(0, -centerY, 0);
 
-                ResourceLocation textureLocation = geoRenderer.getTextureLocation(dying);
-                RenderType renderType = geoRenderer.getRenderType(dying, textureLocation, bufferSource, partialTick);
+                ResourceLocation textureLocation = snapshot.texture();
+                RenderType renderType = snapshot.renderType();
                 geoRenderer.renderCube(poseStack, geoCube,
                         bufferSource.getBuffer(renderType == null ? RenderType.entityCutoutNoCull(textureLocation) : renderType),
                         packedLight,
@@ -116,16 +118,19 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                         geoRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
                 poseStack.popPose();
             } else if (cube instanceof GeoBone geoBone) {
-                BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
                 geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0);
+                if (snapshot.localTransform() != null) {
+                    poseStack.last().pose().mul(snapshot.localTransform());
+                    poseStack.last().normal().mul(new Matrix3f(snapshot.localTransform()));
+                }
                 // GeoGeo的奇妙Y轴旋转
-//                poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
-//                poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
+//                poseStack.mulPose(Axis.YP.rotationDegrees(-entity.deathYaw + 180));
+//                poseStack.mulPose(Axis.XP.rotationDegrees(entity.deathPitch));
                 // GeoGeo的奇妙Y轴偏移
 //                poseStack.translate(0, 0.01f, 0);
                 applyRandomRotation(entity, poseStack, partialTick);
-                ResourceLocation textureLocation = geoRenderer.getTextureLocation(dying);
-                RenderType renderType = geoRenderer.getRenderType(dying, textureLocation, bufferSource, partialTick);
+                ResourceLocation textureLocation = snapshot.texture();
+                RenderType renderType = snapshot.renderType();
                 geoRenderer.renderRecursively(poseStack, dying, geoBone, renderType, bufferSource,
                         bufferSource.getBuffer(renderType == null ? RenderType.entityCutoutNoCull(textureLocation) : renderType),
                         false, partialTick, packedLight,
@@ -146,27 +151,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 applyRandomRotation(entity, poseStack, partialTick);
                 poseStack.translate(-entity.xOffset, -entity.yOffset - halfMinSide, -entity.zOffset);
 
-                if (livingRenderer.getModel() instanceof AgeableHierarchicalModel<?> model && model.young) {
-                    poseStack.scale(model.youngScaleFactor, model.youngScaleFactor, model.youngScaleFactor);
-                } else if (livingRenderer.getModel().young && livingRenderer.getModel() instanceof AgeableListModelAccessor model) {
-                    for (ModelPart bodyPart : model.callBodyParts()) {
-                        if (entity.modelPart == bodyPart) {  // FIXME: 父模型
-                            float scale = 1.0F / model.getBabyBodyScale();
-                            poseStack.scale(scale, scale, scale);
-                            break;
-                        }
-                    }
-                    for (ModelPart headPart : model.callHeadParts()) {
-                        if (entity.modelPart == headPart) {
-                            if (model.getScaleHead()) {
-                                float scale = 1.5F / model.getBabyHeadScale();
-                                poseStack.scale(scale, scale, scale);
-                            }
-                            break;
-                        }
-                    }
-                }
-                float scale = living.getScale();
+                poseStack.scale(entity.modelScale, entity.modelScale, entity.modelScale);
+                float scale = entity.entityScale;
                 poseStack.scale(scale, scale, scale);
                 ra.callSetupRotations(living, poseStack, 0, living.yBodyRot, 1, scale);
                 Vector3f modelPartRot = entity.modelPartRot;
@@ -198,8 +184,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                     poseStack.translate(0, baby ? 0.8 : -0.25, 0);
                 }
                 poseStack.scale(-1.0F, -1.0F, 1.0F);
-                poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
-                poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
+                poseStack.mulPose(Axis.YP.rotationDegrees(-entity.deathYaw + 180));
+                poseStack.mulPose(Axis.XP.rotationDegrees(entity.deathPitch));
                 geoArmorRenderer.prepForRender(dying, itemStack, equipable.getEquipmentSlot(), baseModel, bufferSource, partialTick, 0, 0, living.getYHeadRot(), living.getXRot());
                 geoArmorRenderer.renderToBuffer(poseStack, null, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.argbInt());
                 poseStack.popPose();

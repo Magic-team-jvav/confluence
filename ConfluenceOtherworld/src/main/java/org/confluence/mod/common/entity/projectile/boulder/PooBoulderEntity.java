@@ -12,11 +12,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.MobEffectInstanceData;
 import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TerraStyleExplosion;
 
 public class PooBoulderEntity extends BoulderEntity {
@@ -33,7 +35,7 @@ public class PooBoulderEntity extends BoulderEntity {
         super.removeEffect(serverLevel);
         int blockRadius = 2;
 
-        final BlockState toFill = ModBlocks.POO.get().defaultBlockState();
+        final BlockState toFill = NatureBlocks.POO.get().defaultBlockState();
         final BlockPos blockPos = blockPosition();
 
         BlockPos.MutableBlockPos mutable = blockPos.mutable();
@@ -58,7 +60,8 @@ public class PooBoulderEntity extends BoulderEntity {
     protected void onHitEntity(EntityHitResult entityHitResult) {
         super.onHitEntity(entityHitResult);
         Entity entity = entityHitResult.getEntity();
-        if (entity instanceof LivingEntity livingEntity) {
+        LivingEntity livingEntity = LibEntityUtils.effectTarget(entity);
+        if (!level().isClientSide && livingEntity != null) {
             livingEntity.addEffect(new MobEffectInstanceData(ModEffects.STINKY, 20 * 10, 1).create());
             livingEntity.addEffect(new MobEffectInstanceData(MobEffects.POISON, 20 * 10).create());
         }

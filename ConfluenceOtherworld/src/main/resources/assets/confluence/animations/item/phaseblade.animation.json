@@ -11,8 +11,28 @@
 							"vector": [1, 1, 1]
 						},
 						"0.5": {
+							"vector": [1, 0, 1]
+						}
+					}
+				},
+				"phaseblade": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.5": {
 							"vector": [1, 0, 1],
-							"easing": "easeInQuint"
+							"easing": "easeOutExpo"
+						}
+					}
+				},
+				"handle": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.5": {
+							"vector": [1, 1, 1]
 						}
 					}
 				}
@@ -28,13 +48,22 @@
 							"vector": [1, 0, 1]
 						},
 						"0.5": {
+							"vector": [1, 1, 1]
+						}
+					}
+				},
+				"phaseblade": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 0, 1]
+						},
+						"0.5": {
 							"vector": [1, 1, 1],
-							"easing": "easeInQuint"
+							"easing": "easeInExpo"
 						}
 					}
 				}
 			}
 		}
-	},
-	"geckolib_format_version": 2
+	}
 }

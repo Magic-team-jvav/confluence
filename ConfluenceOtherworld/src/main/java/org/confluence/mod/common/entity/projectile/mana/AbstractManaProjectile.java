@@ -14,9 +14,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.joml.Matrix4x3f;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -72,7 +72,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
         if (target.hurt(getDamageSource(), getCalculatedDamage())) {
             if (knockbackStrength > 0 || knockbackMotionY > 0) {
-                VectorUtils.knockBackA2B(this, target, knockbackStrength, knockbackMotionY);
+                LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(target), knockbackStrength, knockbackMotionY);
             }
             return true;
         }
@@ -82,7 +82,12 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     /// server side only
     protected boolean doPenetrateCheck(Entity entity) {
         if (level().isClientSide) return false;
-        return getPenetrateSet().add(entity.getUUID());
+        return getPenetrateSet().add(LibEntityUtils.dedupeIdentity(entity).getUUID());
+    }
+
+    @Override
+    public boolean canHitEntity(Entity target) {
+        return super.canHitEntity(target) && (penetrateSet == null || !penetrateSet.contains(LibEntityUtils.dedupeIdentity(target).getUUID()));
     }
 
     /// server side only
@@ -101,6 +106,18 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
             this.penetrateSet = new HashSet<>();
         }
         return penetrateSet;
+    }
+
+    /// 清空已命中记录，让存活的弹幕能再次命中同一批目标。
+    ///
+    /// 供分段改变攻击方向的弹幕（如欧泊法杖洪流折返）使用。
+    ///
+    /// server side only
+    protected void clearPenetrateSet() {
+        if (level().isClientSide) return;
+        if (penetrateSet != null) {
+            penetrateSet.clear();
+        }
     }
 
     /// common
@@ -145,7 +162,6 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
             if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
                 this.emitter = new ParticleEmitter(level(), position(), particleId);
                 emitter.attachEntity(this);
-                emitter.hideOutline = true;
                 afterCreate.run();
                 MolangParticleEngine.INSTANCE.addEmitter(emitter);
             }
@@ -175,7 +191,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
 
     @Override
     public DamageSource getDamageSource() {
-        return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
+        return LibDamageTypes.of(level(), LibDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
     }
 
     @Override

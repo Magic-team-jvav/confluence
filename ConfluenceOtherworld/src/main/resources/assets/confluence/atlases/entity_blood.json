@@ -1,9 +1,0 @@
-{
-    "sources": [
-        {
-            "type": "directory",
-            "source": "confluence_entity_blood",
-            "prefix": "entity_blood/"
-        }
-    ]
-}

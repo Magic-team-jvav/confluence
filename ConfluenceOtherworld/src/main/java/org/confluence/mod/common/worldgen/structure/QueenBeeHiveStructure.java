@@ -23,7 +23,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.Optional;
 
-import static org.confluence.lib.util.StructureUtils.*;
+import static org.confluence.lib.util.LibStructureUtils.*;
 
 public class QueenBeeHiveStructure extends Structure {
     public static final MapCodec<QueenBeeHiveStructure> CODEC = simpleCodec(QueenBeeHiveStructure::new);

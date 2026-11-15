@@ -1,0 +1,9 @@
+{
+  "better_experience:auto_fish_block": {
+    "type": "text",
+    "text": {
+      "en_us": "Three requirements for operation:\n- Adjacent Conduit placed beside or above\n- Fishable liquid within 3 blocks directly below\n- Usable fishing rod inside the Auto-Fish Block",
+      "zh_cn": "正常工作的三个必要条件：\n- 侧方或上方有一个相邻放置的潮涌核心\n- 正下方三格内有可钓鱼的液体\n- 钓鱼机内有可用的钓竿"
+    }
+  }
+}

@@ -4,6 +4,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+/// 带逐 tick 速度倍率的直线剑气。
 public class ForwardSwordProjectile extends SwordProjectile {
     public ForwardSwordProjectile(EntityType<? extends ForwardSwordProjectile> type, Level level) {
         super(type, level);
@@ -12,18 +13,12 @@ public class ForwardSwordProjectile extends SwordProjectile {
     @Override
     public void tick() {
         super.tick();
-        Vec3 vec3 = getDeltaMovement();
-        double offX = getX() + vec3.x;
-        double offY = getY() + vec3.y;
-        double offZ = getZ() + vec3.z;
-        float accelerate;
-        if (projComponent != null) {
-            accelerate = projComponent.acceleration();
-        } else {
-            accelerate = 0.8f;
+        if (isRemoved()) {
+            return;
         }
-
-        setDeltaMovement(vec3.scale(accelerate));
-        setPos(offX, offY, offZ);
+        Vec3 movement = getDeltaMovement();
+        float acceleration = getProjectileComponent() == null ? 0.8F : getProjectileComponent().acceleration();
+        setDeltaMovement(movement.scale(acceleration));
+        setPos(getX() + movement.x, getY() + movement.y, getZ() + movement.z);
     }
 }

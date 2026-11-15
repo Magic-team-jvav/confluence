@@ -14,7 +14,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.Nullable;
 
 public record LootComponent(
@@ -28,7 +27,7 @@ public record LootComponent(
             LootParams lootparams = new LootParams.Builder(player.serverLevel())
                     .withParameter(LootContextParams.ORIGIN, player.position())
                     .withParameter(LootContextParams.THIS_ENTITY, player)
-                    .withLuck(PlayerUtils.getFishingPower(player))
+                    .withLuck(player.getLuck())
                     .create(LootContextParamSets.GIFT);
             LootTable loottable = player.server.reloadableRegistries().getLootTable(lootComponent.value());
             for (ItemStack loot : loottable.getRandomItems(lootparams)) {

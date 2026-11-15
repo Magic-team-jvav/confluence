@@ -11,6 +11,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.advancement.ShimmerTransmutationTrigger;
+import org.confluence.mod.common.entity.IVariant;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -25,8 +26,14 @@ public final class ModAdvancements {
     public static class EntitySubPredicatez {
         public static final DeferredRegister<MapCodec<? extends EntitySubPredicate>> PREDICATES = DeferredRegister.create(BuiltInRegistries.ENTITY_SUB_PREDICATE_TYPE, Confluence.MODID);
 
-        public static final EntitySubPredicates.EntityVariantPredicateType<Integer> INT_VARIANT = register("int", EntitySubPredicates.EntityVariantPredicateType.create(
-                Codec.INT, entity -> entity instanceof VariantHolder<?> holder && holder.getVariant() instanceof Integer integer ? Optional.of(integer) : Optional.empty()
+        /// 按变体名匹配 {@link IVariant}。
+        ///
+        /// 数据驱动谓词只能写入可序列化的字面量，而本模组的小动物变体都是枚举
+        /// （`Worm.Variant`、`Butterfly.Variant` 等），并不是 {@link Integer}；
+        /// 因此这里取 {@link net.minecraft.util.StringRepresentable#getSerializedName()} 比对变体名，
+        /// 而不是比对枚举序号 —— 序号会随枚举重排而静默错位（1.20.1 也正是按变体名匹配的）。
+        public static final EntitySubPredicates.EntityVariantPredicateType<String> VARIANT_NAME = register("variant_name", EntitySubPredicates.EntityVariantPredicateType.create(
+                Codec.STRING, entity -> entity instanceof VariantHolder<?> holder && holder.getVariant() instanceof IVariant variant ? Optional.of(variant.getSerializedName()) : Optional.empty()
         ));
 
         private static <V> EntitySubPredicates.EntityVariantPredicateType<V> register(String name, EntitySubPredicates.EntityVariantPredicateType<V> type) {

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "confluence:item/yoyo/the_eye_of_cthulhu"
+  }
+}

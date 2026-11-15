@@ -1,0 +1,105 @@
+{
+    "format_version": "1.8.0",
+    "animations": {
+        "attack.cast": {
+            "animation_length": 0.5,
+            "bones": {}
+        },
+        "misc.idle": {
+            "loop": true,
+            "animation_length": 1,
+            "bones": {
+                "Beard": {
+                    "rotation": {
+                        "0.0": {
+                            "vector": [
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        "0.3333": {
+                            "vector": [
+                                -15,
+                                0,
+                                0
+                            ],
+                            "easing": "linear"
+                        },
+                        "0.75": {
+                            "vector": [
+                                5,
+                                0,
+                                0
+                            ]
+                        },
+                        "1.0": {
+                            "vector": [
+                                0,
+                                0,
+                                0
+                            ]
+                        }
+                    }
+                },
+                "hair": {
+                    "rotation": {
+                        "0.0": {
+                            "vector": [
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        "0.5": {
+                            "vector": [
+                                15,
+                                0,
+                                0
+                            ]
+                        },
+                        "1.0": {
+                            "vector": [
+                                0,
+                                0,
+                                0
+                            ]
+                        }
+                    }
+                },
+                "hair2": {
+                    "rotation": {
+                        "0.0417": {
+                            "vector": [
+                                7.5,
+                                0,
+                                0
+                            ]
+                        },
+                        "0.375": {
+                            "vector": [
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        "0.625": {
+                            "vector": [
+                                0,
+                                0,
+                                0
+                            ]
+                        },
+                        "1.0": {
+                            "vector": [
+                                7.5,
+                                0,
+                                0
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

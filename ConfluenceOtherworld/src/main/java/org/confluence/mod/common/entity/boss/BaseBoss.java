@@ -360,7 +360,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         if (attacker instanceof Player player) registerCombatParticipant(player);
         if (!EnemyTargeting.allowsTarget(this, attacker)) return;
         retaliationTarget = attacker instanceof Player ? null : attacker;
-        if (canAttack(attacker)) setTarget(attacker);
+        if (canAttack(attacker))
+            setTarget(selectCombatTarget(attacker instanceof Player ? attacker : getTarget()));
     }
 
     /// Boss 可保留指定目标或反击攻击者，不主动搜索无关生物。
@@ -766,20 +767,18 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return target instanceof Player player && isValidCurrentCombatPlayer(player) ? player : null;
     }
 
-    /// 优先维持非玩家交战目标，失效后恢复原有的玩家索敌规则。
+    /// 范围内有可交战玩家时优先锁定玩家，只有无人可选时才反击其他生物。
     protected @Nullable LivingEntity selectCombatTarget(@Nullable LivingEntity previous) {
         Player forced = developerTargetId == null ? null : level().getPlayerByUUID(developerTargetId);
         if (forced != null && isValidCurrentCombatPlayer(forced)) return forced;
-        LivingEntity selected = validRetaliationTarget(previous);
-        if (selected == null) selected = validRetaliationTarget(getTarget());
-        if (selected == null) selected = validRetaliationTarget(retaliationTarget);
-        if (selected != null) {
-            retaliationTarget = selected;
-            return selected;
-        }
         Player player = validCombatPlayer(previous);
         if (player == null) player = validCombatPlayer(getTarget());
-        return player != null ? player : findCombatPlayer();
+        if (player == null) player = findCombatPlayer();
+        if (player != null) return player;
+        LivingEntity selected = validRetaliationTarget(retaliationTarget);
+        if (selected == null) selected = validRetaliationTarget(previous);
+        if (selected == null) selected = validRetaliationTarget(getTarget());
+        return selected;
     }
 
     private @Nullable LivingEntity validRetaliationTarget(@Nullable LivingEntity target) {

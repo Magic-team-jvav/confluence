@@ -121,6 +121,13 @@ public class KingSlime extends BaseBoss {
         if (level().isClientSide || isNoAi() || isRemoved()) {
             return;
         }
+        LivingEntity target = getTarget();
+        if (target == null || !target.isAlive() || !canAttack(target)) {
+            if (phase != CombatPhase.NORMAL) enterPhase(CombatPhase.NORMAL);
+            normalTicks = 0;
+            if (onGround()) setHorizontalMovement(Vec3.ZERO);
+            return;
+        }
         switch (phase) {
             case NORMAL -> tickNormalPhase();
             case SHRINKING -> tickShrinkingPhase();
@@ -177,17 +184,9 @@ public class KingSlime extends BaseBoss {
 
     private void jumpTowardTarget(boolean finishingJump) {
         LivingEntity target = getTarget();
-        Vec3 direction;
-        if (target == null) {
-            float angle = random.nextFloat() * Mth.TWO_PI;
-            direction = new Vec3(Mth.cos(angle), 0.0, Mth.sin(angle));
-        } else {
-            Vec3 offset = target.position().subtract(position());
-            direction = new Vec3(offset.x, 0.0, offset.z);
-            if (direction.lengthSqr() > 1.0E-6) {
-                direction = direction.normalize();
-            }
-        }
+        if (target == null) return;
+        Vec3 offset = target.position().subtract(position());
+        Vec3 direction = new Vec3(offset.x, 0.0, offset.z).normalize();
 
         faceHorizontalMovement(direction);
 
@@ -238,21 +237,14 @@ public class KingSlime extends BaseBoss {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        Player anchorPlayer = getTarget() instanceof Player playerTarget
-                ? playerTarget : serverLevel.getRandomPlayer();
-        if (anchorPlayer == null) {
-            return;
-        }
-
         LivingEntity target = getTarget();
-        Vec3 targetPosition = target == null
-                ? anchorPlayer.getOnPos().getCenter()
-                : target.getOnPos().getCenter();
+        if (target == null || !canAttack(target)) return;
+        Vec3 targetPosition = target.getOnPos().getCenter();
         serverLevel.addFreshEntity(new CrownOfKingSlimeModelEntity(serverLevel, position().add(0.0, getDimensions(getPose()).height(), 0.0)));
 
         Vec3 destination;
         if (!isExpert()) {
-            Vec3 direction = anchorPlayer.getLookAngle().multiply(-1.0, 0.0, -1.0).normalize();
+            Vec3 direction = target.getLookAngle().multiply(-1.0, 0.0, -1.0).normalize();
             destination = targetPosition.add(direction.scale(TELEPORT_OFFSET));
         } else {
             float angle = random.nextFloat() * Mth.TWO_PI;
@@ -333,11 +325,18 @@ public class KingSlime extends BaseBoss {
         LibEntityUtils.setEntityYaw(this, wantedYaw);
     }
 
+    private int lastDimensionSize = -1;
+
     @Override
     public void tick() {
         oldSquish = squish;
         boolean groundedBeforeTick = onGround();
         super.tick();
+        int size = getLogicalSize();
+        if (size != lastDimensionSize) {
+            lastDimensionSize = size;
+            refreshDimensions();
+        }
         if (level().isClientSide) {
             tickClientVisualPhase();
         }

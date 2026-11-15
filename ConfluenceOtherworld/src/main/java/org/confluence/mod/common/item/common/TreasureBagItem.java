@@ -86,11 +86,13 @@ public class TreasureBagItem extends CustomRarityItem {
     protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {}
 
 
-    public static void createItemEntity(LivingEntity living, ServerPlayer owner) {
+    public static TreasureBagItemEntity createItemEntity(LivingEntity living, ServerPlayer owner) {
         ItemStack itemStack = TreasureBagDrop.getTreasureBag(living);
         if (itemStack != null) {
             Vec3 position = living instanceof BaseBoss boss ? boss.getRewardPosition(owner) : living.position();
-            living.level().addFreshEntity(new TreasureBagItemEntity(living.level(), position, itemStack, owner));
+            TreasureBagItemEntity bag = new TreasureBagItemEntity(living.level(), position, itemStack, owner);
+            if (living.level().addFreshEntity(bag)) return bag;
         }
+        return null;
     }
 }

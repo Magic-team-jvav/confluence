@@ -11,12 +11,11 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.boss.*;
 import org.confluence.mod.common.entity.model.CrownOfKingSlimeModelEntity;
 import org.confluence.mod.common.entity.monster.CreatureAttributeBuilder;
+import org.confluence.mod.common.entity.projectile.SlimeSpikeEntity;
 
 import static org.confluence.mod.common.entity.monster.CreatureAttributeBuilder.DynamicValue.*;
 import static org.confluence.mod.common.init.entity.ModEntities.withAttributes;
 
-///
-///
 public final class BossEntities {
     private BossEntities() {}
 
@@ -40,10 +39,7 @@ public final class BossEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<SkeletronHand>> SKELETRON_HAND = withAttributes(registerEntity("skeletron_hand", "骷髅王之手", EntityType.Builder.of(SkeletronHand::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(10).updateInterval(1).noSave()),
             () -> CreatureAttributeBuilder.boss().maxHealth(406).armor(7).armorToughness(2).attackDamage(12).followRange(300).build());
 
-    // ------------------------------------------------------------------
     // 地表：史莱姆王及王冠模型
-    // ------------------------------------------------------------------
-
     public static final DeferredHolder<EntityType<?>, EntityType<KingSlime>> KING_SLIME = withAttributes(registerEntity("king_slime", "史莱姆王", EntityType.Builder.of(KingSlime::new, MobCategory.MONSTER).sized(3.0F, 3.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(728).armor(5).armorToughness(2).attackDamage(17).followRange(100).attackKnockback(2.2)
                     .state(KingSlime.CombatPhase.NORMAL, state -> state
@@ -52,10 +48,7 @@ public final class BossEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<CrownOfKingSlimeModelEntity>> CROWN_OF_KING_SLIME_MODEL = registerEntity("crown_of_king_slime_model", "史莱姆王王冠模型", EntityType.Builder.<CrownOfKingSlimeModelEntity>of(CrownOfKingSlimeModelEntity::new, MobCategory.MISC).sized(0.0F, 0.0F).clientTrackingRange(10));
 
-    // ------------------------------------------------------------------
     // 地表夜间：克苏鲁之眼及仆从
-    // ------------------------------------------------------------------
-
     public static final DeferredHolder<EntityType<?>, EntityType<EyeOfCthulhu>> EYE_OF_CTHULHU = withAttributes(registerEntityWithEnglishName("eye_of_cthulhu", "克苏鲁之眼", "Eye of Cthulhu", EntityType.Builder.of(EyeOfCthulhu::new, MobCategory.MONSTER).sized(2.6F, 2.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(947).armor(6).armorToughness(2).attackDamage(8).followRange(300).attackKnockback(2)
                     .state(EyeOfCthulhu.DefenseState.WOUNDED, state -> state.attackDamage(2))
@@ -86,9 +79,6 @@ public final class BossEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<ServantOfCthulhu>> SERVANT_OF_CTHULHU = withAttributes(registerEntityWithEnglishName("servant_of_cthulhu", "克苏鲁之仆", "Servant of Cthulhu", EntityType.Builder.of(ServantOfCthulhu::new, MobCategory.MONSTER).sized(1.1F, 1.1F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(4).armor(0).armorToughness(0).attackDamage(7).followRange(30).attackKnockback(0.5).knockbackResistance(0.3).movementSpeed(0.25).build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
-
     public static final DeferredHolder<EntityType<?>, EntityType<DeerClops>> DEERCLOPS = withAttributes(registerEntity("deerclops", "独眼巨鹿", EntityType.Builder.of(DeerClops::new, MobCategory.MONSTER).sized(3.0F, 7.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(3094).armor(5).armorToughness(2).attackDamage(11).followRange(300).movementSpeed(0.4)
                     .state(DeerClops.CombatState.ATTACK, state -> state.windupTicks(12).duration(15).attackInterval(30))
@@ -97,10 +87,7 @@ public final class BossEntities {
                     .projectile(ModEntities.ICE_PILLAR, projectile -> projectile.damage(14))
                     .build());
 
-    // ------------------------------------------------------------------
     // 腐化：世界吞噬者及体节
-    // ------------------------------------------------------------------
-
     public static final DeferredHolder<EntityType<?>, EntityType<EaterOfWorlds>> EATER_OF_WORLDS = withAttributes(registerEntityWithEnglishName("eater_of_worlds", "世界吞噬怪", "Eater of Worlds", EntityType.Builder.of(EaterOfWorlds::new, MobCategory.MONSTER).sized(3.0F, 2.0F).clientTrackingRange(24).updateInterval(1)),
             () -> CreatureAttributeBuilder.boss().maxHealth(55).armor(2).armorToughness(0).attackDamage(13).followRange(300)
                     .state(EaterOfWorlds.BodySection.TAIL, state -> state.attackDamage(5).armor(5).attribute(Attributes.ARMOR_TOUGHNESS, 2))
@@ -110,10 +97,25 @@ public final class BossEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<BossWormPart>> EATER_OF_WORLDS_SEGMENT = withAttributes(registerEntity("boss_worm_segment", "世界吞噬者体节", EntityType.Builder.of(BossWormPart::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(32).updateInterval(1).noSave()),
             () -> CreatureAttributeBuilder.boss().maxHealth(55).armor(3).armorToughness(1).attackDamage(6).followRange(300).build());
 
-    // ------------------------------------------------------------------
-    // 机械 Boss：毁灭者、体节与探测怪
-    // ------------------------------------------------------------------
+    // 神圣之地：史莱姆女皇、三种随从与凝胶弹幕
+    public static final DeferredHolder<EntityType<?>, EntityType<QueenSlime>> QUEEN_SLIME = withAttributes(registerEntity("queen_slime", "史莱姆皇后", EntityType.Builder.of(QueenSlime::new, MobCategory.MONSTER).sized(6.0F, 6.0F).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.boss().maxHealth(7488).armor(12).armorToughness(6).attackDamage(32).followRange(128).build());
 
+    public static final DeferredHolder<EntityType<?>, EntityType<QueenSlimeMinion>> CRYSTAL_SLIME = withAttributes(registerEntity("crystal_slime", "水晶史莱姆", EntityType.Builder.of(QueenSlimeMinion::new, MobCategory.MONSTER).sized(1.04F, 1.04F).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.slime().maxHealth(59).armor(16).armorToughness(7).attackDamage(21).followRange(QueenSlimeMinion.FOLLOW_RANGE).build());
+
+    public static final DeferredHolder<EntityType<?>, EntityType<QueenSlimeMinion>> BOUNCY_SLIME = withAttributes(registerEntity("bouncy_slime", "弹力史莱姆", EntityType.Builder.of(QueenSlimeMinion::new, MobCategory.MONSTER).sized(1.04F, 1.04F).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.slime().maxHealth(59).armor(16).armorToughness(7).attackDamage(21).followRange(QueenSlimeMinion.FOLLOW_RANGE).build());
+
+    public static final DeferredHolder<EntityType<?>, EntityType<QueenSlimeMinion>> HEAVENLY_SLIME = withAttributes(registerEntity("heavenly_slime", "飞翔史莱姆", EntityType.Builder.of(QueenSlimeMinion::new, MobCategory.MONSTER).sized(1.04F, 1.04F).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.slime().maxHealth(47).armor(14).armorToughness(6).attackDamage(26).followRange(QueenSlimeMinion.FOLLOW_RANGE).build());
+
+    public static final DeferredHolder<EntityType<?>, EntityType<RoyalGel>> ROYAL_GEL = registerEntity("royal_gel", "皇家凝胶", EntityType.Builder.of(RoyalGel::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredHolder<EntityType<?>, EntityType<SlimeSpikeEntity>> CRYSTAL_SPIKE = registerEntity("crystal_spike", "水晶尖刺", EntityType.Builder.of(SlimeSpikeEntity::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(12).updateInterval(1));
+    public static final DeferredHolder<EntityType<?>, EntityType<RoyalGel>> BOUNCY_GEL = registerEntity("bouncy_gel", "弹力凝胶", EntityType.Builder.of(RoyalGel::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(12).updateInterval(1));
+
+
+    // 机械 Boss：毁灭者、体节与探测怪
     public static final DeferredHolder<EntityType<?>, EntityType<TheDestroyer>> THE_DESTROYER = withAttributes(registerEntity("the_destroyer", "毁灭者", EntityType.Builder.of(TheDestroyer::new, MobCategory.MONSTER).sized(TheDestroyer.BODY_WIDTH * TheDestroyer.HITBOX_SCALE, TheDestroyer.BODY_HEIGHT * TheDestroyer.HITBOX_SCALE).clientTrackingRange(32).updateInterval(1)),
             () -> CreatureAttributeBuilder.boss().maxHealth(31200).armor(0).armorToughness(0).attackDamage(73).followRange(300)
                     .state(TheDestroyer.BodySection.BODY, state -> state.attackDamage(25).armor(14).attribute(Attributes.ARMOR_TOUGHNESS, 6))

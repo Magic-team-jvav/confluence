@@ -336,6 +336,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(BaseSlimeModel.INNER_LAYER, BaseSlimeModel::createInnerBodyLayer);
         event.registerLayerDefinition(BaseSlimeModel.OUTER_LAYER, BaseSlimeModel::createOuterBodyLayer);
         event.registerLayerDefinition(SlimeSpikeProjectileModel.LAYER_LOCATION, SlimeSpikeProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(CrystalSpikeProjectileModel.LAYER_LOCATION, CrystalSpikeProjectileModel::createBodyLayer);
         event.registerLayerDefinition(CrownOfKingSlimeModel.LAYER_LOCATION, CrownOfKingSlimeModel::createBodyLayer);
         event.registerLayerDefinition(TerraprismaModel.LAYER_LOCATION, TerraprismaModel::createBodyLayer);
         event.registerLayerDefinition(FireworksRocketModel.LAYER_LOCATION, FireworksRocketModel::createBodyLayer);
@@ -641,6 +642,15 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), BossWormPartRenderer::new);
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/eater_of_worlds"), true, 2.2F, 0.0F));
+
+        event.registerEntityRenderer(BossEntities.QUEEN_SLIME.get(), QueenSlimeRenderer::new);
+        event.registerEntityRenderer(BossEntities.CRYSTAL_SLIME.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "crystal_slime", 2.0F));
+        event.registerEntityRenderer(BossEntities.BOUNCY_SLIME.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "bouncy_slime", 2.0F));
+        event.registerEntityRenderer(BossEntities.HEAVENLY_SLIME.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "heavenly_slime", 2.0F));
+        event.registerEntityRenderer(BossEntities.ROYAL_GEL.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "queen_slime_projectile", 1.0F));
+        event.registerEntityRenderer(BossEntities.CRYSTAL_SPIKE.get(), CrystalSpikeProjectileRenderer::new);
+        event.registerEntityRenderer(BossEntities.BOUNCY_GEL.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "bouncy_gel", 1.0F));
+
         event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), DestroyerRenderer::new);
 
         event.registerEntityRenderer(MonsterEntities.SPIKED_SLIME.get(), c -> new GeoSpecialSlimeRenderer<>(c, Confluence.asResource("slime/spiked_slime")));

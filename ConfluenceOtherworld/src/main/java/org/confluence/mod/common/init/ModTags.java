@@ -518,16 +518,17 @@ public final class ModTags {
         public static final TagKey<EntityType<?>> DO_NOT_DROPS_EVIL_SOUL = register("do_not_drops_evil_soul"); // 不掉落光明或暗影之魂
         public static final TagKey<EntityType<?>> BESTIARY_WHITELIST = register("bestiary_whitelist"); // 怪物图鉴白名单
         public static final TagKey<EntityType<?>> BESTIARY_BLACKLIST = register("bestiary_blacklist"); // 怪物图鉴黑名单
-        public static final TagKey<EntityType<?>> FLESH_ALLIANCE = register("flesh_alliance");
-        public static final TagKey<EntityType<?>> JELLY_FISH = register("jelly_fish");
-        public static final TagKey<EntityType<?>> GOLDEN_SLIME_REPLACEABLE = register("golden_slime_replaceable"); // 特殊世界中可被金史莱姆替换的普通史莱姆
+
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_WHITELIST = register("critter_companionship_whitelist"); // 小动物保护指南白名单
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_BLACKLIST = register("critter_companionship_blacklist"); // 小动物保护指南黑名单
         public static final TagKey<EntityType<?>> ENEMY_BANNER_WHITELIST = register("enemy_banner_whitelist"); // 旗帜白名单
         public static final TagKey<EntityType<?>> ENEMY_BANNER_BLACKLIST = register("enemy_banner_blacklist"); // 旗帜黑名单
         public static final TagKey<EntityType<?>> GORE_EFFECT_BLACKLIST = register("gore_effect_blacklist"); // 肢解效果黑名单
         public static final TagKey<EntityType<?>> NPC_INVULNERABLE_TO_PLAYER = register("npc_invulnerable_to_player"); // 能够免疫玩家伤害的NPC
-        public static final TagKey<EntityType<?>> CORRUPT = register("corrupt");
+        public static final TagKey<EntityType<?>> CORRUPT = register("corrupt"); // 腐化生物，用于腐化相关效果判定
+        public static final TagKey<EntityType<?>> FLESH_ALLIANCE = register("flesh_alliance"); // 血肉同盟成员，用于排除同阵营攻击目标
+        public static final TagKey<EntityType<?>> JELLY_FISH = register("jelly_fish"); // 水母类生物，归入美西螈的捕猎目标
+        public static final TagKey<EntityType<?>> GOLDEN_SLIME_REPLACEABLE = register("golden_slime_replaceable"); // 特殊世界中可被金史莱姆替换的普通史莱姆
         public static final TagKey<EntityType<?>> NO_BLOOD = register("no_blood"); // 不会喷血的生物
 
         private static TagKey<EntityType<?>> register(String id) {

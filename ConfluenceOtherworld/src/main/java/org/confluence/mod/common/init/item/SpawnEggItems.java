@@ -299,6 +299,7 @@ public final class SpawnEggItems {
     public static final DeferredItem<DeferredSpawnEggItem> SPAZMATISM_SPAWN_EGG = register(BossEntities.SPAZMATISM, "魔焰眼刷怪蛋");
     public static final DeferredItem<TwinEyeSpawnEggItem> THE_TWINS_SPAWN_EGG = registerTwins("双子魔眼刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> SKELETRON_PRIME_SPAWN_EGG = register(BossEntities.SKELETRON_PRIME, "机械骷髅王刷怪蛋");
+    public static final DeferredItem<DeferredSpawnEggItem> QUEEN_SLIME_SPAWN_EGG = register(BossEntities.QUEEN_SLIME, "史莱姆皇后刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> THE_DESTROYER_SPAWN_EGG = register(BossEntities.THE_DESTROYER, "毁灭者刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> PLANTERA_SPAWN_EGG = register(BossEntities.PLANTERA, "世纪之花刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> LUNATIC_CULTIST_SPAWN_EGG = register(BossEntities.LUNATIC_CULTIST, "拜月教邪教徒刷怪蛋");

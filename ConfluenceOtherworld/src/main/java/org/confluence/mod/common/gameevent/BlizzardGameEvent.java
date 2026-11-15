@@ -9,7 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.util.OverworldUtils;
 
 /// 暴风雪。
@@ -127,6 +127,6 @@ public enum BlizzardGameEvent implements GameEvent, WindPushedEvent {
 
     @Override
     public boolean windPushEnabled() {
-        return CommonConfigs.BLIZZARD_PUSHES_ENTITIES.get();
+        return ModCommonConfigs.BLIZZARD_PUSHES_ENTITIES.get();
     }
 }

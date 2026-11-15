@@ -34,7 +34,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IDedicatedServer;
@@ -125,7 +125,7 @@ public enum HardmodeConvertor implements IGlobalData {
             if (level.getServer() instanceof IDedicatedServer server && !server.confluence$isOnHardmodeConversation()) {
                 server.confluence$setOnHardmodeConversation(true);
             }
-            if (CommonConfigs.INSTANTLY_HARDMODE_CONVERSION.get()) {
+            if (ModCommonConfigs.INSTANTLY_HARDMODE_CONVERSION.get()) {
                 sanctification.removeIf(entry -> {
                     ChunkPos chunkPos = entry.getA();
 

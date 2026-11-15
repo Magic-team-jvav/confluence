@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 import org.mesdag.portlib.network.IPortPacket;
@@ -44,7 +44,7 @@ public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, 
 
     /// @see PlayerUtils#dropMoney(Player)
     public static boolean replaceCombatKillPacket(ServerPlayer player, Component message) {
-        if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
+        if (ModCommonConfigs.SHOW_MONEY_DROPS.get()) {
             CompoundTag tag = LibEntityUtils.getOrCreatePersistedData(player);
             long drops = tag.getLong("confluence:drops_money");
             tag.remove("confluence:drops_money");

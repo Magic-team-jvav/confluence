@@ -8,7 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.wind.WindMath;
 import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.util.ModUtils;
@@ -78,7 +78,7 @@ public enum SandstormGameEvent implements GameEvent, WindPushedEvent {
         // 恒速恒向：锁定风速与方向，并关掉温度噪声造成的方向偏差
         WindState state = WindState.INSTANCE;
         lockedAngle = state.angle();
-        float forcedSpeed = (float) (double) CommonConfigs.WIND_SANDSTORM_FORCED_SPEED.get();
+        float forcedSpeed = (float) (double) ModCommonConfigs.WIND_SANDSTORM_FORCED_SPEED.get();
         state.override(forcedSpeed, lockedAngle, remainingTicks);
         state.setDirectionBlend(0.0F);
     }
@@ -152,6 +152,6 @@ public enum SandstormGameEvent implements GameEvent, WindPushedEvent {
 
     @Override
     public boolean windPushEnabled() {
-        return CommonConfigs.SANDSTORM_PUSHES_ENTITIES.get();
+        return ModCommonConfigs.SANDSTORM_PUSHES_ENTITIES.get();
     }
 }

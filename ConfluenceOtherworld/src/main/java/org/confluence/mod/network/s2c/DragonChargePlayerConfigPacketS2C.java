@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
@@ -21,12 +21,12 @@ public record DragonChargePlayerConfigPacketS2C(boolean enabled) implements IPor
             .map(DragonChargePlayerConfigPacketS2C::new, DragonChargePlayerConfigPacketS2C::enabled);
 
     public DragonChargePlayerConfigPacketS2C() {
-        this(CommonConfigs.isDragonChargePlayer());
+        this(ModCommonConfigs.isDragonChargePlayer());
     }
 
     @Override
     public void work(Player player) {
-        CommonConfigs.handleDragonChargePlayer(enabled);
+        ModCommonConfigs.handleDragonChargePlayer(enabled);
     }
 
     @Override

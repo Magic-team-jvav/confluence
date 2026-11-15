@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.gui.hud.CrosshairHud;
 import org.confluence.mod.mixed.IGui;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,17 +23,17 @@ public abstract class GuiMixin implements IGui {
 
     @ModifyVariable(method = "renderEffects", at = @At(value = "STORE", ordinal = 0/* first */), /* ISTORE 12 */name = "i")
     private int modify0(int i) {
-        return ClientConfigs.leftEffectIcon ? 25 : i;
+        return ModClientConfigs.leftEffectIcon ? 25 : i;
     }
 
     @ModifyVariable(method = "renderEffects", at = @At(value = "STORE", ordinal = 1/* second */), /* ISTORE 12 */name = "i")
     private int modify1(int i) {
-        return ClientConfigs.leftEffectIcon ? -i : i;
+        return ModClientConfigs.leftEffectIcon ? -i : i;
     }
 
     @ModifyVariable(method = "renderEffects", at = @At(value = "STORE", ordinal = 2/* third */), /* ISTORE 12 */name = "i")
     private int modify2(int i) {
-        return ClientConfigs.leftEffectIcon ? -i : i;
+        return ModClientConfigs.leftEffectIcon ? -i : i;
     }
 
     @WrapOperation(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V", ordinal = 0))

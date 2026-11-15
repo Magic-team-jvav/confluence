@@ -21,7 +21,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.worldgen.feature.MeteoriteFeature;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 
@@ -42,7 +42,7 @@ public enum MeteoriteTracker implements IGlobalData {
     private final LongSet unavailableChunks = new LongOpenHashSet();
 
     public void tick(ServerLevel level) {
-        if (!CommonConfigs.DO_METEORITE_SPAWNING.get()) return;
+        if (!ModCommonConfigs.DO_METEORITE_SPAWNING.get()) return;
         if (spawnAtNextNight && LibDateUtils.getDayTime(level) == LibDateUtils._00$00) {
             this.spawnAtNextNight = false;
             generateLandingDetail(level, Mth.randomBetweenInclusive(level.random, 200, 400));
@@ -62,7 +62,7 @@ public enum MeteoriteTracker implements IGlobalData {
     }
 
     public void generateLandingDetail(ServerLevel level, int landingTime) {
-        if (!shouldGenerate || !CommonConfigs.DO_METEORITE_SPAWNING.get()) return;
+        if (!shouldGenerate || !ModCommonConfigs.DO_METEORITE_SPAWNING.get()) return;
         this.shouldGenerate = false;
 
         // 获取玩家数量最小的象限

@@ -36,7 +36,7 @@ import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.*;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModStructures;
@@ -557,7 +557,7 @@ public class DungeonStructure extends Structure {
         ) {
             iterateDungeon(level, player.chunkPosition(), structureStart -> {
                 BoundingBox boundingBox = IStructureStart.of(structureStart).confluence$cachedBoundingBox();
-                boolean shouldAlert = CommonConfigs.ALERT_PLAYER_IN_DUNGEON.get();
+                boolean shouldAlert = ModCommonConfigs.ALERT_PLAYER_IN_DUNGEON.get();
                 if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + getUpperBoundsFloor1()) {
                     level.playSound(null, player.blockPosition(), ModSoundEvents.ROAR.get(), SoundSource.HOSTILE);
                     if (shouldAlert) {

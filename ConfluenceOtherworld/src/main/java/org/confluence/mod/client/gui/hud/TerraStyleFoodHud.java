@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.confluence.lib.util.LibRenderUtils;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.mesdag.portlib.client.PortDeltaTicker;
 import org.mesdag.portlib.client.PortGuiLayer;
@@ -21,14 +21,14 @@ import static org.confluence.mod.util.ClientUtils.draw;
 public class TerraStyleFoodHud implements PortGuiLayer {
     @Override
     public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
-        if (!ClientConfigs.terraStyleFood) return;
+        if (!ModClientConfigs.terraStyleFood) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !LibRenderUtils.shouldDrawSurvivalElements(minecraft))
             return;
         LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
-        ClientConfigs.foodStyle.render(guiGraphics, minecraft);
+        ModClientConfigs.foodStyle.render(guiGraphics, minecraft);
 
         minecraft.getProfiler().pop();
     }

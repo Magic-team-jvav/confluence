@@ -533,6 +533,7 @@ public final class ModTags {
         public static final TagKey<EntityType<?>> FLESH_ALLIANCE = register("flesh_alliance");
         public static final TagKey<EntityType<?>> JELLY_FISH = register("jelly_fish");
         public static final TagKey<EntityType<?>> GOLDEN_SLIME_REPLACEABLE = register("golden_slime_replaceable"); // 特殊世界中可被金史莱姆替换的普通史莱姆
+        public static final TagKey<EntityType<?>> NO_BLOOD = register("no_blood"); // 不会喷血的生物
 
         private static TagKey<EntityType<?>> register(String id) {
             return Confluence.asTagKey(Registries.ENTITY_TYPE, id);

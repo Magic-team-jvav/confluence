@@ -3,7 +3,7 @@ package org.confluence.mod.client.handler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.network.c2s.FlailControlPacketC2S;
 
@@ -15,7 +15,7 @@ public final class FlailHandler {
         ClientWeaponInputManager.tick(player);
         boolean isFlail = mainHandItem.getItem() instanceof BaseFlailItem;
         Minecraft minecraft = Minecraft.getInstance();
-        boolean keyHeld = isFlail && (ClientConfigs.usesLeftWeaponButton(mainHandItem)
+        boolean keyHeld = isFlail && (ModClientConfigs.usesLeftWeaponButton(mainHandItem)
                 ? attackHeld : minecraft.options.keyUse.isDown());
         keyHeld &= minecraft.screen == null && minecraft.isWindowActive() && player.isAlive() && !player.isSpectator();
         if (isFlail) {

@@ -11,7 +11,7 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.ReturnException;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.EyeOfCthulhu;
@@ -75,7 +75,7 @@ public enum BossDelaySpawner {
     }
 
     public static void spawnEyeOfCthulhu(ServerLevel level) {
-        if (!CommonConfigs.EYE_OF_CTHULHU_NATURE_SPAWNING.get()) return;
+        if (!ModCommonConfigs.EYE_OF_CTHULHU_NATURE_SPAWNING.get()) return;
         /// 必须用实时状态判定：事件系统里的计数是「上一 tick 的快照」，
         /// 会漏掉本 tick 内刚启动的事件，从而在血月/灯笼夜的同一夜里把 EoC 也排进队列。
         if (GameEventSystem.INSTANCE.getStartedEventAmount(true, true) > 0) return;
@@ -115,7 +115,7 @@ public enum BossDelaySpawner {
     }
 
     public static void spawnDeerClops(ServerLevel level) {
-        if (!CommonConfigs.DEERCLOPS_NATURE_SPAWNING.get()) return;
+        if (!ModCommonConfigs.DEERCLOPS_NATURE_SPAWNING.get()) return;
         if (!level.isRaining()) return;
         if (BossDelaySpawner.INSTANCE.hasSameTypeInQueue(BossEntities.DEERCLOPS.get())) return;
         for (ServerPlayer player : level.players()) {

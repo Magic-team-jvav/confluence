@@ -43,7 +43,7 @@ import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
@@ -338,7 +338,7 @@ public enum NPCSpawner implements IGlobalData {
         forgetNPC(living);
         if (living.shouldInteract() || living.getType() == NpcEntities.SKELETON_MERCHANT.get())
             return;
-        if ((living.isAlive() ? CommonConfigs.BROADCAST_NPC_MSG.get() : CommonConfigs.BROADCAST_NPC_DEATH_MSG.get())
+        if ((living.isAlive() ? ModCommonConfigs.BROADCAST_NPC_MSG.get() : ModCommonConfigs.BROADCAST_NPC_DEATH_MSG.get())
                 && living.getType() != NpcEntities.OLD_MAN.get()) {
             MutableComponent message;
             if (living.isTownPet()) {
@@ -473,7 +473,7 @@ public enum NPCSpawner implements IGlobalData {
         if (GameEventSystem.shouldDenyNatureSpawn()) return;
         Set<Region> processedRegions = new ObjectOpenHashSet<>();
         List<ServerPlayer> players = serverLevel.players();
-        int start = players.isEmpty() ? 0 : (int) ((serverLevel.getGameTime() / CommonConfigs.NPC_SPAWN_INTERVAL.get()) % players.size());
+        int start = players.isEmpty() ? 0 : (int) ((serverLevel.getGameTime() / ModCommonConfigs.NPC_SPAWN_INTERVAL.get()) % players.size());
         for (int index = 0; index < players.size(); index++) {
             ServerPlayer player = players.get((start + index) % players.size());
             if (player.isSpectator()) continue;
@@ -647,7 +647,7 @@ public enum NPCSpawner implements IGlobalData {
             if (!GameEventSystem.INSTANCE.isEventStarted(SolarEclipseGameEvent.KEY) &&
                     LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._12$00, player.level())
             ) {
-                int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
+                int bound = 30000 / ModCommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
                 if (player.getRandom1211().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != NpcEntities.OLD_MAN.get()) >= 2) {
                     return spawnAtPos(player.serverLevel(), pos, NpcEntities.TRAVELING_MERCHANT.get());
                 }
@@ -807,7 +807,7 @@ public enum NPCSpawner implements IGlobalData {
 
     /// 只检查玩家附近已加载的地牢；初次发现昼夜均可，死亡或召唤后等下一个白天。
     public void     tickDungeonResidents(ServerLevel level) {
-        if (level.getGameTime() % 40 != 0 || !CommonConfigs.DO_NPC_SPAWNING.get()
+        if (level.getGameTime() % 40 != 0 || !ModCommonConfigs.DO_NPC_SPAWNING.get()
                 || !level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
                 || KillBoard.INSTANCE.isDefeated(BossEntities.SKELETRON.get())) return;
         Set<ChunkPos> checked = new HashSet<>();
@@ -861,7 +861,7 @@ public enum NPCSpawner implements IGlobalData {
                 resident.oldMan = existing.getUUID();
                 continue;
             }
-            if (resident.respawnAfter != 0 && (!CommonConfigs.NPC_AUTO_RESPAWN.get()
+            if (resident.respawnAfter != 0 && (!ModCommonConfigs.NPC_AUTO_RESPAWN.get()
                     || level.getDayTime() < resident.respawnAfter || !LibDateUtils.isDay(level)))
                 continue;
             OldManNPC oldMan = NpcEntities.OLD_MAN.get().create(level);
@@ -952,7 +952,7 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     private boolean canAutomaticallyReturn(Region region, EntityType<?> type) {
-        if (CommonConfigs.NPC_AUTO_RESPAWN.get() || type == NpcEntities.TRAVELING_MERCHANT.get()
+        if (ModCommonConfigs.NPC_AUTO_RESPAWN.get() || type == NpcEntities.TRAVELING_MERCHANT.get()
                 || type == NpcEntities.SKELETON_MERCHANT.get()) return true;
         Reference2BooleanMap<EntityType<?>> deceased = deceasedResidents.get(region);
         return deceased == null || deceased.reference2BooleanEntrySet().stream()
@@ -1022,7 +1022,7 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     public static void broadcastMessageToRegion(Level level, BaseNPC npc, Component message) {
-        if (level.isClientSide || !(npc.isAlive() ? CommonConfigs.BROADCAST_NPC_MSG.get() : CommonConfigs.BROADCAST_NPC_DEATH_MSG.get()))
+        if (level.isClientSide || !(npc.isAlive() ? ModCommonConfigs.BROADCAST_NPC_MSG.get() : ModCommonConfigs.BROADCAST_NPC_DEATH_MSG.get()))
             return;
         Region region = npc.getRegion();
         for (Player player : level.players()) {
@@ -1054,8 +1054,8 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     public static void respawnNPC(ServerLevel level) {
-        if (CommonConfigs.DO_NPC_SPAWNING.get() &&
-                level.getGameTime() % CommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
+        if (ModCommonConfigs.DO_NPC_SPAWNING.get() &&
+                level.getGameTime() % ModCommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
                 level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
         ) NPCSpawner.INSTANCE.checkNpcRespawn(level);
     }

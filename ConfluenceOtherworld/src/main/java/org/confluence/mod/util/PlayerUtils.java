@@ -42,7 +42,7 @@ import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.PlayerAboutToEmptyTargetSweepEvent;
 import org.confluence.mod.api.item.ISpecialSweepWeapon;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.data.map.DiggingPower;
@@ -482,7 +482,7 @@ public final class PlayerUtils {
 
     /// @see PlayerDeathInfoPacketS2C#replaceCombatKillPacket(ServerPlayer, Component)
     public static void dropMoney(Player player) {
-        if (!CommonConfigs.PLAYER_DROPS_MONEY.get()) {
+        if (!ModCommonConfigs.PLAYER_DROPS_MONEY.get()) {
             // 不掉落钱币时把钱币统一收进钱币栏，避免背包里的钱币随死亡掉落
             tryCostMoney(player, 0, false);
             return;
@@ -498,7 +498,7 @@ public final class PlayerUtils {
         tryCostMoney(player, drops, false);
         ModUtils.dropMoney(drops, player.getX(), player.getY(), player.getZ(), player.level());
 
-        if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
+        if (ModCommonConfigs.SHOW_MONEY_DROPS.get()) {
             LibEntityUtils.getOrCreatePersistedData(player).putLong("confluence:drops_money", drops);
         }
     }
@@ -511,11 +511,11 @@ public final class PlayerUtils {
         AABB aabb = new AABB(player.blockPosition()).inflate(Short.MAX_VALUE);
         int min, max;
         if (player.level().getEntitiesOfClass(LivingEntity.class, aabb, living -> living instanceof Boss).isEmpty()) {
-            min = CommonConfigs.DEFAULT_RESPAWN_TIME_MIN.get();
-            max = CommonConfigs.DEFAULT_RESPAWN_TIME_MAX.get();
+            min = ModCommonConfigs.DEFAULT_RESPAWN_TIME_MIN.get();
+            max = ModCommonConfigs.DEFAULT_RESPAWN_TIME_MAX.get();
         } else {
-            min = CommonConfigs.BOSS_RESPAWN_TIME_MIN.get();
-            max = CommonConfigs.BOSS_RESPAWN_TIME_MAX.get();
+            min = ModCommonConfigs.BOSS_RESPAWN_TIME_MIN.get();
+            max = ModCommonConfigs.BOSS_RESPAWN_TIME_MAX.get();
         }
         if (min == max) return min;
         return player.getRandom1211().nextInt(Math.min(min, max), Math.max(min, max));
@@ -619,11 +619,11 @@ public final class PlayerUtils {
     }
 
     public static boolean skipHealIfOnFire(Player player) {
-        return CommonConfigs.TERRA_STYLE_FIRE_DAMAGE.get() && player.isOnFire();
+        return ModCommonConfigs.TERRA_STYLE_FIRE_DAMAGE.get() && player.isOnFire();
     }
 
     public static float applyTerraFire(DamageSource damageSource, float amount) {
-        if (CommonConfigs.TERRA_STYLE_FIRE_DAMAGE.get() && damageSource.is(DamageTypeTags.IS_FIRE)) {
+        if (ModCommonConfigs.TERRA_STYLE_FIRE_DAMAGE.get() && damageSource.is(DamageTypeTags.IS_FIRE)) {
             return amount * 4;
         }
         return amount;
@@ -645,7 +645,7 @@ public final class PlayerUtils {
     }
 
     public static void askForSoftcore(ServerPlayer player) {
-        if (CommonConfigs.STOP_ASK_FOR_SOFTCORE.get()) return;
+        if (ModCommonConfigs.STOP_ASK_FOR_SOFTCORE.get()) return;
         ServerLevel overworld = player.server.getLevel(OverworldUtils.dimension());
         if (overworld == null) return;
         if (overworld.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) return;

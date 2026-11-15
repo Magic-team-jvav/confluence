@@ -21,7 +21,7 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.OwnedSummon;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.entity.animal.BaseCritter;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
@@ -40,7 +40,7 @@ public final class MonsterAttributeScaling {
     /// 所有实体加入世界的路径共用此入口，包括自然生成、刷怪蛋、脚本及区块读档。
     /// 仅新生成且原本满血的实体补齐新生命上限；读档与配置重载均不治疗。
     public static void apply(LivingEntity entity, boolean freshSpawn) {
-        if (entity.level().isClientSide || CommonConfigs.SPEC == null || !CommonConfigs.SPEC.isLoaded())
+        if (entity.level().isClientSide || ModCommonConfigs.SPEC == null || !ModCommonConfigs.SPEC.isLoaded())
             return;
         boolean eligible = isEligible(entity);
         CreatureDifficultyScaling.apply(entity, freshSpawn);
@@ -71,7 +71,7 @@ public final class MonsterAttributeScaling {
             return false;
         if (!(entity instanceof Enemy) && entity.getType().getCategory() != MobCategory.MONSTER)
             return false;
-        return CommonConfigs.ENHANCE_ALL_MONSTER.get()
+        return ModCommonConfigs.ENHANCE_ALL_MONSTER.get()
                 || Confluence.MODID.equals(BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace());
     }
 
@@ -107,14 +107,14 @@ public final class MonsterAttributeScaling {
     }
 
     private enum Multiplier {
-        HEALTH(() -> Attributes.MAX_HEALTH, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_HEALTH),
-        DAMAGE(() -> LibAttributes.getAttackDamage().value(), () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_DAMAGE),
-        ARMOR(() -> Attributes.ARMOR, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR, () -> CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_ARMOR),
-        ARMOR_TOUGHNESS(() -> Attributes.ARMOR_TOUGHNESS, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS, () -> CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS),
-        MOVEMENT_SPEED(() -> Attributes.MOVEMENT_SPEED, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED, () -> CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED),
-        FLYING_SPEED(() -> Attributes.FLYING_SPEED, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_FLYING_SPEED, () -> CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_FLYING_SPEED),
-        KNOCKBACK_RESISTANCE(() -> Attributes.KNOCKBACK_RESISTANCE, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE, () -> CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE),
-        FOLLOW_RANGE(() -> Attributes.FOLLOW_RANGE, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE, () -> CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE);
+        HEALTH(() -> Attributes.MAX_HEALTH, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_HEALTH),
+        DAMAGE(() -> LibAttributes.getAttackDamage().value(), () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_DAMAGE),
+        ARMOR(() -> Attributes.ARMOR, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR, () -> ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_ARMOR),
+        ARMOR_TOUGHNESS(() -> Attributes.ARMOR_TOUGHNESS, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS, () -> ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS),
+        MOVEMENT_SPEED(() -> Attributes.MOVEMENT_SPEED, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED, () -> ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED),
+        FLYING_SPEED(() -> Attributes.FLYING_SPEED, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_FLYING_SPEED, () -> ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_FLYING_SPEED),
+        KNOCKBACK_RESISTANCE(() -> Attributes.KNOCKBACK_RESISTANCE, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE, () -> ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE),
+        FOLLOW_RANGE(() -> Attributes.FOLLOW_RANGE, () -> ModCommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE, () -> ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE);
 
         private final Supplier<Attribute> attribute;
         private final Supplier<ForgeConfigSpec.DoubleValue> config;

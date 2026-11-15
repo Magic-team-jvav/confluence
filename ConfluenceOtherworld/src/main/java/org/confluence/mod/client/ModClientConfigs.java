@@ -9,11 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
-import net.minecraftforge.common.ForgeConfigSpec.Builder;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
-import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraftforge.common.ForgeConfigSpec.*;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.confluence.mod.Confluence;
@@ -28,7 +24,7 @@ import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
 import java.util.List;
 import java.util.Locale;
 
-public final class ClientConfigs {
+public final class ModClientConfigs {
     public static BooleanValue ENABLE_NON_SPIDER_MODEL;
     public static int showWindParticles = 90;
     public static float minEctoMistEffectRadius = 10;

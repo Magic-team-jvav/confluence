@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public final class CommonConfigs {
+public final class ModCommonConfigs {
     public static BooleanValue ENEMY_DROPS_MONEY;
     public static BooleanValue AUTO_STACK_GELS_COLOR;
     public static BooleanValue RETURN_POTION_GLASS_BOTTLE;

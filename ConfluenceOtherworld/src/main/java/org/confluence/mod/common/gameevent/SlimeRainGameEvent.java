@@ -26,7 +26,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
@@ -100,7 +100,7 @@ public enum SlimeRainGameEvent implements GameEvent {
         }
         GameEventSystem.removeUnTracked(spawned, level);
         List<ServerPlayer> players = level.players();
-        if (spawned.size() >= CommonConfigs.SLIME_RAIN_EVENT_MAX_ENEMIES_BASE.get() + players.size() * CommonConfigs.SLIME_RAIN_EVENT_MAX_ENEMIES_PER_PLAYER.get()) {
+        if (spawned.size() >= ModCommonConfigs.SLIME_RAIN_EVENT_MAX_ENEMIES_BASE.get() + players.size() * ModCommonConfigs.SLIME_RAIN_EVENT_MAX_ENEMIES_PER_PLAYER.get()) {
             return;
         }
         for (ServerPlayer player : players) {
@@ -109,12 +109,12 @@ public enum SlimeRainGameEvent implements GameEvent {
             NaturalSpawnerUtils.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtils.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();
             if (speed <= 0) continue;
-            int interval = Mth.floor(20 * CommonConfigs.SLIME_RAIN_EVENT_SPAWN_INTERVAL_FACTOR.get() / speed);
+            int interval = Mth.floor(20 * ModCommonConfigs.SLIME_RAIN_EVENT_SPAWN_INTERVAL_FACTOR.get() / speed);
             if (haveKingSlime) {
                 interval *= 5;
             }
             if (level.random.nextInt(interval) != 0) continue;
-            int tryTimes = data.getCount(CommonConfigs.SLIME_RAIN_EVENT_SPAWN_GROUP_SIZE.get());
+            int tryTimes = data.getCount(ModCommonConfigs.SLIME_RAIN_EVENT_SPAWN_GROUP_SIZE.get());
             for (int i = 0; i < tryTimes; i++) {
                 Optional<MobSpawnSettings.SpawnerData> random = spawnerData.getRandom(level.random);
                 if (random.isEmpty()) continue;
@@ -146,7 +146,7 @@ public enum SlimeRainGameEvent implements GameEvent {
         if (started && living.getTags().contains(ENTITY_TAG)) {
             ++this.killed;
             if (haveKingSlime) return;
-            int count = CommonConfigs.SLIME_RAIN_EVENT_KING_SLIME_SPAWN_REQUIRED_KILL_COUNT.get();
+            int count = ModCommonConfigs.SLIME_RAIN_EVENT_KING_SLIME_SPAWN_REQUIRED_KILL_COUNT.get();
             if (spawnedKingSlime) {
                 count = count * 3 / 2;
             }
@@ -180,13 +180,13 @@ public enum SlimeRainGameEvent implements GameEvent {
         ) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 boolean expert = LibUtils.isAtLeastExpert(level);
-                if (player.getMaxHealth() >= CommonConfigs.SLIME_RAIN_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get() &&
-                        player.getArmorValue() >= CommonConfigs.SLIME_RAIN_EVENT_REQUIRED_PLAYER_ARMOR.get()
+                if (player.getMaxHealth() >= ModCommonConfigs.SLIME_RAIN_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get() &&
+                        player.getArmorValue() >= ModCommonConfigs.SLIME_RAIN_EVENT_REQUIRED_PLAYER_ARMOR.get()
                 ) {
-                    invChance = CommonConfigs.SLIME_RAIN_EVENT_FREQUENCY.get(); // 满足要求
+                    invChance = ModCommonConfigs.SLIME_RAIN_EVENT_FREQUENCY.get(); // 满足要求
                     break;
                 } else if (expert) {
-                    invChance = CommonConfigs.SLIME_RAIN_EVENT_FREQUENCY.get() * 5; // 不满足要求但是专家模式
+                    invChance = ModCommonConfigs.SLIME_RAIN_EVENT_FREQUENCY.get() * 5; // 不满足要求但是专家模式
                     break;
                 }
             }

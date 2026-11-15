@@ -17,7 +17,7 @@ import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.OwnedSummon;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.client.PortDeltaTicker;
 import org.mesdag.portlib.client.PortGuiLayer;
@@ -42,7 +42,7 @@ public class HitMarkerHud implements PortGuiLayer {
         Minecraft minecraft = Minecraft.getInstance();
         boolean localDamage = minecraft.player != null
                 && (isLocalDamage(source.getEntity(), minecraft.player) || isLocalDamage(source.getDirectEntity(), minecraft.player));
-        if (!ClientConfigs.hitMarker || minecraft.player == null || victim == minecraft.player || !localDamage) {
+        if (!ModClientConfigs.hitMarker || minecraft.player == null || victim == minecraft.player || !localDamage) {
             return;
         }
 
@@ -76,18 +76,18 @@ public class HitMarkerHud implements PortGuiLayer {
 
     private static boolean isCategoryEnabled(DamageSource source) {
         if (source.is(LibDamageTypes.SUMMONER) || isSummon(source.getEntity()) || isSummon(source.getDirectEntity())) {
-            return ClientConfigs.hitMarkerSummon;
+            return ModClientConfigs.hitMarkerSummon;
         }
         if (source.is(PortTags.DamageTypes.IS_MAGIC)) {
-            return ClientConfigs.hitMarkerMagic;
+            return ModClientConfigs.hitMarkerMagic;
         }
         if (source.is(LibTags.DamageTypes.AS_MELEE_ATTACK)) {
-            return ClientConfigs.hitMarkerMelee;
+            return ModClientConfigs.hitMarkerMelee;
         }
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            return ClientConfigs.hitMarkerRanged;
+            return ModClientConfigs.hitMarkerRanged;
         }
-        return ClientConfigs.hitMarkerOther;
+        return ModClientConfigs.hitMarkerOther;
     }
 
     public static void clear() {
@@ -97,7 +97,7 @@ public class HitMarkerHud implements PortGuiLayer {
     @Override
     public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (!ClientConfigs.hitMarker || minecraft.player == null || minecraft.level == null) {
+        if (!ModClientConfigs.hitMarker || minecraft.player == null || minecraft.level == null) {
             clear();
             return;
         }

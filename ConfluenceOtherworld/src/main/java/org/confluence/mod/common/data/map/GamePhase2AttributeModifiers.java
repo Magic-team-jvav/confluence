@@ -19,7 +19,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
@@ -53,7 +53,7 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
         if (living.level().isClientSide) return;
         if (living instanceof Player) return;
         EntityType<?> type = living.getType();
-        if (!CommonConfigs.ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES.get() &&
+        if (!ModCommonConfigs.ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES.get() &&
                 ResourceLocation.DEFAULT_NAMESPACE.equals(type.builtInRegistryHolder().key().location().getNamespace())
         ) return;
 

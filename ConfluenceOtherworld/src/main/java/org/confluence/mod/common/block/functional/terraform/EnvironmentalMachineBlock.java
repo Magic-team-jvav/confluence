@@ -43,7 +43,7 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.mod.client.renderer.block.EnvironmentalMachineRenderer;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.data.saved.EnvironmentalMachines;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.util.AchievementUtils;
@@ -217,7 +217,7 @@ public class EnvironmentalMachineBlock extends Block implements EntityBlock {
 
     // 混装事故消耗参与反应的溶液并污染地形，爆炸保留机器的上下两部分。
     private static void failMixedSolutions(ServerLevel level, BlockPos origin, Player player) {
-        if (!CommonConfigs.ENVIRONMENTAL_MACHINE_MIXED_EXPLOSION.get()) {
+        if (!ModCommonConfigs.ENVIRONMENTAL_MACHINE_MIXED_EXPLOSION.get()) {
             player.displayClientMessage(Component.translatable("message.confluence.environmental_machine.mixed"), true);
             return;
         }
@@ -320,7 +320,7 @@ public class EnvironmentalMachineBlock extends Block implements EntityBlock {
                 solution = data.solution;
                 System.arraycopy(data.slotSolutions, 0, slotSolutions, 0, SLOT_COUNT);
                 mixedSolutions = data.hasMixedSolutions();
-                mixedExplosionEnabled = CommonConfigs.ENVIRONMENTAL_MACHINE_MIXED_EXPLOSION.get();
+                mixedExplosionEnabled = ModCommonConfigs.ENVIRONMENTAL_MACHINE_MIXED_EXPLOSION.get();
                 System.arraycopy(data.slots, 0, stored, 0, SLOT_COUNT);
                 activeSlot = data.activeSlot;
                 enabled = data.enabled;

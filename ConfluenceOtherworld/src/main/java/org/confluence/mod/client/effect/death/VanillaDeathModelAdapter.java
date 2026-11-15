@@ -20,8 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.client.DummyMultiBufferSource;
-import org.confluence.mod.client.ClientConfigs;
-import org.confluence.mod.client.handler.DeathEffectManager;
+import org.confluence.mod.client.ModClientConfigs;
+import org.confluence.mod.client.handler.DeathEffectHandler;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.ILivingEntityRenderer;
@@ -95,7 +95,7 @@ public final class VanillaDeathModelAdapter {
         offsetGeoArmor(entity, part, armorItemStack);
         part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.5 + 0.2)));
 
-        DeathEffectManager.addPart(part);
+        DeathEffectHandler.addPart(part);
     }
 
     private static void makeArmorPart(
@@ -111,7 +111,7 @@ public final class VanillaDeathModelAdapter {
     ) {
         ItemStack armorItemStack = entity.getItemBySlot(slot);
         Item armorItemStackItem = armorItemStack.getItem();
-        if (ClientConfigs.goreEffect.isInvalidFor(null, armorItemStackItem) ||
+        if (ModClientConfigs.goreEffect.isInvalidFor(null, armorItemStackItem) ||
                 !(armorItemStackItem instanceof Equipable equipable) ||
                 equipable.getEquipmentSlot() != slot
         ) {
@@ -170,7 +170,7 @@ public final class VanillaDeathModelAdapter {
             Vec3 deathMotion,
             @Nullable ResourceLocation texture
     ) {
-        if (!DeathEffectManager.canAddPart() || !modelPart.visible) return;
+        if (!DeathEffectHandler.canAddPart() || !modelPart.visible) return;
         poseStack.pushPose(true);
         if (renderer.getModel().young && renderer.getModel() instanceof AgeableListModelAccessor model) {
             for (ModelPart bodyPart : model.callBodyParts()) {
@@ -199,7 +199,7 @@ public final class VanillaDeathModelAdapter {
         Transformation transformation = new Transformation(pose);
         Vector3f scale = transformation.getScale();
         for (ModelPart.Cube cube : modelPart.cubes) {
-            if (modelPart.skipDraw || !DeathEffectManager.canAddPart()) break;
+            if (modelPart.skipDraw || !DeathEffectHandler.canAddPart()) break;
             float minX = cube.minX;
             float minY = cube.minY;
             float minZ = cube.minZ;
@@ -260,7 +260,7 @@ public final class VanillaDeathModelAdapter {
                         part.modelScale = 1.5F / model.getBabyHeadScale();
                 }
             }
-            DeathEffectManager.addPart(part);
+            DeathEffectHandler.addPart(part);
         }
 
         for (Map.Entry<String, ModelPart> entry : modelPart.children.entrySet()) {

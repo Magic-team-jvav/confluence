@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.client.handler.DeathEffectManager;
+import org.confluence.mod.client.handler.DeathEffectHandler;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -62,7 +62,7 @@ public final class GeoDeathModelAdapter {
         filterDeathBone(bones);
         skipBone:
         for (GeoBone bone : bones) {
-            if (!DeathEffectManager.canAddPart()) break;
+            if (!DeathEffectHandler.canAddPart()) break;
             if (bone.isHidden() || Boolean.TRUE.equals(bone.shouldNeverRender())) continue;
             if (living instanceof WallOfFlesh && level.random.nextInt(25) != 0)
                 continue; // 肉墙随机剔除
@@ -85,10 +85,10 @@ public final class GeoDeathModelAdapter {
                 part.geoRenderData = renderSnapshot;
                 part.setPos(entityPos);
                 part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.5 + 0.2)));
-                DeathEffectManager.addPart(part);
+                DeathEffectHandler.addPart(part);
             } else {
                 for (GeoCube cube : bone.getCubes()) {
-                    if (!DeathEffectManager.canAddPart()) break;
+                    if (!DeathEffectHandler.canAddPart()) break;
                     GeoCube copyCube = IGeoCube.of(cube).confluence$getCopy();
                     if (copyCube == null) continue;
 
@@ -116,7 +116,7 @@ public final class GeoDeathModelAdapter {
 
                     part.setPos(entityPos.add(transformed.x, transformed.y, transformed.z));
                     part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.5 + 0.2)));
-                    DeathEffectManager.addPart(part);
+                    DeathEffectHandler.addPart(part);
                 }
             }
         }

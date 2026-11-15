@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.BasicItemListing;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import org.confluence.lib.util.range.IntegerRange;
-import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.ModStartupConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AnglerQuestLoader;
@@ -74,7 +74,7 @@ public final class GameEvents {
     }
 
     private static void registerBrewingRecipes(PortRegisterBrewingRecipesEvent event) {
-        if (StartupConfigs.brewingStandRecipe()) {
+        if (ModStartupConfigs.brewingStandRecipe()) {
             ModRecipes.Brewing.registerRecipes(event.getBuilder()::addRecipe);
         }
     }

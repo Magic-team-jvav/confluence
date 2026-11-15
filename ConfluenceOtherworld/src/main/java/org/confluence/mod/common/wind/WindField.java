@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.joml.Vector2f;
 
 /// 空间方向场：**风速全局一致，但风向随位置变化**。
@@ -57,11 +57,11 @@ public final class WindField {
         float globalX = state.dirX();
         float globalZ = state.dirZ();
         float blend = state.directionBlend();
-        if (blend <= 0.0F || unavailable || !CommonConfigs.WIND_DIRECTION_NOISE.get()) {
+        if (blend <= 0.0F || unavailable || !ModCommonConfigs.WIND_DIRECTION_NOISE.get()) {
             return new Vector2f(globalX, globalZ);
         }
 
-        float amplitude = (float) Math.toRadians((double) CommonConfigs.WIND_DIRECTION_AMPLITUDE.get());
+        float amplitude = (float) Math.toRadians((double) ModCommonConfigs.WIND_DIRECTION_AMPLITUDE.get());
         if (amplitude <= 0.0F) return new Vector2f(globalX, globalZ);
 
         Vector2f gradient = gradientDirection(level, x, z);

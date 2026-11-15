@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.item.accessory.*;
 import org.confluence.mod.util.PlayerUtils;
@@ -192,7 +192,7 @@ public class AccessoryItems {
     public static final PortDeferredItem<BaseCurioItem> SOULCERER_EMBLEM = registerCurio("soulcerer_emblem", "灵魂徽章", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(org.confluence.lib.common.LibAttributes.getSoulDamage(), 0.12, ADD_MULTIPLIED_TOTAL));
 
     public static void applyLuckyCoin(ServerPlayer player, Entity target) {
-        if (!CommonConfigs.ENEMY_DROPS_MONEY.get()) return;
+        if (!ModCommonConfigs.ENEMY_DROPS_MONEY.get()) return;
         RandomSource randomSource = player.getRandom1211();
         if (TCUtils.hasType(player, LUCKY$COIN) && randomSource.nextFloat() < 0.2F) {
             Item item;

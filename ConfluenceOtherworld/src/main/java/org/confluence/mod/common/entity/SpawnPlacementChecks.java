@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
@@ -203,7 +203,7 @@ public final class SpawnPlacementChecks {
     @SuppressWarnings("unchecked")
     public static boolean checkMonsterSpawnRules(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         // 忽略光照时仍保留 Mob 对脚下方块的生成支撑检查；碰撞和边界由外部生成流程处理。
-        if (CommonConfigs.SPAWN_WITHOUT_LIGHT.get()) {
+        if (ModCommonConfigs.SPAWN_WITHOUT_LIGHT.get()) {
             return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
         }
         EntityType<? extends Monster> monsterType = (EntityType<? extends Monster>) type;

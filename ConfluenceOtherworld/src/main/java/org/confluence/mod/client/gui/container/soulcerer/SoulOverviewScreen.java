@@ -22,7 +22,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.phys.Vec2;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.gui.widget.soulcerer.skill.SoulSkillBox;
 import org.confluence.mod.client.gui.widget.soulcerer.skill.overview.*;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
@@ -247,14 +247,14 @@ public class SoulOverviewScreen extends Screen {
         /// 背景总开关：和色相 / 明度滑块放在同一组。
         /// 关掉后 `renderBackground` 只铺静态底色，噪点、树、魔法与滚动全部停掉，界面只留底色和技能。
         Button backgroundToggle = Button.builder(backgroundToggleLabel(), button -> {
-            ClientConfigs.setSoulcererBackgroundEnabled(!ClientConfigs.isSoulcererBackgroundEnabled());
+            ModClientConfigs.setSoulcererBackgroundEnabled(!ModClientConfigs.isSoulcererBackgroundEnabled());
             button.setMessage(backgroundToggleLabel());
         }).bounds(29, this.height - 25, 20, 20)
                 .tooltip(Tooltip.create(Component.translatable("confluence.screen.soulcerer_overview.background_toggle")))
                 .build();
         addRenderableWidget(backgroundToggle);
 
-        int hue = ClientConfigs.soulcererBackgroundHue;
+        int hue = ModClientConfigs.soulcererBackgroundHue;
         double hueP = hue / 360.0;
 
         hueSlider = new AbstractSliderButton(5, this.height - 50, 100, 20, Component.literal(hue == 270 ? "默认" : (String.valueOf(hue))), hueP) {
@@ -269,12 +269,12 @@ public class SoulOverviewScreen extends Screen {
             @Override
             protected void applyValue() {
                 int newHue = (int) (this.value * 360);
-                ClientConfigs.SOULCERER_BACKGROUND_HUE.set(newHue);
-                ClientConfigs.soulcererBackgroundHue = newHue;
+                ModClientConfigs.SOULCERER_BACKGROUND_HUE.set(newHue);
+                ModClientConfigs.soulcererBackgroundHue = newHue;
             }
         };
 
-        int contrast = ClientConfigs.soulcererBackgroundContrast;
+        int contrast = ModClientConfigs.soulcererBackgroundContrast;
         double contrastP = contrast / 255.0;
 
         contrastSlider = new AbstractSliderButton(5, this.height - 75, 100, 20, Component.literal(contrast == 255 ? "默认" : (String.valueOf(contrast))), contrastP) {
@@ -289,8 +289,8 @@ public class SoulOverviewScreen extends Screen {
             @Override
             protected void applyValue() {
                 int newContrast = (int) (this.value * 255);
-                ClientConfigs.SOULCERER_BACKGROUND_CONTRAST.set(newContrast);
-                ClientConfigs.soulcererBackgroundContrast = newContrast;
+                ModClientConfigs.SOULCERER_BACKGROUND_CONTRAST.set(newContrast);
+                ModClientConfigs.soulcererBackgroundContrast = newContrast;
             }
         };
     }
@@ -488,16 +488,16 @@ public class SoulOverviewScreen extends Screen {
         long gameTime = level.getGameTime();
         float time = gameTime + partialTick;
 
-        float h1 = (ClientConfigs.soulcererBackgroundHue - 34) % 360 / 360F;
-        float h2 = ClientConfigs.soulcererBackgroundHue / 360F;
-        float h3 = (ClientConfigs.soulcererBackgroundHue - 2) % 360 / 360F;
-        float lit = ClientConfigs.soulcererBackgroundContrast / 255F;
+        float h1 = (ModClientConfigs.soulcererBackgroundHue - 34) % 360 / 360F;
+        float h2 = ModClientConfigs.soulcererBackgroundHue / 360F;
+        float h3 = (ModClientConfigs.soulcererBackgroundHue - 2) % 360 / 360F;
+        float lit = ModClientConfigs.soulcererBackgroundContrast / 255F;
         float lit1 = lit * 0.6F;
 
         /// 静态底色：开关关掉时也保留，保证界面不透出世界。
         guiGraphics.fill(0, 0, this.width, this.height, (Color.HSBtoRGB(h3, 0.93f + Mth.sqrt(1 - lit * lit) * 0.07f, 0.05f * lit) & 0x00FFFFFF) | 0xFF000000);
         /// 背景总开关：关掉后只保留上面这层底色，其余背景层与滚动推进全部跳过。
-        if (!ClientConfigs.isSoulcererBackgroundEnabled()) {
+        if (!ModClientConfigs.isSoulcererBackgroundEnabled()) {
             return;
         }
 
@@ -530,8 +530,8 @@ public class SoulOverviewScreen extends Screen {
         final float magicOffsetY = (float) this.scrollY * magicOffsetScale;
         final float rotate = time * 0.01f;
 
-        float h = ClientConfigs.soulcererBackgroundHue / 360F;
-        float lit = ClientConfigs.soulcererBackgroundContrast / 255F;
+        float h = ModClientConfigs.soulcererBackgroundHue / 360F;
+        float lit = ModClientConfigs.soulcererBackgroundContrast / 255F;
         float lit1 = lit * 0.6F;
 
         final int lineColor = (Color.HSBtoRGB(h, Mth.sqrt(1 - lit * lit), lit1 + 0.4f) & 0x00FFFFFF) | 0xFF000000;
@@ -613,8 +613,8 @@ public class SoulOverviewScreen extends Screen {
         final float treeOffsetX = (float) this.scrollX * treeOffsetScale;
         final float treeOffsetY = (float) this.scrollY * treeOffsetScale + 20;
 
-        float treeLineH = ClientConfigs.soulcererBackgroundHue / 360F;
-        float lit = ClientConfigs.soulcererBackgroundContrast / 255F;
+        float treeLineH = ModClientConfigs.soulcererBackgroundHue / 360F;
+        float lit = ModClientConfigs.soulcererBackgroundContrast / 255F;
         float lit1 = lit * 0.6F;
 
         final int treeLineColor = Color.HSBtoRGB(treeLineH, 0.58f + Mth.sqrt(1 - lit * lit) * 0.42f, 0.65f * lit1 + 0.4F) | 0xFF000000;
@@ -1187,7 +1187,7 @@ public class SoulOverviewScreen extends Screen {
 
     /// 背景开关按钮的文案：☑ = 画完整背景，☐ = 只留底色与技能。
     private static Component backgroundToggleLabel() {
-        return Component.literal(ClientConfigs.isSoulcererBackgroundEnabled() ? "☑" : "☐");
+        return Component.literal(ModClientConfigs.isSoulcererBackgroundEnabled() ? "☑" : "☐");
     }
 
     /// 绘制总览控件及可见的背景调节滑块。

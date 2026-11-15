@@ -7,7 +7,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.confluence.lib.util.LibRenderUtils;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.attachment.SoulStorage;
@@ -65,9 +65,9 @@ public class TerraStyleManaHud implements PortGuiLayer {
 
         /// 灵魂条与魔力条各有独立的样式开关，同一时间只会画其中一个。
         if (SoulcererUtils.isSoulMode(minecraft.player)) {
-            ClientConfigs.soulStyle.render(guiGraphics, minecraft);
+            ModClientConfigs.soulStyle.render(guiGraphics, minecraft);
         } else {
-            ClientConfigs.manaStyle.render(guiGraphics, minecraft);
+            ModClientConfigs.manaStyle.render(guiGraphics, minecraft);
         }
 
         minecraft.getProfiler().pop();
@@ -124,8 +124,8 @@ public class TerraStyleManaHud implements PortGuiLayer {
         LEGACY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                int widthMana = guiGraphics.guiWidth() - 21 + ClientConfigs.manaOffsetX;
-                int heightMana = 4 + ClientConfigs.manaOffsetY;
+                int widthMana = guiGraphics.guiWidth() - 21 + ModClientConfigs.manaOffsetX;
+                int heightMana = 4 + ModClientConfigs.manaOffsetY;
                 float currentMana = getCurrentResource(minecraft);
                 int maxMana = getMaxResource(minecraft);
                 /// 灵魂条走独立图元，不再用魔力条染色，避免把新的底座/骷髅一起染成青色。
@@ -161,8 +161,8 @@ public class TerraStyleManaHud implements PortGuiLayer {
                 float currentMana = resourceCurrent / OVERLAY_RESOURCE_DIVISOR;
                 float maxMana = (float) resourceMax / OVERLAY_RESOURCE_DIVISOR;
                 boolean soulMode = SoulcererUtils.isSoulMode(minecraft.player);
-                int widthMana = guiGraphics.guiWidth() / 2 + 10 + ClientConfigs.manaOffsetX;
-                int heightMana = guiGraphics.guiHeight() - ((ForgeGui) minecraft.gui).rightHeight + ClientConfigs.manaOffsetY;
+                int widthMana = guiGraphics.guiWidth() / 2 + 10 + ModClientConfigs.manaOffsetX;
+                int heightMana = guiGraphics.guiHeight() - ((ForgeGui) minecraft.gui).rightHeight + ModClientConfigs.manaOffsetY;
                 ((ForgeGui) minecraft.gui).rightHeight += OVERLAY_HUD_SPACING;
                 RandomSource random = RandomSource.create(1919810);
                 if (soulMode) {

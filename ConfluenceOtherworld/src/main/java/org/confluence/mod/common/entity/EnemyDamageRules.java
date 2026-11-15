@@ -1,14 +1,14 @@
 package org.confluence.mod.common.entity;
 
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.ambient.AmbientCreature;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ambient.AmbientCreature;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 
 // 通过配置控制敌怪阵营不互伤、敌怪不伤害被动生物；
 // 玩家、玩家召唤物和无攻击者的环境伤害不受这些规则影响。
@@ -26,12 +26,12 @@ public final class EnemyDamageRules {
     }
 
     public static boolean isProtectedEnemy(Entity entity) {
-        return CommonConfigs.PREVENT_ENEMY_FRIENDLY_FIRE.get() && isEnemy(entity);
+        return ModCommonConfigs.PREVENT_ENEMY_FRIENDLY_FIRE.get() && isEnemy(entity);
     }
 
     /// 受配置保护的被动生物：动物、水生生物与环境生物（蝙蝠等）。
     public static boolean isProtectedPassiveCreature(Entity entity) {
-        return CommonConfigs.PREVENT_ENEMY_HURTING_PASSIVE_MOBS.get() && isPassiveCreature(entity);
+        return ModCommonConfigs.PREVENT_ENEMY_HURTING_PASSIVE_MOBS.get() && isPassiveCreature(entity);
     }
 
     /// 被动生物：非敌怪阵营的动物 / 水生生物 / 环境生物。

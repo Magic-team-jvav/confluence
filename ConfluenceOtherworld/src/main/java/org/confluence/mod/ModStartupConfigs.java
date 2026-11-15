@@ -4,7 +4,7 @@ import org.mesdag.portlib.config.PortConfigSpec;
 
 import java.util.List;
 
-public final class StartupConfigs {
+public final class ModStartupConfigs {
     public static final List<String> DEFAULT_BANNED_MOD = List.of();
     private static PortConfigSpec.BooleanValue PAINTS_REPLACE_TEXTURE;
     private static PortConfigSpec.ListValue<String> BANNED_MOD_FOR_PAINTS;

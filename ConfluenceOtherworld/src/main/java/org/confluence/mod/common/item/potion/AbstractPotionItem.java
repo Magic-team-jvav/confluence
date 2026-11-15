@@ -20,7 +20,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.PlayerVoidVaultContainer;
 import org.confluence.mod.common.block.conversion.natural.MoistenConversionTable;
 import org.confluence.mod.common.init.item.PotionItems;
@@ -59,7 +59,7 @@ public abstract class AbstractPotionItem extends Item {
         apply(stack, level, living);
         if (living instanceof Player player && !player.hasInfiniteMaterials()) {
             stack.shrink(1); // 创造模式不消耗
-            if (CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
+            if (ModCommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
                 if (stack.isEmpty()) {
                     return getReturnItem();
                 }

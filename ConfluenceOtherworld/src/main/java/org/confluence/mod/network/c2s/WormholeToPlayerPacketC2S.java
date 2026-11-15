@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.WormholeHandler;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.mesdag.portlib.network.IPortPacket;
@@ -54,7 +54,7 @@ public record WormholeToPlayerPacketC2S(
 
         potion.shrink(1);
         teleport(player, target);
-        if (!CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) return;
+        if (!ModCommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) return;
         ItemStack bottle = PotionItems.BOTTLE.toStack();
         if (!player.getInventory().add(bottle)) {
             player.drop(bottle, false);
@@ -94,7 +94,7 @@ public record WormholeToPlayerPacketC2S(
         FTB_CHUNKS {
             @Override
             public boolean enabled() {
-                return CommonConfigs.FTB_CHUNKS_WORMHOLE_POTION.get();
+                return ModCommonConfigs.FTB_CHUNKS_WORMHOLE_POTION.get();
             }
         };
 

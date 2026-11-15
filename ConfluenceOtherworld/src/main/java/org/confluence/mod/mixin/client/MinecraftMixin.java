@@ -13,12 +13,15 @@ import net.minecraft.server.WorldStem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.effect.GlowingHelper;
+import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.mixed.ILevelLoadingScreen;
 import org.confluence.mod.mixed.IWorldOptions;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -26,9 +29,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
-import org.objectweb.asm.Opcodes;
 
 import javax.annotation.Nullable;
 
@@ -114,9 +114,9 @@ public abstract class MinecraftMixin {
 
     @WrapOperation(method = "createTitle", at = @At(value = "INVOKE", target = "Ljava/lang/StringBuilder;toString()Ljava/lang/String;"))
     private String customTitle(StringBuilder instance, Operation<String> original) {
-        if (ClientConfigs.customTitle > 0) {
+        if (ModClientConfigs.customTitle > 0) {
             if (confluence$currentTitle == null && screen instanceof TitleScreen) {
-                confluence$currentTitle = I18n.get("title.confluence.window." + (int) (Math.random() * ClientConfigs.customTitle));
+                confluence$currentTitle = I18n.get("title.confluence.window." + (int) (Math.random() * ModClientConfigs.customTitle));
             }
             if (confluence$currentTitle != null) {
                 instance.append(" #").append(confluence$currentTitle);

@@ -8,7 +8,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.gui.container.soulcerer.SoulOverviewScreen;
 import org.confluence.mod.client.gui.hud.soulcerer.CurrentSelectedSkillHud;
@@ -192,7 +192,7 @@ public final class ClientSoulHandler {
     /// 方向约定：滚轮向下（scrollDeltaY < 0）= 下一个技能，向上 = 上一个技能；
     /// 卡牌样式的槽位索引方向与滚轮符号相反，所以卡牌样式下要先取反。
     public static boolean scrollSoulSkills(double scrollDeltaY) {
-        ClientSoulHandler.Type style = ClientConfigs.soulQuickSkillStyle;
+        ClientSoulHandler.Type style = ModClientConfigs.soulQuickSkillStyle;
         if (style == ClientSoulHandler.Type.ROULETTE_WHEEL_BIG) {
             return false;
         }

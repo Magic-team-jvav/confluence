@@ -18,14 +18,14 @@ import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.consumer.Consumer3;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.event.GameClientEvents;
 import org.confluence.mod.client.event.ModClientEvents;
 import org.confluence.mod.client.gui.MergedConfigurationScreen;
 import org.confluence.mod.client.summoner.SummonerClientEvents;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.advancement.ShimmerTransmutationTrigger;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.ModPrefix;
@@ -76,8 +76,8 @@ public final class Confluence {
         ModDynamicBiomes.init();
         ModMiniBiomes.init();
         DynamicBiomeUtils.enable();
-        StartupConfigs.register();
-        CommonConfigs.register(context);
+        ModStartupConfigs.register();
+        ModCommonConfigs.register(context);
         NetworkEvents.init();
         ModEvents.init();
         {
@@ -101,7 +101,7 @@ public final class Confluence {
         ItemGroupEvents.init();
         ServerEvents.init();
         if (LibUtils.isPhysicalClient()) {
-            ClientConfigs.register(context);
+            ModClientConfigs.register(context);
             ModKeyBindings.init();
             ModClientEvents.init();
             SummonerClientEvents.init();

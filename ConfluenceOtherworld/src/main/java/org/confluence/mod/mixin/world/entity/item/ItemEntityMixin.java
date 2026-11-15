@@ -14,7 +14,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.advancement.ShimmerTransmutationTrigger;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -133,7 +133,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
             return;
         }
 
-        if (!CommonConfigs.SHIMMER_DECOMPOSE.get()) return;
+        if (!ModCommonConfigs.SHIMMER_DECOMPOSE.get()) return;
 
         if (sourceItem.getDamageValue() != 0) return;
         RegistryAccess registryAccess = source.level().registryAccess();
@@ -151,7 +151,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
                 for (Ingredient ingredient : recipe.getIngredients()) {
                     ItemStack[] itemStacks = ingredient.getItems();
                     if (itemStacks.length == 0) continue;
-                    ItemStack input = ShimmerDecompositionInputs.choose(itemStacks, isHardmode, random, CommonConfigs.SHIMMER_DECOMPOSE_FIRST_TAG_ITEM.get());
+                    ItemStack input = ShimmerDecompositionInputs.choose(itemStacks, isHardmode, random, ModCommonConfigs.SHIMMER_DECOMPOSE_FIRST_TAG_ITEM.get());
                     if (input == null) continue;
                     ItemStack result = input.copy();
                     if (result.getItem().hasCraftingRemainingItem(result)) continue;

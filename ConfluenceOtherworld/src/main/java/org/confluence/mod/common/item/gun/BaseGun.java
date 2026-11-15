@@ -23,7 +23,7 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.api.item.IWeaponTooltip;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.gun.definition.FireMode;
 import org.confluence.mod.common.item.gun.definition.GunDefinition;
@@ -89,7 +89,7 @@ public class BaseGun extends Item implements GeoItem, IWeaponTooltip {
     }
 
     public boolean isAutomatic(ItemStack stack) {
-        return CommonConfigs.AUTO_FIRE_ALL_GUNS.get() || stack.is(ModTags.Items.AUTOMATIC_GUN);
+        return ModCommonConfigs.AUTO_FIRE_ALL_GUNS.get() || stack.is(ModTags.Items.AUTOMATIC_GUN);
     }
 
     @Override

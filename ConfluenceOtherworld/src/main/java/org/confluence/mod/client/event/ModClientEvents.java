@@ -40,9 +40,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.ModStartupConfigs;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.effect.BrainDissolveTexture;
 import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.effect.DivaSlimeVertexConsumer;
@@ -128,7 +128,10 @@ import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.util.ClientUtils;
 import org.mesdag.particlestorm.api.geckolib.RegisterLocatorPreTransformerEvent;
 import org.mesdag.portlib.event.PortEventHandler;
-import org.mesdag.portlib.event.client.*;
+import org.mesdag.portlib.event.client.PortRegisterGuiLayersEvent;
+import org.mesdag.portlib.event.client.PortRegisterMenuScreensEvent;
+import org.mesdag.portlib.event.client.PortRegisterRenderBuffersEvent;
+import org.mesdag.portlib.event.client.PortTextureAtlasStitchedEvent;
 import org.mesdag.portlib.event.client.extensions.common.PortRegisterClientExtensionsEvent;
 import org.mesdag.portlib.registries.PortRegistryEntry;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -158,7 +161,6 @@ public final class ModClientEvents {
         PortEventHandler.addListener(ModClientEvents::registerParticles);
         PortEventHandler.addListener(ModClientEvents::registerClientCommands);
         PortEventHandler.addListener(ModClientEvents::textureAtlasStitched);
-        PortEventHandler.addListener(ModClientEvents::registerMaterialAtlasesEvent);
         PortEventHandler.addListener(ModClientEvents::model$ModifyBakingResult);
         PortEventHandler.addListener(ModClientEvents::registerAdditionalModels);
         PortEventHandler.addListener(ModClientEvents::registerRecipeBookCategories);
@@ -192,13 +194,13 @@ public final class ModClientEvents {
 
     private static void modConfig$Loading(ModConfigEvent.Loading event) {
         if (event.getConfig().getType() == ModConfig.Type.CLIENT && Confluence.MODID.equals(event.getConfig().getModId())) {
-            ClientConfigs.onLoad();
+            ModClientConfigs.onLoad();
         }
     }
 
     private static void modConfig$Reloading(ModConfigEvent.Reloading event) {
         if (event.getConfig().getType() == ModConfig.Type.CLIENT && Confluence.MODID.equals(event.getConfig().getModId())) {
-            ClientConfigs.onLoad();
+            ModClientConfigs.onLoad();
         }
     }
 
@@ -876,13 +878,13 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.GRANITE_GOLEM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GRANITE_GOLEM.getId(), false, 1.3F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.HOPLITE.get(), c -> new GeoNormalRenderer<>(c, new HopliteModel(c)));
         event.registerEntityRenderer(MonsterEntities.DESERT_SPIRIT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DESERT_SPIRIT.getId(), false, 1.0F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.WALL_CREEPER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(MonsterEntities.WALL_CREEPER.get(), c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.WALL_CREEPER.get())
                 : new ClimbingSpiderRenderer(c, "wall_creeper"));
-        event.registerEntityRenderer(MonsterEntities.BLACK_RECLUSE.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(MonsterEntities.BLACK_RECLUSE.get(), c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.BLACK_RECLUSE.get())
                 : new ClimbingSpiderRenderer(c, "spider/black_recluse"));
-        event.registerEntityRenderer(MonsterEntities.JUNGLE_CREEPER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(MonsterEntities.JUNGLE_CREEPER.get(), c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.JUNGLE_CREEPER.get())
                 : new ClimbingSpiderRenderer(c, "spider/jungle"));
         event.registerEntityRenderer(MonsterEntities.WATER_BOLT_MIMIC.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.WATER_BOLT_MIMIC.getId(), false, 1.0F, 0.0F));
@@ -950,19 +952,19 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.UNDEAD_MINER.get(), net.minecraft.client.renderer.entity.SkeletonRenderer::new);
         event.registerEntityRenderer(MonsterEntities.BLOODY_SPORE.get(), c -> new BloodySporeRenderer(c, MonsterEntities.BLOODY_SPORE.getId()));
         // Client config is loaded after this registration event; read it in the providers.
-        event.registerEntityRenderer(EntityType.SPIDER, c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(EntityType.SPIDER, c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "spider", EntityType.SPIDER)
                 : new net.minecraft.client.renderer.entity.SpiderRenderer<>(c));
-        event.registerEntityRenderer(EntityType.CAVE_SPIDER, c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(EntityType.CAVE_SPIDER, c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "cave_spider", EntityType.CAVE_SPIDER)
                 : new net.minecraft.client.renderer.entity.CaveSpiderRenderer(c));
-        event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "blood_crawler", MonsterEntities.BLOOD_CRAWLER.get())
                 : new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_CRAWLER.getId()));
         event.registerEntityRenderer(MonsterEntities.SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.SPORE_ZOMBIE.getId())));
         event.registerEntityRenderer(MonsterEntities.HAT_SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.HAT_SPORE_ZOMBIE.getId())));
         event.registerEntityRenderer(MonsterEntities.NYMPH.get(), c -> new GeoNormalRenderer<>(c, new NymphModel(MonsterEntities.NYMPH.getId())));
-        event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.SAND_POACHER.get())
                 : new GeoNormalRenderer<>(c, MonsterEntities.SAND_POACHER.getId()));
         // 水怪
@@ -1136,10 +1138,6 @@ public final class ModClientEvents {
         }
     }
 
-    private static void registerMaterialAtlasesEvent(PortRegisterMaterialAtlasesEvent event) {
-        event.register(ModClientSetups.ENTITY_BLOOD_ATLAS, Confluence.asResource("entity_blood"));
-    }
-
     private static void model$ModifyBakingResult(ModelEvent.ModifyBakingResult event) {
         Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
 
@@ -1158,11 +1156,11 @@ public final class ModClientEvents {
 
         ModConnectives.MODEL_SWAPPER.onModelBake(modelRegistry);
 
-        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture())
+        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !ModStartupConfigs.paintsReplaceTexture())
             return;
 
         CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
-        Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.bannedModForPaints());
+        Set<String> bannedModForPaints = new HashSet<>(ModStartupConfigs.bannedModForPaints());
         for (Map.Entry<ResourceKey<Block>, Block> entry : ForgeRegistries.BLOCKS.getEntries()) {
             Block block = entry.getValue();
             ResourceLocation id = entry.getKey().location();

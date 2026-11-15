@@ -29,7 +29,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.entity.boss.HillOfFlesh;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -114,7 +114,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     }
 
     public static void summon(Entity entity, ServerLevel level, boolean isWall, Supplier<@Nullable Direction> forward) {
-        if (!OverworldUtils.inUnderworld(level.dimension(), entity.getY()) && !CommonConfigs.ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD.get()) {
+        if (!OverworldUtils.inUnderworld(level.dimension(), entity.getY()) && !ModCommonConfigs.ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD.get()) {
             if (entity instanceof ItemEntity) {
                 level.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("message.confluence.guide_voo_doo_doll.fail").withStyle(ChatFormatting.RED), false);
             }

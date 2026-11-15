@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.api.item.IWeaponTooltip;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.common.item.boomerang.BoomerangItem;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.jetbrains.annotations.Nullable;
@@ -66,7 +66,7 @@ public final class WeaponTooltip {
     private static void replaceMainHandAttributes(List<Component> lines, ItemStack stack, @Nullable Player player, IWeaponTooltip weapon) {
         Attribute damageAttribute = weapon.getTooltipDamageAttribute();
         Attribute criticalAttribute = LibAttributes.getCriticalChance().value();
-        boolean base = ClientConfigs.weaponTooltipBaseStats;
+        boolean base = ModClientConfigs.weaponTooltipBaseStats;
         double damage = weapon.getTooltipDamage(stack, attributeValue(stack, player, damageAttribute, base), player, base);
         if (damageAttribute == LibAttributes.getMagicDamage().value() || stack.getItem() instanceof BoomerangItem) {
             damage *= attributeValue(stack, player, LibAttributes.getRangedDamage().value(), base);
@@ -128,8 +128,8 @@ public final class WeaponTooltip {
     private static void appendSummonStats(ItemTooltipEvent event, SummonerWeaponItem<?> weapon) {
         ItemStack stack = event.getItemStack();
         Player player = event.getEntity();
-        double damage = weapon.getSummonDamage(ClientConfigs.weaponTooltipBaseStats ? null : player, stack);
-        double critical = attributeValue(stack, player, LibAttributes.getCriticalChance().value(), ClientConfigs.weaponTooltipBaseStats);
+        double damage = weapon.getSummonDamage(ModClientConfigs.weaponTooltipBaseStats ? null : player, stack);
+        double critical = attributeValue(stack, player, LibAttributes.getCriticalChance().value(), ModClientConfigs.weaponTooltipBaseStats);
         if (damage <= 0) return;
         List<Component> lines = event.getToolTip();
         if (lines.isEmpty()) return;

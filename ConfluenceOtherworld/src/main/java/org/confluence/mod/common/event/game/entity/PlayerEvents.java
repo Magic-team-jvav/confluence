@@ -44,7 +44,7 @@ import org.confluence.lib.common.event.LibGameEvents;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.api.event.*;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
@@ -56,6 +56,7 @@ import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.AnglerData;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
+import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.fishing.FishingSession;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
@@ -72,7 +73,6 @@ import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sword.StarSteelSword;
@@ -142,7 +142,7 @@ public final class PlayerEvents {
         if (HardmodeConvertor.INSTANCE.isCompleted()) {
             AchievementUtils.awardAchievement(player, "its_hard");
         }
-        if (CommonConfigs.DO_NPC_SPAWNING.get() && player.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
+        if (ModCommonConfigs.DO_NPC_SPAWNING.get() && player.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.trySpawnGuide(player);
         }
 //        PlayerUtils.syncSoul2Client(player);
@@ -171,7 +171,7 @@ public final class PlayerEvents {
         MountManager.dismiss(player);
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
         PlayerSpecialData.of(player).setPvP(false);
-        CommonConfigs.reset();
+        ModCommonConfigs.reset();
     }
 
     private static void interact$LeftClickBlock(PortPlayerInteractEvent.LeftClickBlock event) {
@@ -204,7 +204,7 @@ public final class PlayerEvents {
             return;
         }
 
-        if (CommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() &&
+        if (ModCommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() &&
                 !(itemStack.getItem() instanceof BlockItem) &&
                 !itemStack.is(ModTags.Items.MINECART) &&
                 block instanceof BaseRailBlock railBlock &&
@@ -225,7 +225,7 @@ public final class PlayerEvents {
             player.startRiding(minecart, true);
         }
 
-        if (CommonConfigs.FLETCHING_MENU.get() && blockState.is(Blocks.FLETCHING_TABLE)) {
+        if (ModCommonConfigs.FLETCHING_MENU.get() && blockState.is(Blocks.FLETCHING_TABLE)) {
             if (!level.isClientSide) {
                 player.openMenu(new FletchingTableMenu.Provider(level, blockPos));
             }
@@ -271,7 +271,7 @@ public final class PlayerEvents {
         ItemEntity itemEntity = event.getItemEntity();
         ItemStack itemStack = itemEntity.getItem();
         if (IServerPlayer.of(player).confluence$isCouldPickupItem()) {
-            if (CommonConfigs.AUTO_STACK_GELS_COLOR.get()) autoStackGelsColor:{
+            if (ModCommonConfigs.AUTO_STACK_GELS_COLOR.get()) autoStackGelsColor:{
                 Item gel = MaterialItems.GEL.get();
                 if (!itemStack.is(gel)) break autoStackGelsColor;
                 int defaultMaxStackSize = gel.getDefaultMaxStackSize();
@@ -522,7 +522,7 @@ public final class PlayerEvents {
     }
 
     private static void canSleep(PortCanPlayerSleepEvent event) {
-        if (!CommonConfigs.ALLOW_SLEEP_DURING_BLOOD_MOON.get() && BloodMoonGameEvent.INSTANCE.started()) {
+        if (!ModCommonConfigs.ALLOW_SLEEP_DURING_BLOOD_MOON.get() && BloodMoonGameEvent.INSTANCE.started()) {
             event.setProblem(Player.BedSleepingProblem.NOT_SAFE);
         } else if (ModSecretSeeds.NEVER_SLEEP.match(event.getEntity().server)) {
             event.setProblem(Player.BedSleepingProblem.OTHER_PROBLEM);
@@ -530,7 +530,7 @@ public final class PlayerEvents {
     }
 
     private static void canContinueSleeping(PortCanContinueSleepingEvent event) {
-        if (event.mayContinueSleeping() && !CommonConfigs.ALLOW_SLEEP_DURING_BLOOD_MOON.get() && BloodMoonGameEvent.INSTANCE.started()) {
+        if (event.mayContinueSleeping() && !ModCommonConfigs.ALLOW_SLEEP_DURING_BLOOD_MOON.get() && BloodMoonGameEvent.INSTANCE.started()) {
             event.setContinueSleeping(false);
         }
     }

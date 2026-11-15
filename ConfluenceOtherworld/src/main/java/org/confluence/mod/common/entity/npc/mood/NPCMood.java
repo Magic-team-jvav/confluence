@@ -8,7 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public final class NPCMood {
 
     /// 根据附近 NPC 重新计算心情值。
     public void evaluate(Iterable<? extends LivingEntity> nearbyEntities) {
-        pricesAffected = CommonConfigs.NPC_HAPPINESS_AFFECTS_PRICES.get();
+        pricesAffected = ModCommonConfigs.NPC_HAPPINESS_AFFECTS_PRICES.get();
         List<BaseNPC> neighbors = new ArrayList<>();
         for (LivingEntity entity : nearbyEntities) {
             if (entity instanceof BaseNPC npc) neighbors.add(npc);
@@ -63,7 +63,7 @@ public final class NPCMood {
 
     /// 将邻居、群系与聚居密度分别计算，并保留玩家可见的原因。
     public void evaluate(MoodEnvironment environment) {
-        pricesAffected = CommonConfigs.NPC_HAPPINESS_AFFECTS_PRICES.get();
+        pricesAffected = ModCommonConfigs.NPC_HAPPINESS_AFFECTS_PRICES.get();
         List<Component> factors = new ArrayList<>();
         int total = calculateNeighbors(environment.neighbors(), factors);
         Mood positiveBiome = Mood.NEUTRAL;

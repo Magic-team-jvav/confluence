@@ -20,7 +20,7 @@ import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.util.LibGeometryUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibStructureUtils;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -106,7 +106,7 @@ public class CrimsonCaveStructure extends Structure {
             }
             lineSet(VctList, 3, 3, 0, true, blockMap);
 
-            boolean wrappedCrimsonHeart = CommonConfigs.WRAPPED_CRIMSON_HEART.get();
+            boolean wrappedCrimsonHeart = ModCommonConfigs.WRAPPED_CRIMSON_HEART.get();
             for (int i = 0; i < fingerCount; i++) {
                 VctList.clear();
                 VctList.add(new Vector3f(

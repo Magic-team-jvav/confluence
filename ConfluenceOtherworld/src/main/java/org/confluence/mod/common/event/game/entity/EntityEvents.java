@@ -21,7 +21,7 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
@@ -33,10 +33,10 @@ import org.confluence.mod.common.entity.monster.MonsterAttributeScaling;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.OldManNPC;
+import org.confluence.mod.common.entity.projectile.FireworksRocketProjectile;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
-import org.confluence.mod.common.entity.projectile.FireworksRocketProjectile;
 import org.confluence.mod.common.soulcerer.artifact.ArtifactEffects;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
@@ -109,7 +109,7 @@ public final class EntityEvents {
         if (beingMounted instanceof LivingEntity) {
             AchievementUtils.awardAchievement(player, "the_cavalry");
         }
-        if (CommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() && event.isDismounting() && beingMounted instanceof AbstractMinecart minecart) {
+        if (ModCommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() && event.isDismounting() && beingMounted instanceof AbstractMinecart minecart) {
             MinecartAbilityEvent.DismountOnMinecart e = PortEventHandler.postEventWithReturn(new MinecartAbilityEvent.DismountOnMinecart(player, minecart));
             ItemStack itemStack = e.getMinecartItem();
             if (e.isCanceled() || itemStack == null) return;
@@ -173,8 +173,8 @@ public final class EntityEvents {
             event.setInvulnerable(true);
             return;
         }
-        if ((victim instanceof Villager ? CommonConfigs.VILLAGER_INVULNERABLE_TO_PLAYER.get() :
-                CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() && (victim instanceof BaseNPC || victim.getType().is(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER))) &&
+        if ((victim instanceof Villager ? ModCommonConfigs.VILLAGER_INVULNERABLE_TO_PLAYER.get() :
+                ModCommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() && (victim instanceof BaseNPC || victim.getType().is(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER))) &&
                 LibEntityUtils.getOwner(damageSource) instanceof Player player &&
                 !player.isCreative()
         ) {

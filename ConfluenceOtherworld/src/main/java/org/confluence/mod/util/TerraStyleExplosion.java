@@ -25,7 +25,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.network.s2c.TerraStyleExplosionPacketS2C;
 import org.jetbrains.annotations.Nullable;
@@ -146,7 +146,7 @@ public class TerraStyleExplosion extends Explosion {
             float radius,
             Level.ExplosionInteraction explosionInteraction
     ) {
-        if (CommonConfigs.TERRA_STYLE_EXPLOSION.get()) {
+        if (ModCommonConfigs.TERRA_STYLE_EXPLOSION.get()) {
             Explosion.BlockInteraction blockInteraction = switch (explosionInteraction) {
                 case NONE -> Explosion.BlockInteraction.KEEP;
                 case BLOCK -> getDestroyType(level, GameRules.RULE_BLOCK_EXPLOSION_DROP_DECAY);

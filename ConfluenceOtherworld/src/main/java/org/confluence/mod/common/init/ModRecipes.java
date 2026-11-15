@@ -19,7 +19,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.ModStartupConfigs;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -92,7 +92,7 @@ public final class ModRecipes {
         public static final Object2ObjectMap<int[], ItemStack> MATERIAL_TO_RESULT = new Object2ObjectOpenHashMap<>();
 
         public static void initialize() {
-            if (!StartupConfigs.brewingStandRecipe()) return;
+            if (!ModStartupConfigs.brewingStandRecipe()) return;
             registerMaterial(MaterialItems.WATERLEAF.get());
             registerMaterial(MaterialItems.FIREBLOSSOM.get());
             registerMaterial(MaterialItems.MOONGLOW.get());

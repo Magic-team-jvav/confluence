@@ -30,7 +30,7 @@ public final class DestroyerShellEffectHandler {
     private static final float BURST_SPEED_SCALE = 0.15F;
     private static final float AIR_DRAG = 0.97F;
     // 装甲片每 tick 向下增加的速度。
-    private static final double GRAVITY = 0.05;
+    private static final double GRAVITY = 0.08;
     private static final float MODEL_CENTER_Y = 14.0F / 16.0F;
     public static final RenderType RENDER_TYPE = RenderType.entityCutoutNoCull(Confluence.asResource("textures/entity/boss/destroyer_phase1.png"));
     private static final List<ArmorPiece> active = new ArrayList<>();

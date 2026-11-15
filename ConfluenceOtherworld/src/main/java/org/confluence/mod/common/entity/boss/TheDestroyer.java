@@ -36,6 +36,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.effect.CameraShake;
 import org.confluence.mod.client.particle.DestroyerDebrisParticle;
 import org.confluence.mod.client.renderer.entity.DestroyerRenderer;
@@ -137,6 +138,8 @@ public class TheDestroyer extends BaseBoss {
     public static final byte DIG_EVENT = 70, CROSS_EVENT = 71;
     private static final byte DEBRIS_EVENT = 73;
     private static final byte PHASE_SHELL_EVENT = 74;
+    // 相邻体节爆甲之间的间隔，单位 tick。
+    private static final int SHELL_BURST_INTERVAL = 1;
     /// 出土方块飞散的最短触发间隔，单位 tick，防止贴着地表反复穿越时堆积。
     private static final int DEBRIS_INTERVAL = 10;
     /// 地下移动时从头部中心向上检查的最大距离，单位格；只掀起此范围内表层的视觉方块。
@@ -167,6 +170,7 @@ public class TheDestroyer extends BaseBoss {
     private final DestroyerBody body;
     private final BitSet releasedProbes = new BitSet(SEGMENT_COUNT);
     private int clientShellCursor = -1;
+    private boolean clientSimultaneousBurst;
     private Mode candidateMode = Mode.GROUND;
     private int candidateTicks, groundTicks, launchTicks, laserTicks, laserCursor = -1;
     private boolean launching, airborne, wasSolid, terrainInitialized, alternateVolley;
@@ -329,11 +333,14 @@ public class TheDestroyer extends BaseBoss {
         super.tick();
         if (level().isClientSide) {
             DestroyerRenderer.tickBeamEffects(this);
-            if (clientShellCursor >= 0 && isMetal()) {
-                for (int index = 0; index < SEGMENT_COUNT; index++) {
-                    DestroyerRenderer.spawnPhaseShell(this, index);
+            if (clientShellCursor >= 0 && isMetal() && tickCount % SHELL_BURST_INTERVAL == 0) {
+                if (clientSimultaneousBurst && clientShellCursor == 0 && !isSilent()) {
+                    level().playLocalSound(getX(), getY(), getZ(), ModSoundEvents.DESTROYER_SHELL_BURST.get(), getSoundSource(), 2.0F, 1.0F, false);
                 }
-                clientShellCursor = -1;
+                int end = clientSimultaneousBurst ? SEGMENT_COUNT : clientShellCursor + 1;
+                while (clientShellCursor < end)
+                    DestroyerRenderer.spawnPhaseShell(this, clientShellCursor++);
+                if (clientShellCursor >= SEGMENT_COUNT) clientShellCursor = -1;
             }
         }
         if (!level().isClientSide && !isRemoved()) entityData.set(BODY_POSE, body.createSnapshot());
@@ -415,7 +422,7 @@ public class TheDestroyer extends BaseBoss {
 
     public boolean isMetal() {return entityData.get(METAL);}
 
-    /// 等待阶段转换同步后一次切换所有体节模型。
+    /// 爆甲从头向尾推进，尚未爆开的体节继续显示一阶段模型。
     public boolean isPhaseOneSection(int index) {
         return !isMetal() || clientShellCursor >= 0 && index >= clientShellCursor;
     }
@@ -640,7 +647,6 @@ public class TheDestroyer extends BaseBoss {
         if (!isMetal() && getHealth() <= getMaxHealth() * threshold) {
             if (releasedProbes.cardinality() < SEGMENT_COUNT - 2) return;
             level().broadcastEntityEvent(this, PHASE_SHELL_EVENT);
-            playSound(ModSoundEvents.DESTROYER_SHELL_BURST.get(), 2.0F, 1.0F);
             entityData.set(METAL, true);
             broadcastPhaseTransition();
         }
@@ -1017,6 +1023,7 @@ public class TheDestroyer extends BaseBoss {
     public void handleEntityEvent(byte event) {
         if (level().isClientSide && event == PHASE_SHELL_EVENT) {
             clientShellCursor = 0;
+            clientSimultaneousBurst = ModClientConfigs.destroyerShellBurstMode == ModClientConfigs.ShellBurstMode.SIMULTANEOUS;
         } else if (level().isClientSide && event < 0 && -event < SEGMENT_COUNT) {
             body.getParts()[-event - 1].emitHurtSparks();
         } else if (level().isClientSide && event == DEBRIS_EVENT) {

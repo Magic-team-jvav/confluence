@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.client.renderer.entity.GeoNegativeVolumeRenderer;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import software.bernie.geckolib.util.Color;
@@ -43,6 +44,6 @@ public class CrystalVileShardProjectileRenderer extends GeoNegativeVolumeRendere
 
     @Override
     protected RenderType getGlowRenderType(CrystalVileShardProjectile animatable, ResourceLocation texture) {
-        return RenderType.EYES.apply(texture, RenderType.TRANSLUCENT_TRANSPARENCY);
+        return ModRenderTypes.EYES.apply(texture, RenderType.TRANSLUCENT_TRANSPARENCY);
     }
 }

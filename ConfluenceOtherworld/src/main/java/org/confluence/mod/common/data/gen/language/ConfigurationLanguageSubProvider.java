@@ -294,6 +294,9 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.goblinArmyEventRequiredPlayerMaxHealth", "Required Player Max Health to Trigger Event", "事件触发所需玩家最大生命值");
         language.add("confluence.configuration.goblinArmyEventSpawnEnemiesIntervalFactor", "Enemy Spawn Interval Factor", "敌人生成间隙系数");
         language.add("confluence.configuration.goblinArmyHardmodeEventInvertChance", "Hardmode Event Trigger Chance (Denominator)", "困难模式下事件触发概率（分母）");
+        language.add("confluence.configuration.destroyerShellBurstMode", "Destroyer Armor Burst", "毁灭者爆甲方式");
+        language.add("confluence.configuration.destroyerShellBurstMode.simultaneous", "All at Once", "整体爆开");
+        language.add("confluence.configuration.destroyerShellBurstMode.sequential", "Head to Tail", "逐节爆开");
         language.add("confluence.configuration.goreEffect", "Gore Effect", "肢解效果");
         language.add("confluence.configuration.goreEffect.all", "All Entities", "所有生物");
         language.add("confluence.configuration.goreEffect.confluence", "Only Conflux Entities", "仅汇流生物");

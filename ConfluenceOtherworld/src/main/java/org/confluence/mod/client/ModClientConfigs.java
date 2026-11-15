@@ -166,6 +166,8 @@ public final class ModClientConfigs {
     private static IntValue EXTRA_INVENTORY_BUTTON_OFFSET_Y;
 
     private static BooleanValue BLOODY_EFFECT;
+    private static EnumValue<ShellBurstMode> DESTROYER_SHELL_BURST_MODE;
+    public static ShellBurstMode destroyerShellBurstMode = ShellBurstMode.SIMULTANEOUS;
     private static EnumValue<GoreEffect> GORE_EFFECT;
     private static EnumValue<IndicatorMode> DAMAGE_INDICATOR;
     private static EnumValue<IndicatorMode> HEAL_INDICATOR;
@@ -237,6 +239,7 @@ public final class ModClientConfigs {
         extraInventoryButtonOffsetY = EXTRA_INVENTORY_BUTTON_OFFSET_Y.get();
 
         bloodyEffect = BLOODY_EFFECT.get();
+        destroyerShellBurstMode = DESTROYER_SHELL_BURST_MODE.get();
         goreEffect = GORE_EFFECT == null ? GoreEffect.OFF : GORE_EFFECT.get();
         damageIndicator = DAMAGE_INDICATOR.get();
         healIndicator = HEAL_INDICATOR.get();
@@ -354,6 +357,7 @@ public final class ModClientConfigs {
                     .define("muteWardenSound", false);
             BLOODY_EFFECT = builder.define("bloodyEffect", true);
             GORE_EFFECT = builder.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
+            DESTROYER_SHELL_BURST_MODE = builder.defineEnum("destroyerShellBurstMode", ShellBurstMode.SIMULTANEOUS);
             DAMAGE_INDICATOR = builder.defineEnum("damageIndicator", IndicatorMode.VIRTUAL);
             HEAL_INDICATOR = builder.defineEnum("healIndicator", IndicatorMode.VIRTUAL);
             builder.pop();
@@ -504,6 +508,16 @@ public final class ModClientConfigs {
         @Override
         public Component getTranslatedName() {
             return Component.translatable("confluence.configuration.sellPriceDisplay." + name().toLowerCase(Locale.ROOT));
+        }
+    }
+
+    public enum ShellBurstMode implements TranslatableEnum {
+        SIMULTANEOUS,
+        SEQUENTIAL;
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable("confluence.configuration.destroyerShellBurstMode." + name().toLowerCase(Locale.ROOT));
         }
     }
 

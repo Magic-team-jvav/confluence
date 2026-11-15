@@ -7,15 +7,13 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.gui.hud.CrosshairHud;
 import org.confluence.mod.mixed.IGui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
 public abstract class GuiMixin implements IGui {
@@ -26,17 +24,17 @@ public abstract class GuiMixin implements IGui {
 
     @ModifyVariable(method = "renderEffects", at = @At(value = "STORE", ordinal = 0/* first */), ordinal = 2/* ISTORE 12 */)
     private int modify0(int i) {
-        return ClientConfigs.leftEffectIcon ? 25 : i;
+        return ModClientConfigs.leftEffectIcon ? 25 : i;
     }
 
     @ModifyVariable(method = "renderEffects", at = @At(value = "STORE", ordinal = 1/* second */), ordinal = 2/* ISTORE 12 */)
     private int modify1(int i) {
-        return ClientConfigs.leftEffectIcon ? -i : i;
+        return ModClientConfigs.leftEffectIcon ? -i : i;
     }
 
     @ModifyVariable(method = "renderEffects", at = @At(value = "STORE", ordinal = 2/* third */), ordinal = 2/* ISTORE 12 */)
     private int modify2(int i) {
-        return ClientConfigs.leftEffectIcon ? -i : i;
+        return ModClientConfigs.leftEffectIcon ? -i : i;
     }
 
     @WrapOperation(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V", ordinal = 0))

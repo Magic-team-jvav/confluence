@@ -7,7 +7,7 @@ import net.minecraft.advancements.AdvancementNode;
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.multiplayer.ClientAdvancements;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class ClientAdvancementsMixin {
     @WrapOperation(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/toasts/ToastComponent;addToast(Lnet/minecraft/client/gui/components/toasts/Toast;)V"))
     private void showAchievementToast(ToastComponent instance, Toast toast, Operation<Void> original, @Local AdvancementNode advancementNode) {
-        if (ClientConfigs.achievementToast) {
+        if (ModClientConfigs.achievementToast) {
             AchievementToast achievementToast = AchievementToast.getToast(advancementNode.holder().id());
             if (achievementToast != null) {
                 achievementToast.playedSound = false;

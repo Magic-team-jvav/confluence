@@ -2,7 +2,7 @@ package org.confluence.mod.client.handler;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.confluence.mod.network.c2s.YoyoControlPacketC2S;
 
@@ -44,7 +44,7 @@ public final class YoyoInputHandler implements ClientWeaponInputHandler {
     }
 
     private static boolean usesLeftButton(ItemStack stack) {
-        return stack.getItem() instanceof YoyoItem && ClientConfigs.usesLeftWeaponButton(stack);
+        return stack.getItem() instanceof YoyoItem && ModClientConfigs.usesLeftWeaponButton(stack);
     }
 
     @Override

@@ -16,7 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -102,7 +102,7 @@ public class DamageIndicatorParticle extends TextureSheetParticle {
         @Override
         public @Nullable Particle createParticle(DamageIndicatorOptions options, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
             // 关闭与虚拟模式都不生成原版指示粒子：关闭时什么都不显示，虚拟模式的数字改由信息渲染调度器显示
-            ClientConfigs.IndicatorMode mode = options.type() == DamageIndicatorOptions.Type.HEAL ? ClientConfigs.healIndicator : ClientConfigs.damageIndicator;
+            ModClientConfigs.IndicatorMode mode = options.type() == DamageIndicatorOptions.Type.HEAL ? ModClientConfigs.healIndicator : ModClientConfigs.damageIndicator;
             if (mode.isOff() || mode.isVirtual()) {
                 return null;
             }

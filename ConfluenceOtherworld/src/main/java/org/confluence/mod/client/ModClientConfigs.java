@@ -12,13 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
-import net.neoforged.neoforge.common.ModConfigSpec.Builder;
-import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
-import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec.*;
 import net.neoforged.neoforge.common.TranslatableEnum;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
@@ -29,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Locale;
 
-public final class ClientConfigs {
+public final class ModClientConfigs {
     public static BooleanValue ENABLE_NON_SPIDER_MODEL;
     public static int showWindParticles = 90;
     public static float minEctoMistEffectRadius = 10;

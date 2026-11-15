@@ -35,7 +35,7 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.entity.EnemyTargeting;
 import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -318,7 +318,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     ///
     /// 直接读取世界的特殊种子标志，避免为单次查询引入额外桥接层。
     protected boolean isFtw() {
-        return CommonConfigs.SPECIAL_SEED_BOSS_BEHAVIORS.get() && ModSecretSeeds.FOR_THE_WORTHY.match();
+        return ModCommonConfigs.SPECIAL_SEED_BOSS_BEHAVIORS.get() && ModSecretSeeds.FOR_THE_WORTHY.match();
     }
 
     // === Damage ===
@@ -556,7 +556,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     private void tickDisengageTimer() {
         noTargetTicks++;
-        boolean clearsWhenEmpty = CommonConfigs.BOSS_CLEAR_WHEN_NO_TARGET.get() && shouldDiscardWhenNoTarget();
+        boolean clearsWhenEmpty = ModCommonConfigs.BOSS_CLEAR_WHEN_NO_TARGET.get() && shouldDiscardWhenNoTarget();
         if (clearsWhenEmpty && noTargetTicks >= DISENGAGE_TICKS - RETREAT_TICKS) {
             beginDisengageRetreat();
             applyDisengageRetreat();

@@ -9,7 +9,7 @@ import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
@@ -17,7 +17,7 @@ import org.confluence.mod.mixed.IGui;
 
 public class RepeaterHud implements LayeredDraw.Layer {
     public static void handle() {
-        if (ClientConfigs.repeaterCrosshairAnimation) {
+        if (ModClientConfigs.repeaterCrosshairAnimation) {
             IGui.of(Minecraft.getInstance().gui).confluence$setShooting();
         }
     }

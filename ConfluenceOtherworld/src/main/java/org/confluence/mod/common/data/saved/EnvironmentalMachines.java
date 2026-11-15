@@ -22,7 +22,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.PalettedContainer;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.confluence.lib.common.data.saved.IGlobalData;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.block.functional.terraform.EnvironmentalMachineBlock;
 import org.confluence.mod.common.block.functional.terraform.Solution;
 import org.confluence.mod.common.block.natural.BaseDroopingPlantsHeadBlock;
@@ -180,7 +180,7 @@ public enum EnvironmentalMachines implements IGlobalData {
 
     // 配置表示边长；偶数范围在负方向多覆盖一个区块，确保实际宽度严格等于配置。
     public static int rangeChunks(boolean world) {
-        return world ? CommonConfigs.TERRAFORMER_RANGE_CHUNKS.get() : CommonConfigs.CLENTAMINATOR_RANGE_CHUNKS.get();
+        return world ? ModCommonConfigs.TERRAFORMER_RANGE_CHUNKS.get() : ModCommonConfigs.CLENTAMINATOR_RANGE_CHUNKS.get();
     }
 
     public State get(ServerLevel level, BlockPos pos, boolean world) {

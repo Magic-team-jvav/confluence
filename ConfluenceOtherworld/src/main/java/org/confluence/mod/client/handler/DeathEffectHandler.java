@@ -1,29 +1,57 @@
 package org.confluence.mod.client.handler;
 
+import it.unimi.dsi.fastutil.objects.Reference2IntMap;
+import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.fml.ModLoader;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.api.event.RegisterCustomDeathEffectEvent;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.effect.death.DeathAnimUtils;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IClientLivingEntity;
+import org.mesdag.particlestorm.data.molang.VariableTable;
+import org.mesdag.particlestorm.data.molang.compiler.value.Variable;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
-public final class DeathEffectManager {
+public final class DeathEffectHandler {
+    private static final ResourceLocation PARTICLE = Confluence.asResource("blood");
+    private static final String VARIABLE_COLOR_R = "variable.colorR";
+    private static final String VARIABLE_COLOR_G = "variable.colorG";
+    private static final String VARIABLE_COLOR_B = "variable.colorB";
     private static final int MAX_PARTS_PER_DEATH = 64;
     private static final int MAX_ACTIVE_PARTS = 512;
     private static final List<DeathEffect> pending = new ArrayList<>();
     private static final List<DeadBodyPartEntity> active = new ArrayList<>();
+    private static final Reference2ObjectMap<EntityType<?>, BiConsumer<LivingEntity, ClientLevel>> EFFECTS = new Reference2ObjectOpenHashMap<>();
+    private static final Reference2IntMap<EntityType<?>> BLOOD_COLOR_RGB = Util.make(new Reference2IntOpenHashMap<>(), map -> {
+        RegisterCustomDeathEffectEvent event = new RegisterCustomDeathEffectEvent(map, EFFECTS);
+        event.addBloodColor(EntityType.SPIDER, 0x999999);
+        event.addBloodColor(EntityType.CAVE_SPIDER, 0x99FF99);
+        event.addBloodColor(EntityType.CREEPER, 0x66FF66);
+        ModLoader.postEvent(event);
+    });
     private static ClientLevel currentLevel;
     private static List<DeadBodyPartEntity> building;
     private static int reservedParts;
     private static int buildingLimit = MAX_PARTS_PER_DEATH;
     private static int nextEntityId = -1;
 
-    private DeathEffectManager() {}
+    private DeathEffectHandler() {}
 
     // 两种渲染事件共用入口，先记录死亡状态以阻止模拟渲染重入。
     public static void onRendered(LivingEntity living) {
@@ -33,9 +61,23 @@ public final class DeathEffectManager {
         state.confluence$deadO(dead);
         if (!dead || wasDead || building != null || !(living.level() instanceof ClientLevel level)
                 || level != Minecraft.getInstance().level || living == Minecraft.getInstance().player
-                || ClientConfigs.goreEffect.isInvalidFor(living, null)) {
-            return;
+        ) return;
+        if (ModClientConfigs.bloodyEffect && !living.getType().is(ModTags.EntityTypes.NO_BLOOD)) {
+            int color = BLOOD_COLOR_RGB.getOrDefault(living.getType(), 0xFF0000);
+            ParticleEmitter emitter = new ParticleEmitter(level, living.position(), PARTICLE);
+            emitter.attachEntity(living);
+            VariableTable vars = emitter.getVars();
+            vars.setValue(VARIABLE_COLOR_R, new Variable(VARIABLE_COLOR_R, FastColor.ARGB32.red(color)));
+            vars.setValue(VARIABLE_COLOR_G, new Variable(VARIABLE_COLOR_G, FastColor.ARGB32.green(color)));
+            vars.setValue(VARIABLE_COLOR_B, new Variable(VARIABLE_COLOR_B, FastColor.ARGB32.blue(color)));
+            MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
+        if (!ModClientConfigs.goreEffect.isInvalidFor(living, null)) {
+            EFFECTS.getOrDefault(living.getType(), DeathEffectHandler::gore).accept(living, level);
+        }
+    }
+
+    public static void gore(LivingEntity living, ClientLevel level) {
         useLevel(level);
         active.removeIf(DeadBodyPartEntity::isRemoved);
         if (active.size() + reservedParts >= MAX_ACTIVE_PARTS) return;
@@ -44,7 +86,7 @@ public final class DeathEffectManager {
         building = parts;
         level.getProfiler().push("entity_dismemberment");
         try {
-            DeathAnimUtils.livingDeath(living);
+            DeathAnimUtils.livingDeath(living, level);
             if (!parts.isEmpty()) {
                 pending.add(new DeathEffect(living, List.copyOf(parts), true));
                 reservedParts += parts.size();
@@ -96,7 +138,7 @@ public final class DeathEffectManager {
         active.removeIf(DeadBodyPartEntity::isRemoved);
         try {
             for (DeathEffect effect : pending) {
-                if (effect.removeSource() && ClientConfigs.goreEffect.isInvalidFor(effect.source(), null))
+                if (effect.removeSource() && ModClientConfigs.goreEffect.isInvalidFor(effect.source(), null))
                     continue;
                 List<DeadBodyPartEntity> added = new ArrayList<>();
                 try {

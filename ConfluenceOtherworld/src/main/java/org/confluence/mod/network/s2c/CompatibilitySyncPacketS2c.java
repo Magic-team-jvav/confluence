@@ -11,7 +11,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.CompatibilityHandler;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 
 public record CompatibilitySyncPacketS2c(int data) implements IPacketS2C {
     private static ModConfigSpec.BooleanValue[] configs;
@@ -51,10 +51,10 @@ public record CompatibilitySyncPacketS2c(int data) implements IPacketS2C {
     public static ModConfigSpec.BooleanValue[] getConfigs() {
         if (configs == null) {
             configs = new ModConfigSpec.BooleanValue[]{
-                    CommonConfigs.CONVERT_ARS_NOUVEAU_MANA,
-                    CommonConfigs.CONVERT_IRONS_SPELL_MANA,
-                    CommonConfigs.FTB_CHUNKS_WORMHOLE_POTION,
-                    CommonConfigs.WAYSTONES_PYLON_NON_COST
+                    ModCommonConfigs.CONVERT_ARS_NOUVEAU_MANA,
+                    ModCommonConfigs.CONVERT_IRONS_SPELL_MANA,
+                    ModCommonConfigs.FTB_CHUNKS_WORMHOLE_POTION,
+                    ModCommonConfigs.WAYSTONES_PYLON_NON_COST
             };
         }
         return configs;

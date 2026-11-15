@@ -12,7 +12,7 @@ import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.ModStartupConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AnglerQuestLoader;
@@ -54,7 +54,7 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
-        if (StartupConfigs.brewingStandRecipe()) {
+        if (ModStartupConfigs.brewingStandRecipe()) {
             ModRecipes.Brewing.registerRecipes(event.getBuilder()::addRecipe);
         }
     }

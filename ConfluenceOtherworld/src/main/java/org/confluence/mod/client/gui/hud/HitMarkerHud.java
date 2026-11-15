@@ -6,10 +6,10 @@ import com.mojang.math.Axis;
 import net.minecraft.Util;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -21,8 +21,8 @@ import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.api.summon.OwnedSummon;
+import org.confluence.mod.client.ModClientConfigs;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -44,12 +44,12 @@ public class HitMarkerHud implements LayeredDraw.Layer {
         Minecraft minecraft = Minecraft.getInstance();
         boolean localDamage = minecraft.player != null
                 && (isLocalDamage(source.getEntity(), minecraft.player) || isLocalDamage(source.getDirectEntity(), minecraft.player));
-        if (!ClientConfigs.hitMarker || minecraft.player == null || victim == minecraft.player || !localDamage) {
+        if (!ModClientConfigs.hitMarker || minecraft.player == null || victim == minecraft.player || !localDamage) {
             return;
         }
 
         ItemStack weapon = source.getWeaponItem();
-        if (weapon != null && ClientConfigs.hitMarkerBlacklist.contains(BuiltInRegistries.ITEM.getKey(weapon.getItem()).toString())) {
+        if (weapon != null && ModClientConfigs.hitMarkerBlacklist.contains(BuiltInRegistries.ITEM.getKey(weapon.getItem()).toString())) {
             return;
         }
         if (!isCategoryEnabled(source)) {
@@ -81,18 +81,18 @@ public class HitMarkerHud implements LayeredDraw.Layer {
 
     private static boolean isCategoryEnabled(DamageSource source) {
         if (source.is(LibDamageTypes.SUMMON) || isSummon(source.getEntity()) || isSummon(source.getDirectEntity())) {
-            return ClientConfigs.hitMarkerSummon;
+            return ModClientConfigs.hitMarkerSummon;
         }
         if (source.is(Tags.DamageTypes.IS_MAGIC)) {
-            return ClientConfigs.hitMarkerMagic;
+            return ModClientConfigs.hitMarkerMagic;
         }
         if (source.is(LibTags.DamageTypes.AS_MELEE_ATTACK)) {
-            return ClientConfigs.hitMarkerMelee;
+            return ModClientConfigs.hitMarkerMelee;
         }
         if (source.is(DamageTypeTags.IS_PROJECTILE)) {
-            return ClientConfigs.hitMarkerRanged;
+            return ModClientConfigs.hitMarkerRanged;
         }
-        return ClientConfigs.hitMarkerOther;
+        return ModClientConfigs.hitMarkerOther;
     }
 
     public static void clear() {
@@ -102,7 +102,7 @@ public class HitMarkerHud implements LayeredDraw.Layer {
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (!ClientConfigs.hitMarker || minecraft.player == null || minecraft.level == null) {
+        if (!ModClientConfigs.hitMarker || minecraft.player == null || minecraft.level == null) {
             clear();
             return;
         }

@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
 import net.neoforged.neoforge.common.TranslatableEnum;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.gui.hud.BossBarStyles.BarSection;
 import org.confluence.mod.client.gui.hud.BossBarStyles.BarStyle;
 import org.confluence.mod.client.handler.ClientBossBarTracker;
@@ -28,7 +28,7 @@ public final class CustomBossBarRenderer {
     private CustomBossBarRenderer() {}
 
     public static void render(CustomizeGuiOverlayEvent.BossEventProgress event) {
-        if (ClientConfigs.bossBarStyle == Style.VANILLA) return;
+        if (ModClientConfigs.bossBarStyle == Style.VANILLA) return;
         BossBarData data = ClientBossBarTracker.get(event.getBossEvent().getId());
         if (data == null) return;
         BarStyle style = BossBarStyles.INSTANCE.get(data.styleId());
@@ -55,14 +55,14 @@ public final class CustomBossBarRenderer {
         int width = filledWidth(section.width(), health.current(), health.maximum());
         int sourceX = section.left() + (section.reverse() ? section.width() - width : 0);
         if (width > 0) {
-            if (ClientConfigs.bossBarStyle == Style.DYNAMIC && flowingFillShader != null) {
+            if (ModClientConfigs.bossBarStyle == Style.DYNAMIC && flowingFillShader != null) {
                 graphics.flush();
                 renderFlowingFill(graphics, style.fill(), x + sourceX, y + style.healthY(), width, sourceX, style.fillY(), style.fillHeight(), style.textureWidth(), style.textureHeight());
             } else {
                 graphics.blit(style.fill(), x + sourceX, y + style.healthY(), sourceX, style.fillY(), width, style.fillHeight(), style.textureWidth(), style.textureHeight());
             }
         }
-        if (!ClientConfigs.bossBarNumbersVisible || health.maximum() <= 0) return;
+        if (!ModClientConfigs.bossBarNumbersVisible || health.maximum() <= 0) return;
         var font = Minecraft.getInstance().font;
         String value = String.format(Locale.ROOT, "%.0f / %.0f", Math.max(0.0F, health.current()), health.maximum());
         // 按该段可用宽度缩放，普通血条保持原字号，双子长数字也不会盖到中间眼睛。

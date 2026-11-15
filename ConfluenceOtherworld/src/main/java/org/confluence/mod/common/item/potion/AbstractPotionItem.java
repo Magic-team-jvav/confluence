@@ -19,7 +19,7 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.PlayerVoidVaultContainer;
 import org.confluence.mod.common.block.conversion.natural.MoistenConversionTable;
 import org.confluence.mod.common.init.item.PotionItems;
@@ -61,7 +61,7 @@ public abstract class AbstractPotionItem extends Item {
             itemStack.shrink(1); // 创造模式不消耗
         }
 
-        if (!CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
+        if (!ModCommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
             return itemStack.isEmpty() ? ItemStack.EMPTY : itemStack;
         }
 

@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.NetworkNode;
@@ -184,7 +184,7 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
             for (Component text : messages) {
                 if (text.getContents() == PlainTextContents.EMPTY) continue;
                 Vec3 center = pPos.getCenter();
-                int square = Mth.square(CommonConfigs.ANNOUNCEMENT_BOX_DISTANCE.get());
+                int square = Mth.square(ModCommonConfigs.ANNOUNCEMENT_BOX_DISTANCE.get());
                 for (Player player : pLevel.players()) {
                     if (player.position().distanceToSqr(center) <= square) {
                         player.sendSystemMessage(text);

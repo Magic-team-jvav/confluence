@@ -2,7 +2,7 @@ package org.confluence.mod.client.gui.hud.soulcerer.quick_skill;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.gui.hud.BasicHudLayer;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.util.SoulcererUtils;
@@ -50,6 +50,6 @@ public abstract class BasicSoulQuickSkillHud extends BasicHudLayer {
 
     /// 判断当前快捷栏是否为配置选中的样式。
     public boolean isType() {
-        return ClientConfigs.soulQuickSkillStyle == getType();
+        return ModClientConfigs.soulQuickSkillStyle == getType();
     }
 }

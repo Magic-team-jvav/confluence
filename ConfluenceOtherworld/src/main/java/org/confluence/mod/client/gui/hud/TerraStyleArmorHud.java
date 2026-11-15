@@ -10,7 +10,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibRenderUtils;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 
 import java.util.Locale;
@@ -24,13 +24,13 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        if (!ClientConfigs.terraStyleArmor) return;
+        if (!ModClientConfigs.terraStyleArmor) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !LibRenderUtils.shouldDrawSurvivalElements(minecraft)) return;
         LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
-        ClientConfigs.armorStyle.render(guiGraphics, minecraft);
+        ModClientConfigs.armorStyle.render(guiGraphics, minecraft);
 
         minecraft.getProfiler().pop();
     }

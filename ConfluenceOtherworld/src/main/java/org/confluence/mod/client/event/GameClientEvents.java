@@ -60,7 +60,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.api.item.ILeftClickStateItem;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.*;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
@@ -227,7 +227,7 @@ public final class GameClientEvents {
         }
         GunHandler.handle(player, attackHeld);
         CrosshairHud.tick(player);
-        DeathEffectManager.tick(minecraft.level);
+        DeathEffectHandler.tick(minecraft.level);
         BackgroundLayer.tickLayers();
         WeatherHandler.handle();
     }
@@ -273,7 +273,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
         clearClientWorldReferences();
-        DeathEffectManager.reset();
+        DeathEffectHandler.reset();
         FlailHandler.reset();
         LeftClickItemHandler.reset();
         ClientNPCDialogs.clear();
@@ -373,9 +373,9 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderGuiOverlay$Pre(RenderGuiLayerEvent.Pre event) {
         ResourceLocation name = event.getName();
-        if ((ClientConfigs.terraStyleHealth && VanillaGuiLayers.PLAYER_HEALTH.equals(name)) ||
-                (ClientConfigs.terraStyleFood && VanillaGuiLayers.FOOD_LEVEL.equals(name)) ||
-                (ClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(name)) ||
+        if ((ModClientConfigs.terraStyleHealth && VanillaGuiLayers.PLAYER_HEALTH.equals(name)) ||
+                (ModClientConfigs.terraStyleFood && VanillaGuiLayers.FOOD_LEVEL.equals(name)) ||
+                (ModClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(name)) ||
                 ArsNouveauHelper.cancelRenderManaBar(name) ||
                 IronSpellHelper.cancelRenderManaOverlay(name) ||
                 (HouseSelectHud.inSelectHUD && VanillaGuiLayers.CROSSHAIR.equals(name))
@@ -417,7 +417,7 @@ public final class GameClientEvents {
         ItemStack stack = event.getItemStack();
         Holder<Item> holder = stack.getItemHolder();
 
-        if (ClientConfigs.sellPriceDisplay.test()) {
+        if (ModClientConfigs.sellPriceDisplay.test()) {
             ValueComponent.addTooltip(stack, toolTip, event.getEntity());
         }
         ModArmorBonus.addTooltip(event.getEntity(), stack, toolTip);
@@ -529,14 +529,14 @@ public final class GameClientEvents {
     public static void renderLiving$Post(RenderLivingEvent.Post<?, ?> event) {
         TongueRenderer.render(event);
         LivingEntity living = event.getEntity();
-        DeathEffectManager.onRendered(living);
+        DeathEffectHandler.onRendered(living);
     }
 
     @SubscribeEvent
     public static void geoRender$Entity$Post(GeoRenderEvent.Entity.Post event) {
         // 渲染这个实体结束的时候检测是不是刚死，这时候方便获取到这个实体的姿势
         if (event.getEntity() instanceof LivingEntity living) {
-            DeathEffectManager.onRendered(living);
+            DeathEffectHandler.onRendered(living);
         }
     }
 
@@ -643,7 +643,7 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void playSound(PlaySoundEvent event) {
-        if (event.getSound() != null && ClientConfigs.isWardenSoundDisabled()) {
+        if (event.getSound() != null && ModClientConfigs.isWardenSoundDisabled()) {
             ResourceLocation location = event.getSound().getLocation();
             if (ResourceLocation.DEFAULT_NAMESPACE.equals(location.getNamespace()) && location.getPath().startsWith("entity.warden")) {
                 event.setSound(null);

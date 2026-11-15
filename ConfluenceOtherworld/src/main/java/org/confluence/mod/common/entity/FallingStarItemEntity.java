@@ -19,7 +19,7 @@ import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.gameevent.MeteorShowerGameEvent;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -126,7 +126,7 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     public static void summon(ServerLevel level) {
-        if (CommonConfigs.DO_FALLING_STAR_SPAWNING.get() && LibDateUtils.isNight(level) &&
+        if (ModCommonConfigs.DO_FALLING_STAR_SPAWNING.get() && LibDateUtils.isNight(level) &&
                 level.getGameTime() % getFallingStarSpawnInterval(level) == 0
         ) {
             Set<Vec3> cache = new HashSet<>();
@@ -147,9 +147,9 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     private static int getFallingStarSpawnInterval(ServerLevel level) {
-        int interval = CommonConfigs.FALLING_STAR_INTERVAL.get();
+        int interval = ModCommonConfigs.FALLING_STAR_INTERVAL.get();
         if (MeteorShowerGameEvent.INSTANCE.started()) {
-            float factor = CommonConfigs.METEOR_SHOWER_EVENT_FALLING_STAR_SPAWN_SPEED_MULTIPLIER.get().floatValue();
+            float factor = ModCommonConfigs.METEOR_SHOWER_EVENT_FALLING_STAR_SPAWN_SPEED_MULTIPLIER.get().floatValue();
             return LibMathUtils.divideInt(interval, factor, level.random);
         }
         return interval;

@@ -46,9 +46,9 @@ import org.confluence.lib.api.animation.third_person.PlayerGeoAnimatable;
 import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.ModStartupConfigs;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.effect.BrainDissolveTexture;
 import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.effect.DivaSlimeVertexConsumer;
@@ -182,14 +182,14 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void modConfig$Loading(ModConfigEvent.Loading event) {
         if (event.getConfig().getType() == ModConfig.Type.CLIENT && Confluence.MODID.equals(event.getConfig().getModId())) {
-            ClientConfigs.onLoad();
+            ModClientConfigs.onLoad();
         }
     }
 
     @SubscribeEvent
     public static void modConfig$Reloading(ModConfigEvent.Reloading event) {
         if (event.getConfig().getType() == ModConfig.Type.CLIENT && Confluence.MODID.equals(event.getConfig().getModId())) {
-            ClientConfigs.onLoad();
+            ModClientConfigs.onLoad();
         }
     }
 
@@ -747,7 +747,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.HERPLING.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.HERPLING.getId()));
         event.registerEntityRenderer(MonsterEntities.METEOR_HEAD.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.METEOR_HEAD.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.GRANITE_GOLEM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GRANITE_GOLEM.getId(), false, 1.3F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.SAND_POACHER.get())
                 : new GeoNormalRenderer<>(c, MonsterEntities.SAND_POACHER.getId()));
         event.registerEntityRenderer(MonsterEntities.SHARK.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SHARK.getId(), true, 1.0F, -0.10625F));
@@ -795,17 +795,17 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.ANTLION_CHARGER.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/antlion.geo.json"), Confluence.asResource("textures/entity/antlion.png"), Confluence.asResource("animations/entity/antlion_charger.animation.json")), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.ANTLION_SWARMER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ANTLION_SWARMER.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.ARAPAIMA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ARAPAIMA.getId(), true, 1.0F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.BLACK_RECLUSE.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(MonsterEntities.BLACK_RECLUSE.get(), c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.BLACK_RECLUSE.get())
                 : new ClimbingSpiderRenderer(c, "spider/black_recluse"));
         event.registerEntityRenderer(MonsterEntities.BLOODY_SPORE.get(), c -> new BloodySporeRenderer(c, MonsterEntities.BLOODY_SPORE.getId()));
-        event.registerEntityRenderer(EntityType.SPIDER, c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(EntityType.SPIDER, c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "spider", EntityType.SPIDER)
                 : new SpiderRenderer<>(c));
-        event.registerEntityRenderer(EntityType.CAVE_SPIDER, c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(EntityType.CAVE_SPIDER, c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "cave_spider", EntityType.CAVE_SPIDER)
                 : new CaveSpiderRenderer(c));
-        event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "blood_crawler", MonsterEntities.BLOOD_CRAWLER.get())
                 : new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_CRAWLER.getId()));
         event.registerEntityRenderer(MonsterEntities.BLOOD_FEEDER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_FEEDER.getId(), true, 1.2F, 0.0F));
@@ -848,7 +848,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.ICE_ELEMENTAL.get(), c -> new FullbrightGeoRenderer<IceElemental>(c, MonsterEntities.ICE_ELEMENTAL.getId()));
         event.registerEntityRenderer(MonsterEntities.ICE_GOLEM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ICE_GOLEM.getId(), false, 2.0F, -0.021875F));
         event.registerEntityRenderer(MonsterEntities.ICY_MERMAN.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/icy_merman.geo.json"), Confluence.asResource("textures/entity/icy_merman.png"), true), false, 1.0F, 0.015625F));
-        event.registerEntityRenderer(MonsterEntities.JUNGLE_CREEPER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(MonsterEntities.JUNGLE_CREEPER.get(), c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.JUNGLE_CREEPER.get())
                 : new ClimbingSpiderRenderer(c, "spider/jungle"));
         event.registerEntityRenderer(MonsterEntities.LITTLE_HORNET.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.LITTLE_HORNET.getId(), false), true, 1.0F, 0.1F));
@@ -913,7 +913,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.VICIOUS_GOLDFISH.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/goldfish.geo.json"), Confluence.asResource("textures/entity/vicious_goldfish.png"), Confluence.asResource("animations/entity/animal/goldfish.animation.json"))));
         event.registerEntityRenderer(MonsterEntities.VICIOUS_PENGUIN.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/penguin.geo.json"), Confluence.asResource("textures/entity/vicious_penguin.png"), Confluence.asResource("animations/entity/animal/penguin.animation.json"))));
         event.registerEntityRenderer(MonsterEntities.VOODOO_DEMON.get(), c -> new DemonRenderer(c, MonsterEntities.VOODOO_DEMON.getId(), 1.1F));
-        event.registerEntityRenderer(MonsterEntities.WALL_CREEPER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+        event.registerEntityRenderer(MonsterEntities.WALL_CREEPER.get(), c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.WALL_CREEPER.get())
                 : new ClimbingSpiderRenderer(c, "wall_creeper"));
         event.registerEntityRenderer(MonsterEntities.WANDERING_EYE_FISH.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.WANDERING_EYE_FISH.getId(), false), true, 1.2F, 0.0F));
@@ -1152,11 +1152,6 @@ public final class ModClientEvents {
     }
 
     @SubscribeEvent
-    public static void registerMaterialAtlasesEvent(RegisterMaterialAtlasesEvent event) {
-        event.register(ModClientSetups.ENTITY_BLOOD_ATLAS, Confluence.asResource("entity_blood"));
-    }
-
-    @SubscribeEvent
     public static void model$RegisterAdditional(ModelEvent.RegisterAdditional event) {
         event.register(TongueRenderer.SEGMENT_MODEL);
         WhipModelRegister.register(event);
@@ -1190,11 +1185,11 @@ public final class ModClientEvents {
         ModConnectives.MODEL_SWAPPER.onModelBake(modelRegistry);
         ModelSwapper.swapModels(modelRegistry, ModelSwapper.getAllBlockStateModelLocations(DecorativeBlocks.MURAL_BLOCK.getId(), DecorativeBlocks.MURAL_BLOCK.get()), MuralBlockModel::new);
 
-        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture())
+        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !ModStartupConfigs.paintsReplaceTexture())
             return;
 
         CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
-        Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.bannedModForPaints());
+        Set<String> bannedModForPaints = new HashSet<>(ModStartupConfigs.bannedModForPaints());
         for (Map.Entry<Block, Holder.Reference<Block>> entry : ((DefaultedMappedRegistry<Block>) BuiltInRegistries.BLOCK).byValue.entrySet()) {
             Block block = entry.getKey();
             ResourceLocation id = entry.getValue().key().location();

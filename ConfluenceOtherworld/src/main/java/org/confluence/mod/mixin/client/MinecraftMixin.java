@@ -15,7 +15,7 @@ import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.OwnedSummon;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.effect.GlowingHelper;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.init.ModEffects;
@@ -116,9 +116,9 @@ public abstract class MinecraftMixin {
 
     @WrapOperation(method = "createTitle", at = @At(value = "INVOKE", target = "Ljava/lang/StringBuilder;toString()Ljava/lang/String;"))
     private String customTitle(StringBuilder instance, Operation<String> original) {
-        if (ClientConfigs.customTitle > 0) {
+        if (ModClientConfigs.customTitle > 0) {
             if (confluence$currentTitle == null && screen instanceof TitleScreen) {
-                confluence$currentTitle = I18n.get("title.confluence.window." + (int) (Math.random() * ClientConfigs.customTitle));
+                confluence$currentTitle = I18n.get("title.confluence.window." + (int) (Math.random() * ModClientConfigs.customTitle));
             }
             if (confluence$currentTitle != null) {
                 instance.append(" #").append(confluence$currentTitle);

@@ -12,7 +12,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 
 public record DragonChargePlayerConfigPacketS2C(boolean enabled) implements IPacketS2C {
     public static final Type<DragonChargePlayerConfigPacketS2C> TYPE = Confluence.createType("dragon_charge_player_config");
@@ -20,12 +20,12 @@ public record DragonChargePlayerConfigPacketS2C(boolean enabled) implements IPac
             .map(DragonChargePlayerConfigPacketS2C::new, DragonChargePlayerConfigPacketS2C::enabled);
 
     public DragonChargePlayerConfigPacketS2C() {
-        this(CommonConfigs.isDragonChargePlayer());
+        this(ModCommonConfigs.isDragonChargePlayer());
     }
 
     @Override
     public void work(Player player) {
-        CommonConfigs.handleDragonChargePlayer(enabled);
+        ModCommonConfigs.handleDragonChargePlayer(enabled);
     }
 
     @Override

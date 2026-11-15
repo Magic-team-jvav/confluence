@@ -13,7 +13,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibRenderUtils;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.common.PermanentUpgrade;
@@ -30,13 +30,13 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        if (!ClientConfigs.terraStyleHealth) return;
+        if (!ModClientConfigs.terraStyleHealth) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !LibRenderUtils.shouldDrawSurvivalElements(minecraft)) return;
         LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
-        ClientConfigs.healthStyle.render(guiGraphics, minecraft);
+        ModClientConfigs.healthStyle.render(guiGraphics, minecraft);
 
         minecraft.getProfiler().pop();
     }
@@ -45,8 +45,8 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
         LEGACY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                int widthHealth = guiGraphics.guiWidth() - 128 + ClientConfigs.healthOffsetX;
-                int heightHealth = 4 + ClientConfigs.healthOffsetY;
+                int widthHealth = guiGraphics.guiWidth() - 128 + ModClientConfigs.healthOffsetX;
+                int heightHealth = 4 + ModClientConfigs.healthOffsetY;
                 float maxHealth = 0.0F;
                 float currentHealth = 0.0F;
                 int heartBuff = 0;
@@ -170,8 +170,8 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                     hardcore = player.level().getLevelData().isHardcore();
                 }
                 int white = 0xFFFFFF;
-                int widthHealth = guiGraphics.guiWidth() / 2 - 91 + ClientConfigs.healthOffsetX;
-                int heightHealth = guiGraphics.guiHeight() - minecraft.gui.leftHeight + ClientConfigs.healthOffsetY;
+                int widthHealth = guiGraphics.guiWidth() / 2 - 91 + ModClientConfigs.healthOffsetX;
+                int heightHealth = guiGraphics.guiHeight() - minecraft.gui.leftHeight + ModClientConfigs.healthOffsetY;
                 String abHealth = String.format("%.1f", absorptionHealth);
                 int healthI = Math.min((int) Math.ceil(currentHealth), 20);
                 int absorptionHealthI = Math.min((int) Math.ceil(absorptionHealth), 20);

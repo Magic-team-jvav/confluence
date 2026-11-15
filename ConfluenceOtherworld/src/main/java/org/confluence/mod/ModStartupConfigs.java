@@ -6,7 +6,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.util.List;
 
-public final class StartupConfigs {
+public final class ModStartupConfigs {
     public static final List<String> DEFAULT_BANNED_MOD = List.of();
     private static ModConfigSpec.BooleanValue PAINTS_REPLACE_TEXTURE;
     private static ModConfigSpec.ConfigValue<List<? extends String>> BANNED_MOD_FOR_PAINTS;

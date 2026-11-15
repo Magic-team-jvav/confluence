@@ -55,7 +55,7 @@ import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.SecretFlagMatcher;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
@@ -344,7 +344,7 @@ public final class ModUtils {
         }
         if (!(attacker instanceof BaseBoss boss) || boss == victim) return;
 
-        double multiplier = CreatureDefinition.get(boss.getType()).boss().damageMultiplierOr(1.0D) * CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE.get();
+        double multiplier = CreatureDefinition.get(boss.getType()).boss().damageMultiplierOr(1.0D) * ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE.get();
         if (multiplier != 1.0D) {
             event.setAmount((float) Math.max(0.0D, event.getAmount() * multiplier));
         }

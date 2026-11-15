@@ -302,5 +302,19 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 CritterEntities.FAIRY.get(), CritterEntities.FEALING.get(),
                 CritterEntities.HELL_BUTTERFLY.get(), CritterEntities.MAGMA_SNAIL.get()
         );
+        tag(ModTags.EntityTypes.NO_BLOOD).add(
+                EntityType.SKELETON,
+                EntityType.SKELETON_HORSE,
+                EntityType.WITHER_SKELETON,
+                EntityType.WITHER,
+                EntityType.IRON_GOLEM,
+                EntityType.SNOW_GOLEM,
+                BossEntities.RETINAZER.get(),
+                BossEntities.SPAZMATISM.get(),
+                BossEntities.THE_DESTROYER.get(),
+                BossEntities.THE_DESTROYER_PROBE.get(),
+                BossEntities.SKELETRON_PRIME.get(),
+                BossEntities.SKELETRON_PRIME_PART.get()
+        );
     }
 }

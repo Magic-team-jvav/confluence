@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import org.confluence.mod.api.item.ISpecialSweepWeapon;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.soulcerer.SoulKnifeItem;
 import org.confluence.terra_curio.client.handler.TCClientPacketHandler;
@@ -21,6 +21,6 @@ public abstract class TCClientPacketHandlerMixin {
             return false;
         if (stack.is(ModTags.Items.AUTO_ATTACK_BLACKLIST))
             return false;
-        return CommonConfigs.AUTO_SWING_ALL_SWORDS.get() || stack.is(ModTags.Items.AUTO_ATTACK_WHITELIST) || original;
+        return ModCommonConfigs.AUTO_SWING_ALL_SWORDS.get() || stack.is(ModTags.Items.AUTO_ATTACK_WHITELIST) || original;
     }
 }

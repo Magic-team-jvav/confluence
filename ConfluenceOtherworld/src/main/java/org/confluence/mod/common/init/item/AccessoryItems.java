@@ -17,7 +17,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.accessory.*;
@@ -200,7 +200,7 @@ public class AccessoryItems {
             HARVEST_TOTEM = registerCurio("harvest_totem", "收获图腾", builder -> builder.noTooltip().rarity(YELLOW));//收获图腾
 
     public static void applyLuckyCoin(ServerPlayer player, Entity target) {
-        if (!CommonConfigs.ENEMY_DROPS_MONEY.get()) return;
+        if (!ModCommonConfigs.ENEMY_DROPS_MONEY.get()) return;
         RandomSource randomSource = player.getRandom();
         if (TCUtils.hasType(player, LUCKY$COIN) && randomSource.nextFloat() < 0.2F) {
             Item item;

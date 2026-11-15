@@ -90,7 +90,6 @@ import java.util.function.Supplier;
 @SuppressWarnings("deprecation")
 public final class ModClientSetups {
     public static final ResourceLocation VANILLA_BLOCK_ATLAS = InventoryMenu.BLOCK_ATLAS;
-    public static final ResourceLocation ENTITY_BLOOD_ATLAS = Confluence.asResource("textures/atlas/entity_blood.png");
 
     public static final WidgetSprites EXTRA_INVENTORY_BUTTON = new WidgetSprites(Confluence.asResource("widget/extra_inventory_button"), Confluence.asResource("widget/extra_inventory_button_highlighted"));
     public static final ResourceLocation BLOOM_TEXTURE = Confluence.asResource("textures/misc/bloom.png");
@@ -101,7 +100,7 @@ public final class ModClientSetups {
     public static final ResourceLocation BOULDER_SUN_TEXTURE = Confluence.asResource("textures/environment/boulder.png");
     public static final ResourceLocation SUNGLASSES_BOULDER_TEXTURE = Confluence.asResource("textures/environment/sunglasses_boulder.png");
     // endregion
-    private static final NormalNoise normalNoise = NormalNoise.create(RandomSource.create(0), new NormalNoise.NoiseParameters(-5, 1.0, 1.0, 1.0, 1.0));
+    private static final NormalNoise normalNoise = NormalNoise.create(RandomSource.create(260318), -5, 1.0, 1.0, 1.0, 1.0);
     static final IClientFluidTypeExtensions HONEY_CLIENT_EXTENSIONS = new IClientFluidTypeExtensions() {
         private static final ResourceLocation STILL = Confluence.asResource("block/fluid/honey_still");
         private static final ResourceLocation FLOWING = Confluence.asResource("block/fluid/honey_flowing");

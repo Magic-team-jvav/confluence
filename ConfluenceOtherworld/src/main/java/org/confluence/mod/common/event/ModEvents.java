@@ -52,10 +52,10 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.ModStartupConfigs;
 import org.confluence.mod.api.event.RegisterEvilMaterialReplacesEvent;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
@@ -106,7 +106,7 @@ public final class ModEvents {
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
             ModBiomes.registerRegionAndSurface();
-            if (StartupConfigs.forceAllowWipItemsDisplayInCreativeModeTab()) {
+            if (ModStartupConfigs.forceAllowWipItemsDisplayInCreativeModeTab()) {
                 WipNotDisplayOutput.forceAllow();
             }
 
@@ -130,14 +130,14 @@ public final class ModEvents {
     @SubscribeEvent
     public static void modConfig$Loading(ModConfigEvent.Loading event) {
         if (event.getConfig().getType() == ModConfig.Type.COMMON && MODID.equals(event.getConfig().getModId())) {
-            CommonConfigs.onLoad();
+            ModCommonConfigs.onLoad();
         }
     }
 
     @SubscribeEvent
     public static void modConfig$Reloading(ModConfigEvent.Reloading event) {
         if (event.getConfig().getType() == ModConfig.Type.COMMON && MODID.equals(event.getConfig().getModId())) {
-            CommonConfigs.onLoad();
+            ModCommonConfigs.onLoad();
             CompatibilitySyncPacketS2c.sendToAll();
         }
     }

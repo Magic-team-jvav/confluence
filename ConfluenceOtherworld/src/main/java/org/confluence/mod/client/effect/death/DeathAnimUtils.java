@@ -13,7 +13,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.integration.geckolib.IGeoCube;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.IModelPart;
@@ -117,10 +116,7 @@ public final class DeathAnimUtils {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static void livingDeath(LivingEntity living) {
-        if (!(living.level() instanceof ClientLevel level) || ClientConfigs.goreEffect.isInvalidFor(living, null)) {
-            return;
-        }
+    public static void livingDeath(LivingEntity living, ClientLevel level) {
         EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(living);
         Vec3 deathMotion;
         if (living instanceof Mob mob && mob.isNoAi()) {
@@ -133,7 +129,7 @@ public final class DeathAnimUtils {
         }
         float deathSpeed = (float) deathMotion.length();
         Vec3 entityPos = living.position();
-        if (living instanceof GeoAnimatable animatable && renderer instanceof GeoEntityRenderer geoRenderer) {
+        if (living instanceof GeoAnimatable && renderer instanceof GeoEntityRenderer geoRenderer) {
             GeoDeathModelAdapter.build((LivingEntity & GeoAnimatable) living, geoRenderer, level, entityPos, deathMotion, deathSpeed);
         } else if (renderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {
             VanillaDeathModelAdapter.build(living, livingRenderer, level, entityPos, deathMotion, deathSpeed);

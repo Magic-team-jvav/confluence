@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import org.confluence.lib.common.data.saved.IGlobalData;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 
 /// 全局风态：**服务端权威，大小全局一致**（方向才随位置变化，见 {@link WindField}）。
 ///
@@ -124,7 +124,7 @@ public enum WindState implements IGlobalData {
 
     /// 每 tick 调用一次（主世界，见 {@code TickEvents}）。
     public void tick(ServerLevel level) {
-        if (!CommonConfigs.DO_WIND.get()) {
+        if (!ModCommonConfigs.DO_WIND.get()) {
             speedCurrent = speedTarget = 0.0F;
             return;
         }
@@ -156,7 +156,7 @@ public enum WindState implements IGlobalData {
     /// 大风天档额外受 {@link #WINDY_COOLDOWN} 门控：冷却期内即使抽中也只按「有风档」处理，
     /// 这样"大风有多频繁"就有上界，不取决于配置里填了什么。
     private void reroll(RandomSource random) {
-        float windyChance = (float) (double) CommonConfigs.WIND_WINDY_CHANCE.get();
+        float windyChance = (float) (double) ModCommonConfigs.WIND_WINDY_CHANCE.get();
         float roll = random.nextFloat();
         if (roll < windyChance && windyCooldown <= 0) {
             speedTarget = Mth.nextFloat(random, WindMath.WINDY_DAY_MIN, NATURAL_MAX_SPEED);

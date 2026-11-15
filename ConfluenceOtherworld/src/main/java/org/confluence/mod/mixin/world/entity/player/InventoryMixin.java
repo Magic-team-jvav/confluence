@@ -6,7 +6,7 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerVoidVaultContainer;
 import org.confluence.mod.common.init.ModTags;
@@ -62,8 +62,8 @@ public abstract class InventoryMixin {
                 cir.setReturnValue(true);
             }
         } else if (stack.is(ModTags.Items.AMMO)) {
-            if (CommonConfigs.ammoSlotsItemBlackList.stream().anyMatch(stack.getItemHolder()::is) ||
-                    CommonConfigs.ammoSlotsTagBlackList.stream().anyMatch(stack::is)) return;
+            if (ModCommonConfigs.ammoSlotsItemBlackList.stream().anyMatch(stack.getItemHolder()::is) ||
+                    ModCommonConfigs.ammoSlotsTagBlackList.stream().anyMatch(stack::is)) return;
             ExtraInventory extraInventory = ExtraInventory.of(player);
             if (confluence$insert2Extra(SIZE_AMMO, extraInventory, stack, extraInventory2 -> {}, extraInventory::getAmmo, extraInventory::setAmmo)) {
                 cir.setReturnValue(true);

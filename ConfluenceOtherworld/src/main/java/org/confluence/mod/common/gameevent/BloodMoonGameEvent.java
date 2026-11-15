@@ -15,7 +15,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.data.spawner.BossDelaySpawner;
 import org.confluence.mod.common.init.entity.BossEntities;
@@ -42,9 +42,9 @@ public enum BloodMoonGameEvent implements GameEvent {
     public final CustomSpawner spawner = (level, spawnEnemies, spawnFriendlies) -> {
         if (!started || !spawnEnemies) return 0;
         return GameEventSystem.customSpawner(this, level, spawned,
-                CommonConfigs.BLOOD_MOON_EVENT_MAX_ENEMIES_BASE.get(),
-                CommonConfigs.BLOOD_MOON_EVENT_MAX_ENEMIES_PER_PLAYER.get(),
-                CommonConfigs.BLOOD_MOON_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR.get().floatValue(),
+                ModCommonConfigs.BLOOD_MOON_EVENT_MAX_ENEMIES_BASE.get(),
+                ModCommonConfigs.BLOOD_MOON_EVENT_MAX_ENEMIES_PER_PLAYER.get(),
+                ModCommonConfigs.BLOOD_MOON_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR.get().floatValue(),
                 spawnerData, ENTITY_TAG, true);
     };
 
@@ -81,9 +81,9 @@ public enum BloodMoonGameEvent implements GameEvent {
                 !BossDelaySpawner.INSTANCE.hasSameTypeInQueue(BossEntities.EYE_OF_CTHULHU.get())
         ) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                if (player.getMaxHealth() >= CommonConfigs.BLOOD_MOON_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get() &&
-                        player.getArmorValue() >= CommonConfigs.BLOOD_MOON_EVENT_REQUIRED_PLAYER_ARMOR.get() &&
-                        level.random.nextInt(CommonConfigs.BLOOD_MOON_EVENT_INVERT_CHANCE.get()) == 0
+                if (player.getMaxHealth() >= ModCommonConfigs.BLOOD_MOON_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get() &&
+                        player.getArmorValue() >= ModCommonConfigs.BLOOD_MOON_EVENT_REQUIRED_PLAYER_ARMOR.get() &&
+                        level.random.nextInt(ModCommonConfigs.BLOOD_MOON_EVENT_INVERT_CHANCE.get()) == 0
                 ) {
                     return true;
                 }

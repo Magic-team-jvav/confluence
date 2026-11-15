@@ -18,10 +18,10 @@ import org.confluence.lib.network.IPacket;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.consumer.Consumer3;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.gui.MergedConfigurationScreen;
 import org.confluence.mod.client.summoner.SummonerClientEvents;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.data.TranslationConsumer;
@@ -65,10 +65,10 @@ public final class Confluence {
         ModDynamicBiomes.init();
         ModMiniBiomes.init();
         DynamicBiomeUtils.enable();
-        StartupConfigs.register(container);
-        CommonConfigs.register(container);
+        ModStartupConfigs.register(container);
+        ModCommonConfigs.register(container);
         if (LibUtils.isPhysicalClient()) {
-            ClientConfigs.register(container);
+            ModClientConfigs.register(container);
             SummonerClientEvents.init(eventBus);
             container.registerExtensionPoint(IConfigScreenFactory.class, MergedConfigurationScreen::factory);
         }

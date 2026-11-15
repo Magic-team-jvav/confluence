@@ -23,7 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.menu.IToggleSlot;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.client.gui.BestiaryScreen;
 import org.confluence.mod.client.gui.GuiSprite;
@@ -371,9 +371,9 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     public static ImageButton getExtraInventoryButton(EffectRenderingInventoryScreen<?> screen, boolean isInventoryScreen) {
-        int x = screen.getGuiLeft() - 16 + ClientConfigs.extraInventoryButtonOffsetX;
-        if (!isInventoryScreen && ClientConfigs.extraInventoryButtonOffsetX >= 192) x += 19;
-        int y = screen.getGuiTop() + 2 + ClientConfigs.extraInventoryButtonOffsetY;
+        int x = screen.getGuiLeft() - 16 + ModClientConfigs.extraInventoryButtonOffsetX;
+        if (!isInventoryScreen && ModClientConfigs.extraInventoryButtonOffsetX >= 192) x += 19;
+        int y = screen.getGuiTop() + 2 + ModClientConfigs.extraInventoryButtonOffsetY;
         ImageButton extraInventoryButton = new ImageButton(x, y, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
             LocalPlayer player = Minecraft.getInstance().player;
             if (player != null) {

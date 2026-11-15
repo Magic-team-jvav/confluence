@@ -6,7 +6,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 
 /// 仅负责遭遇人数与生命配置，难度全部交给 CreatureDifficultyScaling。
@@ -36,7 +36,7 @@ public final class BossMultiplayerEnhancement {
                 double multiplier = boss instanceof BaseBoss base ? base.getBossHealthPlayerMultiplier(count) : count;
                 maxHealth.addPermanentModifier(new AttributeModifier(PLAYER_COUNT_ID, multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             }
-            replace(maxHealth, HEALTH_CONFIG_ID, CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_HEALTH.get());
+            replace(maxHealth, HEALTH_CONFIG_ID, ModCommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_HEALTH.get());
         }
         CreatureDifficultyScaling.apply(boss, false);
         boss.setHealth(fillHealth && full ? boss.getMaxHealth() : Math.min(health, boss.getMaxHealth()));

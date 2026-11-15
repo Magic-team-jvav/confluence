@@ -17,7 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -397,7 +397,7 @@ public class KingSlime extends BaseBoss {
 
     private int getTotalSplits() {
         int splits = 20;
-        return CommonConfigs.KING_SLIME_LARGE_MINIONS.get() ? Math.max(1, splits / 3) : splits;
+        return ModCommonConfigs.KING_SLIME_LARGE_MINIONS.get() ? Math.max(1, splits / 3) : splits;
     }
 
     /// 缩小、传送和重新膨胀期间没有接触伤害。
@@ -410,7 +410,7 @@ public class KingSlime extends BaseBoss {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        int count = CommonConfigs.KING_SLIME_LARGE_MINIONS.get() ? 1 : 1 + random.nextInt(NORMAL_MINION_VARIATION);
+        int count = ModCommonConfigs.KING_SLIME_LARGE_MINIONS.get() ? 1 : 1 + random.nextInt(NORMAL_MINION_VARIATION);
         for (int index = 0; index < count; index++) {
             spawnSlime(serverLevel, isExpert() && random.nextInt(EXPERT_MINION_VARIANT_CHANCE) == 0
                     ? MonsterEntities.SPIKED_SLIME.get() : MonsterEntities.BLUE_SLIME.get());
@@ -426,7 +426,7 @@ public class KingSlime extends BaseBoss {
         slime.setTarget(getTarget());
         if (slime instanceof org.confluence.mod.common.entity.monster.slime.BaseSlime summonedSlime) {
             summonedSlime.setBossOwner(this);
-            if (CommonConfigs.KING_SLIME_LARGE_MINIONS.get()) summonedSlime.setSlimeSize(4);
+            if (ModCommonConfigs.KING_SLIME_LARGE_MINIONS.get()) summonedSlime.setSlimeSize(4);
         }
         serverLevel.addFreshEntity(slime);
     }

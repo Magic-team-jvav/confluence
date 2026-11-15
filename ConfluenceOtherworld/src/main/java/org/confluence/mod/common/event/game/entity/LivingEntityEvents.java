@@ -41,7 +41,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.SoulOverdraftEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.api.summon.OwnedSummon;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.data.map.AttackEffects;
@@ -137,7 +137,7 @@ public final class LivingEntityEvents {
 
             if (attacker instanceof ServerPlayer) {
                 if (victim instanceof Enemy &&
-                        CommonConfigs.ENEMY_DROPS_MONEY.get() &&
+                        ModCommonConfigs.ENEMY_DROPS_MONEY.get() &&
                         level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) &&
                         !(victim instanceof OwnedSummon)
                 ) ModUtils.enemyDropMoney(victim, level, damageSource);

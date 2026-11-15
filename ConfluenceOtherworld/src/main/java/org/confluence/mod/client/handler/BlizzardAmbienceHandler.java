@@ -3,7 +3,7 @@ package org.confluence.mod.client.handler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.sound.BlizzardAmbientSound;
 import org.confluence.mod.common.gameevent.BlizzardGameEvent;
@@ -21,7 +21,7 @@ public final class BlizzardAmbienceHandler {
 
     /// 在客户端 tick 中调用（见 {@code GameClientEvents}）。
     public static void tick(LocalPlayer player) {
-        if (!ClientConfigs.blizzardAmbience) {
+        if (!ModClientConfigs.blizzardAmbience) {
             reset();
             return;
         }

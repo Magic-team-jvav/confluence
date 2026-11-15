@@ -15,7 +15,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.client.handler.CompatibilityHandler;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.SoulStorage;
 import org.confluence.mod.util.PlayerUtils;
@@ -34,14 +34,14 @@ public class IronSpellHelper {
 
     /// 共享魔力开启时拦截灵魂模式下的新施法。
     private static void onSpellPreCast(SpellPreCastEvent event) {
-        if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && SoulStorage.of(event.getEntity()).isSoulMode()) {
+        if (ModCommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && SoulStorage.of(event.getEntity()).isSoulMode()) {
             event.setCanceled(true);
         }
     }
 
     /// 切入灵魂模式时取消未完成的共享魔力读条。
     public static void cancelCasting(ServerPlayer player) {
-        if (IS_LOADED && CommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && MagicData.getPlayerMagicData(player).isCasting()) {
+        if (IS_LOADED && ModCommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && MagicData.getPlayerMagicData(player).isCasting()) {
             Utils.serverSideCancelCast(player);
         }
     }
@@ -55,14 +55,14 @@ public class IronSpellHelper {
     }
 
     public static float getMana(float original, Player player) {
-        if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
+        if (ModCommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
             return ManaStorage.of(player).getCurrentMana();
         }
         return original;
     }
 
     public static void extractMana(float manaCost, ServerPlayer player) {
-        if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && manaCost > 0) {
+        if (ModCommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && manaCost > 0) {
             PlayerUtils.extractMana(player, ItemStack.EMPTY, () -> manaCost * toConfluence());
         }
     }
@@ -72,7 +72,7 @@ public class IronSpellHelper {
     }
 
     public static void additionalMana(AdditionalManaEvent event) {
-        if (IS_LOADED && CommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
+        if (IS_LOADED && ModCommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
             int value = event.getNeoValue();
             double maxMana = event.getEntity().getAttributeValue(AttributeRegistry.MAX_MANA);
             event.setNeoValue(value + (int) ((maxMana - getInitMaxMana()) / toConfluence()));
@@ -80,7 +80,7 @@ public class IronSpellHelper {
     }
 
     public static void updateMana(LivingEntity living, Holder<Attribute> attribute) {
-        if (IS_LOADED && CommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && living instanceof ServerPlayer player) {
+        if (IS_LOADED && ModCommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && living instanceof ServerPlayer player) {
             if (attribute == AttributeRegistry.MAX_MANA.getDelegate()) {
                 ManaStorage.of(player).flushAbility(player);
             }

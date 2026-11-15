@@ -16,7 +16,7 @@ import net.neoforged.neoforge.common.util.TriState;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.client.handler.CompatibilityHandler;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.SoulStorage;
 import org.confluence.mod.util.PlayerUtils;
@@ -40,7 +40,7 @@ public class ArsNouveauHelper {
     }
 
     public static TriState enoughMana(LivingEntity living, int totalCost) {
-        if (CommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get() && living instanceof Player player) {
+        if (ModCommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get() && living instanceof Player player) {
             return totalCost * toConfluence() <= ManaStorage.of(player).getCurrentMana() ? TriState.TRUE : TriState.FALSE;
         }
         return TriState.DEFAULT;
@@ -48,7 +48,7 @@ public class ArsNouveauHelper {
 
     /// 仅在共享魔力开启时禁止灵魂模式玩家发起魔法。
     public static boolean isManaDisabled(LivingEntity living) {
-        return IS_LOADED && CommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get()
+        return IS_LOADED && ModCommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get()
                 && living instanceof Player player && SoulStorage.of(player).isSoulMode();
     }
 
@@ -80,7 +80,7 @@ public class ArsNouveauHelper {
     }
 
     public static void updateMana(LivingEntity living) {
-        if (CommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get() && living instanceof ServerPlayer player) {
+        if (ModCommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get() && living instanceof ServerPlayer player) {
             ManaStorage.of(player).flushAbility(player);
         }
     }

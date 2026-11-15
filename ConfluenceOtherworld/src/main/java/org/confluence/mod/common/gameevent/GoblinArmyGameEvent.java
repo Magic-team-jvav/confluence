@@ -17,7 +17,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.entity.MonsterEntities;
@@ -50,9 +50,9 @@ public enum GoblinArmyGameEvent implements GameEvent {
     public final CustomSpawner spawner = (level, spawnEnemies, spawnFriendlies) -> {
         if (!started || ready != -1 || !spawnEnemies) return 0;
         return GameEventSystem.customSpawner(this, level, spawned,
-                CommonConfigs.GOBLIN_ARMY_EVENT_MAX_ENEMIES_BASE.get(),
-                CommonConfigs.GOBLIN_ARMY_EVENT_MAX_ENEMIES_PER_PLAYER.get(),
-                CommonConfigs.GOBLIN_ARMY_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR.get().floatValue(),
+                ModCommonConfigs.GOBLIN_ARMY_EVENT_MAX_ENEMIES_BASE.get(),
+                ModCommonConfigs.GOBLIN_ARMY_EVENT_MAX_ENEMIES_PER_PLAYER.get(),
+                ModCommonConfigs.GOBLIN_ARMY_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR.get().floatValue(),
                 spawnerData, ENTITY_TAG, true);
     };
 
@@ -127,22 +127,22 @@ public enum GoblinArmyGameEvent implements GameEvent {
                 ConfluenceData.get(level).getEvilBrokenCount() > 0
         ) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                if (player.getMaxHealth() >= CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get() &&
-                        player.getArmorValue() >= CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_ARMOR.get()
+                if (player.getMaxHealth() >= ModCommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get() &&
+                        player.getArmorValue() >= ModCommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_ARMOR.get()
                 ) {
                     int chance;
                     boolean hardmode = ModUtils.isHardmode();
                     if (KillBoard.INSTANCE.isDefeated(KEY)) {
                         if (hardmode) {
-                            chance = CommonConfigs.GOBLIN_ARMY_EVENT_HARDMODE_DEFEATED_INVERT_CHANCE.get();
+                            chance = ModCommonConfigs.GOBLIN_ARMY_EVENT_HARDMODE_DEFEATED_INVERT_CHANCE.get();
                         } else {
-                            chance = CommonConfigs.GOBLIN_ARMY_EVENT_DEFEATED_INVERT_CHANCE.get();
+                            chance = ModCommonConfigs.GOBLIN_ARMY_EVENT_DEFEATED_INVERT_CHANCE.get();
                         }
                     } else {
                         if (hardmode) {
-                            chance = CommonConfigs.GOBLIN_ARMY_EVENT_HARDMODE_INVERT_CHANCE.get();
+                            chance = ModCommonConfigs.GOBLIN_ARMY_EVENT_HARDMODE_INVERT_CHANCE.get();
                         } else {
-                            chance = CommonConfigs.GOBLIN_ARMY_EVENT_INVERT_CHANCE.get();
+                            chance = ModCommonConfigs.GOBLIN_ARMY_EVENT_INVERT_CHANCE.get();
                         }
                     }
                     return level.random.nextInt(chance) == 0;
@@ -170,11 +170,11 @@ public enum GoblinArmyGameEvent implements GameEvent {
         Component component = Component.translatable("message.confluence.goblin_army.ready").withColor(GlobalColors.EVENT.get());
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             player.sendSystemMessage(component);
-            if (player.getMaxHealth() >= CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get()) {
+            if (player.getMaxHealth() >= ModCommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get()) {
                 ++count;
             }
         }
-        this.required = CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_BASE.get() + Math.min(count, 255) * CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_PER_PLAYER.get();
+        this.required = ModCommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_BASE.get() + Math.min(count, 255) * ModCommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_PER_PLAYER.get();
     }
 
     @Override
@@ -199,7 +199,7 @@ public enum GoblinArmyGameEvent implements GameEvent {
     public boolean forceStart() {
         if (started) return false;
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-            if (player.getMaxHealth() >= CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get()) {
+            if (player.getMaxHealth() >= ModCommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get()) {
                 this.forceStart = true;
                 return true;
             }

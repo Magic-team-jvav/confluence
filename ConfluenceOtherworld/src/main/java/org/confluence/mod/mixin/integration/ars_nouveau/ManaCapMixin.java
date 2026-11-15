@@ -3,7 +3,7 @@ package org.confluence.mod.mixin.integration.ars_nouveau;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -25,7 +25,7 @@ public abstract class ManaCapMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(LivingEntity livingEntity, CallbackInfo ci) {
-        if (CommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get() && livingEntity instanceof Player player) {
+        if (ModCommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get() && livingEntity instanceof Player player) {
             this.confluence$player = player;
         }
     }

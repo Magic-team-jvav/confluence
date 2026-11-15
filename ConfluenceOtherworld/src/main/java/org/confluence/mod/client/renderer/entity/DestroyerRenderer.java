@@ -21,7 +21,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.client.effect.death.GeoDeathModelAdapter;
-import org.confluence.mod.client.handler.DeathEffectManager;
+import org.confluence.mod.client.handler.DeathEffectHandler;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.entity.boss.DestroyerPart;
 import org.confluence.mod.common.entity.boss.TheDestroyer;
@@ -541,12 +541,12 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
         BakedGeoModel model = geoRenderer.getGeoModel().getBakedModel(phase1Model(section));
         GeoBone bone = model.getBone(ClientUtils.DEATH_BONE_NAME).orElse(null);
         if (bone == null) return;
-        DeathEffectManager.spawnFragments(boss, bone.getCubes().size(), () -> {
+        DeathEffectHandler.spawnFragments(boss, bone.getCubes().size(), () -> {
             Vec3 motion = boss.getDeltaMovement();
             RenderType renderType = geoRenderer.getRenderType(boss, PHASE1_TEXTURE, Minecraft.getInstance().renderBuffers().bufferSource(), 1.0F);
             float centerZ = index == 0 ? 0 : index % 2 == 0 ? CONNECTOR_CENTER_Z : BODY_CENTER_Z;
             for (GeoCube cube : bone.getCubes()) {
-                if (!DeathEffectManager.canAddPart()) break;
+                if (!DeathEffectHandler.canAddPart()) break;
                 GeoCube copy = IGeoCube.of(cube).confluence$getCopy();
                 if (copy == null) continue;
                 float[] min = IGeoCube.of(copy).confluence$getMinCoords();
@@ -570,7 +570,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
                 part.geoRenderData = new GeoDeathModelAdapter.RenderSnapshot(model, PHASE1_TEXTURE, renderType, transform);
                 part.setPos(boss.getBody().getRenderPosition(index, 1.0F));
                 part.setDeltaMovement(motion.scale(0.3).offsetRandom(level.random, 1.6F));
-                DeathEffectManager.addPart(part);
+                DeathEffectHandler.addPart(part);
             }
         });
     }

@@ -38,7 +38,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.CoinPortalEntity;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
@@ -381,7 +381,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropMoney(ServerLevel level, BlockPos blockPos, Vec3 center) {
-        if (!CommonConfigs.ENEMY_DROPS_MONEY.get()) return false;
+        if (!ModCommonConfigs.ENEMY_DROPS_MONEY.get()) return false;
         float random = level.random.nextFloat();
         float ratio = 1.0F;
         if (OverworldUtils.inCave(center.y)) {

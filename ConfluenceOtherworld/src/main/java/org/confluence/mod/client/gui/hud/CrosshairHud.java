@@ -11,14 +11,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.CrossbowItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.util.EnchantmentUtils;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.common.attachment.LeftClickCooldowns;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.init.ModDataComponentTypes;
@@ -27,6 +22,7 @@ import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.gun.BaseGun;
+import org.confluence.mod.util.EnchantmentUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class CrosshairHud {
@@ -43,22 +39,22 @@ public class CrosshairHud {
     private static float shotTime = -SHOT_DURATION_TICKS;
 
     public static boolean isEnabled(ItemStack stack) {
-        if (!ClientConfigs.crosshairAnimation || DYNAMIC_CROSSHAIR
-                || ClientConfigs.crosshairAnimationBlacklist.contains(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString())) {
+        if (!ModClientConfigs.crosshairAnimation || DYNAMIC_CROSSHAIR
+                || ModClientConfigs.crosshairAnimationBlacklist.contains(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString())) {
             return false;
         }
 
         Item item = stack.getItem();
         if (item instanceof BaseTerraRepeaterItem) {
-            return ClientConfigs.repeaterCrosshairAnimation;
+            return ModClientConfigs.repeaterCrosshairAnimation;
         }
         if (item == Items.BOW || item instanceof BaseTerraBowItem) {
-            return ClientConfigs.bowCrosshairAnimation;
+            return ModClientConfigs.bowCrosshairAnimation;
         }
         if (item == Items.CROSSBOW) {
-            return ClientConfigs.crossbowCrosshairAnimation;
+            return ModClientConfigs.crossbowCrosshairAnimation;
         }
-        return item instanceof BaseGun && ClientConfigs.gunCrosshairAnimation;
+        return item instanceof BaseGun && ModClientConfigs.gunCrosshairAnimation;
     }
 
     private static InteractionHand selectHand(LocalPlayer player) {

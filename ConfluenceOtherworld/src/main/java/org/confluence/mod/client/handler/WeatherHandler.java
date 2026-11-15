@@ -26,7 +26,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidType;
-import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.wind.WindMath;
@@ -158,7 +158,7 @@ public final class WeatherHandler {
     /// 不含曝露度的风向量（方块/tick），用于雨倾斜与云速——雨云在露天渲染，玩家站在屋檐下时雨照样该被吹斜。
     /// 配置关闭时返回零向量（雨不斜、云不动）。
     private static float[] windBlocksPerTick() {
-        if (!ClientConfigs.windSlantsRainClouds) return new float[]{0.0F, 0.0F};
+        if (!ModClientConfigs.windSlantsRainClouds) return new float[]{0.0F, 0.0F};
         float bpt = WindMath.toBlocksPerTick(windSpeed());
         return new float[]{Mth.cos(angle) * bpt, Mth.sin(angle) * bpt};
     }
@@ -247,7 +247,7 @@ public final class WeatherHandler {
     /// `level.effects().renderClouds(...)`，所以只对主世界生效：其它维度可能有模组自己的实现，
     /// 不该拿到被我们偏移过的相机坐标。
     public static boolean cloudDriftApplies() {
-        if (!ClientConfigs.windSlantsRainClouds) return false;
+        if (!ModClientConfigs.windSlantsRainClouds) return false;
         ClientLevel level = Minecraft.getInstance().level;
         return level != null && level.dimension() == OverworldUtils.dimension();
     }
@@ -255,7 +255,7 @@ public final class WeatherHandler {
     /// 推进云层漂移。**必须在每 tick 的客户端 tick 里调用**（`renderClouds` 是每帧调用，
     /// 放在渲染里会让云速随帧率变化）。
     private static void tickCloudDrift() {
-        if (!ClientConfigs.windSlantsRainClouds) {
+        if (!ModClientConfigs.windSlantsRainClouds) {
             // 配置关闭 = 完全回退原版：虚拟 tick 与真实 tick 同步，云回到原版方向与速度，且不注入 Z 漂移
             cloudTicks = wrapFloat(cloudTicks + 1.0F, CLOUD_TICK_WRAP);
             return;
@@ -451,7 +451,7 @@ public final class WeatherHandler {
 
     /// `ClientConfigs.showWindParticles`（0 ~ 100 的"可见比例"）与风速档位合成的随机门限。
     public static int particleThreshold() {
-        int ratio = ClientConfigs.showWindParticles;
+        int ratio = ModClientConfigs.showWindParticles;
         if (ratio <= 0) return 0;
         float density = particleDensity();
         return Math.max(1, Mth.floor((100 - ratio) * (1.0F - density * 0.7F)) + 1);

@@ -1,25 +1,27 @@
 package org.confluence.mod.client.effect;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.lightning.ArcSurgeLightning;
-import org.confluence.mod.network.s2c.RedGloveArcPacketS2C;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.item.mana.RedGlovePattern;
 import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
+import org.confluence.mod.network.s2c.RedGloveArcPacketS2C;
 
 import java.util.*;
 
-/** Authoritative discharge snapshots with a short, visual-only afterimage. */
+/// Authoritative discharge snapshots with a short, visual-only afterimage.
 public final class RedGloveVfx {
     private static final boolean DEBUG = Boolean.getBoolean("confluence.redGlove.probe");
     private static volatile int renderedFrames, lateVisibleFrames, followedFrames, retractingFrames;
     private static int receivedPackets, spawnedZenithParticles;
     private static long clockDelta;
     private static long localTick;
+
     private static final class Cast {
         final long tick;
         final long seed;
@@ -29,32 +31,47 @@ public final class RedGloveVfx {
         ArcSurgeLightning.Event effect;
         final List<RedGlovePattern.Path> particlePaths = new ArrayList<>();
         boolean particlesEmitted;
+
         Cast(RedGloveArcPacketS2C packet) {
-            tick = packet.tick(); seed = packet.seed(); receivedTick = localTick;
-            casterId = packet.casterId(); origin = packet.origin();
+            tick = packet.tick();
+            seed = packet.seed();
+            receivedTick = localTick;
+            casterId = packet.casterId();
+            origin = new Vec3(packet.origin());
         }
     }
+
     private static final Map<Integer, Cast> CASTS = new LinkedHashMap<>();
     private static final List<Cast> AFTERIMAGES = new ArrayList<>();
-    private static ClientLevel level;
+    private static Level level;
     private static final List<Particle> SPARKS = new ArrayList<>();
-    public static void receive(RedGloveArcPacketS2C packet) {
-        var mc = Minecraft.getInstance();
-        if (mc.level == null || !mc.level.dimension().location().equals(packet.dimension())) return;
-        if (level != mc.level) { clear(); level = mc.level; }
-        if (DEBUG) { receivedPackets++; clockDelta = level.getGameTime() - packet.tick(); }
+
+    public static void receive(Player player, RedGloveArcPacketS2C packet) {
+        if (level != player.level()) {
+            clear();
+            level = player.level();
+        }
+        if (DEBUG) {
+            receivedPackets++;
+            clockDelta = level.getGameTime() - packet.tick();
+        }
         Cast current = CASTS.get(packet.casterId());
         if (current != null && current.tick > packet.tick()) return;
         if (current == null || current.tick < packet.tick()) {
             if (current != null) AFTERIMAGES.add(current);
-            current = new Cast(packet); CASTS.put(packet.casterId(), current);
+            current = new Cast(packet);
+            CASTS.put(packet.casterId(), current);
         }
         current.particlePaths.addAll(packet.paths());
         current.effect = null; // Assemble all ordered packet batches before resolving shared junctions.
     }
+
     public static void tick(Minecraft mc) {
         if (level == null) return;
-        if (mc.level != level) { clear(); return; }
+        if (mc.level != level) {
+            clear();
+            return;
+        }
         if (mc.isPaused()) return;
         localTick++;
         CASTS.values().removeIf(c -> localTick - c.receivedTick >= ArcSurgeLightning.RED_GLOVE_LIFETIME_TICKS);
@@ -65,8 +82,10 @@ public final class RedGloveVfx {
         for (int i = AFTERIMAGES.size() - 1; i >= 0 && remaining > 0; i--)
             remaining -= emitParticles(mc, AFTERIMAGES.get(i), remaining);
     }
+
     public static void render(RenderLevelStageEvent event) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || level == null) return;
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || level == null)
+            return;
         var frames = new ArrayList<ArcSurgeLightning.Frame>();
         for (Cast cast : AFTERIMAGES) {
             double age = Math.max(0, localTick - cast.receivedTick + event.getPartialTick().getGameTimeDeltaPartialTick(false));
@@ -83,12 +102,15 @@ public final class RedGloveVfx {
         if (DEBUG && frames.stream().anyMatch(f -> f.age() > ArcSurgeLightning.RED_GLOVE_HOLD_TICKS
                 && f.event().visibleAt(f.age()))) retractingFrames++;
     }
+
     private record SparkSegment(Vec3 a, Vec3 b, double length) {}
 
     private static ArcSurgeLightning.Event effect(Cast cast) {
         if (cast.effect == null) try {
             cast.effect = ArcSurgeLightning.createRedGlove(cast.particlePaths, cast.seed);
-        } catch (Exception error) { Confluence.LOGGER.error("Unable to create red glove discharge", error); }
+        } catch (Exception error) {
+            Confluence.LOGGER.error("Unable to create red glove discharge", error);
+        }
         return cast.effect;
     }
 
@@ -116,11 +138,15 @@ public final class RedGloveVfx {
         double length = 0;
         var effect = effect(cast);
         if (effect == null) return 0;
-        for (var path : effect.particlePaths(displacement(cast, 1))) for (int i = 1; i < path.points().size(); i++) {
-            Vec3 a = path.points().get(i - 1), b = path.points().get(i);
-            double size = a.distanceTo(b);
-            if (size > 1.0E-6) { segments.add(new SparkSegment(a, b, size)); length += size; }
-        }
+        for (var path : effect.particlePaths(displacement(cast, 1)))
+            for (int i = 1; i < path.points().size(); i++) {
+                Vec3 a = path.points().get(i - 1), b = path.points().get(i);
+                double size = a.distanceTo(b);
+                if (size > 1.0E-6) {
+                    segments.add(new SparkSegment(a, b, size));
+                    length += size;
+                }
+            }
         if (segments.isEmpty()) return 0;
         int count = Math.min(RedGloveSparks.PER_CAST, budget);
         var random = new SplittableRandom(cast.seed);
@@ -139,7 +165,9 @@ public final class RedGloveVfx {
             Particle particle = mc.particleEngine.createParticle(options, pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z);
             if (particle != null) {
                 if (SPARKS.size() >= RedGloveSparks.CAPACITY) SPARKS.remove(0).remove();
-                SPARKS.add(particle); emitted++; spawnedZenithParticles++;
+                SPARKS.add(particle);
+                emitted++;
+                spawnedZenithParticles++;
             }
         }
         return emitted;
@@ -159,11 +187,21 @@ public final class RedGloveVfx {
                 Map.entry("retractingFrames", retractingFrames),
                 Map.entry("rawClientServerClockDelta", clockDelta));
     }
-    public static int renderedFrameCount() { return renderedFrames; }
-    public static int lateVisibleFrameCount() { return lateVisibleFrames; }
-    public static int followedFrameCount() { return followedFrames; }
-    public static int retractingFrameCount() { return retractingFrames; }
+
+    public static int renderedFrameCount() {return renderedFrames;}
+
+    public static int lateVisibleFrameCount() {return lateVisibleFrames;}
+
+    public static int followedFrameCount() {return followedFrames;}
+
+    public static int retractingFrameCount() {return retractingFrames;}
+
     public static void clear() {
-        CASTS.clear(); AFTERIMAGES.clear(); SPARKS.forEach(Particle::remove); SPARKS.clear(); level = null; localTick = 0;
+        CASTS.clear();
+        AFTERIMAGES.clear();
+        SPARKS.forEach(Particle::remove);
+        SPARKS.clear();
+        level = null;
+        localTick = 0;
     }
 }

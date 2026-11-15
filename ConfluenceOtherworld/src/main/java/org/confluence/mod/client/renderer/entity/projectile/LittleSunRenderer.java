@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.common.entity.projectile.mana.AbstractLittleCelestialEntity;
 import org.confluence.mod.common.entity.projectile.mana.LittleSunEntity;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +32,7 @@ public class LittleSunRenderer extends GeoEntityRenderer<LittleSunEntity> {
     /// 只留朝内那层外壳并整体发亮。
     @Override
     public RenderType getRenderType(LittleSunEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderStateShardAccessor.entityEmissiveCull(texture);
+        return ModRenderTypes.entityEmissiveCull(texture);
     }
 
     @Override

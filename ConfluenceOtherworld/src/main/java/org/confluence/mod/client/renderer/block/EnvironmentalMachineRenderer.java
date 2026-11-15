@@ -14,7 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.renderer.ModRenderTypes;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.common.block.functional.terraform.EnvironmentalMachineBlock;
 import org.confluence.mod.common.block.functional.terraform.Solution;
 import org.confluence.mod.common.data.saved.EnvironmentalMachines;

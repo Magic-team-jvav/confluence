@@ -1,6 +1,5 @@
 package org.confluence.mod.client.effect;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
@@ -9,14 +8,12 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.effect.voidsea.VoidSeaRenderer;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-
-public class RenderStateShardAccessor extends RenderStateShard {
-    public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
-    public static final ColoredGlintContext GLINT_RAINBOW = ColoredGlintContext.create("rainbow", 0, 0, 0);
+public class ModRenderTypes extends RenderStateShard {
     public static final RenderType LASER = RenderType.create("confluence_laser", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, false,
             RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(GameRenderer::getPositionColorShader))
                     .setCullState(CULL).setLightmapState(NO_LIGHTMAP).setWriteMaskState(COLOR_DEPTH_WRITE).createCompositeState(false));
@@ -63,8 +60,26 @@ public class RenderStateShardAccessor extends RenderStateShard {
                                 .setWriteMaskState(COLOR_WRITE)
                                 .createCompositeState(false));
             });
+    public static final RenderType MACHINE_SCREEN = RenderType.create("confluence_machine_screen",
+            DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, false,
+            RenderType.CompositeState.builder()
+                    .setShaderState(POSITION_COLOR_SHADER)
+                    .setDepthTestState(LEQUAL_DEPTH_TEST)
+                    .setCullState(NO_CULL)
+                    .setWriteMaskState(COLOR_DEPTH_WRITE)
+                    .createCompositeState(false));
+    public static final ShaderStateShard VOID_SEA_SHADER = new ShaderStateShard(() -> VoidSeaRenderer.voidSeaShader);
+    public static final RenderType SEA_RENDER_TYPE = RenderType.create("void_sea", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, false, false,
+            RenderType.CompositeState.builder()
+                    .setShaderState(VOID_SEA_SHADER)
+                    .setTextureState(new TextureStateShard(ResourceLocation.withDefaultNamespace("textures/entity/end_portal.png"), false, false))
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setDepthTestState(LEQUAL_DEPTH_TEST)
+                    .setCullState(NO_CULL)
+                    .setLightmapState(LIGHTMAP)
+                    .setWriteMaskState(COLOR_DEPTH_WRITE)
+                    .createCompositeState(false));
 
-    // 使用原版实体自发光着色器读取叠色，保留 eyes 的加色混合、剔除和只写颜色行为。
     private static final Function<ResourceLocation, RenderType> ENTITY_GLOW = Util.memoize(texture -> createEntityGlow(texture, NO_LAYERING));
     private static final Function<ResourceLocation, RenderType> DESTROYER_GLOW = Util.memoize(texture -> createEntityGlow(texture, POLYGON_OFFSET_LAYERING));
 
@@ -74,14 +89,14 @@ public class RenderStateShardAccessor extends RenderStateShard {
 
     private static RenderType createEntityGlow(ResourceLocation texture, LayeringStateShard layering) {
         return RenderType.create("confluence_entity_glow", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
-                    RenderType.CompositeState.builder()
-                            .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
-                            .setTextureState(new TextureStateShard(texture, false, false))
-                            .setTransparencyState(ADDITIVE_TRANSPARENCY)
-                            .setCullState(CULL).setWriteMaskState(COLOR_WRITE)
-                            .setOverlayState(OVERLAY)
-                            .setLayeringState(layering)
-                            .createCompositeState(false));
+                RenderType.CompositeState.builder()
+                        .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                        .setTextureState(new TextureStateShard(texture, false, false))
+                        .setTransparencyState(ADDITIVE_TRANSPARENCY)
+                        .setCullState(CULL).setWriteMaskState(COLOR_WRITE)
+                        .setOverlayState(OVERLAY)
+                        .setLayeringState(layering)
+                        .createCompositeState(false));
     }
 
     private static final Function<ResourceLocation, RenderType> ENTITY_UNSHADED_GLOW = Util.memoize(texture ->
@@ -101,7 +116,6 @@ public class RenderStateShardAccessor extends RenderStateShard {
         return ENTITY_GLOW.apply(texture);
     }
 
-    // 1.20.1 的 entityTranslucentCull 着色器不读取叠色；使用普通实体着色器并保留背面剔除。
     private static final Function<ResourceLocation, RenderType> ENTITY_TRANSLUCENT_CULL_OVERLAY = Util.memoize(texture ->
             RenderType.create("confluence_entity_translucent_cull_overlay", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true,
                     RenderType.CompositeState.builder()
@@ -115,8 +129,6 @@ public class RenderStateShardAccessor extends RenderStateShard {
         return ENTITY_TRANSLUCENT_CULL_OVERLAY.apply(texture);
     }
 
-    // 半透明 + 自发光 + 背面剔除：原版 entityTranslucentEmissive 是不剔除的，这里补上剔除，
-    // 供负体积（外部朝内）模型的「外部剔除 + 发光」使用。
     private static final Function<ResourceLocation, RenderType> ENTITY_EMISSIVE_CULL = Util.memoize(texture ->
             RenderType.create("confluence_entity_emissive_cull", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true,
                     RenderType.CompositeState.builder()
@@ -132,32 +144,7 @@ public class RenderStateShardAccessor extends RenderStateShard {
         return ENTITY_EMISSIVE_CULL.apply(texture);
     }
 
-    private RenderStateShardAccessor() {
+    private ModRenderTypes() {
         super(null, null, null);
-    }
-
-    public static ColoredGlintContext create(String name, float red, float green, float blue) {
-        float[] glintColor = {red, green, blue};
-        ColoredGlintContext context = new ColoredGlintContext(RenderType.create(
-                "colored_glint_" + name,
-                DefaultVertexFormat.POSITION_TEX,
-                VertexFormat.Mode.QUADS,
-                1536,
-                false,
-                false,
-                RenderType.CompositeState.builder()
-                        .setShaderState(RENDERTYPE_GLINT_SHADER)
-                        .setTextureState(ColoredGlintContext.COLORED_GLINT_TEXTURE_STATE_SHARD)
-                        .setWriteMaskState(COLOR_WRITE)
-                        .setCullState(NO_CULL)
-                        .setDepthTestState(EQUAL_DEPTH_TEST)
-                        .setTransparencyState(GLINT_TRANSPARENCY)
-                        .setTexturingState(GLINT_TEXTURING)
-                        .setColorLogicState(new ColorLogicStateShard("set_color",
-                                () -> RenderSystem.setShaderColor(glintColor[0], glintColor[1], glintColor[2], 1.0F),
-                                () -> RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F)))
-                        .createCompositeState(false)), glintColor);
-        ColoredGlintContext.COLORED_GLINT_CONTEXTS.add(context);
-        return context;
     }
 }

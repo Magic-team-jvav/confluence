@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.client.model.entity.GeoNormalModel;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -129,13 +129,13 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
     }
 
     protected RenderType getGlowRenderType(T animatable, ResourceLocation texture) {
-        return RenderStateShardAccessor.entityGlow(texture);
+        return ModRenderTypes.entityGlow(texture);
     }
 
     @Override
     public RenderType getRenderType(T animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
         if (glowLayerAdded || hasNegativeCubes(animatable))
-            return RenderStateShardAccessor.entityTranslucentCullOverlay(texture);
+            return ModRenderTypes.entityTranslucentCullOverlay(texture);
         return super.getRenderType(animatable, texture, bufferSource, partialTick);
     }
 }

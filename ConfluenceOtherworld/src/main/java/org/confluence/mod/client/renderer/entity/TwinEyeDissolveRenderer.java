@@ -15,7 +15,7 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.common.entity.boss.AbstractTwinEye;
 import org.confluence.mod.common.entity.boss.Retinazer;
 import org.confluence.mod.common.entity.boss.Spazmatism;
@@ -147,7 +147,7 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye> extends BossGeoR
                 };
                 if (!negative && !emissiveSurface) continue;
                 if (glowBuffer == null) {
-                    glowBuffer = bufferSource.getBuffer(RenderStateShardAccessor.entityUnshadedGlow(getTextureLocation(animatable)));
+                    glowBuffer = bufferSource.getBuffer(ModRenderTypes.entityUnshadedGlow(getTextureLocation(animatable)));
                 }
                 poseStack.pushPose();
                 renderCube(poseStack, cube, glowBuffer, LightTexture.FULL_BRIGHT, packedOverlay, colour);
@@ -168,7 +168,7 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye> extends BossGeoR
         float dissolveProgress = dissolveProgress(animatable, partialTick);
         if (!isReRender && selected && dissolveProgress >= 0.0F) {
             ResourceLocation texture = getTextureLocation(animatable);
-            RenderType dissolveType = hasNegativeCubes(animatable) ? RenderStateShardAccessor.entityTranslucentCullOverlay(texture) : RenderType.entityTranslucent(texture);
+            RenderType dissolveType = hasNegativeCubes(animatable) ? ModRenderTypes.entityTranslucentCullOverlay(texture) : RenderType.entityTranslucent(texture);
             VertexConsumer dissolveBuffer = bufferSource.getBuffer(dissolveType);
             renderDissolveCubesOfBone(poseStack, bone, dissolveBuffer, packedOverlay, dissolveProgress, animatable.tickCount + partialTick);
             buffer = bufferSource.getBuffer(renderType);

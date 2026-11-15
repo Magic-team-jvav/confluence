@@ -21,12 +21,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.ViewportEvent;
-import org.confluence.mod.client.renderer.ModRenderer;
 import org.confluence.mod.common.util.VoidSeaHelper;
 
 import static org.confluence.mod.client.effect.voidsea.VoidSeaConstants.*;
 
 public final class VoidSeaFilterRenderer {
+    public static ShaderInstance voidSeaRefractionShader;
     private static TextureTarget refractionSource;
     private static float filterFade;
 
@@ -62,7 +62,7 @@ public final class VoidSeaFilterRenderer {
     }
 
     private static void renderRefraction(Minecraft minecraft, Vec3 position, float partialTick, float fade) {
-        ShaderInstance shader = ModRenderer.getVoidSeaRefractionShader();
+        ShaderInstance shader = voidSeaRefractionShader;
         ClientLevel level = minecraft.level;
         if (shader == null
                 || level == null

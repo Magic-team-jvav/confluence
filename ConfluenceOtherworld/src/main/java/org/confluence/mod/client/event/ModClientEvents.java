@@ -2,6 +2,7 @@ package org.confluence.mod.client.event;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.RecipeBookCategories;
@@ -10,6 +11,7 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -22,6 +24,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.server.packs.resources.ResourceProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -59,9 +62,11 @@ import org.confluence.mod.client.effect.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
 import org.confluence.mod.client.effect.voidsea.VoidSeaFilterRenderer;
 import org.confluence.mod.client.effect.voidsea.VoidSeaRenderSettings;
+import org.confluence.mod.client.effect.voidsea.VoidSeaRenderer;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.container.npc_screen.NPCReforgeScreen;
+import org.confluence.mod.client.gui.container.npc_screen.NPCTradeItemOutline;
 import org.confluence.mod.client.gui.container.npc_screen.NPCTradeScreens;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
@@ -144,6 +149,7 @@ import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
+import java.io.IOException;
 import java.util.*;
 
 import static org.confluence.mod.client.event.ModClientSetups.VOID_B;
@@ -1305,5 +1311,15 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerLocatorPreTransformer(RegisterLocatorPreTransformerEvent event) {
         event.register(BossEntities.THE_DESTROYER.get(), DestroyerRenderer.locatorTransformer());
+    }
+
+    @SubscribeEvent
+    public static void registerShaders(RegisterShadersEvent event) throws IOException {
+        ResourceProvider provider = event.getResourceProvider();
+        event.registerShader(new ShaderInstance(provider, Confluence.asResource("void_sea"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shader -> VoidSeaRenderer.voidSeaShader = shader);
+        event.registerShader(new ShaderInstance(provider, Confluence.asResource("void_sea_submerged_surface"), DefaultVertexFormat.POSITION), shader -> VoidSeaRenderer.voidSeaSubmergedSurfaceShader = shader);
+        event.registerShader(new ShaderInstance(provider, Confluence.asResource("void_sea_refraction"), DefaultVertexFormat.POSITION), shader -> VoidSeaFilterRenderer.voidSeaRefractionShader = shader);
+        event.registerShader(new ShaderInstance(provider, Confluence.asResource("boss_bar_flow"), DefaultVertexFormat.POSITION_TEX), CustomBossBarRenderer::setShader);
+        event.registerShader(new ShaderInstance(provider, Confluence.asResource("trade_item_outline"), DefaultVertexFormat.POSITION_TEX_COLOR), NPCTradeItemOutline::setShader);
     }
 }

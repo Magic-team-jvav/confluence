@@ -5,6 +5,7 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ImageButton;
@@ -41,6 +42,7 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.event.sound.PlaySoundEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
@@ -50,6 +52,7 @@ import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.lib.api.animation.third_person.PlayerAttackingStatePacket;
 import org.confluence.lib.api.event.OnGatherEffectScreenTooltipsEvent;
+import org.confluence.lib.api.event.RenderSelectedItemNameEvent;
 import org.confluence.lib.client.color.ExpertColorAnimation;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
@@ -59,11 +62,7 @@ import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
-import org.confluence.mod.client.effect.AfterimageHelper;
-import org.confluence.mod.client.effect.EctoMistHelper;
-import org.confluence.mod.client.effect.RedGloveVfx;
-import org.confluence.mod.client.effect.SpelunkerHelper;
-import org.confluence.mod.client.effect.ThunderstrikeVfx;
+import org.confluence.mod.client.effect.*;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.effect.voidsea.VoidSeaFilterRenderer;
@@ -80,7 +79,6 @@ import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
-import org.confluence.mod.client.renderer.ModRenderer;
 import org.confluence.mod.client.renderer.block.MuralPlacementPreviewRenderer;
 import org.confluence.mod.client.renderer.entity.DestroyerRenderer;
 import org.confluence.mod.client.renderer.entity.MartianOfficerRenderer;
@@ -101,11 +99,11 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.map.ExtractinatorData;
-import org.confluence.mod.common.entity.mount.RideableLavaSharkMountEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.BowItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.gun.BaseGun;
@@ -126,30 +124,12 @@ import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.lwjgl.glfw.GLFW;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)
 public final class GameClientEvents {
-    @SubscribeEvent
-    public static void redGloveVisual(org.confluence.mod.api.event.RedGloveVisualEvent event) {
-        RedGloveVfx.receive(event.packet);
-    }
-    @SubscribeEvent
-    public static void thunderstrikeVisual(org.confluence.mod.api.event.ThunderstrikeVisualEvent event) {
-        ThunderstrikeVfx.receive(event.packet);
-    }
-    @SubscribeEvent
-    public static void registerShaders(RegisterShadersEvent event) {
-        try {
-            ModRenderer.register(event.getResourceProvider(), event::registerShader);
-        } catch (IOException e) {
-            Confluence.LOGGER.error("Failed to register shaders", e);
-        }
-    }
-
     @SubscribeEvent
     public static void viewport$ComputeFogColor(ViewportEvent.ComputeFogColor event) {
         VoidSeaFilterRenderer.computeFogColor(event);
@@ -161,14 +141,17 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void viewport$RenderFogLavaShark(ViewportEvent.RenderFog event) {
-        if (event.getCamera().getFluidInCamera() != FogType.LAVA ||
-                !(event.getCamera().getEntity().getVehicle() instanceof RideableLavaSharkMountEntity)
-        ) return;
-        event.setNearPlaneDistance(0.0F);
-        event.setFarPlaneDistance(32.0F);
-        event.setFogShape(FogShape.SPHERE);
-        event.setCanceled(true);
+    public static void viewport$RenderFog$Lowest(ViewportEvent.RenderFog event) {
+        Camera camera = event.getCamera();
+        if (camera.getFluidInCamera() == FogType.LAVA) {
+            Entity vehicle = camera.getEntity().getVehicle();
+            if (vehicle != null && vehicle.getType() == ModEntities.RIDEABLE_LAVA_SHARK.get()) {
+                event.setNearPlaneDistance(0.0F);
+                event.setFarPlaneDistance(32.0F);
+                event.setFogShape(FogShape.SPHERE);
+                event.setCanceled(true);
+            }
+        }
     }
 
     @SubscribeEvent
@@ -250,7 +233,7 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void crosshairBowRelease(LivingEntityUseItemEvent.Stop event) {
+    public static void livingEntityUseItem$Stop$Lowest(LivingEntityUseItemEvent.Stop event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null && event.getEntity() == player) {
             CrosshairHud.onBowRelease(player, event.getItem(), event.getDuration());
@@ -402,7 +385,7 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void gatherComponents(RenderTooltipEvent.GatherComponents event) {
+    public static void renderTooltip$GatherComponents(RenderTooltipEvent.GatherComponents event) {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.isEmpty()) return;
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
@@ -417,6 +400,14 @@ public final class GameClientEvents {
                         prefix.getName().setStyle(component.getStyle()).append(Component.translatable("confluence.prefix_separator")).append(component)
                 ));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void renderSelectedItemName(RenderSelectedItemNameEvent event) {
+        PrefixComponent prefix = PrefixUtils.getPrefix(event.getStack());
+        if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
+            event.setOverride(prefix.getName().setStyle(event.getOverride().getStyle()).append(Component.translatable("confluence.prefix_separator")).append(event.getOverride()));
         }
     }
 
@@ -648,5 +639,15 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void bullet$ImpactEffect(BulletEvent.ImpactEffectEvent event) {
         BulletVfxManager.play(event.getEffect(), event.getPosition());
+    }
+
+    @SubscribeEvent
+    public static void playSound(PlaySoundEvent event) {
+        if (event.getSound() != null && ClientConfigs.isWardenSoundDisabled()) {
+            ResourceLocation location = event.getSound().getLocation();
+            if (ResourceLocation.DEFAULT_NAMESPACE.equals(location.getNamespace()) && location.getPath().startsWith("entity.warden")) {
+                event.setSound(null);
+            }
+        }
     }
 }

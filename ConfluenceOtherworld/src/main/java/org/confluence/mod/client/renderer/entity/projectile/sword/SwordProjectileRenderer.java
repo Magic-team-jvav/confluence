@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.client.model.entity.projectile.EnchantedSwordProjectileModel;
 import org.confluence.mod.client.model.entity.projectile.IceBladeSwordProjectileModel;
 import org.confluence.mod.client.model.entity.projectile.SwordProjectileGeoModel;
@@ -213,7 +213,7 @@ public final class SwordProjectileRenderer<T extends SwordProjectile> extends En
         Iterator<NightEdgeProjectile.TrailSample> samples = entity.getTrailSamples().iterator();
         int sampleCount = entity.getTrailSamples().size();
         if (sampleCount < 2) return;
-        VertexConsumer consumer = bufferSource.getBuffer(RenderStateShardAccessor.ENTITY_TRANSLUCENT_EMISSIVE);
+        VertexConsumer consumer = bufferSource.getBuffer(ModRenderTypes.ENTITY_TRANSLUCENT_EMISSIVE);
         Matrix4f matrix = poseStack.last().pose();
         Vec3 previousLeft = null;
         Vec3 previousRight = null;

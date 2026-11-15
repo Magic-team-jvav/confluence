@@ -53,10 +53,8 @@ import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.ColoredGlintContext;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
@@ -79,6 +77,7 @@ import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
+import org.confluence.mod.util.EnchantmentUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -407,10 +406,8 @@ public final class ModClientSetups {
 
     public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = LibUtils.isModLoaded("ctm") || LibUtils.isModLoaded("fusion") || LibUtils.isModLoaded("continuity");
 
-    public static final RenderType TERRA_SWORD_RENDER_TYPE = RenderStateShardAccessor.ENTITY_TRANSLUCENT_EMISSIVE;
-
-    public static final ColoredGlintContext GLINT_FF0000 = RenderStateShardAccessor.GLINT_FF0000;
-    public static final ColoredGlintContext GLINT_RAINBOW = RenderStateShardAccessor.GLINT_RAINBOW;
+    public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
+    public static final ColoredGlintContext GLINT_RAINBOW = ColoredGlintContext.create("rainbow", 0, 0, 0);
 
     public static void registerBowProperties() {
         ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");

@@ -13,12 +13,12 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.mana.ThunderstrikePattern;
 import org.confluence.mod.network.s2c.ThunderstrikePacketS2C;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.*;
 
@@ -185,7 +185,7 @@ public final class ThunderstrikeProjectile extends AbstractManaProjectile {
             }
         }
         PacketDistributor.sendToPlayersNear((net.minecraft.server.level.ServerLevel) level(), null, end.x, end.y, end.z, 128,
-                new ThunderstrikePacketS2C(start, end, seed, spreadAxis));
+                new ThunderstrikePacketS2C(start.toVector3f(), end.toVector3f(), seed, spreadAxis.toVector3f()));
         level().playSound(null, end.x, end.y, end.z, SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1, 1.2F);
     }
 

@@ -113,7 +113,7 @@ public final class DestroyerBody {
             boolean open = head.getMode() == TheDestroyer.Mode.SKY || ground && outside;
             Vec3 forward = getPosition(index - 1).subtract(next);
             part.updatePose(next, forward, roll, open);
-            if (effects && open && !exposed[index] && head.level().hasChunkAt(BlockPos.containing(next))
+            if (effects && ground && open && !exposed[index] && head.level().hasChunkAt(BlockPos.containing(next))
                     && index % 2 != 0 && !part.isTail())
                 head.playVentOpeningSound(next);
             exposed[index] = outside;

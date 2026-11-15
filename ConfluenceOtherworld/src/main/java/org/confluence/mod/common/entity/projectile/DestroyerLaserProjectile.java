@@ -49,8 +49,7 @@ public final class DestroyerLaserProjectile extends Projectile {
         Vec3 direction = aim.subtract(origin);
         laser.shoot(direction.x, direction.y, direction.z, speed, 0);
         if (owner.level().addFreshEntity(laser) && owner instanceof TheDestroyerProbe) {
-            owner.level().playSound(null, origin.x, origin.y, origin.z, ModSoundEvents.ITEM_DEATH_LASER.get(),
-                    SoundSource.HOSTILE, 0.7F, 1.0F);
+            owner.level().playSound(null, origin.x, origin.y, origin.z, ModSoundEvents.MECHANICAL_BOSS_SMALL_LASER.get(), SoundSource.HOSTILE, 0.7F, 1.0F);
         }
     }
 

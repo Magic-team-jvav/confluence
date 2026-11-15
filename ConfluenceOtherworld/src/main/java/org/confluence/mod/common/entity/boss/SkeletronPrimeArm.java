@@ -5,6 +5,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -20,6 +21,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.projectile.PrimeCannonballProjectile;
 import org.confluence.mod.common.entity.projectile.PrimeLaserProjectile;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -377,6 +379,11 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
                     Confluence.asResource("mechanical_boss_hurt_spark"),
                     new MolangExp("variable.radius", Math.max(getBbWidth(), getBbHeight()) / 2.0F)));
         } else super.handleEntityEvent(event);
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.MECHANICAL_BOSS_HURT.get();
     }
 
     @Override

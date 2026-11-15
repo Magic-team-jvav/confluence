@@ -67,6 +67,10 @@ public final class ModSoundEvents {
     public static final RegistryObject<SoundEvent> DRIPPLER_HURT = register("drippler_hurt"); // 滴滴怪受伤音效
     public static final RegistryObject<SoundEvent> DRIPPLER_DEATH = register("drippler_death"); // 滴滴怪死亡音效
     public static final RegistryObject<SoundEvent> METAL_HURT = register("metal_hurt"); // 金属受伤音效
+    public static final RegistryObject<SoundEvent> MECHANICAL_BOSS_HURT = register("mechanical_boss_hurt"); // 机械 Boss 受伤音效
+    public static final RegistryObject<SoundEvent> DESTROYER_JET_EXHAUST = register("destroyer_jet_exhaust"); // 毁灭者喷气飞行音效
+    public static final RegistryObject<SoundEvent> DESTROYER_VENT_EXHAUST = register("destroyer_vent_exhaust"); // 毁灭者侧翼散热音效
+    public static final RegistryObject<SoundEvent> DESTROYER_SHELL_BURST = register("destroyer_shell_burst"); // 毁灭者外壳爆裂音效
     public static final RegistryObject<SoundEvent> METAL_DEATH = register("metal_death"); // 金属死亡（爆炸）音效
     public static final RegistryObject<SoundEvent> ROAR = register("roar"); // boss吼叫
     public static final RegistryObject<SoundEvent> HURRIED_ROARING = register("hurried_roaring"); //疯狗冲刺
@@ -402,6 +406,7 @@ public final class ModSoundEvents {
     public static final RegistryObject<SoundEvent> ITEM_CRYSTAL_SERPENT = register("item_crystal_serpent"); // 水晶蛇：使用
     public static final RegistryObject<SoundEvent> ITEM_DEADLY_SPHERE_STAFF = register("item_deadly_sphere_staff"); // 致命球法杖：使用
     public static final RegistryObject<SoundEvent> ITEM_DEATH_LASER = register("item_death_laser"); // 死亡激光：使用
+    public static final RegistryObject<SoundEvent> MECHANICAL_BOSS_SMALL_LASER = register("mechanical_boss_small_laser"); // 机械 Boss：小激光
     public static final RegistryObject<SoundEvent> DESTROYER_TERRIFYING_LASER = register("destroyer_terrifying_laser"); // 毁灭者：蓄力激光
     public static final RegistryObject<SoundEvent> ITEM_DEATH_SICKLE = register("item_death_sickle"); // 死神镰刀：使用
     public static final RegistryObject<SoundEvent> ITEM_DREADNAUTILUS = register("item_dreadnautilus"); // 恐惧鹦鹉螺：使用（3 个变体）

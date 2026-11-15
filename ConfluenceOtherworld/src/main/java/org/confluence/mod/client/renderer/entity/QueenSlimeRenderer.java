@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.common.entity.boss.QueenSlime;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.GeckoLibCache;
@@ -53,7 +53,7 @@ public class QueenSlimeRenderer extends GeoNormalRenderer<QueenSlime> {
                                float partialTick, int light, int overlay, float red, float green, float blue, float alpha) {
         ResourceLocation texture = getTextureLocation(queen);
         RenderType solid = RenderType.entityCutout(texture);
-        RenderType shell = RenderStateShardAccessor.entityTranslucentCullOverlay(texture);
+        RenderType shell = ModRenderTypes.entityTranslucentCullOverlay(texture);
         shellPass = false;
         super.actuallyRender(poses, queen, model, solid, buffers, buffers.getBuffer(solid), reRender,
                 partialTick, light, overlay, red, green, blue, alpha);

@@ -152,6 +152,7 @@ public final class GameClientEvents {
         PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::viewport$RenderFog$Lowest);
         PortEventHandler.addListener(GameClientEvents::viewport$ComputeFogColor);
         PortEventHandler.addListener(GameClientEvents::viewport$RenderFog);
+        PortEventHandler.addListener(GameClientEvents::viewport$ComputeCameraAngles);
         PortEventHandler.addListener(GameClientEvents::level$Unload);
         PortEventHandler.addListener(GameClientEvents::playSound);
     }
@@ -231,6 +232,7 @@ public final class GameClientEvents {
         GunHandler.handle(player, attackHeld);
         CrosshairHud.tick(player);
         DeathEffectHandler.tick(minecraft.level);
+        DestroyerShellEffectHandler.tick(minecraft.level);
         BackgroundLayer.tickLayers();
         WeatherHandler.handle();
     }
@@ -258,6 +260,9 @@ public final class GameClientEvents {
 
     /// 释放所有会跨维度持有旧 ClientLevel/LocalPlayer 的客户端静态缓存。
     private static void clearClientWorldReferences() {
+        DeathEffectHandler.reset();
+        DestroyerShellEffectHandler.reset();
+        CameraShake.clear();
         RedGloveVfx.clear();
         ThunderstrikeVfx.clear();
         HitMarkerHud.clear();
@@ -275,7 +280,6 @@ public final class GameClientEvents {
 
     private static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
         clearClientWorldReferences();
-        DeathEffectHandler.reset();
         FlailHandler.reset();
         LeftClickItemHandler.reset();
         ClientNPCDialogs.clear();
@@ -575,6 +579,10 @@ public final class GameClientEvents {
 
     private static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
         ClientPacketHandler.setLuminance(event.getEntity(), event.getData());
+    }
+
+    private static void viewport$ComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
+        CameraShake.cameraAngles(event);
     }
 
     private static void viewport$RenderFog(ViewportEvent.RenderFog event) {

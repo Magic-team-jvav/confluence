@@ -787,12 +787,12 @@ public final class ModClientEvents {
 
         // 神圣之地：史莱姆女皇、随从与凝胶弹幕
         event.registerEntityRenderer(BossEntities.QUEEN_SLIME.get(), QueenSlimeRenderer::new);
-        event.registerEntityRenderer(BossEntities.CRYSTAL_SLIME.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "crystal_slime", 2.0F));
-        event.registerEntityRenderer(BossEntities.BOUNCY_SLIME.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "bouncy_slime", 2.0F));
-        event.registerEntityRenderer(BossEntities.HEAVENLY_SLIME.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "heavenly_slime", 2.0F));
-        event.registerEntityRenderer(BossEntities.ROYAL_GEL.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "queen_slime_projectile", 1.0F));
+        event.registerEntityRenderer(BossEntities.CRYSTAL_SLIME.get(), ctx -> new GeoSpecialSlimeRenderer<>(ctx, new QueenSlimePartModel<>("crystal_slime"), 2.0F));
+        event.registerEntityRenderer(BossEntities.BOUNCY_SLIME.get(), ctx -> new GeoSpecialSlimeRenderer<>(ctx, new QueenSlimePartModel<>("bouncy_slime"), 2.0F));
+        event.registerEntityRenderer(BossEntities.HEAVENLY_SLIME.get(), ctx -> new GeoSpecialSlimeRenderer<>(ctx, new QueenSlimePartModel<>("heavenly_slime"), 2.0F));
+        event.registerEntityRenderer(BossEntities.ROYAL_GEL.get(), ctx -> new RoyalGelRenderer(ctx, "queen_slime_projectile"));
         event.registerEntityRenderer(BossEntities.CRYSTAL_SPIKE.get(), CrystalSpikeProjectileRenderer::new);
-        event.registerEntityRenderer(BossEntities.BOUNCY_GEL.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "bouncy_gel", 1.0F));
+        event.registerEntityRenderer(BossEntities.BOUNCY_GEL.get(), ctx -> new RoyalGelRenderer(ctx, "bouncy_gel"));
 
         event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), DestroyerRenderer::new);
         event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), DestroyerProbeRenderer::new);

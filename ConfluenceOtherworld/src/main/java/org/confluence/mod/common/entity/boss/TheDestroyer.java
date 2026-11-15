@@ -5,6 +5,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -116,6 +117,14 @@ public class TheDestroyer extends BaseBoss {
     private static final float LASER_SPEED = 2.2F;
     public static final double LASER_RANGE = 192.0;
     /// 体节激光声音的最短间隔，单位 tick；齐射时共用一次声音。
+    // 喷气音效短暂重叠，避免较短的音频播放结束后出现空档。
+    private static final int JET_SOUND_INTERVAL = 90;
+    // 定期检查玩家是否进入声源范围，避免每 tick 遍历全部体节。
+    private static final int JET_LISTENER_CHECK_INTERVAL = 5;
+    private static final int VENT_SOUND_INTERVAL = 12;
+    // 排气声仅发送给附近的玩家，避免远处体节播放影响附近体节。
+    private static final double EXHAUST_SOUND_RADIUS = 24.0;
+    private static final float EXHAUST_SOUND_VOLUME = 1.5F;
     private static final int LASER_SOUND_INTERVAL = 4;
     /// 激光射击声音的音量与音调。
     private static final float LASER_SOUND_VOLUME = 0.7F, LASER_SOUND_PITCH = 1.0F;
@@ -193,6 +202,8 @@ public class TheDestroyer extends BaseBoss {
     private int lastDebrisTick = -DEBRIS_INTERVAL;
     private DestroyerPart attackingPart;
     private int lastLaserSoundTick = -LASER_SOUND_INTERVAL;
+    private final java.util.Map<ServerPlayer, Integer> lastJetSoundTicks = new java.util.WeakHashMap<>();
+    private final java.util.Map<ServerPlayer, Integer> lastVentSoundTicks = new java.util.WeakHashMap<>();
     private double coilAngle;
     private int beamCooldown = BEAM_BASE_COOLDOWN, beamCount, beamUnhurtTicks;
     private LivingEntity beamTimerTarget;
@@ -319,8 +330,10 @@ public class TheDestroyer extends BaseBoss {
         if (level().isClientSide) {
             DestroyerRenderer.tickBeamEffects(this);
             if (clientShellCursor >= 0 && isMetal()) {
-                DestroyerRenderer.spawnPhaseShell(this, clientShellCursor++);
-                if (clientShellCursor >= SEGMENT_COUNT) clientShellCursor = -1;
+                for (int index = 0; index < SEGMENT_COUNT; index++) {
+                    DestroyerRenderer.spawnPhaseShell(this, index);
+                }
+                clientShellCursor = -1;
             }
         }
         if (!level().isClientSide && !isRemoved()) entityData.set(BODY_POSE, body.createSnapshot());
@@ -381,7 +394,7 @@ public class TheDestroyer extends BaseBoss {
         if (damaged && !level().isClientSide && getDamageFeedbackTarget() == this
                 && tickCount - lastSparkTick >= HURT_SPARK_INTERVAL) {
             lastSparkTick = tickCount;
-            playSound(ModSoundEvents.METAL_HURT.get(), 1.0F, 1.0F);
+            playSound(ModSoundEvents.MECHANICAL_BOSS_HURT.get(), 1.0F, 1.0F);
             level().broadcastEntityEvent(this, HURT_SPARK_EVENT);
         }
         return damaged;
@@ -402,7 +415,7 @@ public class TheDestroyer extends BaseBoss {
 
     public boolean isMetal() {return entityData.get(METAL);}
 
-    /// 阶段转换时按体节依次切换模型。
+    /// 等待阶段转换同步后一次切换所有体节模型。
     public boolean isPhaseOneSection(int index) {
         return !isMetal() || clientShellCursor >= 0 && index >= clientShellCursor;
     }
@@ -545,6 +558,9 @@ public class TheDestroyer extends BaseBoss {
         entityData.set(SHELL_OPEN, getMode() == Mode.SKY || getMode() == Mode.GROUND && airborne || specialMovement);
         tickHeadTerrain(previous, solidNow);
         body.update();
+        if (getMode() == Mode.SKY && velocity.lengthSqr() > 0.0064 && tickCount % JET_LISTENER_CHECK_INTERVAL == 0) {
+            playJetExhaustSounds();
+        }
         attackContact(previous);
         tickLasers(target);
     }
@@ -624,6 +640,7 @@ public class TheDestroyer extends BaseBoss {
         if (!isMetal() && getHealth() <= getMaxHealth() * threshold) {
             if (releasedProbes.cardinality() < SEGMENT_COUNT - 2) return;
             level().broadcastEntityEvent(this, PHASE_SHELL_EVENT);
+            playSound(ModSoundEvents.DESTROYER_SHELL_BURST.get(), 2.0F, 1.0F);
             entityData.set(METAL, true);
             broadcastPhaseTransition();
         }
@@ -708,8 +725,43 @@ public class TheDestroyer extends BaseBoss {
         return offset.normalize().scale(nextSpeed);
     }
 
+    // 为每名玩家选择最近的张开体节，长身体不会只从头部发声。
+    private void playJetExhaustSounds() {
+        if (!(level() instanceof ServerLevel serverLevel)) return;
+        double radiusSqr = EXHAUST_SOUND_RADIUS * EXHAUST_SOUND_RADIUS;
+        for (ServerPlayer player : serverLevel.players()) {
+            Integer lastTick = lastJetSoundTicks.get(player);
+            if (lastTick != null && tickCount - lastTick < JET_SOUND_INTERVAL) continue;
+            Vec3 closest = null;
+            double closestDistance = radiusSqr;
+            for (DestroyerPart part : body.getParts()) {
+                if (!part.isOpen() || part.isRemoved()) continue;
+                double distance = part.distanceToSqr(player);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closest = part.position();
+                }
+            }
+            if (closest != null) {
+                lastJetSoundTicks.put(player, tickCount);
+                player.connection.send(new ClientboundSoundPacket(ModSoundEvents.DESTROYER_JET_EXHAUST.getHolder().orElseThrow(), SoundSource.HOSTILE,
+                        closest.x, closest.y, closest.z, EXHAUST_SOUND_VOLUME, 1.0F, random.nextLong()));
+            }
+        }
+    }
+
+    // 散热声按玩家限频，而不是让远处体节占用整条身体的播放机会。
     void playVentOpeningSound(Vec3 position) {
-        level().playSound(null, BlockPos.containing(position), SoundEvents.FIRE_EXTINGUISH, SoundSource.HOSTILE, 0.15F, 1.4F);
+        if (!(level() instanceof ServerLevel serverLevel)) return;
+        double radiusSqr = EXHAUST_SOUND_RADIUS * EXHAUST_SOUND_RADIUS;
+        for (ServerPlayer player : serverLevel.players()) {
+            if (player.distanceToSqr(position) > radiusSqr) continue;
+            Integer previousTick = lastVentSoundTicks.get(player);
+            if (previousTick != null && tickCount - previousTick < VENT_SOUND_INTERVAL) continue;
+            lastVentSoundTicks.put(player, tickCount);
+            player.connection.send(new ClientboundSoundPacket(ModSoundEvents.DESTROYER_VENT_EXHAUST.getHolder().orElseThrow(), SoundSource.HOSTILE,
+                    position.x, position.y, position.z, EXHAUST_SOUND_VOLUME, 1.0F, random.nextLong()));
+        }
     }
 
     public boolean isSolid(Vec3 point) {
@@ -850,7 +902,7 @@ public class TheDestroyer extends BaseBoss {
         DestroyerLaserProjectile.fire(this, pos, target.getBoundingBox().getCenter(), LASER_SPEED);
         if (tickCount - lastLaserSoundTick >= LASER_SOUND_INTERVAL) {
             lastLaserSoundTick = tickCount;
-            level().playSound(null, pos.x, pos.y, pos.z, ModSoundEvents.ITEM_DEATH_LASER.get(),
+            level().playSound(null, pos.x, pos.y, pos.z, ModSoundEvents.MECHANICAL_BOSS_SMALL_LASER.get(),
                     SoundSource.HOSTILE, LASER_SOUND_VOLUME, LASER_SOUND_PITCH);
         }
     }

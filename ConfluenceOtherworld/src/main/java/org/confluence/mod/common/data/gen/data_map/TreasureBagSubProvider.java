@@ -19,6 +19,7 @@ public final class TreasureBagSubProvider {
                 .add(BossEntities.SKELETRON, new TreasureBagDrop(TreasureBagItems.SKELETRON_TREASURE_BAG.get()), false)
                 .add(BossEntities.WALL_OF_FLESH, new TreasureBagDrop(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get()), false)
                 .add(BossEntities.HILL_OF_FLESH, new TreasureBagDrop(TreasureBagItems.HILL_OF_FLESH_TREASURE_BAG.get()), false)
+                .add(BossEntities.QUEEN_SLIME, new TreasureBagDrop(TreasureBagItems.QUEEN_SLIME_TREASURE_BAG.get()), false)
                 .add(BossEntities.RETINAZER, new TreasureBagDrop(TreasureBagItems.THE_TWINS_TREASURE_BAG.get()), false)
                 .add(BossEntities.SPAZMATISM, new TreasureBagDrop(TreasureBagItems.THE_TWINS_TREASURE_BAG.get()), false)
                 .add(BossEntities.SKELETRON_PRIME, new TreasureBagDrop(TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get()), false)

@@ -2059,6 +2059,14 @@
         ],
         "subtitle": "confluence.subtitle.item_deadly_sphere_staff"
     },
+    "mechanical_boss_small_laser": {
+        "sounds": [
+            "confluence:mob/mechanical_boss_laser_1",
+            "confluence:mob/mechanical_boss_laser_2",
+            "confluence:mob/mechanical_boss_laser_3"
+        ],
+        "subtitle": "confluence.subtitle.item_death_laser"
+    },
     "destroyer_terrifying_laser": {
         "sounds": [
             "confluence:mob/destroyer_terrifying_laser"
@@ -3326,5 +3334,31 @@
             "confluence:summon/summon_hornet"
         ],
         "subtitle": "confluence.subtitle.summon_hornet"
+    },
+    "mechanical_boss_hurt": {
+        "sounds": [
+            "confluence:mob/mechanical_boss_hurt_1",
+            "confluence:mob/mechanical_boss_hurt_2",
+            "confluence:mob/mechanical_boss_hurt_3"
+        ],
+        "subtitle": "confluence.subtitle.metal_hurt"
+    },
+    "destroyer_jet_exhaust": {
+        "sounds": [
+            "confluence:mob/destroyer_jet_exhaust_1",
+            "confluence:mob/destroyer_jet_exhaust_2"
+        ]
+    },
+    "destroyer_vent_exhaust": {
+        "sounds": [
+            "confluence:mob/destroyer_vent_exhaust_1",
+            "confluence:mob/destroyer_vent_exhaust_2"
+        ]
+    },
+    "destroyer_shell_burst": {
+        "sounds": [
+            "confluence:mob/destroyer_shell_burst"
+        ],
+        "subtitle": "confluence.subtitle.metal_death"
     }
 }

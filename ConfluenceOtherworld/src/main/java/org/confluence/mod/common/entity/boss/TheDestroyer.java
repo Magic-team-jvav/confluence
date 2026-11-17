@@ -524,7 +524,12 @@ public class TheDestroyer extends BaseBoss {
             velocity = velocity.scale(1.0F - slowdown);
         } else if (getBeamTick() >= 220 && getBeamTick() < 460) {
             Vec3 direction = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter());
-            velocity = direction.lengthSqr() < 1.0E-7 ? getLookAngle().scale(BEAM_ADVANCE_SPEED) : direction.normalize().scale(BEAM_ADVANCE_SPEED);
+            Vec3 beamStart = beamOrigin();
+            Vec3 beamEnd = beamStart.add(getLookAngle().scale(LASER_RANGE));
+            beamEnd = level().clip(new ClipContext(beamStart, beamEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getLocation();
+            AABB targetBox = target.getBoundingBox().inflate(1.0);
+            boolean aimingAtTarget = targetBox.contains(beamStart) || targetBox.clip(beamStart, beamEnd).isPresent();
+            velocity = aimingAtTarget ? Vec3.ZERO : direction.lengthSqr() < 1.0E-7 ? getLookAngle().scale(BEAM_ADVANCE_SPEED) : direction.normalize().scale(BEAM_ADVANCE_SPEED);
         }
         Vec3 previous = position();
         moveAlongTrajectory(previousVelocity, velocity);
@@ -534,7 +539,7 @@ public class TheDestroyer extends BaseBoss {
             beamAim = WormSteering.turn(getLookAngle(), desired, Math.toRadians(6));
             faceCombatDirection(beamAim, 6, 6);
         } else if (getBeamTick() >= 220 && getBeamTick() < 460) {
-            faceCombatDirection(velocity, 180, 180);
+            if (velocity.lengthSqr() > 1.0E-7) faceCombatDirection(velocity, 180, 180);
         } else if (getBeamTick() < 100) {
             if (specialAttack == SpecialAttack.DASH_WINDUP) {
                 Vec3 targetDirection = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter());

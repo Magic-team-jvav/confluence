@@ -10,6 +10,7 @@ public final class ArmorBonusLanguageSubProvider {
         language.add("armor_set_bonus.confluence.adamantite_headgear_set.0", "19% reduced mana costs", "魔力消耗降低19%");
         language.add("armor_set_bonus.confluence.adamantite_helmet_set.0", "20% increased melee and movement speed", "近战速度和移动速度各提高20%");
         language.add("armor_set_bonus.confluence.adamantite_mask_set.0", "25% chance to save ammo", "25%几率省下弹药");
+        language.add("armor_set_bonus.confluence.forbidden_set.0", "Double-tap Activate Set Bonus to fire a dust beam that calls down an Ancient Storm (20 mana)", "双击「激活套装奖励」发射尘土束，召唤远古风暴（消耗 20 魔力）");
         language.add("armor_set_bonus.confluence.angler_set.0", "Decreased enemy spawn rate", "敌人生成速度降低");
         language.add("armor_set_bonus.confluence.archers_set.0", "Arrow speed increased by 5%", "弓箭速度提高5%");
         language.add("armor_set_bonus.confluence.ash_set.0", "Reduces lava contact damage by 50%", "将熔岩的接触伤害降低 50%");

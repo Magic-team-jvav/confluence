@@ -249,8 +249,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(PotionItems.ITEMS, "potion/"));
         customModels.add(createDir(QuestedFishes.ITEMS, "quested_fish/"));
         customModels.add(createDir(ToolItems.ITEMS, "tool/"));
-        treasureBagModelAlias(TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG, "skeletron_treasure_bag");
-        treasureBagModelAlias(TreasureBagItems.THE_DESTROYER_TREASURE_BAG, "eater_of_worlds_treasure_bag");
+        treasureBagModelAlias(TreasureBagItems.QUEEN_SLIME_TREASURE_BAG, "king_slime_treasure_bag");
         treasureBagModelAlias(TreasureBagItems.PLANTERA_TREASURE_BAG, "queen_bee_treasure_bag");
         treasureBagModelAlias(TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG, "skeletron_treasure_bag");
         customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
@@ -287,6 +286,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheld.add(createDir(GardenShearsItems.ITEMS, "garden_shears/"));
 
         handheldTextureAlias(SummonItems.NEW_HORNET_STAFF, Confluence.asResource("item/summon/hornet_staff"));
+
+        /// 眼球激光塔法杖：物品栏用 16x 的 eye_laser_turret_staff，手持/预览用 24x 的 eye_laser_turret_staff_display；
+        /// 整套模型由手写 JSON 持有（models/item/eye_laser_turret_staff*.json）。
+        skip.add(SummonItems.EYE_LASER_TURRET_STAFF.get());
 
         genModels(handheld, "item/handheld");
 

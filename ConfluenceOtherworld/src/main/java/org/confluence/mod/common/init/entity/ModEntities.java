@@ -176,6 +176,25 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<WindArrowEntity>> WIND_ARROW = registerEntityTypeWithEnglishName("wind_arrow", "风矢", "Wind Arrow", id -> EntityType.Builder.<WindArrowEntity>of(WindArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     /// 血雨。血雨弓把任意箭矢转化成它，从高空砸向目标；外观沿用既有的雨滴模型。
     public static final DeferredHolder<EntityType<?>, EntityType<BloodRainArrowEntity>> BLOOD_RAIN_ARROW = registerEntityTypeWithEnglishName("blood_rain_arrow", "血雨", "Blood Rain", id -> EntityType.Builder.<BloodRainArrowEntity>of(BloodRainArrowEntity::new, MobCategory.MISC).sized(0.25F, 1.5F).build(id.toString()));
+    /// 叶绿箭（反弹）。
+    public static final DeferredHolder<EntityType<?>, EntityType<ChlorophyteArrowEntity>> CHLOROPHYTE_ARROW = registerEntityType("chlorophyte_arrow", "叶绿箭", id -> EntityType.Builder.<ChlorophyteArrowEntity>of(ChlorophyteArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    /// 圣箭（召唤神圣之星）。
+    public static final DeferredHolder<EntityType<?>, EntityType<HolyArrowEntity>> HOLY_ARROW = registerEntityType("holy_arrow", "圣箭", id -> EntityType.Builder.<HolyArrowEntity>of(HolyArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    /// 诅咒箭。
+    public static final DeferredHolder<EntityType<?>, EntityType<CursedArrowEntity>> CURSED_ARROW = registerEntityType("cursed_arrow", "诅咒箭", id -> EntityType.Builder.<CursedArrowEntity>of(CursedArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    /// 灵液箭。
+    public static final DeferredHolder<EntityType<?>, EntityType<IchorArrowEntity>> ICHOR_ARROW = registerEntityType("ichor_arrow", "灵液箭", id -> EntityType.Builder.<IchorArrowEntity>of(IchorArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    /// 毒液箭。
+    public static final DeferredHolder<EntityType<?>, EntityType<VenomArrowEntity>> VENOM_ARROW = registerEntityType("venom_arrow", "毒液箭", id -> EntityType.Builder.<VenomArrowEntity>of(VenomArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    /// 夜明箭与它的尾迹。
+    public static final DeferredHolder<EntityType<?>, EntityType<LuminiteArrowEntity>> LUMINITE_ARROW = registerEntityType("luminite_arrow", "夜明箭", id -> EntityType.Builder.<LuminiteArrowEntity>of(LuminiteArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<LuminiteArrowTrailEntity>> LUMINITE_ARROW_TRAIL = registerEntityType("luminite_arrow_trail", "夜明箭尾迹", id -> EntityType.Builder.<LuminiteArrowTrailEntity>of(LuminiteArrowTrailEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
+    /// 暗影焰弓的专用箭（不注册物品形态）。
+    public static final DeferredHolder<EntityType<?>, EntityType<ShadowflameArrowEntity>> SHADOWFLAME_ARROW = registerEntityType("shadowflame_arrow", "暗影焰箭", id -> EntityType.Builder.<ShadowflameArrowEntity>of(ShadowflameArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    /// 冰雪弓的专用箭（不注册物品形态）。
+    public static final DeferredHolder<EntityType<?>, EntityType<FrostArrowEntity>> FROST_ARROW = registerEntityType("frost_arrow", "寒霜箭", id -> EntityType.Builder.<FrostArrowEntity>of(FrostArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    /// 神圣之星：圣箭击中方块/敌怪后落下的坠星。
+    public static final DeferredHolder<EntityType<?>, EntityType<HomingFallingStarProjectile>> HALLOW_STAR = registerEntityTypeWithEnglishName("hallow_star", "神圣之星", "Hallow Star", id -> EntityType.Builder.<HomingFallingStarProjectile>of(HomingFallingStarProjectile::new, MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
 
     /// 其它
     public static final DeferredHolder<EntityType<?>, EntityType<BoulderEntity>> BOULDER = registerEntityType("boulder", "巨石", id -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build(id.toString()));
@@ -204,6 +223,9 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<ThrownWaterProjectile>> THROWN_WATER = registerEntityType("thrown_water", "掷出的液体瓶", id -> EntityType.Builder.<ThrownWaterProjectile>of(ThrownWaterProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<FlowerPetalProjectile>> FLOWER_PETAL = registerEntityType("flower_petal", "花瓣射弹", id -> EntityType.Builder.<FlowerPetalProjectile>of(FlowerPetalProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<SparkleSlimeBalloonProjectile>> SPARKLE_SLIME_BALLOON = registerEntityType("sparkle_slime_balloon", "闪耀史莱姆气球", id -> EntityType.Builder.<SparkleSlimeBalloonProjectile>of(SparkleSlimeBalloonProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build(id.toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<ForbiddenSignEntity>> FORBIDDEN_SIGN = registerEntityType("forbidden_sign", "禁戒标记", id -> EntityType.Builder.<ForbiddenSignEntity>of(ForbiddenSignEntity::new, MobCategory.MISC).sized(0.9F, 0.9F).fireImmune().noSummon().noSave().clientTrackingRange(16).updateInterval(1).build(id.toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<ForbiddenDustBeamEntity>> FORBIDDEN_DUST_BEAM = registerEntityType("forbidden_dust_beam", "禁戒尘土束", id -> EntityType.Builder.<ForbiddenDustBeamEntity>of(ForbiddenDustBeamEntity::new, MobCategory.MISC).sized(0.4F, 0.4F).fireImmune().noSummon().clientTrackingRange(16).build(id.toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<AncientStormEntity>> ANCIENT_STORM = registerEntityType("ancient_storm", "远古风暴", id -> EntityType.Builder.<AncientStormEntity>of(AncientStormEntity::new, MobCategory.MISC).sized(3.0F, 4.0F).fireImmune().noSummon().clientTrackingRange(16).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<TitaniumShardsProjectile>> TITANIUM_SHARDS = registerEntityType("titanium_shards", "钛金防护碎片", id -> EntityType.Builder.<TitaniumShardsProjectile>of(TitaniumShardsProjectile::new, MobCategory.MISC).sized(0, 0).fireImmune().noSummon().noSave().build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<FallingStarItemEntity>> FALLING_STAR = registerEntityType("falling_star", "坠落之星", id -> EntityType.Builder.<FallingStarItemEntity>of(FallingStarItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<TreasureBagItemEntity>> TREASURE_BAG = registerEntityType("treasure_bag", "宝藏袋", id -> EntityType.Builder.<TreasureBagItemEntity>of(TreasureBagItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build(id.toString()));

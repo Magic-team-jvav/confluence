@@ -75,6 +75,7 @@ public final class NetworkEvents {
                 .playToServer(ElectrifiedInputPacketC2S.TYPE, ElectrifiedInputPacketC2S.STREAM_CODEC, ElectrifiedInputPacketC2S::handle)
                 .playToServer(HouseSelectPacketC2S.TYPE, HouseSelectPacketC2S.STREAM_CODEC, HouseSelectPacketC2S::handle)
                 .playToServer(EmptyTargetSweepPacketC2S.TYPE, EmptyTargetSweepPacketC2S.STREAM_CODEC, EmptyTargetSweepPacketC2S::handle)
+                .playToServer(ActivateSetBonusPacketC2S.TYPE, ActivateSetBonusPacketC2S.STREAM_CODEC, ActivateSetBonusPacketC2S::handle)
                 .playToServer(SwordProjectilePacketC2S.TYPE, SwordProjectilePacketC2S.STREAM_CODEC, SwordProjectilePacketC2S::handle)
                 .playToServer(FlailControlPacketC2S.TYPE, FlailControlPacketC2S.STREAM_CODEC, FlailControlPacketC2S::handle)
                 .playToServer(WhipControlPacketC2S.TYPE, WhipControlPacketC2S.STREAM_CODEC, WhipControlPacketC2S::handle)

@@ -1289,6 +1289,27 @@ public class ArmorItems {
             .summonDamage(0.05)
             .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
 
+    /// 禁戒套装（困难模式砧）：面具/长袍/裤/鞋，材质与贴图见 `geo/item/armor/forbidden_armor.geo.json`。
+    public static final DeferredItem<BaseArmorItem> FORBIDDEN_MASK = register("forbidden_mask", "禁戒面具", ModArmorMaterials.FORBIDDEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/forbidden_armor")
+            .rarity(ModRarity.PINK)
+            .magicDamage(0.15)
+            .summonDamage(0.15));
+    public static final DeferredItem<BaseArmorItem> FORBIDDEN_ROBE = register("forbidden_robe", "禁戒长袍", ModArmorMaterials.FORBIDDEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/forbidden_armor")
+            .rarity(ModRarity.PINK)
+            .additionalMana(40)
+            .summonDamage(0.10)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+    public static final DeferredItem<BaseArmorItem> FORBIDDEN_TROUSERS = register("forbidden_trousers", "禁戒裤", ModArmorMaterials.FORBIDDEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/forbidden_armor")
+            .rarity(ModRarity.PINK)
+            .additionalMana(40)
+            .magicDamage(0.10));
+    public static final DeferredItem<BaseArmorItem> FORBIDDEN_BOOTS = register("forbidden_boots", "禁戒鞋", ModArmorMaterials.FORBIDDEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/forbidden_armor")
+            .rarity(ModRarity.PINK)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
     public static void register(IEventBus eventBus) {
         ModArmorMaterials.ARMOR_MATERIALS.register(eventBus);
         ITEMS.register(eventBus);

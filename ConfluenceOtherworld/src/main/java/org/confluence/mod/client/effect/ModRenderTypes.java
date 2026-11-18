@@ -144,6 +144,25 @@ public class ModRenderTypes extends RenderStateShard {
         return ENTITY_EMISSIVE_CULL.apply(texture);
     }
 
+    /// 无光照 + 不剔除的自发光类型：给禁戒标记这类「零厚度贴片」用。
+    ///
+    /// `NO_LIGHTMAP` 关掉世界光照带来的明暗（shade），`NO_CULL` 让正反两面都可见。
+    private static final Function<ResourceLocation, RenderType> ENTITY_EMISSIVE_NO_CULL_UNSHADED = Util.memoize(texture ->
+            RenderType.create("confluence_entity_emissive_no_cull_unshaded", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                            .setTextureState(new TextureStateShard(texture, false, false))
+                            .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                            .setCullState(NO_CULL)
+                            .setLightmapState(NO_LIGHTMAP)
+                            .setWriteMaskState(COLOR_WRITE)
+                            .setOverlayState(OVERLAY)
+                            .createCompositeState(true)));
+
+    public static RenderType entityEmissiveNoCullUnshaded(ResourceLocation texture) {
+        return ENTITY_EMISSIVE_NO_CULL_UNSHADED.apply(texture);
+    }
+
     private ModRenderTypes() {
         super(null, null, null);
     }

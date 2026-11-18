@@ -837,6 +837,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.BLOODY_SPINE.get(),
                 ConsumableItems.ABEEMINATION.get(),
                 ConsumableItems.DEER_THING.get(),
+                ConsumableItems.GELATIN_CRYSTAL.get(),
                 AccessoryItems.CLOTHIER_VOODOO_DOLL.get(),
                 AccessoryItems.GUIDE_VOODOO_DOLL.get()
         );
@@ -856,6 +857,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.INGOTS_ORICHALCUM).add(MaterialItems.ORICHALCUM_INGOT.get());
         tag(ModTags.Items.INGOTS_ADAMANTITE).add(MaterialItems.ADAMANTITE_INGOT.get());
         tag(ModTags.Items.INGOTS_TITANIUM).add(MaterialItems.TITANIUM_INGOT.get());
+        tag(ModTags.Items.INGOTS_ADAMANTITE_OR_TITANIUM).addTag(ModTags.Items.INGOTS_ADAMANTITE).addTag(ModTags.Items.INGOTS_TITANIUM);
         tag(ModTags.Items.INGOTS_HALLOWED).add(MaterialItems.HALLOWED_INGOT.get());
         tag(ModTags.Items.INGOTS_CHLOROPHYTE).add(MaterialItems.CHLOROPHYTE_INGOT.get());
 
@@ -1511,10 +1513,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 CrossbowItems.STAKE_LAUNCHER.get(),
                 SpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
                 SpawnEggItems.PLANTERA_SPAWN_EGG.get(),
-                TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(),
-                TreasureBagItems.THE_DESTROYER_TREASURE_BAG.get(),
-                TreasureBagItems.PLANTERA_TREASURE_BAG.get(),
-                TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get(),
                 HoeShovelItems.COBALT_HOE_SHOVEL.get(),
                 HoeShovelItems.PALLADIUM_HOE_SHOVEL.get(),
                 HoeShovelItems.MYTHRIL_HOE_SHOVEL.get(),
@@ -1713,6 +1711,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         short_sword.add(SwordItems.MARLIN_SPIKE_SWORD.get());
 
         PylonBlocks.BLOCKS.getEntries().forEach(holder -> wip.add(holder.get().asItem()));
+
+        /// 没有自有序列帧贴图的宝藏袋（临时借用别的袋子的贴图）先标记为 WIP。
+        wip.add(
+                TreasureBagItems.QUEEN_SLIME_TREASURE_BAG.get(),
+                TreasureBagItems.PLANTERA_TREASURE_BAG.get(),
+                TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get()
+        );
 
         // 贴图缺失的物品（模型回退到占位图标 / 引用了不存在的贴图 / 完全没有模型）统一标记为 WIP。
         // 清单由 tools/audit_missing_item_textures.py 检索得到，补齐贴图后重新运行脚本即可刷新。

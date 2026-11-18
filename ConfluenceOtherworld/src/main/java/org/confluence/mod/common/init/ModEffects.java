@@ -118,6 +118,8 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> MANA_SICKNESS = registerEffect("mana_sickness", "耐魔性", ManaSicknessEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> BLEEDING = registerEffect("bleeding", "流血", BleedingEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> ACID_VENOM = registerEffect("acid_venom", "酸性毒液", AcidVenomEffect::new);
+    /// 烈性酸液：每秒 24 点伤害，毒液箭的第二段减益。
+    public static final DeferredHolder<MobEffect, MobEffect> VENOM = registerEffectWithEnglishName("venom", "烈性酸液", "Venom", VenomEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> CURSED_INFERNO = registerEffect("cursed_inferno", "诅咒狱火", CursedInfernoEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SILENCED = registerEffect("silenced", "沉默", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0xFFFAFA));
     public static final DeferredHolder<MobEffect, MobEffect> CURSED = registerEffect("cursed", "诅咒", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x4F4F4F));

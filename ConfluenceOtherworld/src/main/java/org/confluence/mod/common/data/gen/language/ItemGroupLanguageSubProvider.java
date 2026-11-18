@@ -127,6 +127,7 @@ public final class ItemGroupLanguageSubProvider {
         language.add("itemGroup.confluence.green_bricks", "Green Dungeon Bricks", "绿色地牢砖");
         language.add("itemGroup.confluence.guards_armor", "Guards Armor", "守卫盔甲");
         language.add("itemGroup.confluence.gun", "Guns", "枪械");
+        language.add("itemGroup.confluence.forbidden_armor", "Forbidden Armor", "禁戒套装");
         language.add("itemGroup.confluence.guy_fawkes_set", "Guy Fawkes Set", "盖伊·福克斯套装");
         language.add("itemGroup.confluence.hallow", "Hallow", "神圣");
         language.add("itemGroup.confluence.hallow_entity", "Hallow", "神圣生物");

@@ -117,6 +117,11 @@ public class BowItems {
         return entry;
     }
 
+    /// 暗影焰弓：把任何箭矢换成暗影焰箭，命中附加暗影焰。
+    public static final DeferredItem<ShadowflameBow> SHADOWFLAME_BOW = registerItem("shadowflame_bow", "暗影焰弓", () -> new ShadowflameBow(5.4F));
+    /// 冰雪弓：把任何箭矢换成高速寒霜箭，由冰雪宝箱怪掉落。
+    public static final DeferredItem<IceBow> ICE_BOW = registerItem("ice_bow", "冰雪弓", () -> new IceBow(4.8F));
+
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);
         Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));

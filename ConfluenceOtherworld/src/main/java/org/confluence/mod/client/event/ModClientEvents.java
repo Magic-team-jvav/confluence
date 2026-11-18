@@ -124,6 +124,7 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
@@ -425,6 +426,18 @@ public final class ModClientEvents {
         event.registerEntityRenderer(DEVELOPER_ARROW.get(), TerraArrowRenderer::new);
         // 风与星系列
         event.registerEntityRenderer(WIND_ARROW.get(), TerraArrowRenderer::new);
+        // 困难模式箭矢：贴图先沿用邪箭的实体贴图
+        event.registerEntityRenderer(CHLOROPHYTE_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(HOLY_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(CURSED_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(ICHOR_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(VENOM_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(LUMINITE_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(LUMINITE_ARROW_TRAIL.get(), TerraArrowRenderer::new);
+        // 神圣之星：沿用星怒坠星的交叉面片，换成神圣之星贴图
+        event.registerEntityRenderer(HALLOW_STAR.get(), HallowStarRenderer::new);
+        event.registerEntityRenderer(SHADOWFLAME_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(FROST_ARROW.get(), TerraArrowRenderer::new);
         // 血雨：箭矢结算 + 雨滴外观
         event.registerEntityRenderer(BLOOD_RAIN_ARROW.get(), context -> new RainProjectileRenderer<>(context, RainProjectileRenderer.BLOOD_RAIN));
         // 昏晓：小日光 / 小月光
@@ -855,6 +868,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.HARPY.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.HARPY.getId()));
         event.registerEntityRenderer(MonsterEntities.HOPLITE.get(), c -> new GeoNormalRenderer<>(c, new HopliteModel(c)));
         event.registerEntityRenderer(MonsterEntities.HORNET.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.HORNET.getId(), false), true, 1.0F, 0.2F));
+        event.registerEntityRenderer(ModEntities.FORBIDDEN_SIGN.get(), ForbiddenSignRenderer::new);
+        event.registerEntityRenderer(ModEntities.FORBIDDEN_DUST_BEAM.get(), NoopRenderer::new);
+        event.registerEntityRenderer(ModEntities.ANCIENT_STORM.get(), NoopRenderer::new);
         event.registerEntityRenderer(MonsterEntities.ICE_ELEMENTAL.get(), c -> new FullbrightGeoRenderer<IceElemental>(c, MonsterEntities.ICE_ELEMENTAL.getId()));
         event.registerEntityRenderer(MonsterEntities.ICE_GOLEM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ICE_GOLEM.getId(), false, 2.0F, -0.021875F));
         event.registerEntityRenderer(MonsterEntities.ICY_MERMAN.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/icy_merman.geo.json"), Confluence.asResource("textures/entity/icy_merman.png"), true), false, 1.0F, 0.015625F));

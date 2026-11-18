@@ -1,0 +1,33 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 3,
+				"visible_bounds_offset": [0, 0.5, 0]
+			},
+			"bones": [
+				{
+					"name": "Ring",
+					"pivot": [0.75, -8, -1],
+					"rotation": [0, 0, 45],
+					"cubes": [
+						{"origin": [-11.25, -12, -2], "size": [11, 2, 2], "uv": [0, 24]},
+						{"origin": [-11.25, 5, -2], "size": [11, 2, 2], "uv": [27, 24]},
+						{"origin": [1.75, -8, -2], "size": [2, 11, 2], "uv": [0, 29]},
+						{"origin": [-15.25, -8, -2], "size": [2, 11, 2], "uv": [9, 29]},
+						{"origin": [1.75, 5, -2], "size": [2, 2, 2], "uv": [18, 29]},
+						{"origin": [-15.25, 5, -2], "size": [2, 2, 2], "uv": [27, 29]},
+						{"origin": [1.75, -12, -2], "size": [2, 2, 2], "uv": [18, 34]},
+						{"origin": [-15.25, -12, -2], "size": [2, 2, 2], "uv": [27, 34]},
+						{"origin": [-17.25, -14, -1], "size": [23, 23, 0], "uv": [0, 0]}
+					]
+				}
+			]
+		}
+	]
+}

@@ -11,6 +11,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.client.renderer.entity.projectile.sword.SwordProjectileRenderer;
 import org.confluence.mod.common.entity.projectile.mana.HomingFallingStarProjectile;
 import org.confluence.mod.common.init.item.SwordItems;
+import org.confluence.mod.common.item.sword.SwordProjectileAppearance;
 
 /// 陨星类弹幕的通用渲染：直接复用星怒弹幕的交叉面片模型。
 ///
@@ -32,8 +33,13 @@ public class FallingStarCrossRenderer<T extends Entity> extends EntityRenderer<T
         poseStack.pushPose();
         translate(entity, partialTick, poseStack);
         poseStack.scale(scale, scale, scale);
-        SwordProjectileRenderer.renderCross(SwordItems.STAR_FURY_APPEARANCE, entity.tickCount + partialTick, poseStack, bufferSource, packedLight);
+        SwordProjectileRenderer.renderCross(appearance(), entity.tickCount + partialTick, poseStack, bufferSource, packedLight);
         poseStack.popPose();
+    }
+
+    /// 子类可换成别的贴图外观（神圣之星用神圣之星贴图，其余参数不变）。
+    protected SwordProjectileAppearance.Cross appearance() {
+        return SwordItems.STAR_FURY_APPEARANCE;
     }
 
     /// 子类可覆盖以按蓄力时间放大，默认保持星怒原尺寸。
@@ -59,6 +65,6 @@ public class FallingStarCrossRenderer<T extends Entity> extends EntityRenderer<T
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        return SwordItems.STAR_FURY_APPEARANCE.texture();
+        return appearance().texture();
     }
 }

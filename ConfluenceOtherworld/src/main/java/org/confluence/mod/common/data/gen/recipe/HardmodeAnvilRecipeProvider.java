@@ -691,7 +691,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         // 灯塔装置：晶状体 x3、铁锭/铅锭 x5、光明之魂 x6
         hardmodeAnvil(writer, FunctionalBlocks.DUAL_FLASH_LIGHTHOUSE.toStack(), PortShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(3, MaterialItems.LENS),
-                'b', AmountIngredient.of(1, Items.IRON_INGOT, MaterialItems.LEAD_INGOT),
+                'b', Ingredient.of(Items.IRON_INGOT, MaterialItems.LEAD_INGOT),
                 'c', AmountIngredient.of(6, MaterialItems.SOUL_OF_LIGHT)
         ), List.of(
                 " a ",
@@ -711,10 +711,45 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 // "acda",
                 // "aaaa"
         // )));
+        // 禁戒面具：精金/钛金锭 x2 × 5 + 禁戒碎片
+        hardmodeAnvil(writer, ArmorItems.FORBIDDEN_MASK.toStack(), PortShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE_OR_TITANIUM),
+                'b', Ingredient.of(MaterialItems.FORBIDDEN_FRAGMENT)
+        ), List.of(
+                "aaa",
+                "aba"
+        )));
+        // 禁戒长袍：精金/钛金锭 x2 × 6 + 禁戒碎片
+        hardmodeAnvil(writer, ArmorItems.FORBIDDEN_ROBE.toStack(), PortShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE_OR_TITANIUM),
+                'b', Ingredient.of(MaterialItems.FORBIDDEN_FRAGMENT)
+        ), List.of(
+                "a a",
+                "aba",
+                "a a"
+        )));
+        // 禁戒裤：精金/钛金锭 x2 × 6 + 禁戒碎片
+        hardmodeAnvil(writer, ArmorItems.FORBIDDEN_TROUSERS.toStack(), PortShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE_OR_TITANIUM),
+                'b', Ingredient.of(MaterialItems.FORBIDDEN_FRAGMENT)
+        ), List.of(
+                "aba",
+                "a a",
+                "a a"
+        )));
+        // 禁戒鞋：精金/钛金锭 x3 × 4 + 禁戒碎片
+        hardmodeAnvil(writer, ArmorItems.FORBIDDEN_BOOTS.toStack(), PortShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, ModTags.Items.INGOTS_ADAMANTITE_OR_TITANIUM),
+                'b', Ingredient.of(MaterialItems.FORBIDDEN_FRAGMENT)
+        ), List.of(
+                "aba",
+                "a a"
+        )));
+
         // 震地锤：腐肉/椎骨 x6、铁锭/铅锭 x5、暗影之魂 x6
         hardmodeAnvil(writer, FunctionalBlocks.EARTHSHAKER_DEVICE.toStack(), PortShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(3, MaterialItems.ROTTEN_CHUNK, MaterialItems.VERTEBRA),
-                'b', AmountIngredient.of(1, Items.IRON_INGOT, MaterialItems.LEAD_INGOT),
+                'b', Ingredient.of(Items.IRON_INGOT, MaterialItems.LEAD_INGOT),
                 'c', AmountIngredient.of(6, MaterialItems.SOUL_OF_NIGHT)
         ), List.of(
                 "bcb",
@@ -722,6 +757,39 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 " b ",
                 " b "
         )));
+        // 蜘蛛盔甲：a=蜘蛛牙x2，b=蜘蛛牙x1（x1 不填参）
+        hardmodeAnvil(writer, ArmorItems.SPIDER_HELMET.toStack(), PortShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, MaterialItems.SPIDER_FANG),
+                'b', Ingredient.of(MaterialItems.SPIDER_FANG)
+        ), List.of(
+                "a a",
+                "aba",
+                " b "
+        )));
+        hardmodeAnvil(writer, ArmorItems.SPIDER_CHESTPLATE.toStack(), PortShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, MaterialItems.SPIDER_FANG)
+        ), List.of(
+                "a a",
+                "aaa",
+                "aaa"
+        )));
+        hardmodeAnvil(writer, ArmorItems.SPIDER_LEGGINGS.toStack(), PortShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, MaterialItems.SPIDER_FANG),
+                'b', Ingredient.of(MaterialItems.SPIDER_FANG)
+        ), List.of(
+                "bab",
+                "b b",
+                "b b"
+        )));
+        hardmodeAnvil(writer, ArmorItems.SPIDER_BOOTS.toStack(), PortShapedRecipePattern.of(Map.of(
+                'b', Ingredient.of(MaterialItems.SPIDER_FANG)
+        ), List.of(
+                "b b",
+                "b b"
+        )));
+
+        // 困难模式箭矢
+        hardmodeArrowRecipes(writer);
         // 晶光刃：对应颜色的陨石光剑 + 25 水晶碎块（困难模式砧 / 无序）
         phasesaber(writer, SwordItems.WHITE_PHASESABER.toStack(), SwordItems.WHITE_PHASEBLADE);
         phasesaber(writer, SwordItems.RED_PHASESABER.toStack(), SwordItems.RED_PHASEBLADE);
@@ -731,6 +799,25 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         phasesaber(writer, SwordItems.BLUE_PHASESABER.toStack(), SwordItems.BLUE_PHASEBLADE);
         phasesaber(writer, SwordItems.PURPLE_PHASESABER.toStack(), SwordItems.PURPLE_PHASEBLADE);
         phasesaber(writer, SwordItems.PINK_PHASESABER.toStack(), SwordItems.PINK_PHASEBLADE);
+    }
+
+    /// 困难模式箭矢：叶绿箭 1 锭 → 150；圣箭 / 诅咒箭 / 灵液箭 / 毒液箭 用木箭做底料。
+    protected void hardmodeArrowRecipes(Consumer<FinishedRecipe> writer) {
+        hardmodeAnvil(writer, ArrowItems.CHLOROPHYTE_ARROW.toStack(150),
+                Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
+        hardmodeAnvil(writer, ArrowItems.HOLY_ARROW.toStack(150),
+                AmountIngredient.of(200, Items.ARROW),
+                AmountIngredient.of(3, MaterialItems.PIXIE_DUST),
+                Ingredient.of(MaterialItems.UNICORN_HORN));
+        hardmodeAnvil(writer, ArrowItems.CURSED_ARROW.toStack(150),
+                AmountIngredient.of(150, Items.ARROW),
+                Ingredient.of(ModBlocks.CURSED_FLAME));
+        hardmodeAnvil(writer, ArrowItems.ICHOR_ARROW.toStack(150),
+                AmountIngredient.of(150, Items.ARROW),
+                Ingredient.of(MaterialItems.ICHOR));
+        hardmodeAnvil(writer, ArrowItems.VENOM_ARROW.toStack(35),
+                AmountIngredient.of(35, Items.ARROW),
+                Ingredient.of(MaterialItems.VIAL_OF_VENOM));
     }
 
     /// 晶光刃：同色陨石光剑 + 25 水晶碎块，无序合成。

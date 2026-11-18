@@ -1,0 +1,26 @@
+package org.confluence.mod.common.effect.harmful;
+
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.LivingEntity;
+import org.confluence.lib.common.LibDamageTypes;
+import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
+
+/// 烈性酸液：每秒受到 24 点伤害（毒液箭附加的第二段减益）。
+public class VenomEffect extends PortMobEffect {
+    /// 每秒（每 20 刻）结算一次的伤害。
+    public static final float DAMAGE_PER_SECOND = 24.0F;
+
+    public VenomEffect() {
+        super(MobEffectCategory.HARMFUL, 0x4B0082);
+    }
+
+    @Override
+    public void applyEffectTick(LivingEntity living, int amplifier) {
+        living.hurt(LibDamageTypes.of(living.level(), LibDamageTypes.ACID_VENOM), DAMAGE_PER_SECOND);
+    }
+
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int tick, int amplifier) {
+        return tick % 20 == 0;
+    }
+}

@@ -7,6 +7,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.item.summon.EyeLaserTurretStaffItem;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
@@ -211,7 +212,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<EyeLaserTurretMinion>> EYE_LASER_TURRET_STAFF = registerItem("eye_laser_turret_staff", "眼球激光塔法杖", () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<EyeLaserTurretMinion>> EYE_LASER_TURRET_STAFF = registerItem("eye_laser_turret_staff", "眼球激光塔法杖", () -> new EyeLaserTurretStaffItem(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
                     SummonerAttachmentEntityTypes.EYE_LASER_TURRET,
                     MinionSlotType.Sentry,

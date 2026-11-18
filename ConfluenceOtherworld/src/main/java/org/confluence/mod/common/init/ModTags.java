@@ -296,6 +296,8 @@ public final class ModTags {
         public static final TagKey<Item> INGOTS_ORICHALCUM = common("ingots/orichalcum");
         public static final TagKey<Item> INGOTS_ADAMANTITE = common("ingots/adamantite");
         public static final TagKey<Item> INGOTS_TITANIUM = common("ingots/titanium");
+    /// 精金锭或钛金锭：禁戒套装等“二选一”配方用，命中任意一侧标签即可。
+    public static final TagKey<Item> INGOTS_ADAMANTITE_OR_TITANIUM = common("ingots/adamantite_or_titanium");
 
         public static final TagKey<Item> INGOTS_HALLOWED = common("ingots/hallowed");
         public static final TagKey<Item> INGOTS_CHLOROPHYTE = common("ingots/chlorophyte");

@@ -17,6 +17,8 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Consumer;
+
 /// 通用的「从天而降的追踪坠星」。
 ///
 /// 星泣累积释放与星乐爆开的坠星共用它：从高处落下，并在水平方向上追踪最近的敌人。
@@ -47,6 +49,8 @@ public class HomingFallingStarProjectile extends AbstractManaProjectile {
     private boolean aimed;
     /// 命中时是否清零目标的受击无敌帧：星泣每 0.5 秒一颗，每颗都必须结算伤害。
     private boolean ignoreInvulnerability;
+    /// 被摧毁（命中方块/敌怪）时的回调：圣箭用它把摧毁点交给第二颗神圣之星（不参与存档）。
+    private @Nullable Consumer<Vec3> onDestroyed;
 
     public HomingFallingStarProjectile(EntityType<HomingFallingStarProjectile> entityType, Level level) {
         super(entityType, level);
@@ -67,7 +71,12 @@ public class HomingFallingStarProjectile extends AbstractManaProjectile {
     ///
     /// `baseY` 传目标脚部高度即可；高处被方块占住时会向下找第一个空位，避免坠星一出场就埋在方块里。
     public static HomingFallingStarProjectile spawnAbove(Level level, @Nullable LivingEntity owner, double x, double baseY, double z) {
-        HomingFallingStarProjectile star = new HomingFallingStarProjectile(ModEntities.HOMING_FALLING_STAR.get(), level);
+        return spawnAbove(ModEntities.HOMING_FALLING_STAR.get(), level, owner, x, baseY, z);
+    }
+
+    /// 与星怒/星泣完全同一套参数，只是允许指定实体类型（神圣之星用）。
+    public static HomingFallingStarProjectile spawnAbove(EntityType<HomingFallingStarProjectile> type, Level level, @Nullable LivingEntity owner, double x, double baseY, double z) {
+        HomingFallingStarProjectile star = new HomingFallingStarProjectile(type, level);
         star.setOwner(owner);
         star.setPos(x, fallSpawnY(level, x, baseY, z), z);
         star.setDeltaMovement(0.0, -STAR_FURY_FALL_SPEED, 0.0);
@@ -133,6 +142,18 @@ public class HomingFallingStarProjectile extends AbstractManaProjectile {
     /// 命中时是否清零目标的受击无敌帧。
     public void setIgnoreInvulnerability(boolean ignoreInvulnerability) {
         this.ignoreInvulnerability = ignoreInvulnerability;
+    }
+
+    /// 设置被摧毁时的回调（仅服务端有效）。
+    public void setOnDestroyed(@Nullable Consumer<Vec3> onDestroyed) {
+        this.onDestroyed = onDestroyed;
+    }
+
+    private void notifyDestroyed(Vec3 at) {
+        if (onDestroyed != null) {
+            onDestroyed.accept(at);
+            onDestroyed = null;
+        }
     }
 
     @Override
@@ -232,7 +253,10 @@ public class HomingFallingStarProjectile extends AbstractManaProjectile {
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
-        if (!level().isClientSide) discard();
+        if (!level().isClientSide) {
+            notifyDestroyed(result.getLocation());
+            discard();
+        }
     }
 
     @Override
@@ -247,6 +271,7 @@ public class HomingFallingStarProjectile extends AbstractManaProjectile {
         }
         doHurtAndKnockback(entity, 0.3, 0.2);
         doDiscardInMaxPenetrate(1);
+        notifyDestroyed(result.getLocation());
     }
 
     @Override

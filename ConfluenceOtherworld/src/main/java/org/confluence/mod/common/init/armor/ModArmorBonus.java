@@ -27,23 +27,30 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.MobEffectInstanceData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
 import org.confluence.mod.api.event.RegisterArmorSetBonusEvent;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.entity.projectile.FlowerPetalProjectile;
+import org.confluence.mod.common.entity.projectile.ForbiddenDustBeamEntity;
+import org.confluence.mod.common.entity.projectile.ForbiddenSignEntity;
 import org.confluence.mod.common.entity.projectile.TitaniumShardsProjectile;
 import org.confluence.mod.common.event.game.GameEvents;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.armor.type.EnhanceEffectDuration;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.SoulcererUtils;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.terra_curio.api.primitive.*;
@@ -117,6 +124,7 @@ public final class ModArmorBonus {
     public static ArmorSetBonusKey BLACK_SPOT_SET;
     public static ArmorSetBonusKey ROOT_ROT_SET;
     public static ArmorSetBonusKey WOLF_SET;
+    public static ArmorSetBonusKey FORBIDDEN_SET;
     private static final String WOLF_BUFF_END = "confluence.wolf_buff_end";
     private static final ResourceLocation WOLF_ATTACK_ID = Confluence.asResource("wolf_pack_attack");
     private static final ResourceLocation WOLF_SPEED_ID = Confluence.asResource("wolf_pack_speed");
@@ -310,6 +318,9 @@ public final class ModArmorBonus {
         register("titanium_helmet_set", 1, TITANIUM_HELMET, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
         register("titanium_headgear_set", 1, TITANIUM_HEADGEAR, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
 
+        // 禁戒套装：奖励由 activateArmorSetBonus 主动触发，这里只声明套装身份与提示条数。
+        FORBIDDEN_SET = register("forbidden_set", 1, FORBIDDEN_MASK, FORBIDDEN_ROBE, FORBIDDEN_TROUSERS, FORBIDDEN_BOOTS, key -> {});
+
         // todo	水晶刺客盔甲、神圣盔甲
 
         register("diamond_set", 1, Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS, key -> {
@@ -447,6 +458,74 @@ PortAttributeModifier.Operation
             for (Player other : player.level().getEntitiesOfClass(Player.class, player.getBoundingBox().inflate(16.0), p -> p != player)) {
                 other.getFoodData().setSaturation(other.getFoodData().getSaturationLevel() + 4.0F);
             }
+        }
+    }
+
+    /// 禁戒套装奖励的单次魔力消耗。
+    public static final int FORBIDDEN_SET_MANA_COST = 20;
+    /// 寻找目标的半径。
+    private static final double FORBIDDEN_SET_RANGE = 32.0;
+
+    /// 禁戒套装奖励：消耗 20 魔力，向最近的敌怪发射尘土束；尘土束撞到方块就在方块处召唤远古风暴。
+    /// 半径内没有敌怪时朝视线方向发射（否则按键会完全没反馈）。
+    public static void activateArmorSetBonus(ServerPlayer player) {
+        if (!isArmorSet(player, FORBIDDEN_SET)) return;
+        ManaStorage manaStorage = ManaStorage.of(player);
+        if (manaStorage.getCurrentMana() < FORBIDDEN_SET_MANA_COST) {
+            player.displayClientMessage(Component.translatable("message.confluence.forbidden_set.no_mana", FORBIDDEN_SET_MANA_COST), true);
+            return;
+        }
+        // 与星怒同款索敌：优先准星方向锥形范围内的敌怪，没有再退化为最近敌怪。
+        LivingEntity target = aimMonster(player);
+        if (target == null) target = nearestMonster(player);
+        Vec3 direction = target != null
+                ? target.getBoundingBox().getCenter().subtract(player.getEyePosition())
+                : player.getLookAngle();
+        if (direction.lengthSqr() < 1.0E-4) direction = player.getLookAngle();
+        if (!manaStorage.forceExtractMana(() -> FORBIDDEN_SET_MANA_COST)) return;
+        PlayerUtils.syncMana2Client(player, manaStorage);
+        player.level().addFreshEntity(new ForbiddenDustBeamEntity(player, direction));
+    }
+
+    /// 与星怒（`AboveFallenGeneration`）一致的准星锥形索敌：30° 夹角 + 套装半径。
+    private static final WeaponTargeting FORBIDDEN_TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+    private static final float FORBIDDEN_TARGET_ANGLE = 30.0F;
+
+    /// 准星方向上的敌怪（优先于最近的敌怪）。
+    private static @Nullable LivingEntity aimMonster(ServerPlayer player) {
+        Vec3 eye = player.getEyePosition();
+        Vec3 end = eye.add(player.getForward().normalize().scale(FORBIDDEN_SET_RANGE));
+        Entity hit = FORBIDDEN_TARGETING.angleHitTarget(eye, end, player.level(), player, player,
+                FORBIDDEN_SET_RANGE, FORBIDDEN_TARGET_ANGLE, entity -> true);
+        return hit == null ? null : LibEntityUtils.effectTarget(hit);
+    }
+
+    /// 半径内最近的敌怪。
+    private static LivingEntity nearestMonster(ServerPlayer player) {
+        LivingEntity nearest = null;
+        double best = FORBIDDEN_SET_RANGE * FORBIDDEN_SET_RANGE;
+        AABB search = AABB.ofSize(player.position(), FORBIDDEN_SET_RANGE * 2, FORBIDDEN_SET_RANGE * 2, FORBIDDEN_SET_RANGE * 2);
+        for (Entity entity : LibEntityUtils.queryHitCandidates(player.level(), player, search, candidate -> LibEntityUtils.effectTarget(candidate) != null)) {
+            LivingEntity living = LibEntityUtils.effectTarget(entity);
+            if (living == null || living == player || !living.isAlive()) continue;
+            if (!LibEntityUtils.allowsAttack(player, entity)) continue;
+            double distance = living.distanceToSqr(player);
+            if (distance < best) {
+                best = distance;
+                nearest = living;
+            }
+        }
+        return nearest;
+    }
+
+    /// 维持禁戒标记：套装生效时保证身边有一个标记，失效时清理掉。
+    public static void updateForbiddenSign(ServerPlayer player) {
+        List<ForbiddenSignEntity> signs = player.level().getEntitiesOfClass(ForbiddenSignEntity.class,
+                player.getBoundingBox().inflate(8.0), sign -> sign.isOwnedBy(player));
+        if (isArmorSet(player, FORBIDDEN_SET)) {
+            if (signs.isEmpty()) player.level().addFreshEntity(new ForbiddenSignEntity(player));
+        } else {
+            for (ForbiddenSignEntity sign : signs) sign.discard();
         }
     }
 

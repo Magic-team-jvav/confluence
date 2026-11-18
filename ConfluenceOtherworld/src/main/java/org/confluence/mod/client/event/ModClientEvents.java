@@ -378,6 +378,10 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SOUL_STING.get(), SoulStingProjectileRenderer::new);
         event.registerEntityRenderer(FIREWORKS_ROCKET.get(), FireworksRocketRenderer::new);
         event.registerEntityRenderer(SPIRIT_SURGE.get(), NoopRenderer::new);
+        // 禁戒套装：漂浮符号走自发光模型，尘土束与远古风暴本体不渲染（表现全交给 ParticleStorm）。
+        event.registerEntityRenderer(FORBIDDEN_SIGN.get(), ForbiddenSignRenderer::new);
+        event.registerEntityRenderer(FORBIDDEN_DUST_BEAM.get(), InvisibleEntityRenderer::new);
+        event.registerEntityRenderer(ANCIENT_STORM.get(), InvisibleEntityRenderer::new);
         event.registerEntityRenderer(BASE_MANA_STAFF.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILETHRON.get(), VilethronProjectileRenderer::new);
         event.registerEntityRenderer(CRYSTAL_VILE_SHARD.get(), CrystalVileShardProjectileRenderer::new);
@@ -417,6 +421,18 @@ public final class ModClientEvents {
         event.registerEntityRenderer(DEVELOPER_ARROW.get(), TerraArrowRenderer::new);
         // 风与星系列
         event.registerEntityRenderer(WIND_ARROW.get(), TerraArrowRenderer::new);
+        // 困难模式箭矢：贴图先沿用邪箭的实体贴图
+        event.registerEntityRenderer(CHLOROPHYTE_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(HOLY_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(CURSED_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(ICHOR_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(VENOM_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(LUMINITE_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(LUMINITE_ARROW_TRAIL.get(), TerraArrowRenderer::new);
+        // 神圣之星：沿用星怒坠星的交叉面片，换成神圣之星贴图
+        event.registerEntityRenderer(HALLOW_STAR.get(), HallowStarRenderer::new);
+        event.registerEntityRenderer(SHADOWFLAME_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(FROST_ARROW.get(), TerraArrowRenderer::new);
         // 血雨：箭矢结算 + 雨滴外观
         event.registerEntityRenderer(BLOOD_RAIN_ARROW.get(), context -> new RainProjectileRenderer<>(context, RainProjectileRenderer.BLOOD_RAIN));
         // 昏晓：小日光 / 小月光

@@ -24,6 +24,7 @@ public final class NetworkEvents {
         // C2S
         handler.registerInGameC2S(SoulSkillUsePacketC2S.class, SoulSkillUsePacketC2S.ID, SoulSkillUsePacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(SoulSkillIndexRequestPacketC2S.class, SoulSkillIndexRequestPacketC2S.ID, SoulSkillIndexRequestPacketC2S.STREAM_CODEC);
+        handler.registerInGameC2S(ActivateSetBonusPacketC2S.class, ActivateSetBonusPacketC2S.ID, ActivateSetBonusPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(SoulSkillRequestPacketC2S.class, SoulSkillRequestPacketC2S.ID, SoulSkillRequestPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(NPCDialogSessionPacketC2S.class, NPCDialogSessionPacketC2S.ID, NPCDialogSessionPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(ApplySelectionPacketC2S.class, ApplySelectionPacketC2S.ID, ApplySelectionPacketC2S.STREAM_CODEC);

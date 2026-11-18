@@ -1,0 +1,36 @@
+{
+  "base": {
+    "parent": "confluence:item/eye_laser_turret_staff_display",
+    "textures": {
+      "layer0": "confluence:item/summon/eye_laser_turret_staff_display"
+    }
+  },
+  "gui_light": "front",
+  "loader": "forge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/summon/eye_laser_turret_staff"
+      }
+    },
+    "ground": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/summon/eye_laser_turret_staff"
+      }
+    },
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/summon/eye_laser_turret_staff"
+      }
+    },
+    "head": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/summon/eye_laser_turret_staff_head"
+      }
+    }
+  }
+}

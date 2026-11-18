@@ -1107,6 +1107,7 @@ public final class ModTabs {
                         boss_event_summons.accept(ConsumableItems.BLOODY_SPINE.get());
                         boss_event_summons.accept(ConsumableItems.ABEEMINATION.get());
                         boss_event_summons.accept(ConsumableItems.DEER_THING.get());
+                        boss_event_summons.accept(ConsumableItems.GELATIN_CRYSTAL.get());
                         boss_event_summons.accept(AccessoryItems.CLOTHIER_VOODOO_DOLL.get());
                         boss_event_summons.accept(AccessoryItems.GUIDE_VOODOO_DOLL.get());
                         boss_event_summons.accept(ConsumableItems.BLOOD_TEAR.get());
@@ -1893,6 +1894,12 @@ public final class ModTabs {
                         mushroom_set.accept(VanityArmorItems.MUSHROOM_LEGGINGS.get());
                         mushroom_set.accept(VanityArmorItems.MUSHROOM_BOOTS.get());
 
+                        CreativeModeTab.Output forbidden_set = GroupItem.belongsTo("forbidden_armor", output);
+                        forbidden_set.accept(ArmorItems.FORBIDDEN_MASK.get());
+                        forbidden_set.accept(ArmorItems.FORBIDDEN_ROBE.get());
+                        forbidden_set.accept(ArmorItems.FORBIDDEN_TROUSERS.get());
+                        forbidden_set.accept(ArmorItems.FORBIDDEN_BOOTS.get());
+
                         /// 盔甲附魔书（统一排在最后，按能附着的部位排布；暂不开放附魔台，只能从创造栏或战利品取得）
                         CreativeModeTab.Output armorEnchantmentBooks = GroupItem.belongsTo("armor_enchantments", output);
                         // 头盔
@@ -2104,6 +2111,8 @@ public final class ModTabs {
                         bow.accept(BowItems.ENCHANTED_BOW.get());
                         bow.accept(BowItems.STAR_WEEP.get());
                         bow.accept(BowItems.POLAR_DAY.get());
+        bow.accept(BowItems.SHADOWFLAME_BOW.get());
+        bow.accept(BowItems.ICE_BOW.get());
                         bow.accept(BowItems.BLADE_BOW.get());
 
                         acceptAll(CrossbowItems.ITEMS, output, "crossbow");

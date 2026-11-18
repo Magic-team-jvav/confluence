@@ -264,6 +264,9 @@ public final class InterfaceLanguageSubProvider {
         language.add("info.confluence.wind.tier.light", "Light Breeze", "微风");
         language.add("info.confluence.wind.tier.windy", "Windy Day", "大风天");
         language.add("key.confluence.aim", "Aim", "瞄准");
+        language.add("key.confluence.activate_set_bonus", "Activate Set Bonus", "激活套装奖励");
+        language.add("message.confluence.forbidden_set.no_mana", "Not enough mana (%s required)", "魔力不足（需要 %s）");
+        language.add("message.confluence.forbidden_set.no_space", "Not enough room for the Ancient Storm (3x11 required)", "空间不足，无法召唤远古风暴（需要 3×11 格）");
         language.add("key.confluence.extra_inventory", "Quick Open Extra Slot", "快捷打开额外栏");
         language.add("key.confluence.gameplay", "Confluence Key Settings", "汇流来世按键设置");
         language.add("key.confluence.healing", "Quick Use Health Potion", "快捷喝药（生命）");

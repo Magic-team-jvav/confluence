@@ -27,6 +27,7 @@ public final class ArmorBonusLanguageSubProvider {
         language.add("armor_set_bonus.confluence.copper_set.0", "+1 Armor", "+1 护甲值");
         language.add("armor_set_bonus.confluence.crimson_set.0", "Greatly increased life regen", "生命再生能力大幅提升");
         language.add("armor_set_bonus.confluence.diamond_set.0", "Grant Fortune II", "赋予时运II");
+        language.add("armor_set_bonus.confluence.forbidden_set.0", "Double-tap Activate Set Bonus to fire a dust beam that calls down an Ancient Storm (20 mana)", "双击「激活套装奖励」发射尘土束，召唤远古风暴（消耗 20 魔力）");
         language.add("armor_set_bonus.confluence.fossil_set.0", "20% chance to save ammo", "20%几率省下弹药");
         language.add("armor_set_bonus.confluence.gladiator_set.0", "Immunity to Knockback", "免疫击退");
         language.add("armor_set_bonus.confluence.golden_set.0", "+1 Armor", "+1 护甲值");

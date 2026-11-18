@@ -107,6 +107,15 @@ public final class ModKeyBindings {
             KEY_BINDINGS_CATEGORY
     ));
 
+    /// 激活套装奖励：默认 ↑，双击触发（见 `KeyRequestHandler`）。
+    public static final Lazy<KeyMapping> ACTIVATE_SET_BONUS = register(() -> new KeyMapping(
+            "key.confluence.activate_set_bonus",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_UP,
+            KEY_BINDINGS_CATEGORY
+    ));
+
     private static Lazy<KeyMapping> register(Supplier<KeyMapping> supplier) {
         Lazy<KeyMapping> lazy = Lazy.of(supplier);
         keyMappings.add(lazy);

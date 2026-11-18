@@ -1282,6 +1282,28 @@ public class ArmorItems {
             .attribute(Attributes.MOVEMENT_SPEED, 0.07, PortAttributeModifier.Operation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
             .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, PortAttributeModifier.Operation.ADD_VALUE));
 
+    /// 禁戒套装（困难模式砧）：面具/长袍/裤/鞋，模型与贴图见 `geo/item/armor/forbidden_armor.geo.json`。
+    public static final PortDeferredItem<BaseArmorItem> FORBIDDEN_MASK = register("forbidden_mask", "禁戒面具", ModArmorMaterials.FORBIDDEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/forbidden_armor")
+            .rarity(ModRarity.PINK)
+            .magicDamage(0.15)
+            .summonDamage(0.15));
+    public static final PortDeferredItem<BaseArmorItem> FORBIDDEN_ROBE = register("forbidden_robe", "禁戒长袍", ModArmorMaterials.FORBIDDEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/forbidden_armor")
+            .rarity(ModRarity.PINK)
+            .additionalMana(40)
+            .summonDamage(0.10)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.Operation.wrap(AttributeModifier.Operation.ADDITION)));
+    public static final PortDeferredItem<BaseArmorItem> FORBIDDEN_TROUSERS = register("forbidden_trousers", "禁戒裤", ModArmorMaterials.FORBIDDEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/forbidden_armor")
+            .rarity(ModRarity.PINK)
+            .additionalMana(40)
+            .magicDamage(0.10));
+    public static final PortDeferredItem<BaseArmorItem> FORBIDDEN_BOOTS = register("forbidden_boots", "禁戒鞋", ModArmorMaterials.FORBIDDEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/forbidden_armor")
+            .rarity(ModRarity.PINK)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.Operation.wrap(AttributeModifier.Operation.ADDITION)));
+
     private static PortDeferredItem<BaseArmorItem> register(String registryId, String chineseName, Holder<ArmorMaterial> material, ArmorItem.Type type, Consumer<BaseArmorItem.Builder> consumer) {
         PortDeferredItem<BaseArmorItem> entry = ITEMS.register(registryId, () -> {
             BaseArmorItem.Builder builder = BaseArmorItem.builder(registryId, material.value(), type);

@@ -596,6 +596,8 @@ public final class PlayerEvents {
     private static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             PlayerUtils.flushPrimitiveValueData(player);
+            /// 禁戒套装穿上/脱下时同步「禁戒标记」实体。
+            ModArmorBonus.updateForbiddenSign(player);
         }
     }
 

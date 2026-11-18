@@ -1267,6 +1267,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.ICE_MIMIC.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
+                        /// 冰雪弓
+                        .add(LootItem.lootTableItem(BowItems.ICE_BOW))
                         // 冰雪弓
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FROST))
                 )

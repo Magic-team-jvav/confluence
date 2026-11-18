@@ -310,6 +310,9 @@ public final class ModArmorMaterials {
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> ADAMANTITE_MASK_MATERIAL = registerSingletonMaterial("adamantite_mask_material", ArmorItem.Type.HELMET, 4, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT), "adamantite_mask", 2.0F, 0);
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> ADAMANTITE_ARMOR_MATERIALS = registerArmorMaterial("adamantite_armor_materials", 7, 8, 7, 7, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT), "adamantite", 2.0F, 0);
 
+    /// 禁戒套装：防御 6/6/6/3（靴/腿/胸/头），韧性 2。
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> FORBIDDEN_ARMOR_MATERIALS = registerArmorMaterial("forbidden_armor_materials", 6, 6, 6, 3, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.FORBIDDEN_FRAGMENT), "forbidden_armor", 2.0F, 0);
+
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> TITANIUM_HEADGEAR_MATERIAL = registerSingletonMaterial("titanium_headgear_material", ArmorItem.Type.HELMET, 3, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium_headgear", 2.0F, 0);
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> TITANIUM_MASK_MATERIAL = registerSingletonMaterial("titanium_mask_material", ArmorItem.Type.HELMET, 7, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium_mask", 2.0F, 0);
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> TITANIUM_ARMOR_MATERIALS = registerArmorMaterial("titanium_armor_materials", 4, 7, 7, 6, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium", 2.0F, 0);

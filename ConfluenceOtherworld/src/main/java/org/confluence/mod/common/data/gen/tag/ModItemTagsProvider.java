@@ -856,6 +856,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.BLOODY_SPINE.get(),
                 ConsumableItems.ABEEMINATION.get(),
                 ConsumableItems.DEER_THING.get(),
+                ConsumableItems.GELATIN_CRYSTAL.get(),
                 AccessoryItems.CLOTHIER_VOODOO_DOLL.get(),
                 AccessoryItems.GUIDE_VOODOO_DOLL.get()
         );
@@ -875,6 +876,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.INGOTS_ORICHALCUM).add(MaterialItems.ORICHALCUM_INGOT.get());
         tag(ModTags.Items.INGOTS_ADAMANTITE).add(MaterialItems.ADAMANTITE_INGOT.get());
         tag(ModTags.Items.INGOTS_TITANIUM).add(MaterialItems.TITANIUM_INGOT.get());
+        tag(ModTags.Items.INGOTS_ADAMANTITE_OR_TITANIUM).addTag(ModTags.Items.INGOTS_ADAMANTITE).addTag(ModTags.Items.INGOTS_TITANIUM);
         tag(ModTags.Items.INGOTS_HALLOWED).add(MaterialItems.HALLOWED_INGOT.get());
         tag(ModTags.Items.INGOTS_CHLOROPHYTE).add(MaterialItems.CHLOROPHYTE_INGOT.get());
 
@@ -1550,10 +1552,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
                 SpawnEggItems.PLANTERA_SPAWN_EGG.get(),
                 SpawnEggItems.PRIME_ENDER_DRAGON_SPAWN_EGG.get(),
-                TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(),
-                TreasureBagItems.THE_DESTROYER_TREASURE_BAG.get(),
-                TreasureBagItems.PLANTERA_TREASURE_BAG.get(),
-                TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get(),
+                /// 宝藏袋全部放行，创造模式标签页的宝藏袋分组才能列完整。
                 HoeShovelItems.COBALT_HOE_SHOVEL.get(),
                 HoeShovelItems.PALLADIUM_HOE_SHOVEL.get(),
                 HoeShovelItems.MYTHRIL_HOE_SHOVEL.get(),
@@ -1568,6 +1567,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         Consumer<PortRegistryEntry<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
+        /// 没有自有序列帧贴图的宝藏袋（临时借用别的袋子的贴图）先标记为 WIP。
+        wip.add(
+                TreasureBagItems.QUEEN_SLIME_TREASURE_BAG.get(),
+                TreasureBagItems.PLANTERA_TREASURE_BAG.get(),
+                TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get()
+        );
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
         tag(ModTags.Items.AUTOMATIC_GUN).add(
                 ManaWeaponItems.BEE_GUN.get(),

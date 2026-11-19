@@ -10,9 +10,9 @@ import org.confluence.mod.common.entity.monster.humanoid.Zombie;
 /// 因而以后补入独立美术时无需改动渲染器或网络协议。当前尚未完成逐变体素材迁移，变体方法
 /// 会安全地返回已存在的共享模型、纹理和动画；外观差异暂由颜色与缩放参数表达，杜绝请求
 /// 缺失纹理。
-public class ZombieGeoModel extends VanillaZombieGeoModel<Zombie> {
+public class ZombieGeoModel extends VanillaHumanoidGeoModel<Zombie> {
     public ZombieGeoModel(EntityRendererProvider.Context context) {
-        super(context, Zombie.Variant.NORMAL.modelPath());
+        super(context, Zombie.Variant.NORMAL.modelPath(), Posture.ZOMBIE);
     }
 
     @Override

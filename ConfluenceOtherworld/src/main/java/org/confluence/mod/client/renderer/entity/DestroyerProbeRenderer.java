@@ -11,7 +11,7 @@ import software.bernie.geckolib.model.GeoModel;
 
 /// 毁灭者探测器使用独立模型与贴图。
 public final class DestroyerProbeRenderer extends GeoNormalRenderer<TheDestroyerProbe> {
-    /// 模型前后外沿的中心，单位为方块。
+    // 模型前后外沿的中心，单位为方块。
     private static final float MODEL_CENTER_Z = 0.22F;
 
     public DestroyerProbeRenderer(EntityRendererProvider.Context context) {

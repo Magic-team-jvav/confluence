@@ -61,13 +61,22 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
     // 装甲片向外弹出的速度系数。
     private static final float SHELL_BURST_SPEED = 8.0F;
 
+    // 爆炸前颤抖的最大摆角（弧度）与每刻相位增量。
+    private static final float DEATH_SHAKE_ANGLE = 0.09F;
+    private static final float DEATH_SHAKE_PHASE_SPEED = 2.5F;
+
     private static final float MODEL_CENTER_Y = 14.0F / 16.0F;
     private static final float BODY_CENTER_Z = 35.61025F / 16.0F;
     private static final float CONNECTOR_CENTER_Z = 66.61025F / 16.0F;
     private static final float TAIL_CENTER_Z = 190.61025F / 16.0F;
     private static final float PHASE1_TAIL_CENTER_Z = 97.61025F / 16.0F;
 
-    //别动 会被泛型擦除
+    // 按本体记录激光及体节闪电，技能结束时统一移除。
+    private static final Map<TheDestroyer, Integer> BEAM_LAST_TICK = new WeakHashMap<>();
+    private static final Map<TheDestroyer, List<ParticleEmitter>> BEAM_EMITTERS = new WeakHashMap<>();
+    private static final Map<TheDestroyer, List<ParticleEmitter>> SECTION_LIGHTNING = new WeakHashMap<>();
+
+    // 定位器和模型使用同一份体节插值姿态，保持粒子发射位置与模型对齐。
     public static <E extends Entity & GeoEntity> RegisterLocatorPreTransformerEvent.Transformer<E> locatorTransformer() {
         return new RegisterLocatorPreTransformerEvent.Transformer<>() {
             @Override
@@ -418,21 +427,23 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
         DestroyerShellEffectHandler.spawn(boss, geoRenderer, bone.getCubes(), index, centerZ, SHELL_FRAGMENTS_PER_SEGMENT, SHELL_BURST_SPEED);
     }
 
-    private static final Map<TheDestroyer, Integer> BEAM_LAST_TICK = new WeakHashMap<>();
-    private static final Map<TheDestroyer, List<ParticleEmitter>> BEAM_EMITTERS = new WeakHashMap<>();
+    private static void stopBeamEffects(TheDestroyer boss) {
+        List<ParticleEmitter> beam = BEAM_EMITTERS.remove(boss);
+        if (beam != null) beam.forEach(ParticleEmitter::remove);
+        List<ParticleEmitter> lightning = SECTION_LIGHTNING.remove(boss);
+        if (lightning != null) lightning.forEach(ParticleEmitter::remove);
+        BEAM_LAST_TICK.remove(boss);
+    }
 
     public static void tickBeamEffects(TheDestroyer boss) {
         int tick = boss.getBeamTick();
         if (tick < 0 || boss.isRemoved()) {
-            List<ParticleEmitter> old = BEAM_EMITTERS.remove(boss);
-            if (old != null) old.forEach(ParticleEmitter::remove);
-            BEAM_LAST_TICK.remove(boss);
+            stopBeamEffects(boss);
             return;
         }
         int last = BEAM_LAST_TICK.getOrDefault(boss, -1);
         if (tick < last) {
-            List<ParticleEmitter> old = BEAM_EMITTERS.remove(boss);
-            if (old != null) old.forEach(ParticleEmitter::remove);
+            stopBeamEffects(boss);
             last = -1;
         }
         List<ParticleEmitter> emitters = BEAM_EMITTERS.computeIfAbsent(boss, ignored -> new ArrayList<>());
@@ -443,6 +454,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             ParticleEmitter lightning = new ParticleEmitter(boss.level(), section.position(), Confluence.asResource("destroyer_attack_lightning"));
             lightning.attach(IPSEntity.of(section));
             MolangParticleEngine.INSTANCE.addEmitter(lightning);
+            SECTION_LIGHTNING.computeIfAbsent(boss, ignored -> new ArrayList<>()).add(lightning);
         }
         if (last < 100 && tick >= 100) {
             addBeamEmitter(boss, emitters, "ball");
@@ -459,7 +471,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             emitters.forEach(ParticleEmitter::remove);
             emitters.clear();
         }
-        /// 发射点使用与头部模型相同的插值姿态，始终位于头部中心前方十格。
+        // 发射点使用与头部模型相同的插值姿态，始终位于头部中心前方十格。
         Vector3f forward = boss.getBody().getRenderRotation(0, 1.0F).transform(new Vector3f(0, 0, -1));
         Vec3 direction = new Vec3(forward.x(), forward.y(), forward.z()).normalize();
         Vec3 origin = boss.getBody().getRenderPosition(0, 1.0F)
@@ -499,7 +511,13 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
     private static void applyRotations(Entity entity, Consumer<Quaternionf> rotate, FloatConsumer z, float partialTick) {
         TheDestroyer head = entity instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) entity;
         int index = entity instanceof DestroyerPart part ? part.getIndex() : 0;
-        rotate.accept(head.getBody().getRenderRotation(index, partialTick));
+        Quaternionf rotation = head.getBody().getRenderRotation(index, partialTick);
+        float shake = head.getDeathShakeStrength(index);
+        if (shake > 0.0F) {
+            float phase = (head.tickCount + partialTick) * DEATH_SHAKE_PHASE_SPEED + index;
+            rotation.rotateZ((float) Math.sin(phase) * DEATH_SHAKE_ANGLE * shake);
+        }
+        rotate.accept(rotation);
         float centerZ = entity instanceof DestroyerPart part
                 ? part.isTail() ? (head.isPhaseOneSection(index) ? PHASE1_TAIL_CENTER_Z : TAIL_CENTER_Z) : part.getIndex() % 2 == 0 ? CONNECTOR_CENTER_Z : BODY_CENTER_Z
                 : 0;
@@ -553,6 +571,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
                                                               Frustum frustum, Vec3 camera, float partialTick) {
         TheDestroyer head = entity instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) entity;
         int index = entity instanceof DestroyerPart part ? part.getIndex() : 0;
+        if (head.isSectionExploded(index)) return;
         Vec3 position = head.getBody().getRenderPosition(index, partialTick);
         if (!frustum.isVisible(entity.getBoundingBox().move(position.x - entity.getX(),
                 position.y - entity.getY(), position.z - entity.getZ()).inflate(TheDestroyer.BODY_WIDTH * 2.0)))

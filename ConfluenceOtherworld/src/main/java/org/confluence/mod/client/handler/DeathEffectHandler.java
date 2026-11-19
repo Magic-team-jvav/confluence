@@ -16,6 +16,7 @@ import org.confluence.mod.api.event.RegisterCustomDeathEffectEvent;
 import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.effect.death.DeathAnimUtils;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
+import org.confluence.mod.common.entity.boss.TheDestroyer;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.mesdag.particlestorm.data.molang.VariableTable;
@@ -54,6 +55,7 @@ public final class DeathEffectHandler {
 
     // 两种渲染事件共用入口，先记录死亡状态以阻止模拟渲染重入。
     public static void onRendered(LivingEntity living) {
+        if (living instanceof TheDestroyer) return;
         boolean dead = living.isDeadOrDying();
         IClientLivingEntity state = IClientLivingEntity.of(living);
         boolean wasDead = state.confluence$deadO();

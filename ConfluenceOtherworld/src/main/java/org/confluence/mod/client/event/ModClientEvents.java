@@ -699,15 +699,15 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.ENCHANTED_SWORD.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(MonsterEntities.SNATCHER.get(), c -> new SnatcherRenderer(c, MonsterEntities.SNATCHER.getId()));
         event.registerEntityRenderer(MonsterEntities.MAN_EATER.get(), c -> new SnatcherRenderer(c, MonsterEntities.MAN_EATER.getId()));
-        event.registerEntityRenderer(MonsterEntities.SPORE_SKELETON.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.SPORE_SKELETON.getId())));
-        event.registerEntityRenderer(MonsterEntities.BASE_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BASE_BONES.getId())).withScale(0.9F));
-        event.registerEntityRenderer(MonsterEntities.ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.ANGER_BONES.getId())).withScale(0.9F));
-        event.registerEntityRenderer(MonsterEntities.SHORT_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.SHORT_BONES.getId())).withScale(0.8F));
-        event.registerEntityRenderer(MonsterEntities.BIG_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.ANGER_BONES.getId())).withScale(1.1F));
-        event.registerEntityRenderer(MonsterEntities.BIG_ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BIG_ANGER_BONES.getId())).withScale(1.15F));
-        event.registerEntityRenderer(MonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BIG_MUSCLE_ANGER_BONES.getId())).withScale(1.2F));
-        event.registerEntityRenderer(MonsterEntities.BIG_HELMET_ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BIG_HELMET_ANGER_BONES.getId())).withScale(1.25F));
-        event.registerEntityRenderer(MonsterEntities.UNDEAD_VIKING.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.UNDEAD_VIKING.getId())));
+        event.registerEntityRenderer(MonsterEntities.SPORE_SKELETON.get(), c -> new VanillaHumanoidRenderer<>(c, VanillaHumanoidGeoModel.skeleton(c, MonsterEntities.SPORE_SKELETON.getId())));
+        event.registerEntityRenderer(MonsterEntities.BASE_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, VanillaHumanoidGeoModel.skeleton(c, MonsterEntities.BASE_BONES.getId())).withScale(0.9F));
+        event.registerEntityRenderer(MonsterEntities.ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, VanillaHumanoidGeoModel.skeleton(c, MonsterEntities.ANGER_BONES.getId())).withScale(0.9F));
+        event.registerEntityRenderer(MonsterEntities.SHORT_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, VanillaHumanoidGeoModel.skeleton(c, MonsterEntities.SHORT_BONES.getId())).withScale(0.8F));
+        event.registerEntityRenderer(MonsterEntities.BIG_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, VanillaHumanoidGeoModel.skeleton(c, MonsterEntities.ANGER_BONES.getId())).withScale(1.1F));
+        event.registerEntityRenderer(MonsterEntities.BIG_ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, VanillaHumanoidGeoModel.skeleton(c, MonsterEntities.BIG_ANGER_BONES.getId())).withScale(1.15F));
+        event.registerEntityRenderer(MonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, VanillaHumanoidGeoModel.skeleton(c, MonsterEntities.BIG_MUSCLE_ANGER_BONES.getId())).withScale(1.2F));
+        event.registerEntityRenderer(MonsterEntities.BIG_HELMET_ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, VanillaHumanoidGeoModel.skeleton(c, MonsterEntities.BIG_HELMET_ANGER_BONES.getId())).withScale(1.25F));
+        event.registerEntityRenderer(MonsterEntities.UNDEAD_VIKING.get(), c -> new VanillaHumanoidRenderer<>(c, VanillaHumanoidGeoModel.skeleton(c, MonsterEntities.UNDEAD_VIKING.getId())));
         event.registerEntityRenderer(MonsterEntities.ARMORED_VIKING.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/armored_viking.geo.json"), Confluence.asResource("textures/entity/armored_viking.png"), true)));
         event.registerEntityRenderer(MonsterEntities.ARMORED_SKELETON.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/armored_skeleton.geo.json"), Confluence.asResource("textures/entity/armored_skeleton.png"), true)));
         event.registerEntityRenderer(MonsterEntities.ICE_ELEMENTAL.get(), c -> new FullbrightGeoRenderer<IceElemental>(c, MonsterEntities.ICE_ELEMENTAL.getId()));
@@ -741,8 +741,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.DARK_CASTER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
         event.registerEntityRenderer(MonsterEntities.TIM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.TIM.getId(), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.DOCTOR_BONES.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DOCTOR_BONES.getId(), false, 1.0F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.THE_GROOM.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/the_groom.geo.json"), Confluence.asResource("textures/entity/the_groom.png"), true), false, 1.0F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.THE_BRIDE.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/the_bride.geo.json"), Confluence.asResource("textures/entity/the_bride.png"), true), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.THE_GROOM.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.zombie(c, MonsterEntities.THE_GROOM.getId()), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.THE_BRIDE.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.zombie(c, MonsterEntities.THE_BRIDE.getId()), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.ZOMBIE_MERMAN.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/zombie_merman.geo.json"), Confluence.asResource("textures/entity/zombie_merman.png"), true), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.GOBLIN_SORCERER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GOBLIN_SORCERER.getId().withPrefix("goblin/")));
         event.registerEntityRenderer(MonsterEntities.GOBLIN_WARLOCK.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GOBLIN_WARLOCK.getId()));
@@ -891,7 +891,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.MOSS_HORNET.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.MOSS_HORNET.getId(), false), true, 1.0F, -0.085108F));
         event.registerEntityRenderer(MonsterEntities.LITTLE_HORNET.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.LITTLE_HORNET.getId(), false), true, 1.0F, 0.1F));
         event.registerEntityRenderer(MonsterEntities.FIRE_IMP.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.FIRE_IMP.getId()));
-        event.registerEntityRenderer(MonsterEntities.DECAYEDER.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.DECAYEDER.getId())));
+        event.registerEntityRenderer(MonsterEntities.DECAYEDER.get(), c -> new VanillaHumanoidRenderer<>(c, VanillaHumanoidGeoModel.skeleton(c, MonsterEntities.DECAYEDER.getId())));
         event.registerEntityRenderer(MonsterEntities.GHOST.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GHOST.getId()));
         event.registerEntityRenderer(MonsterEntities.DUNGEON_SPIRIT.get(), c -> new GeoNormalRenderer<DungeonSpirit>(c, MonsterEntities.DUNGEON_SPIRIT.getId(), false, 1.0F, 0.015625F) {
             @Override
@@ -939,7 +939,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.GIANT_ANTLION_SWARMER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ANTLION_SWARMER.getId(), true, 1.25F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.THE_HUNGRY.get(), HungryRenderer::new);
         event.registerEntityRenderer(MonsterEntities.HILL_HUNGRY.get(), HungryRenderer::new);
-        event.registerEntityRenderer(MonsterEntities.BLOOD_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.BLOOD_ZOMBIE.getId())));
+        event.registerEntityRenderer(MonsterEntities.BLOOD_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new GeoNormalModel<>(MonsterEntities.BLOOD_ZOMBIE.getId(), false)));
         event.registerEntityRenderer(MonsterEntities.SNOW_FLINX.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SNOW_FLINX.getId()) {
             @Override
             protected void adjustPose(PoseStack poseStack, BaseWarriorMonster entity, BakedGeoModel model, float partialTick) {
@@ -964,12 +964,12 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.DREAMER_GHOUL.get(), c -> new GeoNormalRenderer<>(c, new ContactHumanoidGeoModel<JumpingWarriorMonster>(MonsterEntities.DREAMER_GHOUL.getId(), "hand_right", "hand_left").withAltAnimations(Confluence.asResource("ghoul"))));
         event.registerEntityRenderer(MonsterEntities.PALADIN.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(MonsterEntities.BONE_LEE.get(), MissingModelRenderer::new); // todo 专用模型
-        event.registerEntityRenderer(MonsterEntities.GOBLIN_ARCHER.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, MonsterEntities.GOBLIN_ARCHER.getId().withPrefix("goblin/"))));
-        event.registerEntityRenderer(MonsterEntities.GOBLIN_PEON.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, MonsterEntities.GOBLIN_PEON.getId().withPrefix("goblin/"))));
-        event.registerEntityRenderer(MonsterEntities.GOBLIN_WARRIOR.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, MonsterEntities.GOBLIN_WARRIOR.getId().withPrefix("goblin/"))));
-        event.registerEntityRenderer(MonsterEntities.GOBLIN_THIEF.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, MonsterEntities.GOBLIN_THIEF.getId().withPrefix("goblin/"))));
-        event.registerEntityRenderer(MonsterEntities.GOBLIN_SCOUT.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, MonsterEntities.GOBLIN_SCOUT.getId().withPrefix("goblin/"))));
-        event.registerEntityRenderer(MonsterEntities.ANGER_GOBLIN.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, Confluence.asResource("goblin/anger_goblin"))));
+        event.registerEntityRenderer(MonsterEntities.GOBLIN_ARCHER.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaHumanoidGeoModel<>(c, MonsterEntities.GOBLIN_ARCHER.getId().withPrefix("goblin/"))));
+        event.registerEntityRenderer(MonsterEntities.GOBLIN_PEON.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaHumanoidGeoModel<>(c, MonsterEntities.GOBLIN_PEON.getId().withPrefix("goblin/"))));
+        event.registerEntityRenderer(MonsterEntities.GOBLIN_WARRIOR.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaHumanoidGeoModel<>(c, MonsterEntities.GOBLIN_WARRIOR.getId().withPrefix("goblin/"))));
+        event.registerEntityRenderer(MonsterEntities.GOBLIN_THIEF.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaHumanoidGeoModel<>(c, MonsterEntities.GOBLIN_THIEF.getId().withPrefix("goblin/"))));
+        event.registerEntityRenderer(MonsterEntities.GOBLIN_SCOUT.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaHumanoidGeoModel<>(c, MonsterEntities.GOBLIN_SCOUT.getId().withPrefix("goblin/"))));
+        event.registerEntityRenderer(MonsterEntities.ANGER_GOBLIN.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaHumanoidGeoModel<>(c, Confluence.asResource("goblin/anger_goblin"))));
         // 陆行怪
         event.registerEntityRenderer(MonsterEntities.ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new ZombieGeoModel(c)));
         // 原版僵尸/骷髅转换来的独立类型：沿用原版模型与装备渲染
@@ -989,8 +989,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "blood_crawler", MonsterEntities.BLOOD_CRAWLER.get())
                 : new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_CRAWLER.getId()));
-        event.registerEntityRenderer(MonsterEntities.SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.SPORE_ZOMBIE.getId())));
-        event.registerEntityRenderer(MonsterEntities.HAT_SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.HAT_SPORE_ZOMBIE.getId())));
+        event.registerEntityRenderer(MonsterEntities.SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new GeoNormalModel<>(MonsterEntities.SPORE_ZOMBIE.getId(), false)));
+        event.registerEntityRenderer(MonsterEntities.HAT_SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new GeoNormalModel<>(MonsterEntities.HAT_SPORE_ZOMBIE.getId(), false)));
         event.registerEntityRenderer(MonsterEntities.NYMPH.get(), c -> new GeoNormalRenderer<>(c, new NymphModel(MonsterEntities.NYMPH.getId())));
         event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> ModClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
                 ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.SAND_POACHER.get())

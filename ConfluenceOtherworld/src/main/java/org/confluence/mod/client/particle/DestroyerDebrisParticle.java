@@ -18,15 +18,15 @@ import net.minecraft.world.phys.Vec3;
 
 /// 纯客户端出土碎块：绘制来源方块的完整模型，不创建下落方块实体或改动地形。
 public final class DestroyerDebrisParticle extends Particle {
-    /// 每次出土飞出的方块数量与存在时间，单位个/tick。
+    // 每次出土飞出的方块数量与存在时间，单位个/tick。
     private static final int COUNT = 40, LIFE = 40;
-    /// 方块模型的尺寸范围，相对一个完整方块。
+    // 方块模型的尺寸范围，相对一个完整方块。
     private static final float MIN_SCALE = 0.8F, MAX_SCALE = 1.5F;
-    /// 水平散射速度、初始上抛速度与重力，单位格/tick、格/tick²。
+    // 水平散射速度、初始上抛速度与重力，单位格/tick、格/tick²。
     private static final double SIDE_SPEED = 0.5, MIN_RISE = 0.3, MAX_RISE = 0.55, GRAVITY = 0.035;
-    /// 消失前缩小的时间，单位 tick。
+    // 消失前缩小的时间，单位 tick。
     private static final int SHRINK_TICKS = 8;
-    /// 方块翻滚角速度，单位度/tick。
+    // 方块翻滚角速度，单位度/tick。
     private static final float SPIN = 9.0F;
     private final BlockState state;
     private final Vec3[] velocities = new Vec3[COUNT];

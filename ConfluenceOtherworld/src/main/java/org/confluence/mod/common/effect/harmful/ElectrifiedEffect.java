@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import org.confluence.lib.common.LibDamageTypes;
 
 import java.util.Collections;
 import java.util.Map;
@@ -41,7 +42,7 @@ public final class ElectrifiedEffect extends MobEffect {
     @Override
     public boolean applyEffectTick(LivingEntity living, int amplifier) {
         if (living != null && !living.level().isClientSide) {
-            living.hurt(living.damageSources().magic(), damagePerSecond(hasHorizontalMovement(living)));
+            LibDamageTypes.hurtWithoutKnockback(living, living.damageSources().magic(), damagePerSecond(hasHorizontalMovement(living)));
         }
         return true;
     }

@@ -11,6 +11,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.lib.common.LibDamageTypes;
 
 public class HellFireEffect extends MobEffect {
     public HellFireEffect() {
@@ -19,7 +20,7 @@ public class HellFireEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(LivingEntity living, int amplifier) {
-        living.hurt(living.damageSources().lava(), 2.0F * (amplifier + 1));
+        LibDamageTypes.hurtWithoutKnockback(living, living.damageSources().lava(), 2.0F * (amplifier + 1));
         return true;
     }
 

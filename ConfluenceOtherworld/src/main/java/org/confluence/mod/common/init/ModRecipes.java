@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.confluence.mod.common.init.ModTags;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -435,6 +436,15 @@ public final class ModRecipes {
             MATERIAL_ID_MAP.put(material, MATERIAL_ID_MAP.size());
         }
 
+        /// 珊瑚按 `confluence:corals` 标签统一处理：标签内任意珊瑚都等价于已注册的火焰珊瑚。
+        private static int materialId(ItemStack stack) {
+            int id = MATERIAL_ID_MAP.getOrDefault(stack.getItem(), -1);
+            if (id == -1 && stack.is(ModTags.Items.CORALS)) {
+                return MATERIAL_ID_MAP.getOrDefault(Items.FIRE_CORAL, -1);
+            }
+            return id;
+        }
+
         private static void registerMix(Item[] materials, ItemStack result) {
             int[] ids = Arrays.stream(materials).mapToInt(material -> MATERIAL_ID_MAP.getOrDefault(material, -1)).filter(id -> id != -1).toArray();
             Arrays.sort(ids);
@@ -450,13 +460,14 @@ public final class ModRecipes {
 
                 @Override
                 public boolean isIngredient(ItemStack ingredient) {
-                    return MATERIAL_ID_MAP.containsKey(ingredient.getItem());
+                    /// 珊瑚统一按 `confluence:corals` 标签识别，任意珊瑚都可以当酿造材料。
+                    return MATERIAL_ID_MAP.containsKey(ingredient.getItem()) || ingredient.is(ModTags.Items.CORALS);
                 }
 
                 @Override
                 public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
                     if (!isIngredient(ingredient) || !isInput(input)) return ItemStack.EMPTY;
-                    int addition = MATERIAL_ID_MAP.getOrDefault(ingredient.getItem(), -1);
+                    int addition = materialId(ingredient);
                     if (addition == -1) return ItemStack.EMPTY;
                     int[] materials = append(getMaterials(input), addition);
                     if (Arrays.stream(materials).anyMatch(i -> i < 0)) return ItemStack.EMPTY;

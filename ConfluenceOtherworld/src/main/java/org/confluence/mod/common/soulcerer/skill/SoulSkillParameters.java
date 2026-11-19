@@ -257,7 +257,7 @@ public class SoulSkillParameters {
     public static final int SOUL_ENTITY_TRACKING_RANGE = 5;
     public static final int SOUL_ENTITY_UPDATE_INTERVAL = 5;
     public static final float LOOT_CHANCE_PERCENT = 5.0F;
-    public static final int LOOT_COUNT = 5;
+    public static final int LOOT_COUNT = 1;
     public static final int LOOT_WEIGHT = 5;
     public static final float SURVIVAL_INSTINCT_HEALTH_THRESHOLD = 40.0F;
     public static final float SURVIVAL_INSTINCT_SOUL_COST = 10.0F;

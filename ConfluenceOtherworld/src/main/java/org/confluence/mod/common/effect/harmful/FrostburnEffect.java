@@ -17,7 +17,7 @@ public class FrostburnEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(LivingEntity living, int amplifier) {
-        living.hurt(LibDamageTypes.of(living.level(), LibDamageTypes.FROST_BURN),
+        LibDamageTypes.hurtWithoutKnockback(living, LibDamageTypes.of(living.level(), LibDamageTypes.FROST_BURN),
                 2.0F * (amplifier + 1));
         int tick = living.getTicksFrozen();
         living.setTicksFrozen(Math.min(200 * (amplifier + 1), tick + 100 * (amplifier + 1)));

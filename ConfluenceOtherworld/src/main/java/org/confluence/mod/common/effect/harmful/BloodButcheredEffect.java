@@ -3,6 +3,7 @@ package org.confluence.mod.common.effect.harmful;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import org.confluence.lib.common.LibDamageTypes;
 
 public class BloodButcheredEffect extends MobEffect {
     public BloodButcheredEffect() {
@@ -11,7 +12,7 @@ public class BloodButcheredEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
-        pLivingEntity.hurt(pLivingEntity.level().damageSources().magic(), pAmplifier + 4.0F);
+        LibDamageTypes.hurtWithoutKnockback(pLivingEntity, pLivingEntity.level().damageSources().magic(), pAmplifier + 4.0F);
         return true;
     }
 

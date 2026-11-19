@@ -5,6 +5,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.EffectCure;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibUtils;
 
 import java.util.Set;
@@ -16,7 +17,7 @@ public class FrostbiteEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        livingEntity.hurt(livingEntity.damageSources().freeze(), 2);
+        LibDamageTypes.hurtWithoutKnockback(livingEntity, livingEntity.damageSources().freeze(), 2);
         return true;
     }
 

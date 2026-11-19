@@ -28,7 +28,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 
 /// 毁灭者与探针共用的直线激光，实体和方块碰撞均按整段位移检测。
 public final class DestroyerLaserProjectile extends Projectile {
-    /// 激光最长寿命，单位 tick。
+    // 激光最长寿命，单位 tick。
     private static final int LIFETIME = 60;
     private static final EntityDataAccessor<Boolean> SMALL_LASER = SynchedEntityData.defineId(DestroyerLaserProjectile.class, EntityDataSerializers.BOOLEAN);
     private float damage;

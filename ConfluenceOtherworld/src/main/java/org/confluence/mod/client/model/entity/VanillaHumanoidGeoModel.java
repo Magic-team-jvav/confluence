@@ -1,11 +1,14 @@
 package org.confluence.mod.client.model.entity;
 
+import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BowItem;
 import org.jetbrains.annotations.Nullable;
@@ -26,38 +29,53 @@ public class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNorma
     private final HumanoidModel<T> vanillaModel;
     private final @Nullable ResourceLocation explicitModel;
     private final @Nullable ResourceLocation explicitTexture;
-    private final boolean armorBones;
+
+    protected enum Posture {HUMANOID, ZOMBIE, SKELETON}
+
+    private enum Bones {PREFIXED, ARMOR, STANDALONE}
+
+    private final Bones bones;
+    private final Posture posture;
     private final boolean walks;
-    private boolean standaloneBones;
 
     public VanillaHumanoidGeoModel(EntityRendererProvider.Context context, ResourceLocation path) {
-        super(path, false);
-        vanillaModel = new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER));
-        explicitModel = null;
-        explicitTexture = null;
-        armorBones = false;
-        walks = true;
+        this(context, path, Posture.HUMANOID);
     }
 
-    protected VanillaHumanoidGeoModel(EntityRendererProvider.Context context, ResourceLocation model,
-                                    ResourceLocation texture, boolean walks) {
-        super(model, false);
-        vanillaModel = new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER));
-        explicitModel = model;
+    protected VanillaHumanoidGeoModel(EntityRendererProvider.Context context, ResourceLocation path, Posture posture) {
+        this(context, path, null, Bones.PREFIXED, posture, true);
+    }
+
+    protected VanillaHumanoidGeoModel(EntityRendererProvider.Context context, ResourceLocation model, ResourceLocation texture, boolean walks) {
+        this(context, model, texture, Bones.ARMOR, Posture.HUMANOID, walks);
+    }
+
+    private VanillaHumanoidGeoModel(EntityRendererProvider.Context context, ResourceLocation path, @Nullable ResourceLocation texture,
+                                    Bones bones, Posture posture, boolean walks) {
+        super(path, false);
+        vanillaModel = new HumanoidModel<>(context.bakeLayer(posture == Posture.SKELETON ? ModelLayers.SKELETON : ModelLayers.PLAYER));
+        explicitModel = texture == null ? null : path;
         explicitTexture = texture;
-        armorBones = true;
+        this.bones = bones;
+        this.posture = posture;
         this.walks = walks;
     }
 
-    public static <T extends Mob & GeoEntity> VanillaHumanoidGeoModel<T> armor(
-            EntityRendererProvider.Context context, ResourceLocation model, ResourceLocation texture, boolean walks) {
+    public static <T extends Mob & GeoEntity> VanillaHumanoidGeoModel<T> armor(EntityRendererProvider.Context context, ResourceLocation model, ResourceLocation texture, boolean walks) {
         return new VanillaHumanoidGeoModel<>(context, model, texture, walks);
     }
 
     public static <T extends Mob & GeoEntity> VanillaHumanoidGeoModel<T> standalone(EntityRendererProvider.Context context, ResourceLocation model, ResourceLocation texture) {
-        VanillaHumanoidGeoModel<T> result = new VanillaHumanoidGeoModel<>(context, model, texture, true);
-        result.standaloneBones = true;
-        return result;
+        return new VanillaHumanoidGeoModel<>(context, model, texture, Bones.STANDALONE, Posture.HUMANOID, true);
+    }
+
+    public static <T extends Mob & GeoEntity> VanillaHumanoidGeoModel<T> skeleton(EntityRendererProvider.Context context, ResourceLocation id) {
+        return new VanillaHumanoidGeoModel<>(context, id, Posture.SKELETON);
+    }
+
+    public static <T extends Mob & GeoEntity> VanillaHumanoidGeoModel<T> zombie(EntityRendererProvider.Context context, ResourceLocation id) {
+        return new VanillaHumanoidGeoModel<>(context, id.withPrefix("geo/entity/").withSuffix(".geo.json"),
+                id.withPrefix("textures/entity/").withSuffix(".png"), Bones.STANDALONE, Posture.ZOMBIE, true);
     }
 
     @Override
@@ -83,14 +101,26 @@ public class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNorma
         float limbSwing = walks ? state.getLimbSwing() : 0.0F;
         float limbSwingAmount = walks ? state.getLimbSwingAmount() : 0.0F;
         vanillaModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTick);
-        vanillaModel.setupAnim(entity, limbSwing, limbSwingAmount, entity.tickCount + partialTick,
-                look.netHeadYaw(), look.headPitch());
+        if (walks && posture != Posture.ZOMBIE) prepareBowPose(vanillaModel, entity);
+        vanillaModel.setupAnim(entity, limbSwing, limbSwingAmount, entity.tickCount + partialTick, look.netHeadYaw(), look.headPitch());
+        if (posture == Posture.ZOMBIE) {
+            AnimationUtils.animateZombieArms(vanillaModel.leftArm, vanillaModel.rightArm, entity.isAggressive() || entity.isSprinting(), vanillaModel.attackTime, entity.tickCount + partialTick);
+        }
+        if (posture == Posture.SKELETON && (entity.isAggressive() || vanillaModel.attackTime > 0) && !(entity.getUseItem().getItem() instanceof BowItem) && !(entity.getMainHandItem().getItem() instanceof BowItem)) {
+            float swing = Mth.sin(vanillaModel.attackTime * Mth.PI);
+            float recovery = Mth.sin((1 - (1 - vanillaModel.attackTime) * (1 - vanillaModel.attackTime)) * Mth.PI);
+            vanillaModel.rightArm.zRot = 0;
+            vanillaModel.leftArm.zRot = 0;
+            vanillaModel.rightArm.yRot = -(0.1F - swing * 0.6F);
+            vanillaModel.leftArm.yRot = 0.1F - swing * 0.6F;
+            vanillaModel.rightArm.xRot = -Mth.HALF_PI - swing * 1.2F + recovery * 0.4F;
+            vanillaModel.leftArm.xRot = vanillaModel.rightArm.xRot;
+            AnimationUtils.bobArms(vanillaModel.rightArm, vanillaModel.leftArm, entity.tickCount + partialTick);
+        }
         copyRegisteredBones();
     }
 
     private void prepareModel(T entity, float partialTick) {
-        // 不行走的悬浮盔甲模型（当前仅幻灵）对应 1.21 隐藏基础人形模型后
-        // 只显示静态盔甲层的效果，不能把接触伤害的 swing 状态映射成挥臂。
         vanillaModel.attackTime = walks ? entity.getAttackAnim(partialTick) : 0.0F;
         vanillaModel.riding = entity.isPassenger();
         vanillaModel.young = entity.isBaby();
@@ -109,7 +139,7 @@ public class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNorma
     }
 
     private ModelPart sourcePart(String name) {
-        if (standaloneBones) {
+        if (bones == Bones.STANDALONE) {
             return switch (name) {
                 case "Head", "Vhead" -> vanillaModel.head;
                 case "Body", "Body3" -> vanillaModel.body;
@@ -120,7 +150,7 @@ public class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNorma
                 default -> null;
             };
         }
-        if (armorBones) {
+        if (bones == Bones.ARMOR) {
             if (name.startsWith("Head")) return vanillaModel.head;
             if (name.startsWith("Body") || name.equals("Belt")) return vanillaModel.body;
             if (name.startsWith("LeftArm")) return vanillaModel.leftArm;
@@ -138,20 +168,11 @@ public class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNorma
         return null;
     }
 
-    static <T extends Mob> void applyBowPose(HumanoidModel<T> model, T entity, float partialTick) {
-        if (!entity.isUsingItem() || !entity.isHolding(stack -> stack.getItem() instanceof BowItem))
-            return;
-        float progress = Mth.clamp((entity.getTicksUsingItem() + partialTick) / 5.0F, 0.0F, 1.0F);
-        float headPitch = Mth.lerp(partialTick, entity.xRotO, entity.getXRot()) * Mth.DEG_TO_RAD;
-        float headYaw = Mth.wrapDegrees(Mth.rotLerp(partialTick, entity.yBodyRotO, entity.yBodyRot)
-                - Mth.rotLerp(partialTick, entity.yHeadRotO, entity.yHeadRot)) * Mth.DEG_TO_RAD;
-        // 保持 ModelPart 坐标系，统一由复制入口转换到 Geo，避免拉弓被反转两次。
-        model.rightArm.xRot = Mth.lerp(progress, model.rightArm.xRot, headPitch - 1.5F);
-        model.rightArm.yRot = Mth.lerp(progress, model.rightArm.yRot, -headYaw);
-        model.rightArm.zRot = 0.0F;
-        model.leftArm.xRot = Mth.lerp(progress, model.leftArm.xRot, headPitch - 1.3F);
-        model.leftArm.yRot = Mth.lerp(progress, model.leftArm.yRot, -Math.max(headYaw - 0.5F, -1.4F));
-        model.leftArm.zRot = 0.0F;
+    private static <T extends Mob> void prepareBowPose(HumanoidModel<T> model, T entity) {
+        if (!(entity.getUseItem().getItem() instanceof BowItem)) return;
+        HumanoidArm arm = entity.getUsedItemHand() == InteractionHand.MAIN_HAND ? entity.getMainArm() : entity.getMainArm().getOpposite();
+        if (arm == HumanoidArm.RIGHT) model.rightArmPose = HumanoidModel.ArmPose.BOW_AND_ARROW;
+        else model.leftArmPose = HumanoidModel.ArmPose.BOW_AND_ARROW;
     }
 
 }

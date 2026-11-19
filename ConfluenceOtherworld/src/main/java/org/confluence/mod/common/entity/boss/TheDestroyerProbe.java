@@ -89,6 +89,7 @@ public final class TheDestroyerProbe extends BaseMonster implements BossOwnedEnt
     public void tick() {
         if (!level().isClientSide) {
             TheDestroyer owner = ownerTracker.tickDependent(this, true, 100);
+            if (isRemoved()) return;
             if (owner != null && getTarget() != owner.getTarget()) setTarget(owner.getTarget());
         }
         super.tick();
@@ -103,10 +104,9 @@ public final class TheDestroyerProbe extends BaseMonster implements BossOwnedEnt
             return;
         }
 
-        // 朝目标中心追踪，保留惯性以形成自然的掠过和回转。
         Vec3 center = position().add(0, getBbHeight() * 0.5, 0);
         Vec3 aim = target.position().add(0, target.getBbHeight() * 0.5, 0);
-        // 太近时立即脱离，追不上目标或射线被遮挡时重新挑选射击位置。
+        // 玩家移出当前射击点的适用范围或视线被遮挡时，重新选择位置。
         Vec3 awayFromTarget = center.subtract(aim);
         double targetDistance = awayFromTarget.length();
         boolean blocked = !getSensing().hasLineOfSight(target);

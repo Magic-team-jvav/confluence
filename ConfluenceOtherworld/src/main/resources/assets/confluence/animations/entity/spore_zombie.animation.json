@@ -5,7 +5,7 @@
 			"loop": true,
 			"animation_length": 0.5833,
 			"bones": {
-				"Head": {
+                "Vhead": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 10]
@@ -79,7 +79,7 @@
 						}
 					}
 				},
-				"RightArm": {
+                "Vright_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-100, 0, 0]
@@ -123,7 +123,7 @@
 						}
 					}
 				},
-				"LeftArm": {
+                "Vleft_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-100, 0, 0]
@@ -167,7 +167,7 @@
 						}
 					}
 				},
-				"RightLeg": {
+                "Vright_leg": {
 					"rotation": {
 						"0.0": {
 							"vector": [-10, 0, 0]
@@ -199,7 +199,7 @@
 						}
 					}
 				},
-				"LeftLeg": {
+                "Vleft_leg": {
 					"rotation": {
 						"0.0": {
 							"vector": [25, 0, 0]
@@ -237,7 +237,7 @@
 			"loop": true,
 			"animation_length": 0.5833,
 			"bones": {
-				"Head": {
+                "Vhead": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 10]
@@ -311,7 +311,7 @@
 						}
 					}
 				},
-				"RightArm": {
+                "Vright_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-100, 0, 0]
@@ -355,7 +355,7 @@
 						}
 					}
 				},
-				"LeftArm": {
+                "Vleft_arm": {
 					"rotation": {
 						"0.0": {
 							"vector": [-100, 0, 0]
@@ -399,7 +399,7 @@
 						}
 					}
 				},
-				"RightLeg": {
+                "Vright_leg": {
 					"rotation": {
 						"0.0": {
 							"vector": [-10, 0, 0]
@@ -431,7 +431,7 @@
 						}
 					}
 				},
-				"LeftLeg": {
+                "Vleft_leg": {
 					"rotation": {
 						"0.0": {
 							"vector": [25, 0, 0]

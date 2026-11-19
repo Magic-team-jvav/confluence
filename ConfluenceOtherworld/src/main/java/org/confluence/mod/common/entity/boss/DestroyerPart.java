@@ -31,23 +31,23 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 /// 由头部持有、定位和同步的碰撞部件，不加入世界实体列表，不独立 tick 或存档。
 public final class DestroyerPart extends PartEntity<TheDestroyer> implements Boss.BossPart, PartHitTarget, GeoEntity {
-    /// 同一部位两次火花之间的最短间隔，单位 tick。
+    // 同一部位两次火花之间的最短间隔，单位 tick。
     private static final int HURT_SPARK_INTERVAL = 3;
-    /// 加速喷流所需的最低体节速度，单位格/tick；天空模式仍持续喷出完整四种粒子。
+    // 加速喷流所需的最低体节速度，单位格/tick；天空模式仍持续喷出完整四种粒子。
     private static final double EXHAUST_MIN_SPEED = 0.08;
-    /// 连续两次更新的速度增量达到此值时喷火，单位格/tick²。
+    // 连续两次更新的速度增量达到此值时喷火，单位格/tick²。
     private static final double EXHAUST_ACCELERATION = 0.015;
-    /// 体节每 tick 转向超过此角度时喷火，单位度，不包含绕轴滚动。
+    // 体节每 tick 转向超过此角度时喷火，单位度，不包含绕轴滚动。
     private static final double EXHAUST_TURN_DEGREES = 1.0;
-    /// 加速或转向结束后保留喷火的时间，单位 tick，避免临界值处闪烁。
+    // 加速或转向结束后保留喷火的时间，单位 tick，避免临界值处闪烁。
     private static final int EXHAUST_HOLD_TICKS = 8;
-    /// 地面模式逐节出土、展开侧翼时的排气持续时间，单位 tick。
+    // 地面模式逐节出土、展开侧翼时的排气持续时间，单位 tick。
     private static final int VENT_OPEN_TICKS = 8;
-    /// 交替喷射的体节组数，降低同时工作的粒子发射器数量。
+    // 交替喷射的体节组数，降低同时工作的粒子发射器数量。
     private static final int EXHAUST_GROUP_COUNT = 4;
-    /// 每组喷射持续的时间，单位 tick。
+    // 每组喷射持续的时间，单位 tick。
     private static final int EXHAUST_GROUP_TICKS = 2;
-    /// 巡航喷流相对加速、转向喷流的粒子数量比例；四种效果始终一起工作。
+    // 巡航喷流相对加速、转向喷流的粒子数量比例；四种效果始终一起工作。
     private static final float CRUISE_EXHAUST_STRENGTH = 0.25F;
     private Vec3 previousMotion = Vec3.ZERO;
     private int lastPoseTick = Integer.MIN_VALUE;
@@ -135,12 +135,12 @@ public final class DestroyerPart extends PartEntity<TheDestroyer> implements Bos
         if (level().isClientSide || !isAttackable() || amount <= 0 || isInvulnerableTo(source)
                 || EnemyDamageRules.blocks(this, source)) return false;
         boolean result = getParent().hurtFromPart(this, source, amount);
-        if (result) getParent().tryReleaseProbe(this);
+        if (result) getParent().recordProbeHit(this);
         int age = getParent().tickCount;
         if (result && age - lastSparkTick >= HURT_SPARK_INTERVAL) {
             lastSparkTick = age;
             playSound(ModSoundEvents.MECHANICAL_BOSS_HURT.get(), 1.0F, 1.0F);
-            /// 负事件编号表示实际受击体节；事件仍通过已追踪的头部发送。
+            // 负事件编号表示实际受击体节；事件仍通过已追踪的头部发送。
             level().broadcastEntityEvent(getParent(), (byte) -index);
         }
         return result;
@@ -193,7 +193,7 @@ public final class DestroyerPart extends PartEntity<TheDestroyer> implements Bos
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        /// TODO 侧翼开合动画补齐后由 open 控制切换，滚动单独应用于身体纵轴。
+        // TODO 侧翼开合动画补齐后由 open 控制切换，滚动单独应用于身体纵轴。
         IPSEntity.of(this).getVariableTable().setValue("variable.destroyer_exhaust", instance -> open && getParent().isAlive() && getParent().tickCount <= exhaustUntilTick ? 1.0F : 0.0F);
         IPSEntity.of(this).getVariableTable().setValue("variable.destroyer_exhaust_strength", instance -> getParent().tickCount <= exhaustUntilTick ? 1.0F : CRUISE_EXHAUST_STRENGTH);
         RawAnimation fire = RawAnimation.begin().thenLoop("fire");

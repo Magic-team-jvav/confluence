@@ -2,6 +2,7 @@ package org.confluence.mod.common.effect.harmful;
 
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import org.confluence.lib.common.LibDamageTypes;
 import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 
 public class TentacleSpikesEffect extends PortMobEffect {
@@ -11,7 +12,7 @@ public class TentacleSpikesEffect extends PortMobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
-        pLivingEntity.hurt(pLivingEntity.level().damageSources().magic(), pAmplifier + 2.0F);
+        LibDamageTypes.hurtWithoutKnockback(pLivingEntity, pLivingEntity.level().damageSources().magic(), pAmplifier + 2.0F);
     }
 
     @Override

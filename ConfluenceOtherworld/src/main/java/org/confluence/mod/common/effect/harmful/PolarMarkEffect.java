@@ -10,6 +10,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.mana.LittleSunEntity;
 import org.confluence.mod.common.init.ModEffects;
@@ -61,7 +62,7 @@ public class PolarMarkEffect extends MobEffect {
                 if (!victim.isAlive() || victim.isSpectator()) continue;
                 if (owner != null && !LibEntityUtils.canHit(owner, victim)) continue;
                 victim.invulnerableTime = 0;
-                victim.hurt(source, weaponDamage * AURA_FACTOR);
+                LibDamageTypes.hurtWithoutKnockback(victim, source, weaponDamage * AURA_FACTOR);
             }
         }
         if (amplifier >= 1 && owner != null && weaponDamage > 0.0F) {

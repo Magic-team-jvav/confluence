@@ -9,6 +9,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.lib.common.LibDamageTypes;
 import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 import org.mesdag.portlib.wrapper.world.level.PortExplosionDamageCalculator;
 
@@ -19,7 +20,7 @@ public class HellFireEffect extends PortMobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity living, int amplifier) {
-        living.hurt(living.damageSources().lava(), 2.0F * (amplifier + 1));
+        LibDamageTypes.hurtWithoutKnockback(living, living.damageSources().lava(), 2.0F * (amplifier + 1));
     }
 
     @Override

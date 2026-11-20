@@ -97,21 +97,22 @@ public enum KillBoard implements IGlobalData {
     }
 
     public void defeat(EntityType<?> type) {
-        if (!defeatedBosses.put(type, true)) {
-            LanternNightGameEvent.INSTANCE.schedule();
-            if (isDefeated(BossEntities.SKELETRON.get())) {
-                setGamePhase(GamePhase.AFTER_SKELETRON);
-            } else if (isFleshDefeated()) {
-                setGamePhase(GamePhase.WALL_OF_FLESH);
-                ModUtils.prepareHardmode();
-            } else if (isAnyMechBossDefeated()) {
-                setGamePhase(GamePhase.MECHANICAL_BOSSES);
-            } else if (isDefeated(BossEntities.PLANTERA.get())) {
-                setGamePhase(GamePhase.PLANTERA);
-            }
-            // todo GOLEM MOON_LORD
-            KillBoardSyncPacketS2C.sendToAll();
+        if (defeatedBosses.put(type, true)) return;
+        LanternNightGameEvent.INSTANCE.schedule();
+        updateProgressFromKills();
+        KillBoardSyncPacketS2C.sendToAll();
+    }
+
+    /// 首杀和读档时都按已有击杀推进进度，兼容已击败肉墙但尚未进入困难模式的世界。
+    public void updateProgressFromKills() {
+        if (isDefeated(BossEntities.SKELETRON.get())) setGamePhase(GamePhase.AFTER_SKELETRON);
+        if (isFleshDefeated()) {
+            setGamePhase(GamePhase.WALL_OF_FLESH);
+            if (!ModUtils.isHardmode()) ModUtils.prepareHardmode();
         }
+        if (isAnyMechBossDefeated()) setGamePhase(GamePhase.MECHANICAL_BOSSES);
+        if (isDefeated(BossEntities.PLANTERA.get())) setGamePhase(GamePhase.PLANTERA);
+        // todo GOLEM MOON_LORD
     }
 
     public void defeat(ResourceKey<? extends GameEvent> key) {

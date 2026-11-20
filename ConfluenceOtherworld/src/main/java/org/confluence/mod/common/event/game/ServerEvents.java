@@ -8,6 +8,7 @@ import net.minecraftforge.event.server.ServerStoppingEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.NetworkService;
 import org.confluence.mod.common.block.functional.network.PathService;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.wind.WindField;
 import org.confluence.mod.common.worldgen.TheEndBiomeHolder;
@@ -35,6 +36,7 @@ public final class ServerEvents {
     }
 
     public static void serverStarted(ServerStartedEvent event) {
+        KillBoard.INSTANCE.updateProgressFromKills();
         GameEventSystem.INSTANCE.open(event.getServer());
     }
 

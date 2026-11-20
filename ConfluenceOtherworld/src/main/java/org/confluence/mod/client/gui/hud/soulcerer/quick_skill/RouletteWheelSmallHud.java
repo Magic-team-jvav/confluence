@@ -15,8 +15,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.soulcerer.CurrentSelectedSkillHud;
 import org.confluence.mod.client.gui.widget.soulcerer.skill.SoulSkillBox;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
-import org.confluence.mod.client.util.soulcerer.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
+import org.confluence.mod.util.SoulQuickSkillHudUtils;
 import org.confluence.mod.util.SoulcererUtils;
 
 public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {

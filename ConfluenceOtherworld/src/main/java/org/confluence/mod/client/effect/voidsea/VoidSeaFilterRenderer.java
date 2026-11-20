@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.ViewportEvent;
-import org.confluence.mod.common.util.VoidSeaHelper;
+import org.confluence.mod.util.VoidSeaHelper;
 
 import static org.confluence.mod.client.effect.voidsea.VoidSeaConstants.*;
 

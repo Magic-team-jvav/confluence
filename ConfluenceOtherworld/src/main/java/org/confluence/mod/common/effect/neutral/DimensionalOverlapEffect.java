@@ -3,7 +3,7 @@ package org.confluence.mod.common.effect.neutral;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.lib.common.effect.PublicMobEffect;
-import org.confluence.mod.common.util.VoidSeaHelper;
+import org.confluence.mod.util.VoidSeaHelper;
 
 /// 位面交叠
 public class DimensionalOverlapEffect extends PublicMobEffect {

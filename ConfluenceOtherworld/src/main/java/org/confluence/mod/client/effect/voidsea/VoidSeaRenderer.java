@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.client.effect.ModRenderTypes;
-import org.confluence.mod.common.util.VoidSeaHelper;
+import org.confluence.mod.util.VoidSeaHelper;
 import org.joml.Matrix4f;
 
 import static org.confluence.mod.client.effect.voidsea.VoidSeaConstants.*;

@@ -5,7 +5,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModParticleTypes;
-import org.confluence.mod.common.util.VoidSeaHelper;
+import org.confluence.mod.util.VoidSeaHelper;
 
 import static org.confluence.mod.client.effect.voidsea.VoidSeaConstants.*;
 

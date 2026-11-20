@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event.game.entity;
+package org.confluence.mod.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 /// - 草方块 -> 土块，丛林草方块 -> 泥块
 /// - 草、蕨与花可整株吃掉；两格高的植物（高草、大蕨、高花）计为食用两次
 /// - 每次食用回复半格饱食度；花额外给予其对应的迷之炖菜效果
-public final class PlantFiberCordageEvents {
+public final class PlantFiberCordageHelper {
     /// 每次食用回复的饱食度：半格（1 点）
     private static final int FOOD_PER_EAT = 1;
 

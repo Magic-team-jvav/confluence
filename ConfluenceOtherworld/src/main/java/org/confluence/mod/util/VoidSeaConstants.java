@@ -1,4 +1,4 @@
-package org.confluence.mod.common.util;
+package org.confluence.mod.util;
 
 public class VoidSeaConstants {
     /// 虚空海功能标识。

@@ -5,8 +5,8 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.mixed.IPlayer;
+import org.confluence.mod.util.VoidSeaHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 

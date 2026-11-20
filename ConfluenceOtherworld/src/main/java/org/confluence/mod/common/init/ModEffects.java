@@ -27,8 +27,6 @@ import org.confluence.mod.common.effect.harmful.*;
 import org.confluence.mod.common.effect.neutral.DimensionalOverlapEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.effect.neutral.SparkleSlimeEffect;
-import org.confluence.mod.common.effect.soulcerer.EnhancedSoulEffect;
-import org.confluence.mod.common.effect.soulcerer.GoOverEffect;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 
 import java.util.function.Function;

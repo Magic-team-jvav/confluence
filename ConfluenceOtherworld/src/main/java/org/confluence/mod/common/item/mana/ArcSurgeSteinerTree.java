@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.function.BiFunction;
 
 /** Incremental, obstacle-aware Euclidean Steiner heuristic; no global-optimality claim. */
-final class RedGloveSteinerTree {
+final class ArcSurgeSteinerTree {
     static final int MAX_CHILDREN = 2;
     static final double MAX_BRANCH_REACH = 4;
     private static final int EDGE_CANDIDATES = 8, MEDIAN_ITERATIONS = 24;
@@ -29,19 +29,19 @@ final class RedGloveSteinerTree {
     private record Edge(Node a, Node b, double distance) {}
     private record Insertion(Node a, Node b, Vec3 junction, double cost) {}
 
-    private RedGloveSteinerTree() {}
+    private ArcSurgeSteinerTree() {}
 
-    static void connect(List<RedGlovePattern.Path> paths, Vec3 source, Vec3 look, long seed,
-                        List<RedGlovePattern.Target> targets, BiFunction<Vec3, Vec3, Vec3> clipper) {
-        var visible = targets.stream().filter(t -> RedGlovePattern.inRange(source, look, t.point())
+    static void connect(List<ArcSurgePattern.Path> paths, Vec3 source, Vec3 look, long seed,
+                        List<ArcSurgePattern.Target> targets, BiFunction<Vec3, Vec3, Vec3> clipper) {
+        var visible = targets.stream().filter(t -> ArcSurgePattern.inRange(source, look, t.point())
                 && clear(source, t.point(), clipper)).toList();
         connect(paths, source, look, seed, visible, clipper,
-                RedGlovePattern.distributeTargets(source, look, paths.size(), visible));
+                ArcSurgePattern.distributeTargets(source, look, paths.size(), visible));
     }
 
-    static void connect(List<RedGlovePattern.Path> paths, Vec3 source, Vec3 look, long seed,
-                        List<RedGlovePattern.Target> targets, BiFunction<Vec3, Vec3, Vec3> clipper,
-                        RedGlovePattern.TargetDistribution distribution) {
+    static void connect(List<ArcSurgePattern.Path> paths, Vec3 source, Vec3 look, long seed,
+                        List<ArcSurgePattern.Target> targets, BiFunction<Vec3, Vec3, Vec3> clipper,
+                        ArcSurgePattern.TargetDistribution distribution) {
         var groups = distribution.groups();
         List<Node> nodes = new ArrayList<>();
         int backboneCount = paths.size();
@@ -49,17 +49,17 @@ final class RedGloveSteinerTree {
         for (int family = 0; family < groups.size(); family++)
             for (var target : groups.get(family)) owners.put(target.id(), family);
         int[] familyLoads = new int[backboneCount];
-        List<List<RedGlovePattern.Target>> foreignTargets = new ArrayList<>();
+        List<List<ArcSurgePattern.Target>> foreignTargets = new ArrayList<>();
         for (var group : groups) foreignTargets.add(targets.stream().filter(t -> !group.contains(t)).toList());
         for (int p = 0; p < backboneCount; p++) {
             var points = paths.get(p).points();
-            for (int vertex : RedGlovePattern.roots(points)) {
-                nodes.add(new Node(points.get(vertex), p, vertex, RedGlovePattern.rootCost(points, vertex, 0) * 0.05));
+            for (int vertex : ArcSurgePattern.roots(points)) {
+                nodes.add(new Node(points.get(vertex), p, vertex, ArcSurgePattern.rootCost(points, vertex, 0) * 0.05));
             }
         }
-        var ordered = targets.stream().filter(t -> RedGlovePattern.inRange(source, look, t.point()))
-                .sorted(Comparator.comparingDouble((RedGlovePattern.Target t) -> t.point().distanceToSqr(source))
-                        .thenComparingInt(RedGlovePattern.Target::id)).toList();
+        var ordered = targets.stream().filter(t -> ArcSurgePattern.inRange(source, look, t.point()))
+                .sorted(Comparator.comparingDouble((ArcSurgePattern.Target t) -> t.point().distanceToSqr(source))
+                        .thenComparingInt(ArcSurgePattern.Target::id)).toList();
         for (var target : ordered) {
             Vec3 point = target.point();
             int family = owners.getOrDefault(target.id(), -1);
@@ -71,7 +71,7 @@ final class RedGloveSteinerTree {
                 covered = node; break;
             }
             if (covered != null) { covered.terminals++; credit(covered); familyLoads[family]++; continue; }
-            if (RedGlovePattern.intersects(List.of(paths.get(family)), target.bounds(), 0)) {
+            if (ArcSurgePattern.intersects(List.of(paths.get(family)), target.bounds(), 0)) {
                 familyLoads[family]++; continue;
             }
 
@@ -142,17 +142,17 @@ final class RedGloveSteinerTree {
             } else {
                 // Remote targets and disconnected visibility pockets get their own full upstream current.
                 var line = checkedLine(source, point, seed ^ target.id(), clipper);
-                line = RedGlovePattern.avoidForeignHits(source, point, line, seed ^ target.id(), distribution.axis(),
+                line = ArcSurgePattern.avoidForeignHits(source, point, line, seed ^ target.id(), distribution.axis(),
                         (family - (backboneCount - 1) * 0.5) * 5, foreignTargets.get(family), clipper);
                 int path;
                 if (familyLoads[family] == 0) {
                     // Reuse the idle current instead of leaving it empty beside a new target-seeking trunk.
                     path = family;
-                    paths.set(path, new RedGlovePattern.Path(0, -1, -1, line));
+                    paths.set(path, new ArcSurgePattern.Path(0, -1, -1, line));
                     nodes.removeIf(node -> node.family == family);
                 } else {
                     path = paths.size();
-                    paths.add(new RedGlovePattern.Path(0, -1, -1, line));
+                    paths.add(new ArcSurgePattern.Path(0, -1, -1, line));
                 }
                 Node upstream = new Node(point, path, line.size() - 1, 0);
                 upstream.family = family; upstream.terminals = 1; upstream.load = 1; nodes.add(upstream);
@@ -177,7 +177,7 @@ final class RedGloveSteinerTree {
             // Depth is a material band, not a limit on logical Steiner hierarchy.
             int band = parent.parent == null || node.load >= 4 ? 1 : 2;
             node.path = paths.size();
-            paths.add(new RedGlovePattern.Path(band, parentPath, vertex,
+            paths.add(new ArcSurgePattern.Path(band, parentPath, vertex,
                     checkedLine(parent.point, node.point, edgeSeed += 7919, clipper)));
         }
     }
@@ -225,7 +225,7 @@ final class RedGloveSteinerTree {
         int segments = length > 8 ? 32 : length > 2 ? 8 : 4;
         double amplitude = Math.min(1.92, Math.max(0.07, length * 0.06));
         for (int attempt = 0; attempt < 4; attempt++) {
-            var line = RedGlovePattern.jagged(a, b, segments, seed, amplitude);
+            var line = ArcSurgePattern.jagged(a, b, segments, seed, amplitude);
             boolean clear = true;
             for (int i = 1; i < line.size(); i++) if (!clear(line.get(i - 1), line.get(i), clipper)) {
                 clear = false; break;

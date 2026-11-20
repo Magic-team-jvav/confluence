@@ -66,11 +66,15 @@ public class ManaWeaponItems {
                 "Hold right-click: 1–2 initial bolts every 2 ticks, up to 32 blocks; extra feeders connect distant enemies. Every branch deals magic damage.",
                 "按住右键：每 2 tick 释放 1–2 道初始闪电，射程 32 格；远处敌人可引出额外上级电流，所有支干均造成魔法伤害。");
     }, ThunderstrikeItem::new);
-    public static final PortDeferredItem<RedGloveItem> ARC_SURGE = registerItem("arc_surge", (item, language) -> {
+    public static final PortDeferredItem<ArcSurgeItem> ARC_SURGE = registerItem("arc_surge", (item, language) -> {
         language.add(item, "电弧涌动");
-        language.addTooltip(item, 0, "Shift + scroll to adjust aim distance. The spark attaches to enemies; blue lightning strikes after 0.5 seconds.",
-                "Shift + 滚轮调节落点距离；电火花吸附敌人，0.5 秒后引下蓝色闪电。");
-    }, RedGloveItem::new);
+        // 三行说明（效果 / 风味 / 操作）由 DataTip 挂载，这里只提供语言键
+        language.addTooltip(item,
+                new String[]{"Unleashes powerful lightning to strike your foes", "'Unlimited power!'",
+                        "Shift + scroll to adjust aim distance. The spark attaches to enemies; blue lightning strikes after 0.5 seconds."},
+                new String[]{"释放强力闪电轰击敌人", "\u201C无限力量！\u201D",
+                        "Shift + 滚轮调节落点距离；电火花吸附敌人，0.5 秒后引下蓝色闪电。"});
+    }, ArcSurgeItem::new);
     /// 欧泊法杖：洪流弹幕落地后贴地奔涌，折返时伤害翻倍，并额外吃 50% 近战攻击力。
     public static final PortDeferredItem<OpalStaffItem> OPAL_STAFF = registerItem("opal_staff", "欧泊法杖", () -> new OpalStaffItem(ModRarity.GREEN, OpalStaffProjectile::new, 20.0F, 8, 12, 12, 0.04));
     /// 昏晓：恶魔祭坛：永夜 + 极昼。

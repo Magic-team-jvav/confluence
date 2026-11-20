@@ -369,10 +369,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(BowItems.STAR_WEEP),
                 Ingredient.of(BowItems.DEMON_BOW, BowItems.TENDON_BOW),
                 Ingredient.of(BowItems.ENCHANTED_BOW));
-        // 水晶球：星乐
-        crystalBlock(writer, ManaWeaponItems.STAR_MUSIC.toStack(),
-                AmountIngredient.of(8, MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.SPELL_TOME),
-                Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
 
         altar(writer, ConsumableItems.BLOODY_SPINE.toStack(), AmountIngredient.of(30, ConsumableItems.VICIOUS_POWDER), AmountIngredient.of(15, MaterialItems.VERTEBRA));
         altar(writer, ConsumableItems.WORM_FOOD.toStack(), AmountIngredient.of(30, ConsumableItems.VILE_POWDER), AmountIngredient.of(15, MaterialItems.ROTTEN_CHUNK));

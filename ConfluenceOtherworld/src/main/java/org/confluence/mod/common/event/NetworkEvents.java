@@ -63,7 +63,7 @@ public final class NetworkEvents {
         handler.registerInGameS2C(BestiarySyncPacketS2C.class, BestiarySyncPacketS2C.ID, BestiarySyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(BossBarSyncPacketS2C.class, BossBarSyncPacketS2C.ID, BossBarSyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(BulletImpactPacketS2C.class, BulletImpactPacketS2C.ID, BulletImpactPacketS2C.STREAM_CODEC);
-        handler.registerInGameS2C(RedGloveArcPacketS2C.class, RedGloveArcPacketS2C.ID, RedGloveArcPacketS2C.STREAM_CODEC);
+        handler.registerInGameS2C(ArcSurgePacketS2C.class, ArcSurgePacketS2C.ID, ArcSurgePacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(BrushingColorPacketS2C.class, BrushingColorPacketS2C.ID, BrushingColorPacketS2C.STREAM_CODEC);
 //        handler.registerInGameS2C(CompatibilitySyncPacketS2c.class, CompatibilitySyncPacketS2c.ID, CompatibilitySyncPacketS2c.STREAM_CODEC);
         handler.registerInGameS2C(DeathMotionPacketS2C.class, DeathMotionPacketS2C.ID, DeathMotionPacketS2C.STREAM_CODEC);

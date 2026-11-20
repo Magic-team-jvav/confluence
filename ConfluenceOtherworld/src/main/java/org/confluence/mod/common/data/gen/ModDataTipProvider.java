@@ -1128,6 +1128,11 @@ public final class ModDataTipProvider implements DataProvider {
 
     private static JsonObject weaponUsage() {
         JsonObject root = new JsonObject();
+        // 电弧涌动：效果说明 + 风味引用 + 操作说明，三行都由 DataTip 挂载。
+        add(root, ManaWeaponItems.ARC_SURGE.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.arc_surge.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
+                translate("tooltip.item.confluence.arc_surge.1", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320)),
+                translate("tooltip.item.confluence.arc_surge.2", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320))), Map.of(), false, true));
         // 芦苇、雨伞等兼作工具的武器固定用途说明。
         add(root, SwordItems.BREATHING_REED.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.breathing_reed.0", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320))), Map.of(), false, true));

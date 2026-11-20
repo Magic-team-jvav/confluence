@@ -485,10 +485,16 @@ public record GiftSubProvider() implements LootTableSubProvider {
                         .add(LootItem.lootTableItem(AccessoryItems.BAND_OF_STARPOWER))
                         .add(LootItem.lootTableItem(GunItems.MUSKET))
                         .add(LootItem.lootTableItem(ManaWeaponItems.VILETHRON))
+                        .add(LootItem.lootTableItem(FlailItems.BALL_O_HURT))
                 )
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
                                 PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.SOUL_OF_NIGHT).apply(count2To5))
+                        ))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(ModBlocks.CURSED_FLAME).apply(count2To5))
                         ))
                 )
         );
@@ -561,6 +567,11 @@ public record GiftSubProvider() implements LootTableSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
                                 PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.SOUL_OF_NIGHT).apply(count2To5))
+                        ))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.ICHOR).apply(count2To5))
                         ))
                 )
         );

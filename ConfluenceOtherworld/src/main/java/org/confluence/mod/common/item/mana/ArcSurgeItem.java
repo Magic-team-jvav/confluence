@@ -26,23 +26,23 @@ import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifi
 import java.util.List;
 
 /** Server-authoritative sustained mage weapon; visual assets are intentionally left for later. */
-public final class RedGloveItem extends CustomRarityItem implements IWeaponTooltip, Immunity {
+public final class ArcSurgeItem extends CustomRarityItem implements IWeaponTooltip, Immunity {
     public static final float BASE_DAMAGE = 92;
     public static final int MANA_COST = 18;
     /// 右键按住时的最大持续时间（约 1 小时，靠松手结束）
     private static final int MAX_USE_DURATION = 72000;
-    public RedGloveItem() {
+    public ArcSurgeItem() {
         super(new Properties().stacksTo(1), ModRarity.LIGHT_RED);
         addAttributeModifiers(builder -> builder.add(LibAttributes.getCriticalChance(),
                 new PortAttributeModifier(Confluence.asResource("arc_surge"), 0.04, PortAttributeModifier.Operation.ADD_VALUE),
                 PortEquipmentSlotGroup.MAINHAND));
     }
-    /// 右键按住持续放电；松开或切走由 {@link RedGloveData#tick()} 的 isUsingItem 校验收尾。
+    /// 右键按住持续放电；松开或切走由 {@link ArcSurgeData#tick()} 的 isUsingItem 校验收尾。
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            player.getData(SummonerAttachmentTypes.RED_GLOVE_DATA).press(stack);
+            player.getData(SummonerAttachmentTypes.ARC_SURGE_DATA).press(stack);
         }
         // 与原版弓/弩一致：在 use 内自行进入“使用中”，松手后由 releaseUsing / tick 校验结束
         player.startUsingItem(hand);
@@ -62,12 +62,12 @@ public final class RedGloveItem extends CustomRarityItem implements IWeaponToolt
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
         if (living instanceof Player player && !level.isClientSide) {
-            player.getData(SummonerAttachmentTypes.RED_GLOVE_DATA).reset();
+            player.getData(SummonerAttachmentTypes.ARC_SURGE_DATA).reset();
         }
     }
     @Override public Attribute getTooltipDamageAttribute() { return LibAttributes.getMagicDamage().value(); }
     @Override public double getTooltipDamage(ItemStack stack, double attributeValue) { return BASE_DAMAGE * attributeValue; }
-    @Override public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) { return 20.0 / RedGlovePattern.CAST_TICKS; }
+    @Override public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) { return 20.0 / ArcSurgePattern.CAST_TICKS; }
     @Override public int getEnchantmentValue(ItemStack stack) { return 20; }
     @Override public boolean isEnchantable(ItemStack stack) { return true; }
     @Override public Type confluence$getImmunityType() { return Type.STATIC; }
@@ -75,7 +75,7 @@ public final class RedGloveItem extends CustomRarityItem implements IWeaponToolt
     @Override public int confluence$getImmunityDuration(DamageSource source) { return 0; }
     @Override public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines, TooltipFlag flag) {
         super.appendHoverText(stack, level, lines, flag);
-        lines.add(Component.translatable("tooltip.item.confluence.arc_surge.0").withStyle(ChatFormatting.GRAY));
+        // 效果、风味与操作说明都由 DataTip 挂载，这里只保留动态的魔力消耗
         lines.add(Component.translatable("tooltip.confluence.mana_cost", MANA_COST).withStyle(ChatFormatting.GRAY));
     }
 }

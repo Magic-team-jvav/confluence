@@ -8,9 +8,9 @@ import java.util.*;
 import java.util.function.BiFunction;
 
 /** Common/server-safe discharge geometry. Every transmitted line is also an attack line. */
-public final class RedGlovePattern {
+public final class ArcSurgePattern {
     public static final double RANGE = 32, HALF_ANGLE = 20, HIT_RADIUS = 0.16;
-    /** 每次放电的间隔（tick）：伤害结算与线段下发同拍，客户端停留由 RED_GLOVE_LIFETIME_TICKS 决定。 */
+    /** 每次放电的间隔（tick）：伤害结算与线段下发同拍，客户端停留由 ARC_SURGE_LIFETIME_TICKS 决定。 */
     public static final int CAST_TICKS = 2;
     /** 每次放电随机生成 1–2 条主干。 */
     public static final int MIN_TRUNKS = 1, MAX_TRUNKS = 2;
@@ -23,7 +23,7 @@ public final class RedGlovePattern {
                 throw new IllegalArgumentException("Invalid red glove path");
         }
     }
-    private RedGlovePattern() {}
+    private ArcSurgePattern() {}
 
     public static int trunkCount(long seed) {
         return new SplittableRandom(seed).nextInt(MIN_TRUNKS, MAX_TRUNKS + 1);
@@ -104,7 +104,7 @@ public final class RedGlovePattern {
                 break;
             }
         }
-        RedGloveSteinerTree.connect(paths, source, forward, seed, visible, clipper, distribution);
+        ArcSurgeSteinerTree.connect(paths, source, forward, seed, visible, clipper, distribution);
         if (paths.size() == count) {
             // One short decorative branch; target connections above are never dropped.
             Path parent = paths.get(0);

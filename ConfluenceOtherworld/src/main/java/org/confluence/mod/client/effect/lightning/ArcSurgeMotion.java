@@ -1,18 +1,18 @@
 package org.confluence.mod.client.effect.lightning;
 
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.item.mana.RedGlovePattern;
+import org.confluence.mod.common.item.mana.ArcSurgePattern;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /** Cached tree coordinates; only presentation moves, never the authoritative damage snapshot. */
-final class RedGloveMotion {
-    private record Channel(RedGlovePattern.Path path, double[] distance, double[] follow) {}
+final class ArcSurgeMotion {
+    private record Channel(ArcSurgePattern.Path path, double[] distance, double[] follow) {}
     private final List<Channel> channels = new ArrayList<>();
     private double length;
 
-    RedGloveMotion(List<RedGlovePattern.Path> paths) {
+    ArcSurgeMotion(List<ArcSurgePattern.Path> paths) {
         for (var path : paths) {
             var points = path.points();
             double[] distance = new double[points.size()], follow = new double[points.size()];
@@ -27,7 +27,7 @@ final class RedGloveMotion {
                 // Resolve the common point once instead of allowing a quantization seam.
                 var canonical = new ArrayList<>(points);
                 canonical.set(0, parent.path.points().get(root));
-                path = new RedGlovePattern.Path(path.depth(), path.parent(), root, canonical);
+                path = new ArcSurgePattern.Path(path.depth(), path.parent(), root, canonical);
                 points = path.points();
             }
             for (int i = 1; i < points.size(); i++)
@@ -42,9 +42,9 @@ final class RedGloveMotion {
 
     BoltGeometry sample(LightningRecipe recipe, double age, Vec3 displacement) {
         List<BoltGeometry.Segment> segments = new ArrayList<>();
-        if (age < 0 || age >= ArcSurgeLightning.RED_GLOVE_LIFETIME_TICKS) return BoltGeometry.sampled(recipe, segments);
-        double cutoff = length * Math.max(0, age - ArcSurgeLightning.RED_GLOVE_HOLD_TICKS)
-                / ArcSurgeLightning.RED_GLOVE_RETRACT_TICKS;
+        if (age < 0 || age >= ArcSurgeLightning.ARC_SURGE_LIFETIME_TICKS) return BoltGeometry.sampled(recipe, segments);
+        double cutoff = length * Math.max(0, age - ArcSurgeLightning.ARC_SURGE_HOLD_TICKS)
+                / ArcSurgeLightning.ARC_SURGE_RETRACT_TICKS;
         for (int mask = 0; mask < channels.size(); mask++) {
             Channel channel = channels.get(mask);
             var path = channel.path;
@@ -68,13 +68,13 @@ final class RedGloveMotion {
         return BoltGeometry.sampled(recipe, segments);
     }
 
-    List<RedGlovePattern.Path> particlePaths(Vec3 displacement) {
-        List<RedGlovePattern.Path> result = new ArrayList<>();
+    List<ArcSurgePattern.Path> particlePaths(Vec3 displacement) {
+        List<ArcSurgePattern.Path> result = new ArrayList<>();
         for (Channel channel : channels) {
             List<Vec3> points = new ArrayList<>();
             for (int i = 0; i < channel.follow.length; i++)
                 points.add(channel.path.points().get(i).add(displacement.scale(channel.follow[i])));
-            result.add(new RedGlovePattern.Path(channel.path.depth(), channel.path.parent(), channel.path.rootIndex(), points));
+            result.add(new ArcSurgePattern.Path(channel.path.depth(), channel.path.parent(), channel.path.rootIndex(), points));
         }
         return result;
     }

@@ -12,7 +12,7 @@ public class CursedInfernoEffect extends MobEffect {    //诅咒火 缓慢失去
 
     @Override
     public boolean applyEffectTick(LivingEntity living, int amplifier) {
-        LibDamageTypes.hurtWithoutKnockback(living, LibDamageTypes.of(living.level(), LibDamageTypes.CURSED_INFERNO), 2);
+        living.hurt(LibDamageTypes.of(living.level(), LibDamageTypes.CURSED_INFERNO), 2);
         return true;
     }
 

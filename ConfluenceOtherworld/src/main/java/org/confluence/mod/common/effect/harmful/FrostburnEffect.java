@@ -1,6 +1,5 @@
 package org.confluence.mod.common.effect.harmful;
 
-import java.util.Set;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -8,6 +7,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.EffectCure;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibUtils;
+
+import java.util.Set;
 
 
 public class FrostburnEffect extends MobEffect {
@@ -17,7 +18,7 @@ public class FrostburnEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(LivingEntity living, int amplifier) {
-        LibDamageTypes.hurtWithoutKnockback(living, LibDamageTypes.of(living.level(), LibDamageTypes.FROST_BURN),
+        living.hurt(LibDamageTypes.of(living.level(), LibDamageTypes.FROST_BURN),
                 2.0F * (amplifier + 1));
         int tick = living.getTicksFrozen();
         living.setTicksFrozen(Math.min(200 * (amplifier + 1), tick + 100 * (amplifier + 1)));

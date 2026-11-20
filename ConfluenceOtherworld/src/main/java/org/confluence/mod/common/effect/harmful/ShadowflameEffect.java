@@ -5,7 +5,6 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.EffectCure;
-import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibUtils;
 
 import java.util.Set;
@@ -23,7 +22,7 @@ public class ShadowflameEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        LibDamageTypes.hurtWithoutKnockback(livingEntity, livingEntity.damageSources().inFire(), 3);
+        livingEntity.hurt(livingEntity.damageSources().inFire(), 3);
         return true;
     }
 

@@ -11,7 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.entity.projectile.mana.AbstractLittleCelestialEntity;
 import org.confluence.mod.common.entity.projectile.mana.LittleSunEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.jetbrains.annotations.Nullable;
@@ -57,12 +56,12 @@ public class PolarMarkEffect extends MobEffect {
         float weaponDamage = data.getFloat(DAMAGE_KEY);
         LivingEntity owner = resolveOwner(level, data);
         if (weaponDamage > 0.0F) {
-            DamageSource source = level.damageSources().indirectMagic(marked, owner);
+            DamageSource source = LibDamageTypes.of(level, LibDamageTypes.POLAR_MARK, marked, owner);
             for (LivingEntity victim : level.getEntitiesOfClass(LivingEntity.class, marked.getBoundingBox().inflate(AURA_RADIUS))) {
                 if (!victim.isAlive() || victim.isSpectator()) continue;
                 if (owner != null && !LibEntityUtils.canHit(owner, victim)) continue;
                 victim.invulnerableTime = 0;
-                LibDamageTypes.hurtWithoutKnockback(victim, source, weaponDamage * AURA_FACTOR);
+                victim.hurt(source, weaponDamage * AURA_FACTOR);
             }
         }
         if (amplifier >= 1 && owner != null && weaponDamage > 0.0F) {

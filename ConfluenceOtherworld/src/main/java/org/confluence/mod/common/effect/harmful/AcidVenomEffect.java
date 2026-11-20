@@ -15,7 +15,7 @@ public class AcidVenomEffect extends MobEffect {
 
     @Override
     public boolean applyEffectTick(LivingEntity living, int amplifier) {
-        LibDamageTypes.hurtWithoutKnockback(living, LibDamageTypes.of(living.level(), LibDamageTypes.ACID_VENOM), 1.0F);
+        living.hurt(LibDamageTypes.of(living.level(), LibDamageTypes.ACID_VENOM), 1.0F);
         return true;
     }
 

@@ -379,7 +379,6 @@ public class EaterOfWorlds extends BaseWormBoss {
             }
 
             retainWithHealths(frontHealths, frontParts);
-            if (rearHead != null && getTarget() != null) rearHead.setTarget(getTarget());
 
             // 头后方只剩被摧毁的最后一节时，整条链已经没有身体，按头节点死亡结束。
             if (frontHealths.isEmpty()) {
@@ -431,10 +430,9 @@ public class EaterOfWorlds extends BaseWormBoss {
         head.wanderTarget = Vec3.ZERO;
         head.nextWanderBelow = !nextWanderBelow;
         Vec3 inheritedVelocity = getDeltaMovement();
-        LivingEntity splitTarget = getTarget();
-        if (splitTarget != null && splitTarget.isAlive()) head.setTarget(splitTarget);
+        LivingEntity splitTarget = head.getTarget();
         Vec3 initialVelocity = inheritedVelocity;
-        if (divergeFromSource && splitTarget != null && splitTarget.isAlive()) {
+        if (divergeFromSource && splitTarget != null) {
             Vec3 towardTarget = head.getEncounterApproachPoint(splitTarget).subtract(position);
             if (towardTarget.lengthSqr() > 1.0E-7D) {
                 initialVelocity = towardTarget.normalize().scale(PURSUIT_SPEED);
@@ -855,12 +853,7 @@ public class EaterOfWorlds extends BaseWormBoss {
     }
 
     private boolean isDirectlyTargetable(Player player) {
-        if (player.level() != level() || !player.isAlive()
-                || (player.isCreative() && !isDeveloperTarget(player)) || player.isSpectator()
-                || (!player.canBeSeenAsEnemy() && !isDeveloperTarget(player))) {
-            return false;
-        }
-        return distanceToSqr(player) < TARGET_SEARCH_RANGE * TARGET_SEARCH_RANGE;
+        return isEligibleCombatPlayer(player) && distanceToSqr(player) < TARGET_SEARCH_RANGE * TARGET_SEARCH_RANGE;
     }
 
     @Override

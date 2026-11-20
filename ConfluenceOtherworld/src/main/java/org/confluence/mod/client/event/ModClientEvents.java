@@ -619,15 +619,15 @@ public final class ModClientEvents {
 //        event.registerEntityRenderer(INVERSE_ENDERMAN.get(), EndermanRenderer::new);
 
         // Critter renderers — Bunny 保留自定义模型，其余用 CritterRenderer
-        event.registerEntityRenderer(CritterEntities.BUNNY.get(), BunnyRenderer::new);
+        event.registerEntityRenderer(CritterEntities.BUNNY.get(), context -> new BunnyRenderer<>(context));
         event.registerEntityRenderer(CritterEntities.PENGUIN.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.MYSTIC_FROG.get(), c -> new GeoNormalRenderer<>(c, new MysticFrogModel(c)));
         event.registerEntityRenderer(CritterEntities.GOLDFISH.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/goldfish.geo.json"), Confluence.asResource("textures/entity/animal/goldfish.png"), Confluence.asResource("animations/entity/animal/goldfish.animation.json")), false, 1.0F, 0.1875F));
         // penguin.bbmodel 的三个变种共用模型和动画，差异仅在贴图。
         event.registerEntityRenderer(MonsterEntities.CORRUPT_PENGUIN.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/penguin.geo.json"), Confluence.asResource("textures/entity/corrupt_penguin.png"), Confluence.asResource("animations/entity/animal/penguin.animation.json"))));
         event.registerEntityRenderer(MonsterEntities.VICIOUS_PENGUIN.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/penguin.geo.json"), Confluence.asResource("textures/entity/vicious_penguin.png"), Confluence.asResource("animations/entity/animal/penguin.animation.json"))));
-        event.registerEntityRenderer(CritterEntities.EXPLOSIVE_BUNNY.get(), BunnyRenderer::new);
-        event.registerEntityRenderer(CritterEntities.HOSTILE_BUNNY.get(), BunnyRenderer::new);
+        event.registerEntityRenderer(CritterEntities.EXPLOSIVE_BUNNY.get(), context -> new BunnyRenderer<>(context));
+        event.registerEntityRenderer(CritterEntities.HOSTILE_BUNNY.get(), context -> new BunnyRenderer<>(context));
         event.registerEntityRenderer(CritterEntities.BIRD.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.BLUE_JAY.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.CARDINAL.get(), CritterRenderer::new);

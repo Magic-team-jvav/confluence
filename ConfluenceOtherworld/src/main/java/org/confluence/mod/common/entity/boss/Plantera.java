@@ -16,7 +16,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -144,11 +143,6 @@ public class Plantera extends BaseBoss {
                 enragedTicks--;
             }
             updatePhase();
-
-            if (getTarget() == null && tickCount % 20 == 0) {
-                Player replacement = findCombatPlayer();
-                if (replacement != null) setTarget(replacement);
-            }
 
             // 全局 AI 时钟从出生起推进，取得目标后继续读取同一条时间轴。
             attackTicks++;
@@ -402,16 +396,20 @@ public class Plantera extends BaseBoss {
             if ((destroyedTentacles & 1L << slot) != 0) continue;
             PlanteraTentacle current = tentacles[slot];
             if (current != null && current.isAlive() && !current.isRemoved()) continue;
-            PlanteraTentacle created = BossEntities.PLANTERA_TENTACLE.get().create(level());
-            if (created == null) continue;
-            created.setPos(getTentacleAnchor(slot));
-            created.setMaster(this, slot);
-            if (!serverLevel.addFreshEntity(created)) {
-                removeSubEntity(created);
-                tentacles[slot] = null;
-                created.discard();
-            }
+            spawnTentacle(serverLevel, slot);
         }
+    }
+
+    private boolean spawnTentacle(ServerLevel serverLevel, int slot) {
+        PlanteraTentacle created = BossEntities.PLANTERA_TENTACLE.get().create(serverLevel);
+        if (created == null) return false;
+        created.setPos(getTentacleAnchor(slot));
+        created.setMaster(this, slot);
+        if (serverLevel.addFreshEntity(created)) return true;
+        removeSubEntity(created);
+        tentacles[slot] = null;
+        created.discard();
+        return false;
     }
 
     /// 专家以上只逐根再生本体触手；钩爪触手被击败后不会再生。
@@ -423,9 +421,9 @@ public class Plantera extends BaseBoss {
             if ((destroyedTentacles & 1L << slot) == 0) alive++;
             else if (random.nextInt(++missingCount) == 0) missing = slot;
         }
-        if (missing < 0) return;
+        if (missing < 0 || !(level() instanceof ServerLevel serverLevel) || !spawnTentacle(serverLevel, missing))
+            return;
         destroyedTentacles &= ~(1L << missing);
-        ensureTentacles();
         tentacleTimer = TENTACLE_REBUILD_BASE_COOLDOWN * (alive + 1);
     }
 

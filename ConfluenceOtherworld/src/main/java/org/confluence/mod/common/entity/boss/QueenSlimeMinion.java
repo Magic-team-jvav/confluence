@@ -111,6 +111,7 @@ public class QueenSlimeMinion extends BaseMonster implements BossOwnedEntity {
     private Vec3 flankOffset;
     private int flankTicks;
     private int strikeTicks;
+    private boolean touchingLastTick;
 
     // 女皇没有合格玩家目标时，仆从独立搜索玩家的半径（格）。
     public static final double FOLLOW_RANGE = 160;
@@ -171,7 +172,7 @@ public class QueenSlimeMinion extends BaseMonster implements BossOwnedEntity {
         LivingEntity target = queen.getTarget();
         if (!(target instanceof Player) || !canAttack(target) || distanceToSqr(target) > FOLLOW_RANGE * FOLLOW_RANGE) {
             Player nearby = level().getNearestPlayer(getX(), getY(), getZ(), FOLLOW_RANGE,
-                    candidate -> candidate instanceof Player player && canAttack(player));
+                    candidate -> candidate instanceof Player player && queen.isValidCurrentCombatPlayer(player) && canAttack(player));
             target = nearby;
         }
         if (target == null || !target.isAlive() || !canAttack(target) || !EnemyTargeting.allowsTarget(this, target)) {
@@ -189,6 +190,7 @@ public class QueenSlimeMinion extends BaseMonster implements BossOwnedEntity {
         if (lastPosition == null || trackedTarget != target.getId()) {
             flankOffset = null;
             strikeTicks = 0;
+            touchingLastTick = false;
         }
         trackedTarget = target.getId();
         lastPosition = target.position();
@@ -205,17 +207,26 @@ public class QueenSlimeMinion extends BaseMonster implements BossOwnedEntity {
             }
             Vec3 center = getBoundingBox().getCenter();
             Vec3 predicted = center.add(aim).add(targetMotion.scale(FLANK_LEAD));
+            // 触及玩家即结束本轮冲撞；玩家的受伤无敌帧不应让仆从继续向其中心挤压。
+            boolean touching = getBoundingBox().inflate(CONTACT_MARGIN).intersects(target.getBoundingBox());
+            if (strikeTicks > 0 && touching && !touchingLastTick) {
+                strikeTicks = 0;
+            }
+            touchingLastTick = touching;
             if (flankOffset == null && strikeTicks == 0) {
                 flankOffset = chooseFlank(target, predicted);
                 flankTicks = FLANK_TIMEOUT;
+                if (flankOffset == null) strikeTicks = STRIKE_TICKS;
             }
-            Vec3 direction = aim;
+            Vec3 direction = touching ? Vec3.ZERO : aim;
             if (flankOffset != null) {
                 direction = predicted.add(flankOffset).subtract(center);
-                if (--flankTicks <= 0 || direction.lengthSqr() <= FLANK_ARRIVAL * FLANK_ARRIVAL) {
+                if (direction.lengthSqr() <= FLANK_ARRIVAL * FLANK_ARRIVAL && hasLineOfSight(target)) {
                     flankOffset = null;
                     strikeTicks = STRIKE_TICKS;
                     direction = aim;
+                } else if (--flankTicks <= 0) {
+                    flankOffset = null;
                 }
             }
             if (strikeTicks > 0) strikeTicks--;
@@ -275,10 +286,12 @@ public class QueenSlimeMinion extends BaseMonster implements BossOwnedEntity {
                 m -> m != this && m.isAlive() && m.getType() == getType() && m.getTarget() == target);
         double start = random.nextDouble() * Math.PI * 2;
         double bestScore = Double.NEGATIVE_INFINITY;
-        Vec3 best = Vec3.ZERO;
+        Vec3 best = null;
         for (int i = 0; i < FLANK_SAMPLES; i++) {
             double angle = start + i * Math.PI * 2 / FLANK_SAMPLES;
-            Vec3 offset = new Vec3(Math.cos(angle), 0, Math.sin(angle)).scale(FLANK_RADIUS);
+            // 围堵点按飞翔史莱姆的体型对齐脚底，较高的模型也能在平地找到侧翼。
+            double height = Math.max(0, (getBbHeight() - target.getBbHeight()) * 0.5);
+            Vec3 offset = new Vec3(Math.cos(angle) * FLANK_RADIUS, height, Math.sin(angle) * FLANK_RADIUS);
             Vec3 candidate = predicted.add(offset);
             if (!level().noCollision(this, getBoundingBox().move(candidate.subtract(getBoundingBox().getCenter()))))
                 continue;
@@ -301,11 +314,12 @@ public class QueenSlimeMinion extends BaseMonster implements BossOwnedEntity {
     private void fireAt(QueenSlime queen, Vec3 aim) {
         boolean crystal = getType() == BossEntities.CRYSTAL_SLIME.get();
         if (crystal) {
-            int flightTicks = Math.min(SlimeSpikeEntity.CRYSTAL_LIFETIME, Math.max(SPIKE_MIN_FLIGHT, (int) Math.ceil(Math.sqrt(2 * Math.abs(aim.y) / SlimeSpikeEntity.CRYSTAL_GRAVITY)) + SPIKE_EXTRA_FLIGHT));
             Vec3 origin = new Vec3(getX(), getY() + getEyeHeight() * 0.5, getZ());
             Vec3 offset = getTarget().getBoundingBox().getCenter().subtract(origin)
-                    .add(targetMotion.multiply(1, 0, 1).scale(flightTicks))
-                    .add(0, targetMotion.y * Math.min(flightTicks, VERTICAL_LEAD_TICKS), 0);
+                    .add(0, targetMotion.y * Math.min(SPIKE_MIN_FLIGHT, VERTICAL_LEAD_TICKS), 0);
+            int arcTicks = (int) Math.ceil(Math.sqrt(2 * Math.abs(offset.y) / SlimeSpikeEntity.CRYSTAL_GRAVITY));
+            int flightTicks = Math.min(SlimeSpikeEntity.CRYSTAL_LIFETIME, Math.max(SPIKE_MIN_FLIGHT, arcTicks + SPIKE_EXTRA_FLIGHT));
+            offset = offset.add(targetMotion.multiply(flightTicks, 0, flightTicks));
             // 每刻先移动再受重力，初速度按预计落点反算，使尖刺在下降段经过玩家。
             Vec3 velocity = offset.scale(1.0 / flightTicks).add(0, SlimeSpikeEntity.CRYSTAL_GRAVITY * (flightTicks - 1) / 2, 0);
             Vec3 lateral = new Vec3(-offset.z, 0, offset.x).normalize();
@@ -318,17 +332,22 @@ public class QueenSlimeMinion extends BaseMonster implements BossOwnedEntity {
             }
             shotCooldown = queen.isExpert() ? SPIKE_EXPERT_COOLDOWN : SPIKE_COOLDOWN;
         } else {
-            // 选最早能以发射速度抵达的拦截点。凝胶前两刻平飞，从第三刻开始下坠。
-
-            Vec3 launchVelocity = aim.normalize().scale(GEL_SPEED);
+            Vec3 launchVelocity = Vec3.ZERO;
+            double nearestMiss = Double.POSITIVE_INFINITY;
             for (int ticks = 1; ticks <= GEL_PREDICTION_TICKS; ticks++) {
                 int fallingTicks = Math.max(0, ticks - RoyalGel.GRAVITY_DELAY);
                 double drop = RoyalGel.BOUNCY_GRAVITY * fallingTicks * (fallingTicks + 1) / 2;
                 Vec3 intercept = aim.add(targetMotion.multiply(ticks, Math.min(ticks, VERTICAL_LEAD_TICKS), ticks)).add(0, drop, 0);
-                Vec3 velocity = intercept.scale(1.0 / ticks);
-                if (velocity.lengthSqr() <= GEL_SPEED * GEL_SPEED) {
-                    launchVelocity = velocity;
+                double distance = intercept.length();
+                double miss = distance - GEL_SPEED * ticks;
+                if (miss <= 0) {
+                    launchVelocity = intercept.scale(1.0 / ticks);
                     break;
+                }
+                // 目标超出可拦截范围时，以满速瞄准预计偏差最小的位置。
+                if (miss < nearestMiss) {
+                    nearestMiss = miss;
+                    launchVelocity = intercept.scale(GEL_SPEED / distance);
                 }
             }
             RoyalGel.launch(this, launchVelocity);

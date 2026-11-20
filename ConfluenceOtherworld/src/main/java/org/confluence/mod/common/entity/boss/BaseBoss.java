@@ -751,15 +751,15 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     /// 判定玩家能否维持当前 Boss 战。创造、旁观、死亡和跨维度玩家都不计入多人存活人数。
     protected boolean isValidCurrentCombatPlayer(Player player) {
         double range = getCombatPlayerRange();
+        return isEligibleCombatPlayer(player) && combatAnchorDistanceSqr(player) < range * range;
+    }
+
+    /// 供拥有独立索敌范围的 Boss 复用玩家资格判定，距离由各自的索敌方式处理。
+    protected final boolean isEligibleCombatPlayer(Player player) {
         return player.level() == level() && player.isAlive()
                 && (!player.isCreative() || isDeveloperTarget(player)) && !player.isSpectator()
                 && (player.canBeSeenAsEnemy() || isDeveloperTarget(player))
-                && !hasLostAggroAfterDeath(player)
-                && combatAnchorDistanceSqr(player) < range * range;
-    }
-
-    private boolean hasLostAggroAfterDeath(Player player) {
-        return deathRetargetBlocked.contains(player.getUUID());
+                && !deathRetargetBlocked.contains(player.getUUID());
     }
 
     private @Nullable Player validCombatPlayer(@Nullable LivingEntity target) {

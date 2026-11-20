@@ -112,7 +112,7 @@ public class SkeletronHand extends BaseLivingBossPart<Skeletron> implements GeoE
         faceRoot(master);
 
         LivingEntity target = master.getTarget();
-        boolean hasCombatTarget = target != null && target.isAlive() && master.canAttack(target);
+        boolean hasCombatTarget = target != null && master.canAttack(target);
         if (slapPhase >= 0 && !hasCombatTarget) {
             cancelSlapWithoutConsumingCooldown();
             tickStandby(master);
@@ -126,7 +126,7 @@ public class SkeletronHand extends BaseLivingBossPart<Skeletron> implements GeoE
         }
         faceRoot(master);
         updateArmBoundingBox(master);
-        damageArmContacts(master);
+        damageArmContacts(master, hasCombatTarget);
     }
 
     private void updateArmBoundingBox(Skeletron master) {
@@ -229,11 +229,11 @@ public class SkeletronHand extends BaseLivingBossPart<Skeletron> implements GeoE
         moveToward(phaseTarget, slapSpeed);
     }
 
-    private void damageArmContacts(Skeletron master) {
+    private void damageArmContacts(Skeletron master, boolean hasCombatTarget) {
         SkeletronArmPose current = getArmPose(1.0F);
         SkeletronArmPose previous = previousArmPose == null ? current : previousArmPose;
         previousArmPose = current;
-        if (master.getTarget() == null || !master.getTarget().isAlive()) return;
+        if (!hasCombatTarget) return;
         double radius = ARM_HITBOX_RADIUS * master.getScale();
         AABB search = current.bounds(radius).minmax(previous.bounds(radius)).inflate(0.125);
         for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, search,

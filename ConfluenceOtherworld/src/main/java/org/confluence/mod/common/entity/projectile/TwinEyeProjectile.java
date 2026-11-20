@@ -127,8 +127,8 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
     }
 
     /// 发射方向与旋转后的眼球一致，继承少量冲刺速度并向上抛射，随后由重力落地。
-    public void configureArcingFlame(AbstractTwinEye owner, float damage, boolean lingering) {
-        Vec3 velocity = owner.getLookAngle().scale(ARC_SPEED)
+    public void configureArcingFlame(AbstractTwinEye owner, Vec3 direction, float damage, boolean lingering) {
+        Vec3 velocity = direction.scale(ARC_SPEED)
                 .add(owner.getDeltaMovement().scale(ARC_MOVEMENT_INHERITANCE)).add(0, ARC_LIFT, 0);
         configure(owner, owner.getMuzzlePosition(1.0F), velocity, damage, ARC_LIFETIME);
         entityData.set(STREAM, true);

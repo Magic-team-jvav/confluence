@@ -14,7 +14,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -94,10 +93,6 @@ public class LunaticCultist extends BaseBoss {
         if (!isAlive()) return;
 
         if (!level().isClientSide) {
-            if (getTarget() == null && tickCount % 10 == 0) {
-                Player replacement = findCombatPlayer();
-                if (replacement != null) setTarget(replacement);
-            }
             setSpecialState(CombatState.WOUNDED, getHealth() < getMaxHealth() * 0.5F);
             if (getTarget() == null) {
                 setDeltaMovement(Vec3.ZERO);
@@ -144,8 +139,7 @@ public class LunaticCultist extends BaseBoss {
                     }
                 }
 
-                if (getHealth() < getMaxHealth() * 0.5F) ancientLightTimer--;
-                if (ancientLightTimer <= 0) {
+                if (getHealth() < getMaxHealth() * 0.5F && --ancientLightTimer <= 0) {
                     ancientLightTimer = ANCIENT_LIGHT_COOLDOWN + random.nextInt(ANCIENT_LIGHT_COOLDOWN_VARIATION);
                     spawnAncientLights();
                 }
@@ -335,9 +329,9 @@ public class LunaticCultist extends BaseBoss {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        teleportTimer = Math.max(0, tag.getInt(TELEPORT_TIMER_TAG));
-        spellTimer = Math.max(0, tag.getInt(SPELL_TIMER_TAG));
-        ancientLightTimer = Math.max(0, tag.getInt(ANCIENT_LIGHT_TIMER_TAG));
+        teleportTimer = tag.contains(TELEPORT_TIMER_TAG) ? Math.max(0, tag.getInt(TELEPORT_TIMER_TAG)) : TELEPORT_TICKS;
+        spellTimer = tag.contains(SPELL_TIMER_TAG) ? Math.max(0, tag.getInt(SPELL_TIMER_TAG)) : SPELL_COOLDOWN / 2;
+        ancientLightTimer = tag.contains(ANCIENT_LIGHT_TIMER_TAG) ? Math.max(0, tag.getInt(ANCIENT_LIGHT_TIMER_TAG)) : ANCIENT_LIGHT_COOLDOWN / 2;
         attackCycle = Math.max(0, tag.getInt(ATTACK_CYCLE_TAG));
         spellPattern = Math.floorMod(tag.getInt(SPELL_PATTERN_TAG), 3);
         ritualCloneCount = Mth.clamp(tag.getInt("RitualCloneCount"), 0, MAX_CLONE_COUNT);

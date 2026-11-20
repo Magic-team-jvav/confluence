@@ -30,7 +30,6 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -41,7 +40,7 @@ import java.util.Locale;
 import java.util.function.IntFunction;
 
 /// 使用原版 {@link Rabbit} 的导航、跳跃控制和行为，只扩展本模组的外观与待机动画。
-public class Bunny extends Rabbit implements GeoEntity {
+public class Bunny extends Rabbit implements CritterVisual {
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Bunny.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_WATCH_STATE = SynchedEntityData.defineId(Bunny.class, EntityDataSerializers.INT);
     public static final String VARIANT_KEY = "Variant";
@@ -214,6 +213,16 @@ public class Bunny extends Rabbit implements GeoEntity {
         return child;
     }
 
+    @Override
+    public ResourceLocation getModelPath() {
+        return getBunnyVariant().modelPath();
+    }
+
+    @Override
+    public ResourceLocation getTexturePath() {
+        return getBunnyVariant().texturePath();
+    }
+
     public enum Variant implements IVariant {
         NORMAL, GOLD, PARTY, SLIMED, XMAS,
         AMETHYST, TOPAZ, SAPPHIRE, EMERALD, RUBY, AMBER, DIAMOND,
@@ -222,6 +231,10 @@ public class Bunny extends Rabbit implements GeoEntity {
         public static final Codec<Variant> CODEC = StringRepresentable.fromEnum(Variant::values);
         private static final IntFunction<Variant> BY_ID = ByIdMap.sparse(Variant::ordinal, values(), NORMAL);
 
+        static Variant byId(int id) {
+            return BY_ID.apply(id);
+        }
+
         @Override
         public String getSerializedName() {
             return name().toLowerCase(Locale.ROOT);
@@ -229,13 +242,19 @@ public class Bunny extends Rabbit implements GeoEntity {
 
         @Override
         public ResourceLocation modelPath() {
-            return IVariant.resource("animal/" + (this == EXPLOSIVE ? "explosive_bunny" : "bunny"));
+            return IVariant.resource(switch (this) {
+                case CORRUPT, VICIOUS -> "evil_bunny";
+                case EXPLOSIVE -> "animal/explosive_bunny";
+                default -> "animal/bunny";
+            });
         }
 
         @Override
         public ResourceLocation texturePath() {
+            if (this == CORRUPT) return IVariant.resource("textures/entity/evil_bunny.png");
+            if (this == VICIOUS) return IVariant.resource("textures/entity/evil_bunny/vicious.png");
             String name = switch (this) {
-                case NORMAL, PARTY, SLIMED, XMAS, CORRUPT, VICIOUS -> "bunny";
+                case NORMAL, PARTY, SLIMED, XMAS -> "bunny";
                 case GOLD -> "golden_bunny";
                 case EXPLOSIVE -> "explosive_bunny";
                 default -> getSerializedName() + "_bunny";

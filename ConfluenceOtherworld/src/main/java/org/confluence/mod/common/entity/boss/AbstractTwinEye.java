@@ -45,7 +45,7 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
     private static final EntityDataAccessor<Boolean> DATA_TRANSFORMED = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_DASHING = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_TRANSITION_TICKS = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> DATA_BANK = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> DATA_BANK = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> DATA_PRIMARY = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
 
     /// 双眼水平转向速度上限，单位度/tick。
@@ -109,6 +109,8 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
     private ParticleEmitter linkEmitter;
     private int transitionTicks;
     private int leavingTicks;
+    // 锁定方向与眼球视线相差五度以内才允许起冲。
+    private static final double DASH_ALIGNMENT = Math.cos(Math.toRadians(5));
     private float yawVelocity;
     private float pitchVelocity;
     private float previousBank;
@@ -290,14 +292,15 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
             refreshBossBar(encounter);
         }
         super.tick();
-        if (isParalyzed()) return;
+        if (isParalyzed() && (level().isClientSide || leavingTicks == 0 && !LibDateUtils.isDay(level())))
+            return;
         if (level().isClientSide) {
             if (isRetinazer() && getEncounterUUID() != null && (linkEmitter == null || linkEmitter.isRemoved())) {
                 linkEmitter = new TwinEyeLinkEmitter(this);
                 MolangParticleEngine.INSTANCE.addEmitter(linkEmitter);
             }
             previousBank = visualBank;
-            visualBank = Mth.lerp(BANK_SMOOTHING, visualBank, entityData.get(DATA_BANK));
+            visualBank = visualBank + Mth.wrapDegrees(entityData.get(DATA_BANK) - visualBank) * BANK_SMOOTHING;
         }
         if (level().isClientSide || !isAlive()) {
             return;
@@ -305,6 +308,8 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
         if (LibDateUtils.isDay(level()) || leavingTicks > 0) {
             leavingTicks++;
             resetCombatCycle();
+            entityData.set(DATA_DASHING, false);
+            entityData.set(DATA_BANK, 0.0F);
             setDeltaMovement(0, LEAVING_SPEED, 0);
             turnWithInertia(new Vec3(0, 1, 0));
             if (leavingTicks >= LEAVING_TICKS) discard();
@@ -430,7 +435,7 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
     /// 用角速度收束大转角，并让转弯产生轻微侧倾；位置和方向都不会瞬间吸附目标。
     private void turnWithInertia(Vec3 direction) {
         if (direction.lengthSqr() < 1.0E-7) return;
-        float yaw = (float) (Mth.atan2(-direction.x, direction.z) * Mth.RAD_TO_DEG);
+        float yaw = direction.horizontalDistanceSqr() < 1.0E-7 ? getYRot() : (float) (Mth.atan2(-direction.x, direction.z) * Mth.RAD_TO_DEG);
         float pitch = (float) (Mth.atan2(-direction.y, direction.horizontalDistance()) * Mth.RAD_TO_DEG);
         float yawError = Mth.wrapDegrees(yaw - getYRot());
         float pitchError = pitch - getXRot();
@@ -440,6 +445,18 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
         float pitchStep = Math.abs(pitchError) < Math.abs(pitchVelocity) ? pitchError : pitchVelocity;
         faceCombatDirection(Vec3.directionFromRotation(getXRot() + pitchStep, getYRot() + yawStep), 360, 360);
         entityData.set(DATA_BANK, Mth.clamp(-yawStep * BANK_RESPONSE, -MAX_BANK_DEGREES, MAX_BANK_DEGREES));
+    }
+
+    protected final boolean launchDash(Vec3 direction, double speed) {
+        if (getLookAngle().dot(direction) < DASH_ALIGNMENT) return false;
+        yawVelocity = pitchVelocity = 0;
+        faceCombatDirection(direction, 360, 360);
+        setDeltaMovement(direction.scale(speed));
+        return true;
+    }
+
+    final boolean canCoordinateAttack() {
+        return isAlive() && !isParalyzed() && transitionTicks == 0 && leavingTicks == 0 && !isDisengageRetreating();
     }
 
     // 常规转向保留惯性；特殊攻击可让身体与发射口共同执行旋转。
@@ -508,12 +525,12 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "combat", 5, state -> {
             if (!isTransformed()) {
-                return state.setAndContinue(entityData.get(DATA_DASHING) ? PHASE_ONE_DASH : PHASE_ONE);
+                return state.setAndContinue(!isParalyzed() && entityData.get(DATA_DASHING) ? PHASE_ONE_DASH : PHASE_ONE);
             }
             if (entityData.get(DATA_TRANSITION_TICKS) > 0) {
                 return state.setAndContinue(TRANSFORM);
             }
-            return state.setAndContinue(entityData.get(DATA_DASHING) ? PHASE_TWO_DASH : PHASE_TWO);
+            return state.setAndContinue(!isParalyzed() && entityData.get(DATA_DASHING) ? PHASE_TWO_DASH : PHASE_TWO);
         }));
     }
 

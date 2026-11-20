@@ -167,7 +167,7 @@ public class EyeOfCthulhu extends BaseBoss {
     @Override
     public void tick() {
         super.tick();
-        if (isRemoved()) {
+        if (!isAlive()) {
             return;
         }
         if (level().isClientSide) {

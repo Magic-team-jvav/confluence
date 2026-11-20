@@ -19,6 +19,7 @@ public final class AncientVision extends BaseLivingBossPart<LunaticCultist> {
     /// 远古幻视冲刺的移动速度，单位格/tick。
     private static final double DASH_SPEED = 0.8;
 
+    private int dashTargetId;
     private Vec3 dash = Vec3.ZERO;
     private int contactCooldown;
 
@@ -38,8 +39,13 @@ public final class AncientVision extends BaseLivingBossPart<LunaticCultist> {
             return;
         }
         LivingEntity target = master.getTarget();
-        if (target == null || !target.isAlive()) return;
-        if (dash.lengthSqr() < 1.0E-7 || tickCount % DASH_REFRESH_TICKS == 0) {
+        if (target == null || !target.isAlive()) {
+            dash = Vec3.ZERO;
+            setDeltaMovement(Vec3.ZERO);
+            return;
+        }
+        if (dash == Vec3.ZERO || target.getId() != dashTargetId || tickCount % DASH_REFRESH_TICKS == 0) {
+            dashTargetId = target.getId();
             Vec3 direction = target.getEyePosition().subtract(getBoundingBox().getCenter()).multiply(1.0, 0.0, 1.0);
             dash = direction.lengthSqr() < 1.0E-7 ? Vec3.directionFromRotation(0.0F, getYRot()) : direction.normalize();
         }

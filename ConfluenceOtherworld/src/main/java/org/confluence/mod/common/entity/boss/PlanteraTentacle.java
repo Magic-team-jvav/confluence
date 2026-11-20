@@ -86,7 +86,8 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
         }
 
         LivingEntity target = master.getTarget();
-        if (target != null) {
+        boolean hasCombatTarget = target != null && master.canAttack(target);
+        if (hasCombatTarget) {
             Vec3 targetOffset = target.getEyePosition().subtract(anchor);
             double attraction = Math.max(TARGET_ATTRACTION_RADIUS - targetOffset.length(), 0.0) * TARGET_ATTRACTION
                     * (master.isFtw() ? FTW_TENTACLE_SPEED_MULTIPLIER : 1.0);
@@ -114,7 +115,7 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
         }
 
         if (contactCooldown > 0) contactCooldown--;
-        if (master.getTarget() == null || contactCooldown > 0) return;
+        if (!hasCombatTarget || contactCooldown > 0) return;
         for (Entity entity : SweptContactAttack.findTargets(this, 0.25D,
                 SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
                 candidate -> candidate instanceof LivingEntity living && living != master && master.canAttack(living))) {

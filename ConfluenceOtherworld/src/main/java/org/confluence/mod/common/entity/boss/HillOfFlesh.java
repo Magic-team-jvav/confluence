@@ -158,8 +158,6 @@ public class HillOfFlesh extends BaseBoss {
     /// 触发熔岩柱攻击的间隔，单位 tick。
     private static final int LAVA_PILLAR_INTERVAL = 100;
 
-    /// 失去目标后再次搜索战斗参与者的间隔，单位 tick。
-    private static final int FALLBACK_TARGET_INTERVAL = 30;
     /// 触发贴身伤害时，距内圈边界保留的缓冲宽度，单位格。
     private static final float INNER_DAMAGE_MARGIN = 5.0F;
     /// 风暴牵引每 tick 允许施加的最大速度增量。
@@ -311,6 +309,7 @@ public class HillOfFlesh extends BaseBoss {
     private boolean isValidPartTarget(@Nullable LivingEntity entity, float radius) {
         return entity != null
                 && entity.isAlive()
+                && (!(entity instanceof Player player) || isValidCurrentCombatPlayer(player))
                 && canAttack(entity)
                 && entity.position().subtract(position()).horizontalDistanceSqr() <= radius * radius;
     }
@@ -359,7 +358,6 @@ public class HillOfFlesh extends BaseBoss {
         if (isInitializing()) {
             return;
         }
-        acquireFallbackTarget();
         trackNearbyEntities();
         applyStormPull();
         updateArenaDamage();
@@ -421,24 +419,12 @@ public class HillOfFlesh extends BaseBoss {
         }
     }
 
-    private void acquireFallbackTarget() {
-        if (getTarget() != null || tickCount % FALLBACK_TARGET_INTERVAL != 0) {
-            return;
-        }
-        Player nearest = level().getNearestPlayer(this, getOuterRadius());
-        if (nearest != null && canAttack(nearest)) {
-            registerCombatParticipant(nearest);
-            setTarget(nearest);
-        }
-    }
-
     private void trackNearbyEntities() {
         if (tickCount % TRACK_INTERVAL != 0) {
             return;
         }
         float outerRadius = getOuterRadius();
         float outerSquared = outerRadius * outerRadius;
-        float innerSquared = getInnerRadius() * getInnerRadius();
         nearbyLivingEntities = new ArrayList<>(
                 level().getEntitiesOfClass(
                         LivingEntity.class,
@@ -452,9 +438,6 @@ public class HillOfFlesh extends BaseBoss {
                                 return false;
                             }
                             double horizontalDistance = entity.position().subtract(position()).horizontalDistanceSqr();
-                            if (horizontalDistance < innerSquared) {
-                                markEncounterEntity(entity);
-                            }
                             boolean insideArena = horizontalDistance <= outerSquared;
                             if (insideArena) {
                                 markEncounterEntity(entity);

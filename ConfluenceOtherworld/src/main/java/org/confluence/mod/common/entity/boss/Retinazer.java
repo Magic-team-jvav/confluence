@@ -362,7 +362,7 @@ public class Retinazer extends AbstractTwinEye {
             }
             case DASH_WINDUP -> {
                 brake();
-                if (stateTicks >= DASH_WINDUP_TICKS) {
+                if (stateTicks >= DASH_WINDUP_TICKS && launchDash(dashDirection, isTransformed() ? PHASE_TWO_DASH_SPEED : PHASE_ONE_DASH_SPEED)) {
                     enter(State.DASH);
                     playSound(ModSoundEvents.ROAR.get(), 0.8F, 1.2F);
                 }
@@ -371,6 +371,8 @@ public class Retinazer extends AbstractTwinEye {
                 setDeltaMovement(dashDirection.scale(isTransformed() ? PHASE_TWO_DASH_SPEED : PHASE_ONE_DASH_SPEED));
                 if (stateTicks >= DASH_TICKS) {
                     dashes--;
+                    brake();
+                    if (dashes > 0) dashDirection = aimAt(target);
                     enter(State.DASH_RECOVER);
                 }
             }
@@ -428,7 +430,7 @@ public class Retinazer extends AbstractTwinEye {
             }
             case COMBO_AIM -> {
                 brake();
-                if (!(getPartner() instanceof Spazmatism flame) || !flame.isAlive() || stateTicks >= COMBO_AIM_TIMEOUT_TICKS) {
+                if (!(getPartner() instanceof Spazmatism flame) || !flame.canCoordinateAttack() || stateTicks >= COMBO_AIM_TIMEOUT_TICKS) {
                     relocate();
                     break;
                 }
@@ -445,7 +447,7 @@ public class Retinazer extends AbstractTwinEye {
             }
             case COMBO_FIRE -> {
                 brake();
-                if (!(getPartner() instanceof Spazmatism flame) || flame.getComboFlame() == null || stateTicks >= COMBO_FIRE_TICKS) {
+                if (!(getPartner() instanceof Spazmatism flame) || !flame.canCoordinateAttack() || flame.getComboFlame() == null || stateTicks >= COMBO_FIRE_TICKS) {
                     relocate();
                     break;
                 }
@@ -500,7 +502,7 @@ public class Retinazer extends AbstractTwinEye {
 
     // 联动可以跨形态配合，但只能由同组二阶段魔焰眼发起，且不打断正在释放的大招。
     boolean beginFlameCombo(Spazmatism flame) {
-        if (!flame.isTransformed() || !flame.isAlive() || getPartner() != flame || !isAlive()
+        if (!canCoordinateAttack() || !flame.canCoordinateAttack() || !flame.isTransformed() || getPartner() != flame || !isAlive()
                 || getTarget() == null || isBeamAttack() || isDashCycle() || postDashVolley || distanceToSqr(flame) > COMBO_PARTNER_RANGE_SQUARED)
             return false;
         followupTicks = 0;
@@ -722,6 +724,8 @@ public class Retinazer extends AbstractTwinEye {
         tag.putInt("Shots", shots);
         tag.putInt("Dashes", dashes);
         tag.putBoolean("PostDashVolley", postDashVolley);
+        tag.putBoolean("PartnerDashCycle", partnerDashCycle);
+        tag.putInt("FollowupTicks", followupTicks);
         tag.putInt("DashCooldown", dashCooldown);
         saveVector(tag, "DashDirection", dashDirection);
         tag.putInt("Volleys", volleys);
@@ -745,7 +749,9 @@ public class Retinazer extends AbstractTwinEye {
         shots = Mth.clamp(tag.getInt("Shots"), 0, VOLLEY_SIZE);
         dashes = Mth.clamp(tag.getInt("Dashes"), 0, PHASE_TWO_DASH_MAX);
         postDashVolley = state == State.SHOOT && tag.getBoolean("PostDashVolley");
-        dashCooldown = tag.contains("DashCooldown") ? Mth.clamp(tag.getInt("DashCooldown"), 0, PHASE_ONE_DASH_INTERVAL) : PHASE_ONE_DASH_INTERVAL;
+        partnerDashCycle = tag.getBoolean("PartnerDashCycle");
+        followupTicks = Mth.clamp(tag.getInt("FollowupTicks"), 0, FOLLOWUP_WINDOW_TICKS);
+        dashCooldown = tag.contains("DashCooldown") ? Mth.clamp(tag.getInt("DashCooldown"), 0, PHASE_ONE_DASH_INTERVAL) : dashCooldown;
         dashDirection = loadVector(tag, "DashDirection").normalize();
         if (dashDirection.lengthSqr() < 1.0E-8) dashDirection = getLookAngle();
         volleys = Mth.clamp(tag.getInt("Volleys"), 0, VOLLEYS_PER_CYCLE);

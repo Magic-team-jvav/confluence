@@ -171,7 +171,7 @@ public class DeerClops extends BaseBoss {
     @Override
     public void tick() {
         super.tick();
-        if (isRemoved() || level().isClientSide) {
+        if (!isAlive() || level().isClientSide) {
             return;
         }
         if (traversalJumpCooldown > 0) {

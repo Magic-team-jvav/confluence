@@ -350,7 +350,8 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
 
     /// 四条机械臂逐刻检查接触，成功造成伤害后冷却二十刻，检测范围不额外膨胀。
     private void damageContactTargets(SkeletronPrime master) {
-        if (contactCooldown > 0 || master.getTarget() == null) {
+        LivingEntity combatTarget = master.getTarget();
+        if (contactCooldown > 0 || combatTarget == null || !combatTarget.isAlive()) {
             return;
         }
         for (Entity target : SweptContactAttack.findTargets(this, 0.0D,

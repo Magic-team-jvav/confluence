@@ -515,12 +515,11 @@ public class KingSlime extends BaseBoss {
         int phaseTicks = runtime.getInt("PhaseTicks");
         int restoredNormalTicks = runtime.getInt("NormalTicks");
         int restoredRounds = runtime.getInt("RoundsRemaining");
-        return phaseTicks >= 0
-                && phaseTicks < (restoredPhase == CombatPhase.NORMAL ? 1 : TRANSFORM_TICKS)
-                && restoredNormalTicks >= 0
-                && restoredNormalTicks < NORMAL_CYCLE_END
-                && restoredRounds >= 1
-                && restoredRounds <= 2;
+        if (restoredPhase == CombatPhase.NORMAL) {
+            return phaseTicks == 0 && restoredNormalTicks >= 0 && restoredNormalTicks < NORMAL_CYCLE_END && restoredRounds >= 1;
+        }
+        // 缩小和放大阶段沿用上一轮结束时的计数，直到回到常态才重置。
+        return phaseTicks >= 0 && phaseTicks < TRANSFORM_TICKS && restoredNormalTicks == NORMAL_CYCLE_END && restoredRounds == 0;
     }
 
     private void resetRuntime() {

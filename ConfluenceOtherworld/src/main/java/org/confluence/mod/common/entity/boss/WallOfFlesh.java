@@ -710,7 +710,10 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
     public long getLayoutSeed() {return layoutSeed;}
 
     public @Nullable LivingEntity getPartTarget(int index) {
-        Entity target = level().getEntity(entityData.get(PART_TARGETS).getInt(Integer.toString(index)));
+        CompoundTag targets = entityData.get(PART_TARGETS);
+        String key = Integer.toString(index);
+        if (!targets.contains(key)) return null;
+        Entity target = level().getEntity(targets.getInt(key));
         return target instanceof LivingEntity living && living.isAlive() ? living : null;
     }
 
@@ -741,7 +744,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
         eyeAssignments.clear();
         mouthAssignments.clear();
         List<Player> players = level().players().stream()
-                .filter(player -> isValidFrontTarget(player) && (!player.isCreative() || isDeveloperTarget(player)) && !player.isSpectator())
+                .filter(player -> super.isValidCurrentCombatPlayer(player) && isValidFrontTarget(player))
                 .map(player -> (Player) player).toList();
         assignNearestParts(players, livingParts(eyes), MAX_ASSIGNED_EYES, eyeAssignments);
         assignNearestParts(players, livingParts(mouths), MAX_ASSIGNED_MOUTHS, mouthAssignments);

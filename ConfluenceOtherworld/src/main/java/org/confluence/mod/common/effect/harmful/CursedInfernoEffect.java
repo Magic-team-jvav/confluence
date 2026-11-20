@@ -12,7 +12,7 @@ public class CursedInfernoEffect extends PortMobEffect {    //诅咒火 缓慢�
 
     @Override
     public void applyEffectTick(LivingEntity living, int amplifier) {
-        LibDamageTypes.hurtWithoutKnockback(living, LibDamageTypes.of(living.level(), LibDamageTypes.CURSED_INFERNO), 2);
+        living.hurt(LibDamageTypes.of(living.level(), LibDamageTypes.CURSED_INFERNO), 2);
     }
 
     @Override

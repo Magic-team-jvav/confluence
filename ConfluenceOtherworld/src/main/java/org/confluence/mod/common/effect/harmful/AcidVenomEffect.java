@@ -13,7 +13,7 @@ public class AcidVenomEffect extends PortMobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity living, int amplifier) {
-        LibDamageTypes.hurtWithoutKnockback(living, LibDamageTypes.of(living.level(), LibDamageTypes.ACID_VENOM), 1.0F);
+        living.hurt(LibDamageTypes.of(living.level(), LibDamageTypes.ACID_VENOM), 1.0F);
     }
 
     @Override

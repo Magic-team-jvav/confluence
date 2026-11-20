@@ -17,7 +17,7 @@ public class FrostburnEffect extends PortMobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity living, int amplifier) {
-        LibDamageTypes.hurtWithoutKnockback(living, LibDamageTypes.of(living.level(), LibDamageTypes.FROST_BURN),
+        living.hurt(LibDamageTypes.of(living.level(), LibDamageTypes.FROST_BURN),
                 2.0F * (amplifier + 1));
         int tick = living.getTicksFrozen();
         living.setTicksFrozen(Math.min(200 * (amplifier + 1), tick + 100 * (amplifier + 1)));

@@ -2,7 +2,6 @@ package org.confluence.mod.common.effect.harmful;
 
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import org.confluence.lib.common.LibDamageTypes;
 import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 
 public class BloodButcheredEffect extends PortMobEffect {
@@ -12,7 +11,7 @@ public class BloodButcheredEffect extends PortMobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
-        LibDamageTypes.hurtWithoutKnockback(pLivingEntity, pLivingEntity.level().damageSources().magic(), pAmplifier + 4.0F);
+        pLivingEntity.hurt(pLivingEntity.level().damageSources().magic(), pAmplifier + 4.0F);
     }
 
     @Override

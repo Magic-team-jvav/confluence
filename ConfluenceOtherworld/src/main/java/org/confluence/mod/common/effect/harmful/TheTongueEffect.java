@@ -6,7 +6,6 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.entity.boss.WallOfFleshMouth;
 import org.confluence.mod.common.init.ModEffects;
@@ -72,7 +71,7 @@ public class TheTongueEffect extends PortMobEffect {
         living.fallDistance = 0.0F;
         living.hurtMarked = true;
         if (living.tickCount % 10 == 0) {
-            LibDamageTypes.hurtWithoutKnockback(living, living.damageSources().mobAttack(wall), 2.0F);
+            living.hurt(living.damageSources().mobAttack(wall), 2.0F);
         }
     }
 
@@ -81,9 +80,9 @@ public class TheTongueEffect extends PortMobEffect {
         super.onEffectStarted(living, amplifier);
         WallOfFlesh wall = HorrifiedEffect.resolve(living);
         if (wall == null) {
-            LibDamageTypes.hurtWithoutKnockback(living, living.damageSources().magic(), 4.0F);
+            living.hurt(living.damageSources().magic(), 4.0F);
         } else {
-            LibDamageTypes.hurtWithoutKnockback(living, living.damageSources().mobAttack(wall), 4.0F);
+            living.hurt(living.damageSources().mobAttack(wall), 4.0F);
         }
     }
 

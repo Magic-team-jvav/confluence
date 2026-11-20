@@ -3,7 +3,6 @@ package org.confluence.mod.common.effect.harmful;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibUtils;
 import org.mesdag.portlib.wrapper.common.PortEffectCure;
 import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
@@ -23,7 +22,7 @@ public class ShadowflameEffect extends PortMobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        LibDamageTypes.hurtWithoutKnockback(livingEntity, livingEntity.damageSources().inFire(), 3);
+        livingEntity.hurt(livingEntity.damageSources().inFire(), 3);
     }
 
     @Override

@@ -3,7 +3,6 @@ package org.confluence.mod.common.effect.harmful;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibUtils;
 import org.mesdag.portlib.wrapper.common.PortEffectCure;
 import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
@@ -17,7 +16,7 @@ public class FrostbiteEffect extends PortMobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        LibDamageTypes.hurtWithoutKnockback(livingEntity, livingEntity.damageSources().freeze(), 2);
+        livingEntity.hurt(livingEntity.damageSources().freeze(), 2);
     }
 
     @Override

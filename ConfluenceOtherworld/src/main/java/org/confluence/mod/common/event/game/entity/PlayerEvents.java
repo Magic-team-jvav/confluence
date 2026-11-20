@@ -646,10 +646,10 @@ public final class PlayerEvents {
 
     private static void getArmorSetBonus(GetArmorSetBonusDataEvent event) {
         ArmorSetBonusKey key = event.getKey();
-        if (key.head().builtInRegistryHolder().is(ModTags.Items.ROBE)) {
-            if (key.chest() == ArmorItems.WIZARD_HAT.get()) {
+        if (key.chest().builtInRegistryHolder().is(ModTags.Items.ROBE)) {
+            if (key.head() == ArmorItems.WIZARD_HAT.get()) {
                 event.setNeoData(ModArmorBonus.WIZARD_HAT_SET_BONUS);
-            } else if (key.chest() == ArmorItems.MAGIC_HAT.get()) {
+            } else if (key.head() == ArmorItems.MAGIC_HAT.get()) {
                 event.setNeoData(ModArmorBonus.MAGIC_HAT_SET_BONUS);
             }
         }

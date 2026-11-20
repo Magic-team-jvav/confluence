@@ -175,6 +175,7 @@ public enum PermanentUpgrade {
     public static void restore(ServerPlayer player) {
         EverBeneficial data = EverBeneficial.of(player);
         for (PermanentUpgrade upgrade : values()) upgrade.restoreAttribute(player, data);
+        ManaStorage.of(player).restoreCrystalModifier();
         syncAmbrosia(player);
         clampHealth(player);
     }

@@ -5,63 +5,54 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.util.supplier.FloatSupplier;
-import org.confluence.mod.api.event.AdditionalManaEvent;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.ApiStatus;
-import org.mesdag.portlib.event.PortEventHandler;
-import org.mesdag.portlib.wrapper.IPortNBTSerializable;
 import org.mesdag.portlib.attachment.IPortAttachmentHolder;
+import org.mesdag.portlib.wrapper.IPortNBTSerializable;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
+
+import java.util.UUID;
 
 public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
-    private IPortAttachmentHolder owner;
+    private final LivingEntity owner;
+    private final UUID crystalModifierId = PortAttributeModifier.rl2uuid(Confluence.asResource("mana_crystal"));
     private int stars;
-    private int additionalMana;
     private float currentMana;
     private transient int regenerateDelay;
-    private transient int maxMana;
-    private boolean fastManaRegeneration;
 
     private boolean arcaneCrystalUsed;
 
-    public ManaStorage() {
+    public ManaStorage(IPortAttachmentHolder owner) {
         this.stars = 1;
-        this.additionalMana = 0;
         this.currentMana = 20;
         this.regenerateDelay = 0;
-        this.maxMana = -1;
-        this.fastManaRegeneration = false;
 
         this.arcaneCrystalUsed = false;
-    }
-
-    public ManaStorage(IPortAttachmentHolder owner) {
-        this();
-        this.owner = owner;
+        this.owner = (LivingEntity) owner;
     }
 
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("stars", stars);
-        nbt.putInt("additionalMana", additionalMana);
         nbt.putFloat("currentMana", currentMana);
-        nbt.putBoolean("fastManaRegeneration", fastManaRegeneration);
         nbt.putBoolean("arcaneCrystalUsed", arcaneCrystalUsed);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
-        this.stars = nbt.getInt("stars");
-        this.additionalMana = nbt.getInt("additionalMana");
+        this.stars = nbt.contains("stars") ? nbt.getInt("stars") : 1;
         this.currentMana = nbt.getFloat("currentMana");
-        this.fastManaRegeneration = nbt.getBoolean("fastManaRegeneration");
         this.arcaneCrystalUsed = nbt.getBoolean("arcaneCrystalUsed");
     }
 
@@ -95,9 +86,9 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
         return currentMana;
     }
 
-    /// 设置当前魔力并夹在 0..上限之间；灵魂模式下也保留该值，供切回魔力条时使用。
+    /// 服务端按属性上限收敛；客户端保留同步值，避免属性包晚到时丢失魔力。
     public void setCurrentMana(float currentMana) {
-        this.currentMana = Mth.clamp(currentMana, 0.0F, getMaxMana());
+        this.currentMana = owner.level().isClientSide ? currentMana : Mth.clamp(currentMana, 0.0F, getMaxMana());
     }
 
     public int getRegenerateDelay() {
@@ -112,18 +103,17 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
         this.regenerateDelay = Mth.ceil(0.7F * ((1 - currentMana / getMaxMana()) * 240 + 45));
     }
 
-    public int getMaxMana() {
-        if (maxMana < 0) {
-            freshMaxMana();
-        }
-        return maxMana;
+    public float getMaxMana() {
+        return (float) owner.getAttributeValue(ConfluenceMagicLib.MAX_MANA.get());
     }
 
-    public void freshMaxMana() {
-        this.maxMana = stars * 20 + additionalMana;
+    public boolean clampCurrentMana() {
+        float maxMana = getMaxMana();
         if (currentMana > maxMana) {
             this.currentMana = maxMana;
+            return true;
         }
+        return false;
     }
 
     public boolean canExtract() {
@@ -136,53 +126,53 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
 
     /// 只读取已存在的灵魂附件，避免构造和读档阶段相互创建。
     private boolean isSoulMode() {
-        return owner instanceof LivingEntity living && living.hasData(ModAttachmentTypes.SOUL_STORAGE)
-                && SoulStorage.of(living).isSoulMode();
+        return owner.hasData(ModAttachmentTypes.SOUL_STORAGE) && SoulStorage.of(owner).isSoulMode();
     }
 
     public boolean addStar() {
         if (!isStarMaximum()) {
             this.stars++;
-            freshMaxMana();
+            restoreCrystalModifier();
             return true;
         }
         return false;
     }
 
-    /// 回溯魔力水晶至多撤回到初始的一颗星；当前魔力也同步减少并限制在新上限内。
     public boolean decreaseStar() {
-        if (stars <= 1) return false;
-        float oldMax = getMaxMana();
+        if (stars <= 1) {
+            return false;
+        }
         this.stars--;
-        this.currentMana = Mth.clamp(currentMana - 20.0F, 0.0F, oldMax);
-        freshMaxMana();
+        restoreCrystalModifier();
+        setCurrentMana(currentMana - 20.0F);
         return true;
     }
 
     @ApiStatus.Internal
     public void clearStars() {
         this.stars = 1;
-        freshMaxMana();
+        restoreCrystalModifier();
+        clampCurrentMana();
     }
 
     public boolean isStarMaximum() {
         return stars >= 10;
     }
 
-    public void flushAbility(ServerPlayer player) {
-        this.fastManaRegeneration = TCUtils.hasType(player, AccessoryItems.FAST$MANA$GENERATION);
-        int value = TCUtils.getValue(player, AccessoryItems.ADDITIONAL$MANA);
-        if (player.hasEffect(ModEffects.CLAIRVOYANCE.get())) value += 20;
-        AdditionalManaEvent event = PortEventHandler.postEventWithReturn(new AdditionalManaEvent(player, this, value, additionalMana));
-        if (!event.isCanceled() && event.getNeoValue() != additionalMana) {
-            this.additionalMana = event.getNeoValue();
-            freshMaxMana();
-            PlayerUtils.syncMana2Client(player, this);
+    public void restoreCrystalModifier() {
+        AttributeInstance attribute = owner.getAttribute(ConfluenceMagicLib.MAX_MANA.get());
+        AttributeModifier previous = attribute.getModifier(crystalModifierId);
+        int amount = (stars - 1) * 20;
+        if (amount == 0) {
+            if (previous != null) {
+                attribute.removeModifier(crystalModifierId);
+            }
+        } else if (previous == null || previous.getAmount() != amount) {
+            if (previous != null) {
+                attribute.removeModifier(crystalModifierId);
+            }
+            attribute.addPermanentModifier(new AttributeModifier(crystalModifierId, "mana_crystal", amount, AttributeModifier.Operation.ADDITION));
         }
-    }
-
-    public boolean isFastManaRegeneration() {
-        return fastManaRegeneration;
     }
 
     public boolean setArcaneCrystalUsed() {

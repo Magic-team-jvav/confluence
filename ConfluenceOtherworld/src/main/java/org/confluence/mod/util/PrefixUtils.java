@@ -180,7 +180,7 @@ public final class PrefixUtils {
     }
 
     public static void unknown(ItemStack stack) {
-        stack.set(ModDataComponentTypes.PREFIX, new PrefixComponent(PrefixType.UNKNOWN, "unknown", AttributeModifiersValue.EMPTY, 0, 0));
+        stack.set(ModDataComponentTypes.PREFIX, new PrefixComponent(PrefixType.UNKNOWN, "unknown", AttributeModifiersValue.EMPTY, 0));
     }
 
     public static float calculateManaCost(ItemStack stack, float amount) {

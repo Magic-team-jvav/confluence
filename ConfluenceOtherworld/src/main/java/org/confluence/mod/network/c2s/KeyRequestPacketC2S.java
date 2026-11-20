@@ -5,7 +5,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.EffectPotionItem;
 import org.confluence.mod.common.item.potion.HealingPotionItem;
@@ -43,7 +42,6 @@ public record KeyRequestPacketC2S(byte key) implements IPortPacket.C2S {
             /// 都不能绕过这一权限边界。
             if (!canGrantClairvoyance(player)) return;
             player.addEffect(new MobEffectInstance(ModEffects.CLAIRVOYANCE.get(), MobEffectInstance.INFINITE_DURATION));
-            ManaStorage.of(player).flushAbility(player);
         }
     }
 

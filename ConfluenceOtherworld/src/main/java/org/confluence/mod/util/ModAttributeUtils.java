@@ -53,15 +53,6 @@ public final class ModAttributeUtils {
                     ATTRIBUTE_MODIFIER_FORMAT.format(SoulSkillParameters.HAUNTING_SOUL_CHANCE * 100),
                     Component.translatable("prefix.confluence.tooltip.soul_chance")).withStyle(ChatFormatting.BLUE));
         }
-
-        if (prefix.additionalMana() > 0) {
-            MutableComponent component = Component.translatable("prefix.confluence.tooltip.additional_mana");
-            if (event.getContext().flag().isAdvanced()/* && ForgeConfig.COMMON.attributeAdvancedTooltipDebugInfo.get()*/) {
-                component.append(Component.literal(" [+" + prefix.additionalMana() + "]").withStyle(ChatFormatting.GRAY));
-            }
-            event.addTooltipLines(Component.translatable("prefix.confluence.tooltip.add", prefix.additionalMana(), component)
-                    .withStyle(ChatFormatting.BLUE));
-        }
     }
 
     private static void magic(PortAddAttributeTooltipsEvent event, PrefixComponent prefix) {

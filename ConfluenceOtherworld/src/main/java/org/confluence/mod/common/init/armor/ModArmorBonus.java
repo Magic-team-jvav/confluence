@@ -78,7 +78,9 @@ public final class ModArmorBonus {
             0.1,
             PortAttributeModifier.Operation.ADD_VALUE
     )), 1);
-    public static final ArmorSetBonusData MAGIC_HAT_SET_BONUS = new ArmorSetBonusData(PrimitiveValueComponent.of(AccessoryItems.ADDITIONAL$MANA, 60), 1);
+    public static final ArmorSetBonusData MAGIC_HAT_SET_BONUS = new ArmorSetBonusData(PrimitiveValueComponent.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(
+            ConfluenceMagicLib.MAX_MANA, Confluence.asResource("magic_hat_set_bonus"), 60, PortAttributeModifier.Operation.ADD_VALUE
+    )), 1);
     // endregion
 
     // region type

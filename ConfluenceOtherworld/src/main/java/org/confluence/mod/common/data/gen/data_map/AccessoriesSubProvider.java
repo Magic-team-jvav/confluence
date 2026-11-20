@@ -211,20 +211,20 @@ public class AccessoriesSubProvider {
                     helper.of(AccessoryItems.MANA$USE$REDUCE, 0.08F);
                     helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.AGGRO, helper.asId(), -400, PortAttributeModifier.Operation.ADD_VALUE));
                 })
-                .add(AccessoryItems.BAND_OF_STARPOWER, helper -> helper.of(AccessoryItems.ADDITIONAL$MANA, 20))
+                .add(AccessoryItems.BAND_OF_STARPOWER, helper -> helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MAX_MANA, helper.asId(), 20, PortAttributeModifier.Operation.ADD_VALUE)))
                 .add(AccessoryItems.MANA_REGENERATION_BAND, helper -> {
                     helper.unit(AccessoryItems.FAST$MANA$GENERATION);
-                    helper.of(AccessoryItems.ADDITIONAL$MANA, 20);
+                    helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MAX_MANA, helper.asId(), 20, PortAttributeModifier.Operation.ADD_VALUE));
                 })
                 .add(AccessoryItems.MAGIC_CUFFS, helper -> {
                     helper.unit(AccessoryItems.HURT$GET$MANA);
                     helper.unit(AccessoryItems.FAST$MANA$GENERATION);
-                    helper.of(AccessoryItems.ADDITIONAL$MANA, 20);
+                    helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MAX_MANA, helper.asId(), 20, PortAttributeModifier.Operation.ADD_VALUE));
                 })
                 .add(AccessoryItems.CELESTIAL_CUFFS, helper -> {
                     helper.unit(AccessoryItems.HURT$GET$MANA);
                     helper.unit(AccessoryItems.FAST$MANA$GENERATION);
-                    helper.of(AccessoryItems.ADDITIONAL$MANA, 20);
+                    helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MAX_MANA, helper.asId(), 20, PortAttributeModifier.Operation.ADD_VALUE));
                     helper.of(AccessoryItems.MANA$PICKUP$RANGE, new Tuple<>(12.5F, 0));
                 })
                 .add(AccessoryItems.MANA_CLOAK, helper -> {

@@ -22,7 +22,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidType;
 import org.confluence.lib.common.effect.HoneyEffect;
-import org.confluence.mod.util.SoulcererUtils;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.natural.ThinIceBlock;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
@@ -33,10 +32,11 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
-import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.FlushArmorSetBonusPacketS2C;
+import org.confluence.mod.util.SoulcererUtils;
+import org.confluence.mod.util.VoidSeaHelper;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -50,7 +50,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import javax.annotation.Nullable;
 import java.util.Map;
 
-import static org.confluence.mod.common.util.VoidSeaConstants.*;
+import static org.confluence.mod.util.VoidSeaConstants.*;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntity {

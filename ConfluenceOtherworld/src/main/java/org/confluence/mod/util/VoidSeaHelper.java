@@ -1,4 +1,4 @@
-package org.confluence.mod.common.util;
+package org.confluence.mod.util;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -8,7 +8,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.init.ModEffects;
 import org.jetbrains.annotations.Nullable;
 
-import static org.confluence.mod.common.util.VoidSeaConstants.*;
+import static org.confluence.mod.util.VoidSeaConstants.*;
 
 /// 虚空海
 public class VoidSeaHelper {

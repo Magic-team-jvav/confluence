@@ -36,37 +36,10 @@ legacyForge {
     runs {
         client {
             client()
-            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-            if (project.hasProperty('arcSurgeGpuProbe')) {
-                systemProperty 'confluence.arcSurge.gpuProbe', 'true'
-                gameDirectory = layout.projectDirectory.dir('run/arc-surge-skill-probe')
-            }
-            if (project.hasProperty('redGloveProbe')) {
-                systemProperty 'confluence.redGlove.probe', 'true'
-                systemProperty 'confluence.redGlove.keepOpen', project.hasProperty('redGloveKeepOpen').toString()
-                gameDirectory = layout.projectDirectory.dir('run/red-glove-probe')
-            }
-            if (project.hasProperty('steinerProbe')) {
-                gameDirectory = layout.projectDirectory.dir('run/red-glove-steiner-probe')
-            }
-            if (project.hasProperty('thunderstrikeProbe')) {
-                systemProperty 'confluence.thunderstrike.probe', 'true'
-                systemProperty 'confluence.thunderstrike.keepOpen', project.hasProperty('thunderstrikeKeepOpen').toString()
-                systemProperty 'confluence.thunderstrike.chainRedGlove', project.hasProperty('thunderstrikeRedGloveProbe').toString()
-                if (project.hasProperty('thunderstrikeRedGloveProbe')) {
-                    systemProperty 'confluence.redGlove.probe', 'true'
-                    systemProperty 'confluence.redGlove.keepOpen', project.hasProperty('thunderstrikeKeepOpen').toString()
-                }
-                gameDirectory = layout.projectDirectory.dir('run/thunderstrike-probe')
-            }
-            if (project.hasProperty('arcSurgePreview')) {
-                gameDirectory = layout.projectDirectory.dir('run/arc-surge-preview')
-            }
         }
         server {
             server()
 //            programArgument '--nogui'
-            systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
         }
         data {
             data()
@@ -100,9 +73,6 @@ legacyForge {
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)
-            if (project.hasProperty('arcSurgeGpuProbe') || project.hasProperty('redGloveProbe') || project.hasProperty('arcSurgePreview') || project.hasProperty('thunderstrikeProbe')) {
-                sourceSet(sourceSets.test)
-            }
         }
     }
 }

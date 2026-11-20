@@ -1,4 +1,4 @@
-package org.confluence.mod.client.util.soulcerer;
+package org.confluence.mod.util;
 
 import net.minecraft.util.Mth;
 

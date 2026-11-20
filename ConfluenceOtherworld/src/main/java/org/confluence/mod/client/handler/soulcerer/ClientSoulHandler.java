@@ -16,7 +16,6 @@ import org.confluence.mod.client.gui.hud.soulcerer.quick_skill.BasicSoulQuickSki
 import org.confluence.mod.client.gui.hud.soulcerer.quick_skill.CardHorizontalHud;
 import org.confluence.mod.client.gui.hud.soulcerer.quick_skill.RouletteWheelBigHud;
 import org.confluence.mod.client.gui.hud.soulcerer.quick_skill.RouletteWheelSmallHud;
-import org.confluence.mod.client.util.soulcerer.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.attachment.SoulSkillStorage;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.item.soulcerer.SoulArtifactItem;
@@ -27,6 +26,7 @@ import org.confluence.mod.network.c2s.SoulSkillIndexRequestPacketC2S;
 import org.confluence.mod.network.c2s.SoulSkillRequestPacketC2S;
 import org.confluence.mod.network.c2s.SoulSkillRequestPacketC2S.Action;
 import org.confluence.mod.network.c2s.SoulSkillUsePacketC2S;
+import org.confluence.mod.util.SoulQuickSkillHudUtils;
 import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.network.PortPacketDistributor;

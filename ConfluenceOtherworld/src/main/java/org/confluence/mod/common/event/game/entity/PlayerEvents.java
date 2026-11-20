@@ -83,10 +83,7 @@ import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
-import org.confluence.mod.util.AchievementUtils;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.PlayerUtils;
-import org.confluence.mod.util.SoulcererUtils;
+import org.confluence.mod.util.*;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
@@ -198,7 +195,7 @@ public final class PlayerEvents {
         ItemStack itemStack = event.getItemStack();
 
         // 植物纤维绳索宝典：空手右键食用草方块、植物与花
-        if (PlantFiberCordageEvents.handle(player, level, event.getHand(), itemStack, blockPos)) {
+        if (PlantFiberCordageHelper.handle(player, level, event.getHand(), itemStack, blockPos)) {
             event.setCancellationResult(InteractionResult.SUCCESS);
             event.setCanceled(true);
             return;

@@ -129,7 +129,7 @@ public class HeavenIslandsStructure extends Structure {
                 radiusXZ = random.nextInt(5, 8);
                 radiusY = random.nextInt(3, 6);
                 cloudPos.clear();
-                ellipsoid(radiusXZ - 2, radiusY - 2, radiusXZ - 2, littleCloudPosInt.offset(0, 1, 0), 6, 2, true, blockMap, littleCloudPosInt.getY());
+                ellipsoid(radiusXZ - 2, radiusY - 2, radiusXZ - 2, littleCloudPosInt.offset(0, 1, 0), 0, 6, true, blockMap, littleCloudPosInt.getY());
                 cloudPos = LibGeometryUtils.ellipsoidPos(radiusXZ - 2, radiusY - 2, radiusXZ - 2, radiusXZ, radiusY, radiusXZ, littleCloudPosInt, 0.7F, random, littleCloudPosInt.getY());
                 lineSet(cloudPos, 1.5F, 1.5F, 1, true, blockMap);
             }
@@ -141,8 +141,8 @@ public class HeavenIslandsStructure extends Structure {
                     Blocks.STONE.defaultBlockState(),
                     Blocks.GRASS_BLOCK.defaultBlockState(),
                     Blocks.DIRT.defaultBlockState(),
-                    NatureBlocks.EVAPORATIVE_CLOUD_BLOCK.get().defaultBlockState()
-            ), featureMap, builder);
+                    Blocks.WATER.defaultBlockState() // 小云团的水需要在生成后开始流动
+            ), featureMap, builder, 6);
             if (type == 0) {
                 if (houseFace0 == 0) {
                     builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "heaven_islands/sky_island_house", centerPos.offset(((houseFace1 == 0) ? 6 : -6), height, ((houseFace1 == 0) ? -12 : 12)), false, true, ((houseFace1 == 0) ? Rotation.CLOCKWISE_90 : Rotation.COUNTERCLOCKWISE_90)));

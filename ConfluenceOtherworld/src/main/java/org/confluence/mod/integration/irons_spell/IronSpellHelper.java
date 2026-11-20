@@ -4,16 +4,12 @@ import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.api.util.Utils;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.client.handler.CompatibilityHandler;
 import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.ManaStorage;
@@ -24,6 +20,7 @@ public class IronSpellHelper {
     public static final String MODID = "irons_spellbooks";
     public static final boolean IS_LOADED = LibUtils.isModLoaded(MODID);
     private static final ResourceLocation MANA_OVERLAY_NAME = ResourceLocation.fromNamespaceAndPath(MODID, "mana_overlay");
+    private static final ResourceLocation MAX_MANA_MODIFIER = ResourceLocation.fromNamespaceAndPath(MODID, "confluence_max_mana");
 
     /// 仅在模组存在时注册共享魔力的施法限制。
     public static void registerEvents() {
@@ -71,19 +68,14 @@ public class IronSpellHelper {
         return IS_LOADED && CompatibilityHandler.isConvertIronsSpellMana() && MANA_OVERLAY_NAME.equals(name);
     }
 
-    public static void additionalMana(AdditionalManaEvent event) {
-        if (IS_LOADED && ModCommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
-            int value = event.getNeoValue();
-            double maxMana = event.getEntity().getAttributeValue(AttributeRegistry.MAX_MANA);
-            event.setNeoValue(value + (int) ((maxMana - getInitMaxMana()) / toConfluence()));
-        }
-    }
-
-    public static void updateMana(LivingEntity living, Holder<Attribute> attribute) {
-        if (IS_LOADED && ModCommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && living instanceof ServerPlayer player) {
-            if (attribute == AttributeRegistry.MAX_MANA.getDelegate()) {
-                ManaStorage.of(player).flushAbility(player);
+    public static void updateManaModifier(ServerPlayer player) {
+        if (IS_LOADED) {
+            int amount = 0;
+            if (ModCommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
+                double maxMana = player.getAttributeValue(AttributeRegistry.MAX_MANA);
+                amount = (int) ((maxMana - getInitMaxMana()) / toConfluence());
             }
+            PlayerUtils.updateManaModifier(player, MAX_MANA_MODIFIER, amount);
         }
     }
 }

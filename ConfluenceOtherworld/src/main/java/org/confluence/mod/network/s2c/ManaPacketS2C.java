@@ -6,15 +6,11 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.common.attachment.ManaStorage;
 
-public record ManaPacketS2C(int maxMana, float currentMana) implements IPacketS2C {
+public record ManaPacketS2C(float currentMana) implements IPacketS2C {
     public static final Type<ManaPacketS2C> TYPE = Confluence.createType("mana");
-    public static final StreamCodec<ByteBuf, ManaPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, ManaPacketS2C::maxMana,
-            ByteBufCodecs.FLOAT, ManaPacketS2C::currentMana,
-            ManaPacketS2C::new
-    );
+    public static final StreamCodec<ByteBuf, ManaPacketS2C> STREAM_CODEC = ByteBufCodecs.FLOAT.map(ManaPacketS2C::new, ManaPacketS2C::currentMana);
 
     @Override
     public Type<ManaPacketS2C> type() {
@@ -23,6 +19,6 @@ public record ManaPacketS2C(int maxMana, float currentMana) implements IPacketS2
 
     @Override
     public void work(Player player) {
-        ClientPacketHandler.handleMana(this, player);
+        ManaStorage.of(player).setCurrentMana(currentMana);
     }
 }

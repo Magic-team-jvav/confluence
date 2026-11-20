@@ -16,6 +16,7 @@ import org.confluence.mod.network.s2c.*;
 public final class NetworkEvents {
     @SubscribeEvent
     public static void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
+        event.registrar("2").playToClient(ManaPacketS2C.TYPE, ManaPacketS2C.STREAM_CODEC, ManaPacketS2C::handle);
         event.registrar("1")
                 .playToClient(BrushingColorPacketS2C.TYPE, BrushingColorPacketS2C.STREAM_CODEC, BrushingColorPacketS2C::handle)
                 .playToClient(DeathMotionPacketS2C.TYPE, DeathMotionPacketS2C.STREAM_CODEC, DeathMotionPacketS2C::handle)
@@ -25,7 +26,6 @@ public final class NetworkEvents {
                 .playToClient(ExtraInventorySyncPacketS2C.TYPE, ExtraInventorySyncPacketS2C.STREAM_CODEC, ExtraInventorySyncPacketS2C::handle)
                 .playToClient(FishingPowerInfoPacketS2C.TYPE, FishingPowerInfoPacketS2C.STREAM_CODEC, FishingPowerInfoPacketS2C::handle)
                 .playToClient(KillBoardSyncPacketS2C.TYPE, KillBoardSyncPacketS2C.STREAM_CODEC, KillBoardSyncPacketS2C::handle)
-                .playToClient(ManaPacketS2C.TYPE, ManaPacketS2C.STREAM_CODEC, ManaPacketS2C::handle)
                 .playToClient(SoulSkillSyncPacketS2C.TYPE, SoulSkillSyncPacketS2C.STREAM_CODEC, SoulSkillSyncPacketS2C::handle)
                 .playToClient(SoulSkillIndexSyncPacketS2C.TYPE, SoulSkillIndexSyncPacketS2C.STREAM_CODEC, SoulSkillIndexSyncPacketS2C::handle)
                 .playToClient(SoulSkillUsePacketS2C.TYPE, SoulSkillUsePacketS2C.STREAM_CODEC, SoulSkillUsePacketS2C::handle)

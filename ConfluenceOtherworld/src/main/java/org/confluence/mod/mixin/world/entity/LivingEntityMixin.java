@@ -16,7 +16,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -34,7 +33,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.common.util.VoidSeaHelper;
-import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.FlushArmorSetBonusPacketS2C;
@@ -194,11 +192,6 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void saveData(CompoundTag compound, CallbackInfo ci) {
         compound.putInt("ExtraInvulnerableTicks", confluence$extraInvulnerableTicks);
-    }
-
-    @Inject(method = "onAttributeUpdated", at = @At("TAIL"))
-    private void updateMana(Holder<Attribute> attribute, CallbackInfo ci) {
-        IronSpellHelper.updateMana(confluence$self(), attribute);
     }
 
     @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;shouldDiscardFriction()Z"))

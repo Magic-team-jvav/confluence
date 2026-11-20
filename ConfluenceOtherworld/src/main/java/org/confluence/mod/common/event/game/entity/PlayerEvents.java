@@ -88,8 +88,6 @@ import org.confluence.mod.common.worldgen.secret_seed.NeverSleep;
 import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.integration.ageratum.AgeratumHelper;
-import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
-import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.AchievementsDataSyncPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
@@ -594,12 +592,6 @@ public final class PlayerEvents {
     }
 
     @SubscribeEvent
-    public static void additionalMana(AdditionalManaEvent event) {
-        ArsNouveauHelper.additionalMana(event);
-        IronSpellHelper.additionalMana(event);
-    }
-
-    @SubscribeEvent
     public static void switchItemFunction$Post(SwitchItemFunctionEvent.Post event) {
         Player player = event.getEntity();
         if (player instanceof ServerPlayer serverPlayer) {
@@ -648,10 +640,10 @@ public final class PlayerEvents {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void getArmorSetBonus(GetArmorSetBonusDataEvent event) {
         ArmorSetBonusKey key = event.getKey();
-        if (key.head().builtInRegistryHolder().is(ModTags.Items.ROBE)) {
-            if (key.chest() == ArmorItems.WIZARD_HAT.get()) {
+        if (key.chest().builtInRegistryHolder().is(ModTags.Items.ROBE)) {
+            if (key.head() == ArmorItems.WIZARD_HAT.get()) {
                 event.setNeoData(ModArmorBonus.WIZARD_HAT_SET_BONUS);
-            } else if (key.chest() == ArmorItems.MAGIC_HAT.get()) {
+            } else if (key.head() == ArmorItems.MAGIC_HAT.get()) {
                 event.setNeoData(ModArmorBonus.MAGIC_HAT_SET_BONUS);
             }
         }

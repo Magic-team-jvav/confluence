@@ -4,9 +4,11 @@ import com.google.common.collect.Iterables;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
@@ -18,6 +20,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Inventory;
@@ -56,6 +59,7 @@ import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -104,28 +108,48 @@ public final class PlayerUtils {
     public static final CustomPickupRangeEvent.RangeType HEART_RANGE = CustomPickupRangeEvent.RangeType.get(Confluence.asResource("heart"));
 
     public static void syncMana2Client(ServerPlayer player, ManaStorage manaStorage) {
-        PacketDistributor.sendToPlayer(player, new ManaPacketS2C(manaStorage.getMaxMana(), manaStorage.getCurrentMana()));
+        PacketDistributor.sendToPlayer(player, new ManaPacketS2C(manaStorage.getCurrentMana()));
     }
 
     public static void syncMana2Client(ServerPlayer player) {
         syncMana2Client(player, ManaStorage.of(player));
     }
 
+    public static void updateManaModifier(ServerPlayer player, ResourceLocation id, int amount) {
+        AttributeInstance attribute = player.getAttribute(ConfluenceMagicLib.MAX_MANA);
+        AttributeModifier previous = attribute.getModifier(id);
+        if (amount == 0) {
+            if (previous != null) {
+                attribute.removeModifier(id);
+            }
+        } else if (previous == null || previous.amount() != amount) {
+            attribute.addOrUpdateTransientModifier(new AttributeModifier(id, amount, AttributeModifier.Operation.ADD_VALUE));
+        }
+    }
+
     public static void regenerateMana(ServerPlayer player) {
+        ManaStorage manaStorage = ManaStorage.of(player);
+        if (manaStorage.clampCurrentMana()) {
+            syncMana2Client(player, manaStorage);
+        }
         if (SoulcererUtils.isSoulMode(player)) {
             return;
         }
-        ManaStorage manaStorage = ManaStorage.of(player);
-        if (!manaStorage.canReceive()) return;
+        if (!manaStorage.canReceive()) {
+            return;
+        }
 
         int delay = manaStorage.getRegenerateDelay();
         boolean notMove = isNotMove(player);
+        boolean fastRegeneration = TCUtils.hasType(player, AccessoryItems.FAST$MANA$GENERATION);
         if (delay > 0) {
             if (manaStorage.isArcaneCrystalUsed())
                 delay = (int) ((float) delay * (notMove ? 0.975F : 0.95F));
             if (delay > 20 && player.hasEffect(ModEffects.MANA_REGENERATION)) delay = 20;
             int delayReduce = notMove ? 2 : 1;
-            if (manaStorage.isFastManaRegeneration()) delayReduce += 1;
+            if (fastRegeneration) {
+                delayReduce++;
+            }
             manaStorage.setRegenerateDelay(delay - delayReduce);
             return;
         }
@@ -134,14 +158,22 @@ public final class PlayerUtils {
 
         FloatSupplier receive = () -> {
             /// 1.0F / 7.0F = 0.14285715F
-            float a = manaStorage.getMaxMana() * 0.14285715F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
-            if (notMove) a += manaStorage.getMaxMana() * 0.5F;
-            float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
+            float maxMana = manaStorage.getMaxMana();
+            float a = maxMana * 0.14285715F + (fastRegeneration ? 25 : 0) + 1;
+            if (notMove) {
+                a += maxMana * 0.5F;
+            }
+            float b = manaStorage.getCurrentMana() * 0.8F / maxMana + 0.2F;
             float baseRegen = a * b * 0.0115F * EnchantmentUtils.processManaRegeneration(player);
             return baseRegen + starBottleBonusPerTick;
         };
 
-        if (manaStorage.receiveMana(receive)) syncMana2Client(player, manaStorage);
+        if (manaStorage.receiveMana(receive)) {
+            syncMana2Client(player, manaStorage);
+            if (manaStorage.getCurrentMana() >= manaStorage.getMaxMana()) {
+                player.playNotifySound(ModSoundEvents.COOLDOWN_RECOVERY.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+            }
+        }
     }
 
     private static boolean isNotMove(ServerPlayer player) {
@@ -649,7 +681,6 @@ public final class PlayerUtils {
     }
 
     public static void flushPrimitiveValueData(ServerPlayer player) {
-        ManaStorage.of(player).flushAbility(player);
         SoulStorage.of(player).freshMaxSoul();
         FishingPowerInfoPacketS2C.sendToClient(player);
         VisibilityPacketS2C.sendEcho(player);

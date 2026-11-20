@@ -14,7 +14,6 @@ import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixed.IDeathScreen;
 import org.confluence.mod.mixed.ILevelRenderer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -24,8 +23,6 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.jetbrains.annotations.Nullable;
 
 public final class ClientPacketHandler {
-    private static int maxMana = 20;
-    private static float currentMana = 20;
     private static float fishingPower = 0.0F;
     private static boolean echoVisible = false;
     private static long secretFlag = 0L;
@@ -36,14 +33,6 @@ public final class ClientPacketHandler {
 
     private static int luminance = 0;
     private static final Int2IntMap remoteLuminance = new Int2IntArrayMap();
-
-    public static float getCurrentMana() {
-        return currentMana;
-    }
-
-    public static int getMaxMana() {
-        return maxMana;
-    }
 
     public static float getFishingPower() {
         return fishingPower;
@@ -74,22 +63,12 @@ public final class ClientPacketHandler {
     }
 
     public static void reset() {
-        maxMana = 20;
-        currentMana = 20;
         fishingPower = 0.0F;
         echoVisible = false;
         secretFlag = 0L;
         showSignal = false;
         luminance = 0;
         remoteLuminance.clear();
-    }
-
-    public static void handleMana(ManaPacketS2C packet, Player player) {
-        maxMana = packet.maxMana();
-        currentMana = packet.currentMana();
-        if (currentMana >= maxMana) {
-            player.playSound(ModSoundEvents.COOLDOWN_RECOVERY.get());
-        }
     }
 
     public static void handleFishingPower(FishingPowerInfoPacketS2C packet) {

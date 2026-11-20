@@ -10,7 +10,6 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.integration.terra_curio.WrappedAccessoriesAttachment;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.primitive.FloatValue;
-import org.confluence.terra_curio.api.primitive.IntegerValue;
 import org.confluence.terra_curio.common.attachment.AccessoriesAttachment;
 import org.confluence.terra_curio.common.attachment.PrimitiveValueHolder;
 import org.confluence.terra_curio.common.init.TCAttachments;
@@ -23,11 +22,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = AccessoriesAttachment.class, remap = false)
 public abstract class AccessoriesAttachmentMixin extends PrimitiveValueHolder {
     @Inject(method = "lambda$flushAbility$2", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$Inject()V"))
-    private void additionalMana(CallbackInfo ci, @Local(name = "stack") ItemStack stack) {
+    private void manaCost(CallbackInfo ci, @Local(name = "stack") ItemStack stack) {
         PrefixComponent prefix = PrefixUtils.getPrefix(stack);
-        if (prefix == null) return;
-        combineValue(AccessoryItems.ADDITIONAL$MANA, new IntegerValue(prefix.additionalMana()));
-        combineValue(AccessoryItems.MANA$USE$REDUCE, new FloatValue(-prefix.manaCost()));
+        if (prefix != null && prefix.manaCost() != 0.0F) {
+            combineValue(AccessoryItems.MANA$USE$REDUCE, new FloatValue(-prefix.manaCost()));
+        }
     }
 
     @ModifyReturnValue(method = "of", at = @At("RETURN"))

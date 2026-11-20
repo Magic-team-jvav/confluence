@@ -73,7 +73,6 @@ public class AccessoryItems {
 
     public static final ValueType.FloatType MANA$USE$REDUCE = ValueType.ofFloat("mana_use_reduce", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
     public static final ValueType.FloatType REDUCE$HEALING$COOLDOWN = ValueType.ofFloat("reduce_healing_cooldown", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
-    public static final ValueType.IntegerType ADDITIONAL$MANA = ValueType.ofInteger("additional_mana", IntegerValue.ADDITION, 0);
     public static final ValueType.IntegerType SPECIAL$PRICE = ValueType.ofInteger("special_price", IntegerValue.GET_MAX, 0);
     public static final ValueType<Tuple<Float, Integer>, PickupRangeAbilityValue> MANA$PICKUP$RANGE = ValueType.create("mana_pickup_range", PickupRangeAbilityValue.COMBINE_RULE, PickupRangeAbilityValue.CODEC, new Tuple<>(1.75F, 0), PickupRangeAbilityValue::new);
     public static final ValueType<Tuple<Float, Integer>, PickupRangeAbilityValue> COIN$PICKUP$RANGE = ValueType.create("coin_pickup_range", PickupRangeAbilityValue.COMBINE_RULE, PickupRangeAbilityValue.CODEC, new Tuple<>(2.0F, 0), PickupRangeAbilityValue::new);
@@ -100,10 +99,10 @@ public class AccessoryItems {
             CELESTIAL_EMBLEM = registerCurio("celestial_emblem", "天界徽章", builder -> builder.noTooltip().rarity(PINK).accessories(of(MANA$PICKUP$RANGE, new Tuple<>(12.5F, 0))).attribute(LibAttributes.getMagicDamage(), 0.15, ADD_MULTIPLIED_TOTAL)),
             MAGNET_FLOWER = registerCurio("magnet_flower", "磁花", builder -> builder.noTooltip().rarity(PINK).accessories(units(AUTO$GET$MANA), of(MANA$USE$REDUCE, 0.08F), of(MANA$PICKUP$RANGE, new Tuple<>(12.5F, 0)))),
             ARCANE_FLOWER = registerCurio("arcane_flower", "奥术花", builder -> builder.noTooltip().rarity(PINK).accessories(units(AUTO$GET$MANA), of(MANA$USE$REDUCE, 0.08F)).attribute(ConfluenceMagicLib.AGGRO, -400, ADD_VALUE)),
-            BAND_OF_STARPOWER = registerCurioWithEnglishName("band_of_starpower", "星力手环", "Band of Starpower", builder -> builder.noTooltip().accessories(of(ADDITIONAL$MANA, 40))),
-            MANA_REGENERATION_BAND = registerCurio("mana_regeneration_band", "魔力再生手环", builder -> builder.noTooltip().accessories(units(FAST$MANA$GENERATION), of(ADDITIONAL$MANA, 40))),
-            MAGIC_CUFFS = registerCurio("magic_cuffs", "魔法手铐", builder -> builder.noTooltip().rarity(GREEN).accessories(units(HURT$GET$MANA, FAST$MANA$GENERATION), of(ADDITIONAL$MANA, 40))),
-            CELESTIAL_CUFFS = registerCurio("celestial_cuffs", "天界手铐", builder -> builder.noTooltip().rarity(PINK).accessories(units(HURT$GET$MANA, FAST$MANA$GENERATION), of(ADDITIONAL$MANA, 40), of(MANA$PICKUP$RANGE, new Tuple<>(12.5F, 0)))),
+            BAND_OF_STARPOWER = registerCurioWithEnglishName("band_of_starpower", "星力手环", "Band of Starpower", builder -> builder.attribute(ConfluenceMagicLib.MAX_MANA, 20, ADD_VALUE).noTooltip()),
+            MANA_REGENERATION_BAND = registerCurio("mana_regeneration_band", "魔力再生手环", builder -> builder.attribute(ConfluenceMagicLib.MAX_MANA, 20, ADD_VALUE).noTooltip().accessories(units(FAST$MANA$GENERATION))),
+            MAGIC_CUFFS = registerCurio("magic_cuffs", "魔法手铐", builder -> builder.attribute(ConfluenceMagicLib.MAX_MANA, 20, ADD_VALUE).noTooltip().rarity(GREEN).accessories(units(HURT$GET$MANA, FAST$MANA$GENERATION))),
+            CELESTIAL_CUFFS = registerCurio("celestial_cuffs", "天界手铐", builder -> builder.attribute(ConfluenceMagicLib.MAX_MANA, 20, ADD_VALUE).noTooltip().rarity(PINK).accessories(units(HURT$GET$MANA, FAST$MANA$GENERATION), of(MANA$PICKUP$RANGE, new Tuple<>(12.5F, 0)))),
             MANA_CLOAK = registerCurio("mana_cloak", "魔力斗篷", builder -> builder.noTooltip().rarity(PINK).accessories(units(AUTO$GET$MANA), of(TCItems.STAR$CLOCK, true), of(MANA$USE$REDUCE, 0.08F))),
             PHILOSOPHERS_STONE = registerCurioWithEnglishName("philosophers_stone", "点金石", "Philosopher's Stone", builder -> builder.noTooltip().rarity(LIGHT_RED).accessories(of(REDUCE$HEALING$COOLDOWN, 0.25F))),
             CHARM_OF_MYTHS = registerDirectlyWithEnglishName("charm_of_myths", "神话护身符", "Charm of Myths", name -> new BandOfRegeneration(BaseCurioItem.builder(name).noTooltip().rarity(LIGHT_PURPLE).accessories(of(REDUCE$HEALING$COOLDOWN, 0.25F))));

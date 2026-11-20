@@ -8,7 +8,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.EffectPotionItem;
 import org.confluence.mod.common.item.potion.HealingPotionItem;
@@ -37,7 +36,6 @@ public record KeyRequestPacketC2S(byte key) implements IPacketC2S {
             EffectPotionItem.quickBuff(player);
         } else if (key == KEY_CLAIRVOYANCE) {
             player.addEffect(new MobEffectInstance(ModEffects.CLAIRVOYANCE, MobEffectInstance.INFINITE_DURATION));
-            ManaStorage.of(player).flushAbility(player);
         }
     }
 

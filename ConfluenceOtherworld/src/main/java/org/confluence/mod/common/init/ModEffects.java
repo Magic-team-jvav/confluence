@@ -159,6 +159,7 @@ public final class ModEffects {
             .addAttributeModifier(Attributes.ATTACK_SPEED, id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(LibAttributes.getAttackDamage(), id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredHolder<MobEffect, MobEffect> CLAIRVOYANCE = registerEffect("clairvoyance", "灵视", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x9999FF)
+            .addAttributeModifier(ConfluenceMagicLib.MAX_MANA, id, 20, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(LibAttributes.getMagicDamage(), id, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(LibAttributes.getCriticalChance(), id, 0.02, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> HOLY_PROTECTION = registerEffect("holy_protection", "神圣防护", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8888FF));

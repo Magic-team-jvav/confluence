@@ -21,7 +21,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.terra_curio.api.primitive.PrimitiveValue;
 import org.confluence.terra_curio.api.primitive.ValueType;
@@ -122,7 +121,7 @@ public class BaseArmorItem extends ArmorItem {
         }
 
         public Builder additionalMana(int value) {
-            return armorBonus(PrimitiveValueComponent.of(AccessoryItems.ADDITIONAL$MANA, value));
+            return attribute(ConfluenceMagicLib.MAX_MANA, value, AttributeModifier.Operation.ADD_VALUE);
         }
 
         public Builder requiresModLoaded(String modid) {

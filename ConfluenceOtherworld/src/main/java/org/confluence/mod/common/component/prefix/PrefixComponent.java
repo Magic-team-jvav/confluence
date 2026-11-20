@@ -1,13 +1,19 @@
 package org.confluence.mod.common.component.prefix;
 
+import com.google.common.collect.ImmutableListMultimap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,22 +21,28 @@ public record PrefixComponent(
         PrefixType type,
         String name,
         AttributeModifiersValue modifiers,
-        float manaCost,
-        int additionalMana
+        float manaCost
 ) implements DataComponentType<PrefixComponent> {
     public static final Codec<PrefixComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             PrefixType.CODEC.lenientOptionalFieldOf("type", PrefixType.UNKNOWN).forGetter(PrefixComponent::type),
             Codec.STRING.lenientOptionalFieldOf("name", "unknown").forGetter(PrefixComponent::name),
             AttributeModifiersValue.CODEC.lenientOptionalFieldOf("modifiers", AttributeModifiersValue.EMPTY).forGetter(PrefixComponent::modifiers),
             Codec.FLOAT.lenientOptionalFieldOf("mana_cost", 0.0F).forGetter(PrefixComponent::manaCost),
-            Codec.INT.lenientOptionalFieldOf("additional_mana", 0).forGetter(PrefixComponent::additionalMana)
-    ).apply(instance, PrefixComponent::new));
+            Codec.INT.lenientOptionalFieldOf("additional_mana", 0).forGetter(prefix -> 0)
+    ).apply(instance, (type, name, modifiers, manaCost, legacyMana) -> {
+        if (legacyMana != 0 && !modifiers.get().containsKey(ConfluenceMagicLib.MAX_MANA)) {
+            modifiers = new AttributeModifiersValue(ImmutableListMultimap.<Holder<Attribute>, AttributeModifier>builder()
+                    .putAll(modifiers.get())
+                    .put(ConfluenceMagicLib.MAX_MANA, new AttributeModifier(LibUtils.withUniqueSuffix(ModPrefix.Accessory.ID), legacyMana, AttributeModifier.Operation.ADD_VALUE))
+                    .build());
+        }
+        return new PrefixComponent(type, name, modifiers, manaCost);
+    }));
     public static final StreamCodec<RegistryFriendlyByteBuf, PrefixComponent> STREAM_CODEC = StreamCodec.composite(
             PrefixType.STREAM_CODEC, PrefixComponent::type,
             ByteBufCodecs.STRING_UTF8, PrefixComponent::name,
             AttributeModifiersValue.STREAM_CODEC, PrefixComponent::modifiers,
             ByteBufCodecs.FLOAT, PrefixComponent::manaCost,
-            ByteBufCodecs.VAR_INT, PrefixComponent::additionalMana,
             PrefixComponent::new
     );
 
@@ -54,7 +66,6 @@ public record PrefixComponent(
         result = 31 * result + name.hashCode();
         result = 31 * result + modifiers.hashCode();
         result = 31 * result + Float.hashCode(manaCost);
-        result = 31 * result + additionalMana;
         return result;
     }
 
@@ -62,9 +73,8 @@ public record PrefixComponent(
     public boolean equals(Object o) {
         if (o == this) return true;
         return o instanceof PrefixComponent(
-                PrefixType type1, String name1, AttributeModifiersValue modifiers1, float cost,
-                int mana
+                PrefixType type1, String name1, AttributeModifiersValue modifiers1, float cost
         ) &&
-                mana == additionalMana && cost == manaCost && type1 == type && name1.equals(name) && modifiers1.equals(modifiers);
+                cost == manaCost && type1 == type && name1.equals(name) && modifiers1.equals(modifiers);
     }
 }

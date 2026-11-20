@@ -10,6 +10,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
+import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.TaskScheduler;
@@ -97,6 +99,8 @@ public final class TickEvents {
         if (entity instanceof ServerPlayer player) {
             ServerLevel level = player.serverLevel();
             IServerPlayer.of(player).confluence$setCouldPickupItem(true);
+            ArsNouveauHelper.updateManaModifier(player);
+            IronSpellHelper.updateManaModifier(player);
             PlayerUtils.regenerateMana(player);
             SoulcererUtils.learnSoulSkillsOnFirstObtain(player);
             SoulcererUtils.tickSoulSkills(player);

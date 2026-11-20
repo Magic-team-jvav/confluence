@@ -11,7 +11,7 @@ import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
-import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.SoulStorage;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.mod.util.SoulcererUtils;
@@ -74,12 +74,16 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
 
     /// 读取当前资源模式对应的客户端真值。
     private static float getCurrentResource(Minecraft minecraft) {
-        return SoulcererUtils.isSoulMode(minecraft.player) ? SoulStorage.of(minecraft.player).getCurrentSoul() : ClientPacketHandler.getCurrentMana();
+        if (SoulcererUtils.isSoulMode(minecraft.player)) {
+            return SoulStorage.of(minecraft.player).getCurrentSoul();
+        }
+        ManaStorage manaStorage = ManaStorage.of(minecraft.player);
+        return Math.min(manaStorage.getCurrentMana(), manaStorage.getMaxMana());
     }
 
     /// 读取当前资源模式对应的资源上限。
-    private static int getMaxResource(Minecraft minecraft) {
-        return SoulcererUtils.isSoulMode(minecraft.player) ? SoulStorage.of(minecraft.player).getMaxSoul() : ClientPacketHandler.getMaxMana();
+    private static float getMaxResource(Minecraft minecraft) {
+        return SoulcererUtils.isSoulMode(minecraft.player) ? SoulStorage.of(minecraft.player).getMaxSoul() : ManaStorage.of(minecraft.player).getMaxMana();
     }
 
     /// 精致样式的灵魂条：每 20 灵魂一格，自右上向下排布「魂器底座 + 骷髅」。
@@ -126,17 +130,17 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
                 int widthMana = guiGraphics.guiWidth() - 21 + ModClientConfigs.manaOffsetX;
                 int heightMana = 4 + ModClientConfigs.manaOffsetY;
                 float currentMana = getCurrentResource(minecraft);
-                int maxMana = getMaxResource(minecraft);
+                float maxMana = getMaxResource(minecraft);
                 /// 灵魂条走独立图元，不再用魔力条染色，避免把新的底座/骷髅一起染成青色。
                 if (SoulcererUtils.isSoulMode(minecraft.player)) {
-                    renderLegacySoulBar(guiGraphics, currentMana, maxMana, widthMana, heightMana);
+                    renderLegacySoulBar(guiGraphics, currentMana, (int) maxMana, widthMana, heightMana);
                     return;
                 }
-                int maxManaCount = Math.ceilDiv(maxMana, RESOURCE_PER_LEGACY_ICON);
+                int maxManaCount = (int) Math.ceil(maxMana / RESOURCE_PER_LEGACY_ICON);
                 float currentManaToBlit;
                 float ts;
                 for (int i = 0; i < maxManaCount; i++) {
-                    int iconCapacity = Math.min(RESOURCE_PER_LEGACY_ICON, maxMana - i * RESOURCE_PER_LEGACY_ICON);
+                    float iconCapacity = Math.min(RESOURCE_PER_LEGACY_ICON, maxMana - i * RESOURCE_PER_LEGACY_ICON);
                     currentManaToBlit = currentMana - i * RESOURCE_PER_LEGACY_ICON - iconCapacity;
                     guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 0, 34, widthMana, heightMana + i * LEGACY_ICON_SPACING, 17, 16);
                     if (currentManaToBlit >= 0) {
@@ -156,9 +160,9 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
                 float resourceCurrent = getCurrentResource(minecraft);
-                int resourceMax = getMaxResource(minecraft);
+                float resourceMax = getMaxResource(minecraft);
                 float currentMana = resourceCurrent / OVERLAY_RESOURCE_DIVISOR;
-                float maxMana = (float) resourceMax / OVERLAY_RESOURCE_DIVISOR;
+                float maxMana = resourceMax / OVERLAY_RESOURCE_DIVISOR;
                 boolean soulMode = SoulcererUtils.isSoulMode(minecraft.player);
                 int widthMana = guiGraphics.guiWidth() / 2 + 10 + ModClientConfigs.manaOffsetX;
                 int heightMana = guiGraphics.guiHeight() - minecraft.gui.rightHeight + ModClientConfigs.manaOffsetY;

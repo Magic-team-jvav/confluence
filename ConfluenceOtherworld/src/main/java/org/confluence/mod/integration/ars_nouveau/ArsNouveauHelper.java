@@ -14,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.common.util.TriState;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.client.handler.CompatibilityHandler;
 import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.ManaStorage;
@@ -26,6 +25,7 @@ public class ArsNouveauHelper {
     public static final boolean IS_LOADED = LibUtils.isModLoaded(MODID);
     private static final ResourceLocation MANA_BAR_NAME = ResourceLocation.fromNamespaceAndPath(MODID, "mana_hud");
     private static final String SPELL_CROSSBOW_TAG = "isSpell";
+    private static final ResourceLocation MAX_MANA_MODIFIER = ResourceLocation.fromNamespaceAndPath(MODID, "confluence_max_mana");
 
     public static int getInitMaxMana() {
         return ServerConfig.INIT_MAX_MANA.get();
@@ -71,17 +71,16 @@ public class ArsNouveauHelper {
         return IS_LOADED && CompatibilityHandler.isConvertArsNouveauMana() && MANA_BAR_NAME.equals(name);
     }
 
-    public static void additionalMana(AdditionalManaEvent event) {
+    public static void updateManaModifier(ServerPlayer player) {
         if (IS_LOADED) {
-            int value = event.getNeoValue();
-            ManaCap manaCap = CapabilityRegistry.getMana(event.getEntity());
-            event.setNeoValue(value + (int) ((manaCap.getMaxMana() - getInitMaxMana()) / toConfluence()));
-        }
-    }
-
-    public static void updateMana(LivingEntity living) {
-        if (ModCommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get() && living instanceof ServerPlayer player) {
-            ManaStorage.of(player).flushAbility(player);
+            int amount = 0;
+            if (ModCommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get()) {
+                ManaCap mana = CapabilityRegistry.getMana(player);
+                if (mana != null && mana.getMaxMana() > 0) {
+                    amount = (int) ((mana.getMaxMana() - getInitMaxMana()) / toConfluence());
+                }
+            }
+            PlayerUtils.updateManaModifier(player, MAX_MANA_MODIFIER, amount);
         }
     }
 }

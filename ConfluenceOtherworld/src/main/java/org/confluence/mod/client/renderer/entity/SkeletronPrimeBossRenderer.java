@@ -32,6 +32,10 @@ public class SkeletronPrimeBossRenderer extends BossGeoRenderer<SkeletronPrime> 
     @Override
     protected void adjustPose(PoseStack poseStack, SkeletronPrime boss,
                               BakedGeoModel model, float partialTick) {
+        if (boss.isParalyzed()) {
+            poseStack.mulPose(Axis.ZP.rotationDegrees(boss.empShake(partialTick)));
+            return;
+        }
         if (!boss.isSpinning()) return;
         poseStack.translate(0.0F, 1.15F, 0.0F);
         float yaw = Mth.rotLerp(partialTick, boss.yBodyRotO, boss.yBodyRot) * Mth.DEG_TO_RAD;

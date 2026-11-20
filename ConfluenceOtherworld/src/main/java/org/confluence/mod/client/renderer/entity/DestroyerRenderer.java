@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
@@ -631,6 +632,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
         TheDestroyer head = entity instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) entity;
         int index = entity instanceof DestroyerPart part ? part.getIndex() : 0;
         Quaternionf rotation = head.getBody().getRenderRotation(index, partialTick);
+        if (head.isParalyzed()) rotation.rotateZ(head.empShake(partialTick) * Mth.DEG_TO_RAD);
         float shake = head.getDeathShakeStrength(index);
         if (shake > 0.0F) {
             float phase = (head.tickCount + partialTick) * DEATH_SHAKE_PHASE_SPEED + index;

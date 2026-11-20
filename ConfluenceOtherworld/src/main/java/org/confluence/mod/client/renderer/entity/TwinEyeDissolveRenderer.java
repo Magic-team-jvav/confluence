@@ -61,7 +61,7 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye> extends BossGeoR
     @Override
     protected void adjustPose(PoseStack poseStack, T entity, BakedGeoModel model, float partialTick) {
         poseStack.translate(0, 0.5, 0);
-        poseStack.mulPose(Axis.ZP.rotationDegrees(entity.getVisualBank(partialTick)));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(entity.getVisualBank(partialTick) + entity.empShake(partialTick)));
         poseStack.translate(0, -0.5, 0);
         model.getBone("bone31").ifPresent(bone -> {
             bone.setHidden(!entity.isTransformed());

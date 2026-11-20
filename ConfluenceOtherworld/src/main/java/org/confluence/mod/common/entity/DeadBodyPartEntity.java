@@ -8,6 +8,8 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModFluids;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -17,6 +19,9 @@ import software.bernie.geckolib.cache.object.GeoCube;
 import java.util.List;
 
 public class DeadBodyPartEntity extends Entity {
+    private static final boolean PROFILE_MOVEMENT = LibUtils.isDev();
+    private static final long SLOW_MOVE_NANOS = 20_000_000L;
+
     // 这些注解就是为了照顾那个永远用不到的构造方法
     @Nullable
     public final Entity dyingEntity;
@@ -139,7 +144,17 @@ public class DeadBodyPartEntity extends Entity {
         } else {
             applyGravity();
         }
-        move(MoverType.SELF, getDeltaMovement());
+        Vec3 motion = getDeltaMovement();
+        long start = PROFILE_MOVEMENT ? System.nanoTime() : 0L;
+        move(MoverType.SELF, motion);
+        if (PROFILE_MOVEMENT) {
+            long elapsed = System.nanoTime() - start;
+            if (elapsed >= SLOW_MOVE_NANOS) {
+                Confluence.LOGGER.warn("Slow death fragment move: {} ms, source={}, age={}, motion={}, box={}, position={}",
+                        elapsed / 1_000_000, dyingEntity == null ? null : dyingEntity.getType(), tickCount,
+                        motion, getBoundingBox(), position());
+            }
+        }
         // 摩擦力
         if (inLiquid) {
             double drag = isInLava() || inHoney ? 0.5 : 0.8;

@@ -18,6 +18,7 @@ import org.confluence.mod.common.init.ModEffects;
 
 /// 树妖在敌人接近时维持会扩张的守护结界。
 public final class DryadNPC extends BaseNPC {
+    private static final double MAX_WARD_RADIUS = 63.75;
     private static final int WARD_DURATION = 190;
     private static final int EFFECT_DURATION = 40;
     private int wardTicks = -1;
@@ -90,7 +91,7 @@ public final class DryadNPC extends BaseNPC {
         if (ticks < 34) return 18.75;
         if (ticks < 100) return Mth.lerp((ticks - 34) / 66.0, 18.75, 37.5);
         if (ticks < 167) return 37.5;
-        return Mth.lerp((ticks - 167) / 23.0, 37.5, 63.75);
+        return Mth.lerp((ticks - 167) / 23.0, 37.5, MAX_WARD_RADIUS);
     }
 
     @Override

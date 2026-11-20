@@ -41,7 +41,7 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 ///
 /// 机械臂实体是可重建的临时部件。本体只保存各槽位的摧毁状态和剩余生命，
 /// 因而区块重载不会复制仍存活的部件，也不会复活已经摧毁的部件。
-public class SkeletronPrime extends BaseBoss {
+public class SkeletronPrime extends MechanicalBoss {
     /// 四个低位分别对应四条机械臂；掩码全置一表示所有机械臂均已摧毁。
     private static final int ARM_COUNT = 4;
     /// 全部机械臂损毁时的位掩码。
@@ -122,6 +122,7 @@ public class SkeletronPrime extends BaseBoss {
     @Override
     public void tick() {
         super.tick();
+        if (isParalyzed()) return;
         if (!isAlive()) {
             return;
         }

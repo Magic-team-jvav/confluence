@@ -229,6 +229,7 @@ public final class ModEffects {
     /// 虚空强袭（附魔「虚空强袭」与虚空液体赋予）：5 秒内受到的伤害从 3%/6%/9% 线性爬到 15%/30%/50%，
     /// 具体倍率在 `EnchantmentBehaviors#voidStrikeAmplify` 里按剩余时长结算，这里只负责挂状态与图标。
     public static final DeferredHolder<MobEffect, MobEffect> VOID_STRIKE = registerEffectWithEnglishName("void_strike", "虚空强袭", "Void Strike", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x6A2FA0));
+    public static final DeferredHolder<MobEffect, MobEffect> EMP = registerEffectWithEnglishName("emp", "电磁脉冲", "Electromagnetic Pulse", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x70DFFF));
 
     private static double exquisitelyStuffed(int v, double v0, double v1, double v2) {
         if (v == 1) return v1;

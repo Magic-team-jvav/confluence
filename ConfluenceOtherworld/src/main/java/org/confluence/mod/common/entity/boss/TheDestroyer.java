@@ -64,7 +64,7 @@ import java.util.Random;
 import java.util.WeakHashMap;
 
 /// 毁灭者的战斗主体：负责 AI、生命及目标，身体轨迹与碰撞部件交给 DestroyerBody。
-public class TheDestroyer extends BaseBoss {
+public class TheDestroyer extends MechanicalBoss {
     private static final EntityDataAccessor<Integer> SIDE_BEAM_SEED = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BEAM_TICK = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<BlockState> DEBRIS_STATE = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.BLOCK_STATE);
@@ -259,7 +259,7 @@ public class TheDestroyer extends BaseBoss {
     private int[] deathOrder;
     private int[] deathRank;
 
-    public int getBeamTick() {return isAlive() ? entityData.get(BEAM_TICK) : -1;}
+    public int getBeamTick() {return isAlive() && !isParalyzed() ? entityData.get(BEAM_TICK) : -1;}
 
     public int getSideBeamSeed() {return entityData.get(SIDE_BEAM_SEED);}
 
@@ -484,6 +484,7 @@ public class TheDestroyer extends BaseBoss {
     /// 位移由服务端状态机处理，关闭原版陆行摩擦和重力对抛物线的二次作用。
     @Override
     public void travel(Vec3 input) {
+        if (isParalyzed()) return;
         if (!level().isClientSide && isAlive() && isDisengageRetreating()) {
             moveAlongTrajectory(getDeltaMovement());
             body.update();
@@ -502,6 +503,7 @@ public class TheDestroyer extends BaseBoss {
     protected boolean hasEntityContactAttack() {return false;}
 
     private void tickDestroyer() {
+        if (isParalyzed()) return;
         if (!isAlive() || isDisengageRetreating()) return;
         LivingEntity target = getTarget();
         updateStage();
@@ -1195,7 +1197,7 @@ public class TheDestroyer extends BaseBoss {
             if (!isAlive() || index <= 0 || part.isTail() || releasedProbes.get(index))
                 return false;
             TheDestroyerProbe probe = new TheDestroyerProbe(BossEntities.THE_DESTROYER_PROBE.get(), level());
-            probe.setPos(part.position());
+            probe.moveTo(part.getX(), part.getY(), part.getZ(), probe.getYRot(), probe.getXRot());
             if (!level().addFreshEntity(probe)) return false;
             probe.attach(TheDestroyer.this, part.position());
             releasedProbes.set(index);

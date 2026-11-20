@@ -252,7 +252,7 @@ public class Retinazer extends AbstractTwinEye {
 
     public Vec3 getBeamDirection() {return new Vec3(entityData.get(BEAM_DIRECTION));}
 
-    public float getBeamLength() {return entityData.get(BEAM_LENGTH);}
+    public float getBeamLength() {return isParalyzed() ? 0 : entityData.get(BEAM_LENGTH);}
 
     public boolean isBeamCharging() {return entityData.get(BEAM_CHARGING);}
 

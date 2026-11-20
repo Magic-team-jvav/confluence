@@ -263,6 +263,7 @@ public final class GameClientEvents {
         DeathEffectHandler.reset();
         DestroyerShellEffectHandler.reset();
         CameraShake.clear();
+        EmpPulseRenderer.clear();
         RedGloveVfx.clear();
         ThunderstrikeVfx.clear();
         HitMarkerHud.clear();
@@ -446,6 +447,7 @@ public final class GameClientEvents {
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
             SpelunkerHelper.renderLevel(event, player);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+            EmpPulseRenderer.render(event.getPoseStack(), event.getCamera().getPosition(), minecraft);
             MartianOfficerRenderer.renderShields(event);
             PoseStack poseStack = event.getPoseStack();
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);

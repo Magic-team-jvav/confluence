@@ -40,7 +40,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /// 双眼各自维护技能与脱战，通过遭遇记录共享一阶段目标、血条和胜负。
-public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSource {
+public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDropSource {
     private static final EntityDataAccessor<Optional<UUID>> ENCOUNTER_UUID = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Boolean> DATA_TRANSFORMED = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_DASHING = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
@@ -290,6 +290,7 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
             refreshBossBar(encounter);
         }
         super.tick();
+        if (isParalyzed()) return;
         if (level().isClientSide) {
             if (isRetinazer() && getEncounterUUID() != null && (linkEmitter == null || linkEmitter.isRemoved())) {
                 linkEmitter = new TwinEyeLinkEmitter(this);

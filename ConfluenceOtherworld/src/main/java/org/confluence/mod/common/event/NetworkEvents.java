@@ -67,6 +67,7 @@ public final class NetworkEvents {
         handler.registerInGameS2C(BrushingColorPacketS2C.class, BrushingColorPacketS2C.ID, BrushingColorPacketS2C.STREAM_CODEC);
 //        handler.registerInGameS2C(CompatibilitySyncPacketS2c.class, CompatibilitySyncPacketS2c.ID, CompatibilitySyncPacketS2c.STREAM_CODEC);
         handler.registerInGameS2C(DeathMotionPacketS2C.class, DeathMotionPacketS2C.ID, DeathMotionPacketS2C.STREAM_CODEC);
+        handler.registerInGameS2C(EmpPulsePacketS2C.class, EmpPulsePacketS2C.ID, EmpPulsePacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(DragonChargePlayerConfigPacketS2C.class, DragonChargePlayerConfigPacketS2C.ID, DragonChargePlayerConfigPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(DropletsSyncPacketS2C.class, DropletsSyncPacketS2C.ID, DropletsSyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(ExtraInventoryStackPacketS2C.class, ExtraInventoryStackPacketS2C.ID, ExtraInventoryStackPacketS2C.STREAM_CODEC);

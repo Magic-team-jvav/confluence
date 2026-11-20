@@ -7,6 +7,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.WormSteering;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.joml.Quaternionf;
 
@@ -17,6 +18,9 @@ import java.util.List;
 
 /// 毁灭者身体的唯一状态管理者：维护轨迹、碰撞部件和整链快照，客户端整链共用插值时刻。
 public final class DestroyerBody {
+    // 头部相对第一体节允许的最大三维弯折角，覆盖移动和原地瞄准。
+    private static final double MAX_NECK_BEND = Math.toRadians(30.0);
+    private static final double MIN_NECK_DOT = Math.cos(MAX_NECK_BEND);
     // 相邻体节的最大滚转角差，单位度；达到此值时强制收拢至阈值以内。
     private static final float MAX_ROLL_GAP = 20.0F;
     // 小角差跟随及越过最高点后归正时，每 tick 消除的剩余角差比例。
@@ -93,7 +97,14 @@ public final class DestroyerBody {
             trail.addLast(head.position().add(backward.scale(i)));
     }
 
-    void update() {update(true);}
+    void update() {
+        update(true);
+        Vec3 neck = head.position().subtract(parts[0].position()).normalize();
+        Vec3 look = head.getLookAngle();
+        if (neck.lengthSqr() > 0 && neck.dot(look) < MIN_NECK_DOT) {
+            head.faceCombatDirection(WormSteering.turn(neck, look, MAX_NECK_BEND), 180, 180);
+        }
+    }
 
     private void update(boolean effects) {
         initializeTrail();

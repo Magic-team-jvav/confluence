@@ -136,6 +136,10 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
 
     @Override
     protected void tickPart(SkeletronPrime master) {
+        if (master.isParalyzed()) {
+            setDeltaMovement(0, 0, 0);
+            return;
+        }
         if (level().isClientSide) return;
         if (contactCooldown > 0) contactCooldown--;
 

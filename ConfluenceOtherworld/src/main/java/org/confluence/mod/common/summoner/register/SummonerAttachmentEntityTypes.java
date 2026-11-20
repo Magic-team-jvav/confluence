@@ -48,6 +48,10 @@ public final class SummonerAttachmentEntityTypes {
 
     public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<SpiderMinion>> SPIDER = register("spider", SpiderMinion::new);
 
+    public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<MiniDestroyerMinion>> MINI_DESTROYER = register("mini_destroyer", MiniDestroyerMinion::new);
+
+    public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<MiniProbeMinion>> MINI_PROBE = register("mini_probe", MiniProbeMinion::new);
+
     public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<RuinRelicMinion>> RUIN_RELIC = register("ruin_relic", RuinRelicMinion::new);
 
     public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<EyeLaserTurretMinion>> EYE_LASER_TURRET = register("eye_laser_turret", EyeLaserTurretMinion::new);
@@ -55,6 +59,10 @@ public final class SummonerAttachmentEntityTypes {
     public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<ForbiddenOrb>> FORBIDDEN_ORB = register("forbidden_orb", ForbiddenOrb::new);
 
     public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<EyeFireball>> EYE_FIREBALL = register("eye_fireball", EyeFireball::new);
+
+    public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<DestructionOmen>> DESTRUCTION_OMEN = register("destruction_omen", DestructionOmen::new);
+
+    public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<ProbeLaser>> PROBE_LASER = register("probe_laser", ProbeLaser::new);
 
     /// 天顶剑飞剑。
     public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<Zenith>> ZENITH = register("zenith", Zenith::new);

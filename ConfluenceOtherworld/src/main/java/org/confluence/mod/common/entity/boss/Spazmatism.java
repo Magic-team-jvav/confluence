@@ -94,10 +94,6 @@ public class Spazmatism extends AbstractTwinEye {
     private static final int WINDUP_TICKS = 6;
     /// 冲刺开始前停止更新预测方向的时间，单位 tick。
     private static final int DASH_LOCK_TICKS = 3;
-    /// 朝向尚未对准时冲刺蓄力的最长时间，单位 tick。
-    private static final int DASH_MAX_WINDUP_TICKS = 14;
-    /// 允许发动冲刺的朝向点积阈值，越大要求越精确。
-    private static final double DASH_AIM_DOT = 0.92;
     /// 每次冲刺的持续时间，单位 tick。
     private static final int DASH_TICKS = 12;
     /// 两次冲刺之间的恢复时间，单位 tick。
@@ -120,10 +116,8 @@ public class Spazmatism extends AbstractTwinEye {
     private static final double LEGENDARY_DASH_MAX_LEAD = 8;
     /// 旋转冲刺时生成魔焰的间隔，单位 tick。
     private static final int DASH_FLAME_INTERVAL_TICKS = 2;
-    /// 冲刺期间每 tick 的水平自转角度，完整冲刺旋转一周。
+    /// 冲刺期间每 tick 的绕冲刺轴的滚转角度，完整冲刺旋转一周。
     private static final float DASH_SPIN_DEGREES = 360.0F / DASH_TICKS;
-    /// 旋转冲刺时每 tick 回正俯仰的最大角度，单位度。
-    private static final float DASH_SPIN_PITCH_STEP = 6.0F;
 
     /// 巨焰联动的蓄力时长，单位 tick（20 tick 为 1 秒）。
     private static final int COMBO_CHARGE_TICKS = 40;
@@ -179,7 +173,7 @@ public class Spazmatism extends AbstractTwinEye {
     public void tick() {
         super.tick();
         if (!level().isClientSide) return;
-        if (!entityData.get(COMBO_CHARGING) || isRemoved()) {
+        if (!entityData.get(COMBO_CHARGING) || isRemoved() || isParalyzed()) {
             if (comboChargeEmitter != null) {
                 comboChargeEmitter.remove();
                 comboChargeEmitter = null;
@@ -219,7 +213,7 @@ public class Spazmatism extends AbstractTwinEye {
     protected Vec3 getCombatLookDirection(LivingEntity target) {
         if (state == State.COMBO_CHARGE || state == State.COMBO_WAIT)
             return comboAim.subtract(getEyePosition());
-        return state == State.DASH || state == State.WINDUP ? dashDirection : super.getCombatLookDirection(target);
+        return state == State.DASH || state == State.WINDUP || state == State.RECOVER && dashes > 0 ? dashDirection : super.getCombatLookDirection(target);
     }
 
     // 旋转与实际冲刺位移绑定，尚未起步或没有前进时不旋转、不喷火。
@@ -236,10 +230,14 @@ public class Spazmatism extends AbstractTwinEye {
         // 异常位移不算冲刺进度，正常位移按速度折算旋转幅度。
         if (distance <= 1.0E-4 || distance > dashSpeed() * 2) return;
         float step = (float) Math.min(distance / dashSpeed(), 1.0);
-        float pitch = Mth.approachDegrees(getXRot(), 0.0F, DASH_SPIN_PITCH_STEP * step);
-        faceCombatDirection(Vec3.directionFromRotation(pitch, getYRot() + orbitDirection * DASH_SPIN_DEGREES * step), 360, 360);
-        // 完成本 tick 转向后才取发射口，避免火焰从旧朝向或眼球中心冒出。
-        if (stateTicks % DASH_FLAME_INTERVAL_TICKS == 0) fireDashFlame();
+        float roll = entityData.get(DATA_BANK) + orbitDirection * DASH_SPIN_DEGREES * step;
+        entityData.set(DATA_BANK, Mth.wrapDegrees(roll));
+        if (stateTicks % DASH_FLAME_INTERVAL_TICKS == 0) {
+            Vec3 side = Vec3.directionFromRotation(0, getYRot() + 90);
+            Vec3 up = side.cross(dashDirection).normalize();
+            double angle = Math.toRadians(roll);
+            fireDashFlame(side.scale(Math.cos(angle)).add(up.scale(Math.sin(angle))));
+        }
     }
 
     @Override
@@ -277,7 +275,7 @@ public class Spazmatism extends AbstractTwinEye {
             }
             case COMBO_CHARGE -> {
                 setDeltaMovement(getDeltaMovement().scale(CHARGE_DRAG));
-                if (!(getPartner() instanceof Retinazer laser) || !laser.isFlameComboActive()) {
+                if (!(getPartner() instanceof Retinazer laser) || !laser.canCoordinateAttack() || !laser.isFlameComboActive()) {
                     finishFlameCombo(target);
                 } else if (stateTicks >= COMBO_CHARGE_TICKS) {
                     if (level() instanceof ServerLevel server) {
@@ -294,7 +292,7 @@ public class Spazmatism extends AbstractTwinEye {
             case COMBO_WAIT -> {
                 setDeltaMovement(getDeltaMovement().scale(COMBO_WAIT_DRAG));
                 if (getComboFlame() == null || stateTicks >= COMBO_WAIT_TICKS
-                        || !(getPartner() instanceof Retinazer laser) || !laser.isFlameComboActive())
+                        || !(getPartner() instanceof Retinazer laser) || !laser.canCoordinateAttack() || !laser.isFlameComboActive())
                     finishFlameCombo(target);
             }
             case WINDUP -> {
@@ -302,9 +300,8 @@ public class Spazmatism extends AbstractTwinEye {
                 if (stateTicks <= WINDUP_TICKS - DASH_LOCK_TICKS) {
                     dashDirection = predictDashDirection(target);
                 }
-                if (stateTicks >= WINDUP_TICKS && (getLookAngle().dot(dashDirection) > DASH_AIM_DOT || stateTicks >= DASH_MAX_WINDUP_TICKS)) {
+                if (stateTicks >= WINDUP_TICKS && launchDash(dashDirection, dashSpeed())) {
                     enter(State.DASH);
-                    setDeltaMovement(dashDirection.scale(dashSpeed()));
                     playSound(ModSoundEvents.ROAR.get(), 1.0F, isTransformed() ? 1.2F : 1.0F);
                 }
             }
@@ -313,6 +310,8 @@ public class Spazmatism extends AbstractTwinEye {
                 setDeltaMovement(dashDirection.scale(dashSpeed()));
                 if (stateTicks >= DASH_TICKS) {
                     dashes--;
+                    setDeltaMovement(getDeltaMovement().scale(RECOVERY_DRAG));
+                    if (dashes > 0) dashDirection = predictDashDirection(target);
                     enter(State.RECOVER);
                 }
             }
@@ -400,11 +399,11 @@ public class Spazmatism extends AbstractTwinEye {
     }
 
     // 冲刺魔焰独立使用抛物线，普通诅咒焰球和二阶段直喷不受影响。
-    private void fireDashFlame() {
+    private void fireDashFlame(Vec3 direction) {
         if (!(level() instanceof ServerLevel serverLevel)) return;
         TwinEyeProjectile flame = ModEntities.SPAZMATISM_FLAME.get().create(serverLevel);
         if (flame == null) return;
-        flame.configureArcingFlame(this, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), legendaryCombat());
+        flame.configureArcingFlame(this, direction, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), legendaryCombat());
         serverLevel.addFreshEntity(flame);
         playStreamSound();
     }
@@ -476,6 +475,7 @@ public class Spazmatism extends AbstractTwinEye {
         shotTimer = Mth.clamp(tag.getInt("ShotTimer"), 0, FLAME_BALL_INTERVAL_TICKS);
         dashes = Mth.clamp(tag.getInt("Dashes"), 0, PHASE_TWO_DASH_MAX_COUNT);
         dashDirection = loadVector(tag, "Dash").normalize();
+        if (dashDirection.lengthSqr() < 1.0E-8) dashDirection = getLookAngle();
         orbitDirection = tag.getInt("OrbitDirection") < 0 ? -1 : 1;
         comboCooldown = Math.clamp(tag.getInt("ComboCooldown"), 0, COMBO_COOLDOWN_TICKS);
         comboFlame = tag.hasUUID("ComboFlame") ? tag.getUUID("ComboFlame") : null;

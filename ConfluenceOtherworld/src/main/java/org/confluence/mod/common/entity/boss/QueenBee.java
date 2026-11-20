@@ -7,7 +7,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -59,8 +58,6 @@ public class QueenBee extends BaseBoss {
     private static final int INITIALIZATION_TICKS = 1;
     /// 单次冲刺至少持续的时间，单位 tick。
     private static final int DASH_MIN_TICKS = 20;
-    /// 普通模式固定三轮冲刺；专家模式可随生命降低增加，但最多六轮。
-    private static final int EXPERT_MAX_DASH_CYCLES = 6;
     /// 只统计并限制当前蜂王拥有的随从，不影响自然生成的黄蜂。
     private static final int MAX_OWNED_HORNETS = 10;
 
@@ -237,7 +234,6 @@ public class QueenBee extends BaseBoss {
         lockedDashDirection = turnDirectionToward(lockedDashDirection, desiredDirection, 3.0F)
                 .multiply(1.0D, 0.0D, 1.0D).normalize();
         setDeltaMovement(lockedDashDirection.scale(speed));
-        Vec3 lookPosition = position().add(lockedDashDirection);
         faceCombatDirection(lockedDashDirection, 180.0F, 180.0F);
         boolean reachedTimeLimit = stateTicks >= stateParameters(CombatState.DASHING).duration();
         boolean passedTargetRange = stateTicks >= DASH_MIN_TICKS
@@ -461,7 +457,7 @@ public class QueenBee extends BaseBoss {
         setCombatState(ordinal >= 0 && ordinal < values.length
                 ? values[ordinal] : CombatState.IDLE);
         stateTicks = Math.max(0, tag.getInt("QueenStateTicks"));
-        completedDashCycles = Mth.clamp(tag.getInt("QueenCompletedDashes"), 0, EXPERT_MAX_DASH_CYCLES - 1);
+        completedDashCycles = Math.max(0, tag.getInt("QueenCompletedDashes"));
         setAngry(tag.getBoolean("QueenAngry"));
         idleDirection = new Vec3(tag.getDouble("QueenIdleX"), tag.getDouble("QueenIdleY"), tag.getDouble("QueenIdleZ"));
         lockedDashDirection = new Vec3(tag.getDouble("QueenDashX"), tag.getDouble("QueenDashY"), tag.getDouble("QueenDashZ"));

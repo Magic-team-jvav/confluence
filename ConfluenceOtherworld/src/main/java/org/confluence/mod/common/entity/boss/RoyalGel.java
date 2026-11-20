@@ -121,10 +121,14 @@ public class RoyalGel extends Projectile implements GeoEntity {
         if (minion.getType() == BossEntities.HEAVENLY_SLIME.get()) {
             minion.storeGel(chain);
         } else if (minion.getType() == BossEntities.CRYSTAL_SLIME.get()) {
+            if (aim.lengthSqr() < 1.0E-8)
+                aim = Vec3.directionFromRotation(0, minion.getYRot()).scale(RELAY_SPEED);
+            // 让散射平面随预判方向倾斜，目标在正上方时八条弹道仍然分开。
             double heading = Math.atan2(aim.z, aim.x);
+            Vec3 side = new Vec3(-Math.sin(heading), 0, Math.cos(heading)).scale(RELAY_SPEED);
             for (int i = 0; i < SPLIT_COUNT; i++) {
-                double angle = heading + i * Math.PI * 2 / SPLIT_COUNT;
-                Vec3 shot = new Vec3(Math.cos(angle), aim.y / RELAY_SPEED, Math.sin(angle)).normalize().scale(RELAY_SPEED);
+                double angle = i * Math.PI * 2 / SPLIT_COUNT;
+                Vec3 shot = aim.scale(Math.cos(angle)).add(side.scale(Math.sin(angle)));
                 launchRelay(queen, from, shot, chain, false);
             }
         } else {
@@ -152,12 +156,12 @@ public class RoyalGel extends Projectile implements GeoEntity {
                 discard();
                 return;
             }
-            Player target = queen.getTarget() instanceof Player p && p.isAlive() && queen.canAttack(p) ? p : null;
+            Player target = queen.getTarget() instanceof Player p && queen.isValidCurrentCombatPlayer(p) && queen.canAttack(p) ? p : null;
             if (target == null) {
                 double nearest = 256 * 256;
                 for (Player player : level().players()) {
                     double distance = distanceToSqr(player);
-                    if (distance < nearest && player.isAlive() && queen.canAttack(player)) {
+                    if (distance < nearest && queen.isValidCurrentCombatPlayer(player) && queen.canAttack(player)) {
                         nearest = distance;
                         target = player;
                     }
@@ -167,7 +171,7 @@ public class RoyalGel extends Projectile implements GeoEntity {
             boolean canRelay = target != null && source == queen;
             var hit = ProjectileUtil.getEntityHitResult(level(), this, from, block.getLocation(),
                     getBoundingBox().expandTowards(getDeltaMovement()).inflate(0.4),
-                    e -> e != source && (canRelay && e instanceof QueenSlimeMinion m && m.getBossOwner() == queen && !chain.visited.contains(m.getUUID())
+                    e -> e != source && (canRelay && e instanceof QueenSlimeMinion m && m.isAlive() && m.getBossOwner() == queen && !chain.visited.contains(m.getUUID())
                             || e instanceof Player player && !hitPlayers.contains(player.getUUID()) && queen.canAttack(player)));
             if (hit != null) {
                 switch (hit.getEntity()) {

@@ -182,7 +182,7 @@ public final class PrimeEnderDragon extends BaseBoss {
             setLaserActive(false);
             updateIdleWander();
             updateFlight();
-            updateLaserAttack();
+            updateLaserAttack(false);
             return;
         }
 
@@ -192,7 +192,7 @@ public final class PrimeEnderDragon extends BaseBoss {
         hadCombatTarget = true;
         advanceCombatState(target);
         updateFlight();
-        updateLaserAttack();
+        updateLaserAttack(true);
         for (PrimeEnderDragonPart part : parts.values()) {
             if (!part.isRemoved()) updatePartPosition(part);
         }
@@ -283,6 +283,7 @@ public final class PrimeEnderDragon extends BaseBoss {
     }
 
     private void resetCombatCycle() {
+        flightTarget = null;
         setLanding(false);
         setLaserActive(false);
         fireRounds = 0;
@@ -371,9 +372,9 @@ public final class PrimeEnderDragon extends BaseBoss {
         return entityData.get(DATA_LASER_ACTIVE);
     }
 
-    private void updateLaserAttack() {
+    private void updateLaserAttack(boolean hasCombatTarget) {
         double attackRange = easeLaserRange(laserChargeTicks);
-        if (attackRange > 3.0) {
+        if (hasCombatTarget && attackRange > 3.0) {
             performLaserAttack(attackRange);
         }
         laserChargeTicks = Mth.clamp(laserChargeTicks + (isLaserActive() ? 1 : -1), 0, (int) LASER_MAXIMUM_RANGE);

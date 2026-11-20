@@ -942,12 +942,12 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.WATER_BOLT_MIMIC.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.WATER_BOLT_MIMIC.getId(), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.WRAITH.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/item/armor/wraith_armor.geo.json"), Confluence.asResource("textures/item/armor/wraith_armor.png"), false)));
         event.registerEntityRenderer(MonsterEntities.ZOMBIE_MERMAN.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/zombie_merman.geo.json"), Confluence.asResource("textures/entity/zombie_merman.png"), true), false, 1.0F, 0.0F));
-        event.registerEntityRenderer(CritterEntities.BUNNY.get(), BunnyRenderer::new);
+        event.registerEntityRenderer(CritterEntities.BUNNY.get(), context -> new BunnyRenderer<>(context));
         event.registerEntityRenderer(CritterEntities.PENGUIN.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.MYSTIC_FROG.get(), c -> new GeoNormalRenderer<>(c, new MysticFrogModel(c)));
         event.registerEntityRenderer(CritterEntities.GOLDFISH.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/goldfish.geo.json"), Confluence.asResource("textures/entity/animal/goldfish.png"), Confluence.asResource("animations/entity/animal/goldfish.animation.json")), false, 1.0F, 0.1875F));
-        event.registerEntityRenderer(CritterEntities.EXPLOSIVE_BUNNY.get(), BunnyRenderer::new);
-        event.registerEntityRenderer(CritterEntities.HOSTILE_BUNNY.get(), BunnyRenderer::new);
+        event.registerEntityRenderer(CritterEntities.EXPLOSIVE_BUNNY.get(), context -> new BunnyRenderer<>(context));
+        event.registerEntityRenderer(CritterEntities.HOSTILE_BUNNY.get(), context -> new BunnyRenderer<>(context));
         event.registerEntityRenderer(CritterEntities.BIRD.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.BLUE_JAY.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.CARDINAL.get(), CritterRenderer::new);

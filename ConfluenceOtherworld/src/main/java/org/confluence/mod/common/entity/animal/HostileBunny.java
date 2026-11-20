@@ -6,10 +6,11 @@ import net.minecraft.world.entity.EntityType;
 
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Rabbit;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class HostileBunny extends Bunny {
+public class HostileBunny extends Bunny implements Enemy {
     public HostileBunny(EntityType<? extends Bunny> type, Level level) {
         super(type, level);
         super.setVariant(Rabbit.Variant.EVIL);

@@ -181,8 +181,8 @@ public class QueenSlime extends BaseBoss {
 
     private void releaseSlimes() {
         if (lastSummonHealth < 0) lastSummonHealth = getMaxHealth();
-        int threshold = (int) (getMaxHealth() * (flying ? AIR_SUMMON_LOSS : GROUND_SUMMON_LOSS));
-        if (getHealth() + threshold >= lastSummonHealth) return;
+        float threshold = getMaxHealth() * (flying ? AIR_SUMMON_LOSS : GROUND_SUMMON_LOSS);
+        if (lastSummonHealth - getHealth() < threshold) return;
         lastSummonHealth = getHealth();
         int count = 1 + random.nextInt(MAX_SUMMON_COUNT);
         for (int i = 0; i < count; i++) {
@@ -257,7 +257,6 @@ public class QueenSlime extends BaseBoss {
         if (flying != isFlyingPhase()) {
             flying = isFlyingPhase();
             groundHopsDue = true;
-            lastSummonHealth = getHealth();
             setDeltaMovement(Vec3.ZERO);
             begin(Action.IDLE);
         }
@@ -265,6 +264,7 @@ public class QueenSlime extends BaseBoss {
         LivingEntity target = getTarget();
         if (target == null || !target.isAlive() || !canAttack(target)) {
             if (action != Action.IDLE) begin(Action.IDLE);
+            entityData.set(DATA_DESCENDING_FLIGHT, false);
             setNoGravity(false);
             noPhysics = false;
             blockedFrames = 0;
@@ -500,9 +500,12 @@ public class QueenSlime extends BaseBoss {
         byte current = entityData.get(DATA_ACTION);
         byte hop = entityData.get(HOP_STAGE);
         if (hop == WINDUP || hop == ASCENT) return JUMP;
-        if (current == Action.LANDING.ordinal() || landingAnimationTicks > 0) return REST;
+        if (current == Action.LANDING.ordinal() || landingAnimationTicks > 0 && onGround())
+            return REST;
         if (hop == DESCENT) return FALL;
         if (isFlyingPhase()) {
+            if (current == Action.IDLE.ordinal() && !isNoGravity())
+                return onGround() ? IDLE_ANIMATION : FALL;
             if (current == Action.DROP.ordinal()) {
                 return entityData.get(DATA_DIVING) ? FALL : FOLD_WINGS;
             }

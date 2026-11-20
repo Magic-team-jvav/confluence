@@ -91,8 +91,6 @@ public class BrainOfCthulhu extends BaseBoss {
     private static final float NEURON_HOME_ROTATION_CHANCE = 0.5F;
     /// 二阶段重新定位时的移动速度，单位格/tick。
     private static final double PHASE_TWO_REPOSITION_SPEED = 0.25;
-    /// 区块恢复后重新认领脑神经仆从的搜索半径，单位格。
-    private static final double NEURON_RECOVERY_RANGE = 96.0;
     /// 受到击退后每 tick 保留的击退速度比例。
     private static final double KNOCKBACK_MOMENTUM = 0.6;
     /// 第一阶段靠近目标的状态持续时间，单位 tick。
@@ -172,12 +170,7 @@ public class BrainOfCthulhu extends BaseBoss {
     @Override
     public void tick() {
         super.tick();
-        if (isRemoved() || level().isClientSide) return;
-
-        if (getTarget() == null && tickCount % 20 == 0) {
-            Player replacement = findCombatPlayer();
-            if (replacement != null) setTarget(replacement);
-        }
+        if (!isAlive() || level().isClientSide) return;
 
         if (!phase2) {
             applyRecordedNeuronDeaths();
@@ -595,7 +588,14 @@ public class BrainOfCthulhu extends BaseBoss {
                 found.add(neuron);
             }
         }
-        found.addAll(level().getEntitiesOfClass(VisualNeuron.class, getBoundingBox().inflate(NEURON_RECOVERY_RANGE), neuron -> neuron.isAlive() && neuron.isOwnedBy(this)));
+        // 读档时从属可能尚未回绑；按存档 UUID 查已加载实体，不加载区块。
+        if (level() instanceof ServerLevel server) {
+            for (UUID id : activeNeuronUUIDs) {
+                if (server.getEntity(id) instanceof VisualNeuron neuron && neuron.isAlive() && neuron.isOwnedBy(this)) {
+                    found.add(neuron);
+                }
+            }
+        }
         return List.copyOf(found);
     }
 
@@ -913,10 +913,10 @@ public class BrainOfCthulhu extends BaseBoss {
 
     @Override
     public void die(DamageSource source) {
-        activeNeuronUUIDs.clear();
         for (VisualNeuron neuron : findOwnedLoadedNeurons()) {
             neuron.discard();
         }
+        activeNeuronUUIDs.clear();
         Arrays.fill(illusions, null);
         super.die(source);
         if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {

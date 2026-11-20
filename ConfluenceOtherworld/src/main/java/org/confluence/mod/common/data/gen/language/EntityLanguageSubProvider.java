@@ -110,6 +110,10 @@ public final class EntityLanguageSubProvider {
         language.add("summon.confluence.hornet", "Hornet", "黄蜂");
         language.add("summon.confluence.iron_golem", "I-32 Iron Golem", "i-32型铁傀儡");
         language.add("summon.confluence.imp", "Imp Minion", "小鬼");
+        language.add("summon.confluence.mini_destroyer", "Mini Destroyer", "迷你毁灭者");
+        language.add("summon.confluence.mini_probe", "Mini Probe", "迷你探针");
+        language.add("summon.confluence.destruction_omen", "Destruction Omen", "毁灭凶兆激光");
+        language.add("summon.confluence.probe_laser", "Probe Laser", "探针激光");
         language.add("summon.confluence.ruin_relic", "Ruin Relic", "禁戒遗迹");
         language.add("summon.confluence.sculk_wisp", "Sculk Wisp", "幽匿游灵");
         language.add("summon.confluence.slime", "Baby Slime", "史莱姆宝宝");

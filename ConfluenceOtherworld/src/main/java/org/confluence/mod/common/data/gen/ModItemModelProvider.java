@@ -283,6 +283,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         /// 眼球激光塔法杖：物品栏用 16x 的 eye_laser_turret_staff，手持/预览用 24x 的 eye_laser_turret_staff_display；
         /// 整套模型由手写 JSON 持有（models/item/eye_laser_turret_staff*.json）。
         skip.add(SummonItems.EYE_LASER_TURRET_STAFF.get());
+        skip.add(SummonItems.MINI_EARTH_SHAKER.get());
 
         genModels(handheld, "item/handheld");
 

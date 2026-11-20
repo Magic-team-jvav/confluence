@@ -244,6 +244,55 @@ public class SummonItems {
                     null
             ));
 
+    public static final PortDeferredItem<SummonerWeaponItem<MiniDestroyerMinion>> MINI_EARTH_SHAKER = registerItemWithEnglishName("mini_earth_shaker", "迷你撼地锤", "Mini Earth Shaker", () -> new SummonerWeaponItem<>(
+            new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE),
+            SummonerAttachmentEntityTypes.MINI_DESTROYER,
+            MinionSlotType.Minion,
+            2.0F,
+            0.2F,
+            0.0F,
+            SummonerSoundEvents.USE_MINION_WEAPON,
+            (weapon, player, itemStack) -> {
+                SummonerHelper helper = SummonerHelper.get(player);
+                if (helper.canSummon(weapon.getSlotType(itemStack), 1)) {
+                    List<MiniDestroyerMinion> segments = helper.getEntityData().get(weapon.getEntityType());
+                    MiniDestroyerMinion tail = weapon.createMinion(player, itemStack);
+                    MiniDestroyerMinion body;
+                    if (segments.isEmpty()) {
+                        MiniDestroyerMinion head = weapon.createMinion(player, itemStack);
+                        body = weapon.createMinion(player, itemStack);
+                        head.setSlotCost(0);
+                        body.setSlotCost(0);
+                        body.setOrder(1);
+                        head.setSameSize(3);
+                        body.setSameSize(3);
+                        head.init(new PathNode(player.position().add(0, 3, 0), 0, 0, 0));
+                        body.init(head.getCurrentPathNode().modifyPos(head.getPos().add(0, 0, -body.getSegmentDistance())));
+                        helper.add(head);
+                        helper.add(body);
+                    } else {
+                        body = segments.get(segments.size() - 1);
+                        for (MiniDestroyerMinion segment : segments) {
+                            segment.setSameSize(segments.size() + 1);
+                        }
+                    }
+                    tail.setOrder(body.getOrder() + 1);
+                    tail.setSameSize(body.getSameSize());
+                    tail.init(body.getCurrentPathNode().modifyPos(body.getPos().subtract(body.getLookAngle().scale(tail.getSegmentDistance()))));
+                    MiniProbeMinion probe = new MiniProbeMinion();
+                    probe.copyAttributes(tail);
+                    probe.attachTo(body);
+                    helper.add(tail);
+                    helper.add(probe);
+                }
+            },
+            (weapon, player, itemStack) -> {
+                SummonerHelper helper = SummonerHelper.get(player);
+                helper.getEntityData().remove(SummonerAttachmentEntityTypes.MINI_DESTROYER.get());
+                helper.getEntityData().remove(SummonerAttachmentEntityTypes.MINI_PROBE.get());
+            }
+    ));
+
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
         Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));

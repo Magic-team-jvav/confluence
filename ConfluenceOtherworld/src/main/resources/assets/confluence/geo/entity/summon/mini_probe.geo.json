@@ -1,0 +1,25 @@
+{
+    "format_version": "1.12.0",
+    "minecraft:geometry": [
+        {
+            "description": {
+                "identifier": "geometry.summon.mini_probe",
+                "texture_width": 20,
+                "texture_height": 9
+            },
+            "bones": [
+                {
+                    "name": "probe",
+                    "pivot": [0, 0, 0],
+                    "cubes": [
+                        {
+                            "origin": [-2.5, -1.5, -2],
+                            "size": [5, 3, 4],
+                            "uv": [1, 1]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

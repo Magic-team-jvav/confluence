@@ -8,10 +8,12 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.minion.*;
+import org.confluence.mod.common.summoner.projectile.DestructionOmen;
 import org.confluence.mod.common.summoner.projectile.EyeFireball;
 import org.confluence.mod.common.summoner.projectile.ForbiddenOrb;
 import org.confluence.mod.common.summoner.projectile.HornetStinger;
 import org.confluence.mod.common.summoner.projectile.ImpFireball;
+import org.confluence.mod.common.summoner.projectile.ProbeLaser;
 import org.confluence.mod.common.summoner.projectile.Zenith;
 
 import java.util.function.Supplier;
@@ -62,6 +64,14 @@ public final class SummonerAttachmentEntityTypes {
 
     /** 天顶剑飞剑 */
     public static final RegistryObject<AttachmentEntityType<Zenith>> ZENITH = register("zenith", Zenith::new);
+
+    public static final RegistryObject<AttachmentEntityType<MiniDestroyerMinion>> MINI_DESTROYER = register("mini_destroyer", MiniDestroyerMinion::new);
+
+    public static final RegistryObject<AttachmentEntityType<MiniProbeMinion>> MINI_PROBE = register("mini_probe", MiniProbeMinion::new);
+
+    public static final RegistryObject<AttachmentEntityType<DestructionOmen>> DESTRUCTION_OMEN = register("destruction_omen", DestructionOmen::new);
+
+    public static final RegistryObject<AttachmentEntityType<ProbeLaser>> PROBE_LASER = register("probe_laser", ProbeLaser::new);
 
     private static <T extends AttachmentEntity> RegistryObject<AttachmentEntityType<T>> register(String name, Supplier<T> supplier) {
         return PortDeferredRegisterExtension.register(TYPES, name, id -> new AttachmentEntityType<>(id, supplier));

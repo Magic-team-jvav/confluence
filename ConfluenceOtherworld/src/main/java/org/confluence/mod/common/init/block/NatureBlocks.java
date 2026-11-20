@@ -712,11 +712,6 @@ public class NatureBlocks {
             .isValidSpawn(Blocks::never)
             .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
             .isSuffocating((blockState, blockGetter, blockPos) -> false)));
-    public static final DeferredBlock<EvaporativeCloudBlock> EVAPORATIVE_CLOUD_BLOCK = registerWithItem("evaporative_cloud_block", "蒸发云块", () -> new EvaporativeCloudBlock(BlockBehaviour.Properties.of()
-            .sound(SoundType.SNOW)
-            .noOcclusion()
-            .randomTicks()));
-    public static final Supplier<BlockEntityType<EvaporativeCloudBlock.BEntity>> EVAPORATIVE_CLOUD_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("evaporative_cloud_block", () -> BlockEntityType.Builder.of(EvaporativeCloudBlock.BEntity::new, EVAPORATIVE_CLOUD_BLOCK.get()).build(DSL.remainderType()));
     public static final DeferredBlock<ParticleCloudBlock> RAIN_CLOUD_BLOCK = registerWithItem("rain_cloud_block", "雨云块", () -> new ParticleCloudBlock(BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_GRAY)
             .strength(0.3F)

@@ -249,7 +249,6 @@ public final class ModTabs {
 
                         CreativeModeTab.Output skyland = GroupItem.belongsTo("skyland", output);
                         skyland.accept(NatureBlocks.CLOUD_BLOCK);
-                        skyland.accept(NatureBlocks.EVAPORATIVE_CLOUD_BLOCK);
                         skyland.accept(NatureBlocks.RAIN_CLOUD_BLOCK);
                         skyland.accept(NatureBlocks.SNOW_CLOUD_BLOCK);
                         skyland.accept(DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.get());

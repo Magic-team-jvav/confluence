@@ -8,15 +8,15 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.lightning.ArcSurgeLightning;
-import org.confluence.mod.common.item.mana.RedGlovePattern;
+import org.confluence.mod.common.item.mana.ArcSurgePattern;
 import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
-import org.confluence.mod.network.s2c.RedGloveArcPacketS2C;
+import org.confluence.mod.network.s2c.ArcSurgePacketS2C;
 
 import java.util.*;
 
 /// Authoritative discharge snapshots with a short, visual-only afterimage.
-public final class RedGloveVfx {
-    private static final boolean DEBUG = Boolean.getBoolean("confluence.redGlove.probe");
+public final class ArcSurgeVfx {
+    private static final boolean DEBUG = Boolean.getBoolean("confluence.arcSurge.probe");
     private static volatile int renderedFrames, lateVisibleFrames, followedFrames, retractingFrames;
     private static int receivedPackets, spawnedZenithParticles;
     private static long clockDelta;
@@ -29,10 +29,10 @@ public final class RedGloveVfx {
         final int casterId;
         final Vec3 origin;
         ArcSurgeLightning.Event effect;
-        final List<RedGlovePattern.Path> particlePaths = new ArrayList<>();
+        final List<ArcSurgePattern.Path> particlePaths = new ArrayList<>();
         boolean particlesEmitted;
 
-        Cast(RedGloveArcPacketS2C packet) {
+        Cast(ArcSurgePacketS2C packet) {
             tick = packet.tick();
             seed = packet.seed();
             receivedTick = localTick;
@@ -46,7 +46,7 @@ public final class RedGloveVfx {
     private static Level level;
     private static final List<Particle> SPARKS = new ArrayList<>();
 
-    public static void receive(Player player, RedGloveArcPacketS2C packet) {
+    public static void receive(Player player, ArcSurgePacketS2C packet) {
         if (level != player.level()) {
             clear();
             level = player.level();
@@ -74,10 +74,10 @@ public final class RedGloveVfx {
         }
         if (mc.isPaused()) return;
         localTick++;
-        CASTS.values().removeIf(c -> localTick - c.receivedTick >= ArcSurgeLightning.RED_GLOVE_LIFETIME_TICKS);
-        AFTERIMAGES.removeIf(c -> localTick - c.receivedTick >= ArcSurgeLightning.RED_GLOVE_LIFETIME_TICKS);
+        CASTS.values().removeIf(c -> localTick - c.receivedTick >= ArcSurgeLightning.ARC_SURGE_LIFETIME_TICKS);
+        AFTERIMAGES.removeIf(c -> localTick - c.receivedTick >= ArcSurgeLightning.ARC_SURGE_LIFETIME_TICKS);
         SPARKS.removeIf(particle -> !particle.isAlive());
-        int remaining = RedGloveSparks.PER_TICK;
+        int remaining = ArcSurgeSparks.PER_TICK;
         for (Cast cast : CASTS.values()) remaining -= emitParticles(mc, cast, remaining);
         for (int i = AFTERIMAGES.size() - 1; i >= 0 && remaining > 0; i--)
             remaining -= emitParticles(mc, AFTERIMAGES.get(i), remaining);
@@ -99,7 +99,7 @@ public final class RedGloveVfx {
         if (DEBUG && !frames.isEmpty()) renderedFrames++;
         if (DEBUG && frames.stream().anyMatch(f -> f.age() >= ArcSurgeLightning.SNAPSHOT_LIFETIME_TICKS
                 && f.event().visibleAt(f.age()))) lateVisibleFrames++;
-        if (DEBUG && frames.stream().anyMatch(f -> f.age() > ArcSurgeLightning.RED_GLOVE_HOLD_TICKS
+        if (DEBUG && frames.stream().anyMatch(f -> f.age() > ArcSurgeLightning.ARC_SURGE_HOLD_TICKS
                 && f.event().visibleAt(f.age()))) retractingFrames++;
     }
 
@@ -107,7 +107,7 @@ public final class RedGloveVfx {
 
     private static ArcSurgeLightning.Event effect(Cast cast) {
         if (cast.effect == null) try {
-            cast.effect = ArcSurgeLightning.createRedGlove(cast.particlePaths, cast.seed);
+            cast.effect = ArcSurgeLightning.createArcSurge(cast.particlePaths, cast.seed);
         } catch (Exception error) {
             Confluence.LOGGER.error("Unable to create red glove discharge", error);
         }
@@ -148,7 +148,7 @@ public final class RedGloveVfx {
                 }
             }
         if (segments.isEmpty()) return 0;
-        int count = Math.min(RedGloveSparks.PER_CAST, budget);
+        int count = Math.min(ArcSurgeSparks.PER_CAST, budget);
         var random = new SplittableRandom(cast.seed);
         int segment = 0, emitted = 0;
         double passed = 0;
@@ -158,13 +158,13 @@ public final class RedGloveVfx {
                 passed += segments.get(segment++).length;
             SparkSegment line = segments.get(segment);
             Vec3 pos = line.a.lerp(line.b, Math.max(0, Math.min(1, (distance - passed) / line.length)));
-            Vec3 velocity = RedGloveSparks.velocity(line.b.subtract(line.a), random);
-            int color = RedGloveSparks.color(random);
+            Vec3 velocity = ArcSurgeSparks.velocity(line.b.subtract(line.a), random);
+            int color = ArcSurgeSparks.color(random);
             var options = new ZenithParticleOptions(color, random.nextInt(5, 15),
                     (float) random.nextDouble(0.5, 0.75), (float) random.nextDouble(0.01, 0.03));
             Particle particle = mc.particleEngine.createParticle(options, pos.x, pos.y, pos.z, velocity.x, velocity.y, velocity.z);
             if (particle != null) {
-                if (SPARKS.size() >= RedGloveSparks.CAPACITY) SPARKS.remove(0).remove();
+                if (SPARKS.size() >= ArcSurgeSparks.CAPACITY) SPARKS.remove(0).remove();
                 SPARKS.add(particle);
                 emitted++;
                 spawnedZenithParticles++;
@@ -178,10 +178,10 @@ public final class RedGloveVfx {
                 Map.entry("activeCasters", CASTS.size()), Map.entry("afterimages", AFTERIMAGES.size()),
                 Map.entry("activeSegments", CASTS.values().stream().flatMap(c -> c.particlePaths.stream())
                         .mapToInt(p -> p.points().size() - 1).sum()), Map.entry("submittedLights", 0),
-                Map.entry("lifetimeTicks", ArcSurgeLightning.RED_GLOVE_LIFETIME_TICKS),
-                Map.entry("holdTicks", ArcSurgeLightning.RED_GLOVE_HOLD_TICKS),
-                Map.entry("retractTicks", ArcSurgeLightning.RED_GLOVE_RETRACT_TICKS),
-                Map.entry("particlesPerCast", RedGloveSparks.PER_CAST),
+                Map.entry("lifetimeTicks", ArcSurgeLightning.ARC_SURGE_LIFETIME_TICKS),
+                Map.entry("holdTicks", ArcSurgeLightning.ARC_SURGE_HOLD_TICKS),
+                Map.entry("retractTicks", ArcSurgeLightning.ARC_SURGE_RETRACT_TICKS),
+                Map.entry("particlesPerCast", ArcSurgeSparks.PER_CAST),
                 Map.entry("zenithParticles", SPARKS.size()), Map.entry("spawnedZenithParticles", spawnedZenithParticles),
                 Map.entry("lateVisibleFrames", lateVisibleFrames), Map.entry("followedFrames", followedFrames),
                 Map.entry("retractingFrames", retractingFrames),

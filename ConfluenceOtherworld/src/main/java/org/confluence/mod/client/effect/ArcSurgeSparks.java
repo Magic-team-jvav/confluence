@@ -4,12 +4,12 @@ import net.minecraft.world.phys.Vec3;
 import java.util.SplittableRandom;
 
 /** Straight particle rays sampled uniformly in solid angle around the outgoing current tangent. */
-public final class RedGloveSparks {
+public final class ArcSurgeSparks {
     public static final int PER_CAST = 12, PER_TICK = 24, CAPACITY = 128;
     private static final double COS_MIN = Math.cos(Math.toRadians(45));
     private static final double COS_MAX = Math.cos(Math.toRadians(10));
 
-    private RedGloveSparks() {}
+    private ArcSurgeSparks() {}
 
     public static Vec3 velocity(Vec3 tangent, SplittableRandom random) {
         Vec3 axis = tangent.lengthSqr() < 1.0E-12 ? new Vec3(0, 0, 1) : tangent.normalize();

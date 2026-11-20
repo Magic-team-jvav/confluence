@@ -32,8 +32,8 @@ public final class SummonerAttachmentTypes {
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<ZenithData>> ZENITH_DATA =
             TYPES.register("zenith_data", () -> AttachmentType.builder(ZenithData::new).build());
 
-    public static final DeferredHolder<AttachmentType<?>, AttachmentType<RedGloveData>> RED_GLOVE_DATA =
-            TYPES.register("red_glove_data", () -> AttachmentType.builder(RedGloveData::new).build());
+    public static final DeferredHolder<AttachmentType<?>, AttachmentType<ArcSurgeData>> ARC_SURGE_DATA =
+            TYPES.register("arc_surge_data", () -> AttachmentType.builder(ArcSurgeData::new).build());
 
     public static void register(IEventBus eventBus) {
         TYPES.register(eventBus);

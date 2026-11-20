@@ -421,9 +421,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         crystalBlock(recipeOutput, ManaWeaponItems.WIND_EYE.toStack(),
                 Ingredient.of(ManaWeaponItems.WIND_PAGE), AmountIngredient.of(4, Items.BREEZE_ROD),
                 AmountIngredient.of(4, MaterialItems.FALLING_STAR));
-        crystalBlock(recipeOutput, ManaWeaponItems.STAR_MUSIC.toStack(),
-                AmountIngredient.of(8, MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.SPELL_TOME),
-                Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
         fletchingTable(recipeOutput, ArrowItems.UNHOLY_ARROW.toStack(5), Ingredient.of(), AmountIngredient.of(5, Items.ARROW), Ingredient.of(ModTags.Items.EVIL_MATERIAL));
 
         altar(recipeOutput, ConsumableItems.BLOODY_SPINE.toStack(), AmountIngredient.of(30, ConsumableItems.VICIOUS_POWDER), AmountIngredient.of(15, MaterialItems.VERTEBRA));

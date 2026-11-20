@@ -3,7 +3,10 @@ package org.confluence.mod.common.item.mana;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,53 +17,65 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.entity.projectile.mana.HomingFallingStarProjectile;
 import org.confluence.mod.common.entity.projectile.mana.StarMusicChargeEntity;
+import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.PrefixUtils;
 
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
-/// 星乐：消耗 10 点魔力，长按右键在头顶逐渐聚起越来越大的坠星。
+/// 星乐：长按右键在头顶凝聚坠星，蓄力期间每 0.5 秒多消耗 5 点魔力并多凝聚一颗，
+/// 最多 20 颗；蓄满后自动释放，中途松手则立即释放已经凝聚的部分。
 ///
-/// 松开右键时大坠星爆开，向四周随机方向喷出追踪坠星：每颗先直线散开一段距离，再转入追踪；
-/// 数量与累计使用次数正相关；累计使用 20 次后达到临界值，这一次释放会额外爆开一轮更大的星雨。
+/// 每颗坠星先从头顶的大坠星处向随机方向散开一段距离，再转入追踪；伤害固定，不随使用次数累加。
 public class StarMusicItem extends ManaStaffItem<HomingFallingStarProjectile> {
-    public static final int MANA_COST = 10;
-    /// 单次最多喷射的坠星数量（基础部分）。
-    private static final int MAX_STARS = 10;
-    /// 临界值：使用这么多次后必定爆开。
-    private static final int CRITICAL_USES = 20;
+    /// 单颗坠星的基础魔力消耗。
+    public static final int MANA_COST_PER_STAR = 5;
+    /// 每凝聚一颗坠星需要的蓄力刻数（0.5 秒 = 10 刻）。
+    public static final int TICKS_PER_STAR = 10;
+    /// 最多凝聚的坠星数量，蓄满即自动释放。
+    public static final int MAX_STARS = 20;
     /// 单颗坠星伤害。
     private static final float STAR_DAMAGE = 14.0F;
-    /// 达到临界值后额外增加的坠星数量。
-    private static final int CRITICAL_EXTRA_STARS = 4;
-    /// 最短蓄力时间，过短不触发。
-    private static final int MIN_CHARGE_TICKS = 6;
     /// 坠星从大坠星处散开的速度（格/刻）。
     private static final double DIVERGE_SPEED = 1.0;
     /// 先直线散开的刻数：约 8 格之后再开始追踪。
     private static final int DIVERGE_TICKS = 8;
-
-    /// 使用次数计数：施法者 -> 已使用次数。
-    private static final Map<UUID, Integer> USE_COUNTER = new ConcurrentHashMap<>();
+    /// 蓄满所需的蓄力刻数。
+    private static final int FULL_CHARGE_TICKS = TICKS_PER_STAR * MAX_STARS;
 
     public StarMusicItem(ModRarity rarity) {
-        super(rarity, HomingFallingStarProjectile::new, STAR_DAMAGE, MANA_COST, 0.0F, 6, 0.04);
+        super(rarity, HomingFallingStarProjectile::new, STAR_DAMAGE, MANA_COST_PER_STAR, 0.0F, 6, 0.04);
         withTooltip(Component.translatable("tooltip.item.confluence.star_music.0").withStyle(ChatFormatting.GRAY));
+    }
+
+    /// 蓄力刻数对应的坠星数量：每满 {@link #TICKS_PER_STAR} 刻多一颗，上限 {@link #MAX_STARS}。
+    public static int starsForCharge(int chargeTicks) {
+        return Mth.clamp(chargeTicks / TICKS_PER_STAR, 0, MAX_STARS);
+    }
+
+    /// 指定坠星数量的魔力消耗。
+    public static int manaCostForStars(int stars) {
+        return MANA_COST_PER_STAR * stars;
+    }
+
+    /// 蓄满所需的蓄力刻数，客户端聚星的大小也按它归一化。
+    public static int fullChargeTicks() {
+        return FULL_CHARGE_TICKS;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (player instanceof ServerPlayer serverPlayer) {
-            if (!couldShoot(serverPlayer, stack)) {
+            // 起步只检查能否支付一颗坠星，真正的消耗在释放时按凝聚数量结算
+            if (!canAffordFirstStar(serverPlayer, stack)) {
                 return InteractionResultHolder.fail(stack);
             }
             discardCharge(serverPlayer);
             StarMusicChargeEntity charge = new StarMusicChargeEntity(serverPlayer);
             charge.setOwner(serverPlayer);
-            charge.setPos(serverPlayer.getX(), serverPlayer.getY() + serverPlayer.getBbHeight() + 1.6, serverPlayer.getZ());
+            Vec3 offset = StarMusicChargeEntity.followOffset(serverPlayer);
+            charge.setPos(serverPlayer.getX() + offset.x, serverPlayer.getY() + offset.y, serverPlayer.getZ() + offset.z);
             level.addFreshEntity(charge);
         }
         return ItemUtils.startUsingInstantly(level, player, hand);
@@ -76,33 +91,57 @@ public class StarMusicItem extends ManaStaffItem<HomingFallingStarProjectile> {
         return UseAnim.BOW;
     }
 
+    /// 蓄满后立刻停手，交给 {@link #releaseUsing} 结算，避免继续空蓄。
+    @Override
+    public void onUseTick(Level level, LivingEntity living, ItemStack stack, int remainingUseDuration) {
+        if (level.isClientSide || !(living instanceof ServerPlayer player)) return;
+        int chargeTicks = getUseDuration(stack, living) - remainingUseDuration;
+        if (chargeTicks >= FULL_CHARGE_TICKS) {
+            player.stopUsingItem();
+        }
+    }
+
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
         if (!(living instanceof ServerPlayer player)) return;
         discardCharge(player);
-        int used = getUseDuration(stack, living) - timeLeft;
-        if (used < MIN_CHARGE_TICKS) return;
-        /// 使用次数越多，这一次爆开的坠星越多；第 20 次额外触发临界星雨并重置计数。
-        int uses = USE_COUNTER.merge(player.getUUID(), 1, Integer::sum);
-        int stars = Math.min(MAX_STARS, 1 + (uses - 1) / 2);
-        boolean critical = uses >= CRITICAL_USES;
-        if (critical) {
-            USE_COUNTER.put(player.getUUID(), 0);
-            stars += CRITICAL_EXTRA_STARS;
-        }
+        int stars = starsForCharge(getUseDuration(stack, living) - timeLeft);
+        if (stars <= 0) return;
+        // 按凝聚数量结算魔力；魔力不足时自动削减到付得起的那部分
+        stars = payMana(player, stack, stars);
+        if (stars <= 0) return;
         player.awardStat(Stats.ITEM_USED.get(this));
         /// 从凝聚的大坠星位置向四周随机方向喷出；每颗先直线散开一段距离，再开始追踪。
-        Vec3 origin = new Vec3(player.getX(), player.getY() + player.getBbHeight() + 1.6, player.getZ());
+        Vec3 origin = player.position().add(StarMusicChargeEntity.followOffset(player));
         for (int i = 0; i < stars; i++) {
             double angle = level.random.nextDouble() * Math.PI * 2.0;
             Vec3 direction = new Vec3(Math.cos(angle), 0.35 + level.random.nextDouble() * 0.35, Math.sin(angle));
             HomingFallingStarProjectile star = HomingFallingStarProjectile.spawnBurst(
                     level, player, origin, direction, DIVERGE_SPEED, DIVERGE_TICKS);
-            star.setDamage(STAR_DAMAGE * (critical ? 1.5F : 1.0F));
+            star.setDamage(STAR_DAMAGE);
             level.addFreshEntity(star);
         }
         level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_CHIME, net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.0F);
+                SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 1.0F, 1.0F);
+    }
+
+    /// 起步检查：至少付得起一颗坠星（不实际扣除）。
+    private static boolean canAffordFirstStar(ServerPlayer player, ItemStack stack) {
+        if (player.isCreative()) return true;
+        ManaStorage manaStorage = ManaStorage.of(player);
+        return manaStorage.canExtract()
+                && manaStorage.getCurrentMana() >= PrefixUtils.calculateManaCost(stack, MANA_COST_PER_STAR);
+    }
+
+    /// 从多到少尝试结算，返回真正付得起的坠星数量（付不起就是 0）。
+    private static int payMana(ServerPlayer player, ItemStack stack, int stars) {
+        for (int count = stars; count > 0; count--) {
+            int cost = manaCostForStars(count);
+            if (PlayerUtils.extractMana(player, stack, () -> PrefixUtils.calculateManaCost(stack, cost))) {
+                return count;
+            }
+        }
+        return 0;
     }
 
     /// 清掉该玩家头顶残留的聚星，避免连续施法或中断后重复悬浮。

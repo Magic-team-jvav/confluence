@@ -249,9 +249,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(PotionItems.ITEMS, "potion/"));
         customModels.add(createDir(QuestedFishes.ITEMS, "quested_fish/"));
         customModels.add(createDir(ToolItems.ITEMS, "tool/"));
-        treasureBagModelAlias(TreasureBagItems.QUEEN_SLIME_TREASURE_BAG, "king_slime_treasure_bag");
         treasureBagModelAlias(TreasureBagItems.PLANTERA_TREASURE_BAG, "queen_bee_treasure_bag");
         treasureBagModelAlias(TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG, "skeletron_treasure_bag");
+        treasureBagModelAlias(TreasureBagItems.QUEEN_SLIME_TREASURE_BAG, "king_slime_treasure_bag");
         customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
         customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor_item/"));
         customModels.add(createDir(YoyoItems.ITEMS, "yoyo/"));

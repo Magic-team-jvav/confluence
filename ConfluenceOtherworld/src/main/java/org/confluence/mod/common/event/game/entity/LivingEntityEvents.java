@@ -96,7 +96,6 @@ import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
-import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
@@ -714,14 +713,6 @@ public final class LivingEntityEvents {
                 && ModBlockCounters.isGraveyard(event.getLevel(), mob.blockPosition())
                 && mob.checkSpawnObstruction(event.getLevel())) {
             event.setResult(MobSpawnEvent.PositionCheck.Result.SUCCEED);
-        }
-    }
-
-    /// 禁戒套装穿上/脱下时同步「禁戒标记」实体。
-    @SubscribeEvent
-    public static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            ModArmorBonus.updateForbiddenSign(player);
         }
     }
 

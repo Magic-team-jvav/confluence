@@ -8,33 +8,33 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RedGloveVfx;
-import org.confluence.mod.common.item.mana.RedGlovePattern;
+import org.confluence.mod.client.effect.ArcSurgeVfx;
+import org.confluence.mod.common.item.mana.ArcSurgePattern;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /// Authoritative clipped control polylines, sent in bounded batches without dropping targets.
-public record RedGloveArcPacketS2C(
+public record ArcSurgePacketS2C(
         int casterId,
         long tick,
         long seed,
         Vector3f origin,
-        List<RedGlovePattern.Path> paths
+        List<ArcSurgePattern.Path> paths
 ) implements IPacketS2C {
-    public static final Type<RedGloveArcPacketS2C> TYPE = Confluence.createType("red_glove_arc");
+    public static final Type<ArcSurgePacketS2C> TYPE = Confluence.createType("arc_surge_packet");
     public static final int BATCH_PATHS = 64;
-    public static final StreamCodec<FriendlyByteBuf, RedGloveArcPacketS2C> STREAM_CODEC = new StreamCodec<>() {
+    public static final StreamCodec<FriendlyByteBuf, ArcSurgePacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
-        public RedGloveArcPacketS2C decode(FriendlyByteBuf buffer) {
+        public ArcSurgePacketS2C decode(FriendlyByteBuf buffer) {
             int casterId = buffer.readVarInt();
             long tick = buffer.readVarLong(), seed = buffer.readVarLong();
             Vec3 origin = new Vec3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
             if (!finite(origin)) throw new IllegalArgumentException("Invalid arc origin");
             int count = buffer.readByte();
             if (count > BATCH_PATHS) throw new IllegalArgumentException("Too many arc paths");
-            List<RedGlovePattern.Path> paths = new ArrayList<>();
+            List<ArcSurgePattern.Path> paths = new ArrayList<>();
             for (int i = 0; i < count; i++) {
                 int depth = buffer.readByte(), parent = buffer.readVarInt(), root = buffer.readVarInt();
                 if (parent < -1 || root < -1 || root > 95)
@@ -51,13 +51,13 @@ public record RedGloveArcPacketS2C(
                         throw new IllegalArgumentException("Invalid arc point");
                     line.add(point);
                 }
-                paths.add(new RedGlovePattern.Path(depth, parent, root, line));
+                paths.add(new ArcSurgePattern.Path(depth, parent, root, line));
             }
-            return new RedGloveArcPacketS2C(casterId, tick, seed, origin.toVector3f(), List.copyOf(paths));
+            return new ArcSurgePacketS2C(casterId, tick, seed, origin.toVector3f(), List.copyOf(paths));
         }
 
         @Override
-        public void encode(FriendlyByteBuf buffer, RedGloveArcPacketS2C packet) {
+        public void encode(FriendlyByteBuf buffer, ArcSurgePacketS2C packet) {
             buffer.writeVarInt(packet.casterId);
             buffer.writeVarLong(packet.tick);
             buffer.writeVarLong(packet.seed);
@@ -90,16 +90,16 @@ public record RedGloveArcPacketS2C(
     private static boolean finite(Vec3 v) {return Double.isFinite(v.x) && Double.isFinite(v.y) && Double.isFinite(v.z);}
 
     @Override
-    public Type<RedGloveArcPacketS2C> type() {return TYPE;}
+    public Type<ArcSurgePacketS2C> type() {return TYPE;}
 
     @Override
     public void work(Player player) {
-        RedGloveVfx.receive(player, this);
+        ArcSurgeVfx.receive(player, this);
     }
 
-    public static void send(ServerPlayer owner, Vec3 origin, long seed, List<RedGlovePattern.Path> paths) {
+    public static void send(ServerPlayer owner, Vec3 origin, long seed, List<ArcSurgePattern.Path> paths) {
         for (int start = 0; start < paths.size(); start += BATCH_PATHS) {
-            var packet = new RedGloveArcPacketS2C(owner.getId(), owner.level().getGameTime(), seed,
+            var packet = new ArcSurgePacketS2C(owner.getId(), owner.level().getGameTime(), seed,
                     origin.toVector3f(), List.copyOf(paths.subList(start, Math.min(paths.size(), start + BATCH_PATHS))));
             // 96 around the source also reaches observers beside any endpoint of the 32-block cone.
             PacketDistributor.sendToPlayersNear(owner.serverLevel(), null, origin.x, origin.y, origin.z, 96, packet);

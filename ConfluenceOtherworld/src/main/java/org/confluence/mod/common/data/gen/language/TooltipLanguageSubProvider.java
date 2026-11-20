@@ -844,7 +844,7 @@ language.add("tooltip.item.confluence.polar_day.1", "Hits upgrade it to level 2 
         language.add("tooltip.item.confluence.wind_page.0", "Releases three wind bolts that rise, then home in on the nearest enemy", "一次释放三发风弹，先向上飞再追踪最近的敌人");
         language.add("tooltip.item.confluence.wind_eye.0", "Creates a tornado that pulls in enemies; recasting removes the previous one, and only the first projectile fired into its core is absorbed", "制造持续吸附敌人的旋风；再次使用会移除上一道，只吸收第一枚打入中心的弹幕");
         language.add("tooltip.item.confluence.star_weep.0", "Arrows that miss an enemy are stored as falling-star charges (max 3); the next hit on an enemy drops that many non-homing falling stars, one every 0.5 seconds", "未命中敌怪的箭矢会累积为坠星协同（最多 3 层）；下一次命中敌怪时从敌人头上释放等量坠星，每 0.5 秒落下一颗且不会追踪");
-        language.add("tooltip.item.confluence.star_music.0", "Hold to gather a star; release to burst into homing falling stars. More uses mean more stars, and the 20th use triggers a critical starfall", "长按凝聚坠星，松手爆开成追踪坠星；使用次数越多星数越多，第 20 次触发临界星雨");
+        language.add("tooltip.item.confluence.star_music.0", "Hold right-click: every 0.5s gathers one more falling star for 5 mana, up to 20 stars; it releases automatically at full charge", "长按右键凝聚坠星：每 0.5 秒多凝聚 1 颗并多消耗 5 点魔力，最多 20 颗；蓄满后自动释放");
         //        add("tooltip.item.confluence.fallen_soul_core.0", "以天上的星辰通灵，右键切换魔法类型");
         language.add("tooltip.confluence.artifact.soul_cost", "Costs %s Soul", "消耗 %s 灵魂");
         language.add("tooltip.confluence.artifact.cooldown", "Cooldown: %s s", "冷却：%s 秒");

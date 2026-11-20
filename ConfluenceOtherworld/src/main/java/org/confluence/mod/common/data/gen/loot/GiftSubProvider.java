@@ -498,6 +498,11 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                                 PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.SOUL_OF_NIGHT).apply(count2To5))
                         ))
                 )
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.CURSED_FLAME).apply(count2To5))
+                        ))
+                )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/boreal_crate"), environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
@@ -568,6 +573,11 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
                                 PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.SOUL_OF_NIGHT).apply(count2To5))
+                        ))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.ICHOR).apply(count2To5))
                         ))
                 )
         );

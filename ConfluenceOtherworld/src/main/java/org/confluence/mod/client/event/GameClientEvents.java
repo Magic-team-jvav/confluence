@@ -196,7 +196,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void clientTick$Post(ClientTickEvent.Post event) {
         Minecraft minecraft = Minecraft.getInstance();
-        RedGloveVfx.tick(minecraft);
+        ArcSurgeVfx.tick(minecraft);
         ThunderstrikeVfx.tick(minecraft);
         WormDigSoundHandler.tick(minecraft);
         LocalPlayer player = minecraft.player;
@@ -264,7 +264,7 @@ public final class GameClientEvents {
         DestroyerShellEffectHandler.reset();
         CameraShake.clear();
         EmpPulseRenderer.clear();
-        RedGloveVfx.clear();
+        ArcSurgeVfx.clear();
         ThunderstrikeVfx.clear();
         HitMarkerHud.clear();
         CrosshairHud.clear();
@@ -467,7 +467,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderLevelStage(RenderLevelStageEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
-        RedGloveVfx.render(event);
+        ArcSurgeVfx.render(event);
         ThunderstrikeVfx.render(event);
         BulletVfxManager.render(event);
         LocalPlayer player = minecraft.player;

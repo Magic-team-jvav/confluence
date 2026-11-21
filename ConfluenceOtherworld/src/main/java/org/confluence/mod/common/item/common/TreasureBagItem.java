@@ -91,7 +91,11 @@ public class TreasureBagItem extends CustomRarityItem {
         if (itemStack != null) {
             Vec3 position = living instanceof BaseBoss boss ? boss.getRewardPosition(owner) : living.position();
             TreasureBagItemEntity bag = new TreasureBagItemEntity(living.level(), position, itemStack, owner);
-            if (living.level().addFreshEntity(bag)) return bag;
+            Level level = living.level();
+            if (level.isOutsideBuildHeight(bag.blockPosition()) || !level.hasChunkAt(bag.blockPosition()) || level.getBlockCollisions(bag, bag.getBoundingBox()).iterator().hasNext()) {
+                bag.setPos(owner.position());
+            }
+            if (level.addFreshEntity(bag)) return bag;
         }
         return null;
     }

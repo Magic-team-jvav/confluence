@@ -321,11 +321,12 @@ public final class ModCommands {
                 if (cannotBeReforged(source, player)) return 0;
                 ItemStack itemStack = player.getMainHandItem();
                 PrefixType type = PrefixUtils.getPrefixType(itemStack);
-                if (!type.isGroupAvailable(group)) {
+                ModPrefix selected = context.getArgument("group", ModPrefix.class);
+                if (!type.getRollablePrefixes(itemStack).contains(selected)) {
                     source.sendFailure(Component.translatable("commands.confluence.reforge.set.unavailable_group").withStyle(ChatFormatting.RED));
                     return 0;
                 }
-                PrefixComponent prefix = PrefixUtils.setAndUpdate(itemStack, type, context.getArgument("group", ModPrefix.class));
+                PrefixComponent prefix = PrefixUtils.setAndUpdate(itemStack, type, selected);
                 if (unknownPrefixType(source, prefix)) return 0;
                 source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.success", ModRarity.withColor(itemStack, prefix.getName())), false);
                 return 1;

@@ -40,6 +40,8 @@ public interface ModPrefix {
 
     float value();
 
+    default float knockBack() {return 0.0F;}
+
     record Accessory(
             String name,
             float armor,
@@ -285,7 +287,7 @@ public interface ModPrefix {
                 HEAVY = register("heavy", 0, -0.1F, 0, 0, 0.15F, 0, 0.0712F), // 重
                 LIGHT = register("light", 0, 0.15F, 0, 0, -0.1F, 0, 0.0712F), // 轻
                 LEGENDARY = register("legendary", 0.15F, 0.1F, 0.05F, 0.1F, 0.15F, 2, 2.0985F), // 传奇
-                LEGENDARY2 = new Melee("legendary2", 0.17F, 0.0F, 0.08F, 0.0F, 0.17F, 2, 2.0985F); // todo 泰拉悠悠球独享传奇
+                LEGENDARY2 = register("legendary2", 0.17F, 0.0F, 0.08F, 0.0F, 0.17F, 2, 2.0985F); // 泰拉悠悠球独享传奇
 
         @Override
         public PrefixComponent createComponent(PrefixType type, ItemStack stack) {

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.component.prefix.ModPrefix;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 
 public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceMenu {
     public static final int REFORGE_SLOT_X = 50;
@@ -48,6 +50,9 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
 
     private final Deque<ReforgeResult> reforgeResults = new ArrayDeque<>();
     private int reforgeRevision;
+    private int trackedPrefix = -1;
+    private Item trackedItem;
+
     private long availableMoney;
     private long reforgeReadyAt;
     public final SimpleContainer container = new SimpleContainer(1);
@@ -84,6 +89,13 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
             addSlot(new Slot(inventory, m, HOTBAR_X + m * HOTBAR_SPACING, HOTBAR_Y));
         }
 
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {return trackedPrefix;}
+
+            @Override
+            public void set(int value) {trackedPrefix = value;}
+        });
         addDataSlot(new DataSlot() {
             @Override
             public int get() {return reforgeRevision;}
@@ -131,6 +143,8 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
         // 提前决定下一个词条
         if (!player.level().isClientSide) {
             ItemStack stack = getReforgeItem();
+            if (stack.isEmpty() || stack.getItem() != trackedItem) trackedPrefix = -1;
+            trackedItem = stack.getItem();
             if (PrefixUtils.couldReforge(stack)) {
                 RandomSource random = RandomSource.create(stack.hashCode() | player.getRandom().nextInt());
                 PrefixType type = PrefixUtils.getPrefixType(stack);
@@ -148,6 +162,15 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
 
     @Override
     public boolean clickMenuButton(Player player, int id) {
+        if (id > 0) {
+            if (player.level().isClientSide || !stillValid(player) || player.containerMenu != this || !getCarried().isEmpty())
+                return false;
+            int prefixId = id - 1;
+            if (!getReforgePrefixIds().contains(prefixId)) return false;
+            trackedPrefix = prefixId;
+            broadcastChanges();
+            return true;
+        }
         // 重铸
         if (id != 0 || !getCarried().isEmpty() || !stillValid(player) || player.containerMenu != this || getCooldownTicks() > 0
                 || !player.level().isClientSide && player.level().getGameTime() < reforgeReadyAt)
@@ -168,7 +191,7 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
             }
             PrefixUtils.setAndUpdate(stack, type, prefix);
             reforgeRevision = (reforgeRevision + 1) & 0x7FFF;
-            if (type.isBestPrefix(prefix, stack)) {
+            if (trackedPrefix == data[DATA_PREFIX_ID]) {
                 reforgeRevision |= 0x8000;
                 reforgeReadyAt = player.level().getGameTime() + BEST_PREFIX_PAUSE_TICKS;
                 data[3] = BEST_PREFIX_PAUSE_TICKS;
@@ -195,6 +218,16 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
         }
         super.broadcastChanges();
     }
+
+    public List<Integer> getReforgePrefixIds() {
+        ItemStack stack = getReforgeItem();
+        PrefixType type = PrefixUtils.getPrefixType(stack);
+        return type.getRollablePrefixes(stack).stream()
+                .map(prefix -> ModPrefix.ID_MAP.inverse().getOrDefault(prefix, -1))
+                .filter(id -> id >= 0).distinct().sorted().toList();
+    }
+
+    public int getTrackedPrefix() {return trackedPrefix;}
 
     public long getAvailableMoney() {return availableMoney;}
 

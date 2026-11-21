@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.api.animation.first_person.HandAnimationApi;
 import org.confluence.lib.api.animation.first_person.HandAnimationChannel;
 import org.confluence.lib.api.animation.first_person.HandAnimationProfile;
@@ -65,7 +66,7 @@ public class BaseGun extends Item implements GeoItem, IWeaponTooltip {
     }
 
     public BaseGun(Properties properties, GunDefinition definition, HandAnimationProfile animationProfile) {
-        super(properties.stacksTo(1));
+        super(properties.stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, definition.rarity()));
         this.definition = definition;
         this.animationProfile = animationProfile;
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
@@ -205,8 +206,8 @@ public class BaseGun extends Item implements GeoItem, IWeaponTooltip {
     @Override
     public double getTooltipCriticalChance(ItemStack stack, double attributeValue) {
         /// 两次独立暴击判定，取至少一次触发的概率。
-        double weaponCritical = Math.max(0, Math.min(1, definition.critical()));
-        double playerCritical = Math.max(0, Math.min(1, attributeValue));
+        double weaponCritical = Math.clamp(definition.critical(), 0, 1);
+        double playerCritical = Math.clamp(attributeValue, 0, 1);
         return 1 - (1 - weaponCritical) * (1 - playerCritical);
     }
 

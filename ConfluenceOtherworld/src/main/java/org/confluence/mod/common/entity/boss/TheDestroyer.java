@@ -1123,6 +1123,20 @@ public class TheDestroyer extends MechanicalBoss {
         }
     }
 
+    @Override
+    public Vec3 getRewardPosition(ServerPlayer player) {
+        Entity hit = getDamageFeedbackTarget();
+        if (hit != this) return hit.getBoundingBox().getCenter();
+
+        // 持续伤害等来源没有命中体节，按参战者所在的一段虫身结算。
+        Entity nearest = this;
+        for (int i = 1; i < SEGMENT_COUNT; i++) {
+            Entity section = body.getSection(i);
+            if (section.distanceToSqr(player) < nearest.distanceToSqr(player)) nearest = section;
+        }
+        return nearest.getBoundingBox().getCenter();
+    }
+
     private static int deathBurstInterval(int exploded) {
         float progress = Math.min(1.0F, exploded / ((SEGMENT_COUNT - 2) * DEATH_BURST_FULL_SPEED_PROGRESS));
         return Math.round(Mth.lerp(progress, DEATH_BURST_START_INTERVAL * DEATH_BURST_STEPS_PER_TICK, DEATH_BURST_END_INTERVAL));

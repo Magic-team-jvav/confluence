@@ -112,7 +112,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
 
     protected void afterShoot(ServerPlayer player, ItemStack stack, E projectile) {
         if (cooldown > 0) {
-            player.getCooldowns().addCooldown(this, cooldown);
+            player.getCooldowns().addCooldown(this, PrefixUtils.calculateUseTime(player, cooldown));
         }
         player.level().playSound(null, player.getX(), player.getEyeY(), player.getZ(), getShootSound(), SoundSource.PLAYERS, 1.0F, 1.0F);
     }

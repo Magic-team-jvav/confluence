@@ -3,13 +3,14 @@ package org.confluence.mod.common.entity.monster;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
-public final class EvilPenguin extends BaseWarriorMonster {
+public final class EvilPenguin extends BaseWarriorMonster implements Enemy {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation SWIM = RawAnimation.begin().thenLoop("move.swim");

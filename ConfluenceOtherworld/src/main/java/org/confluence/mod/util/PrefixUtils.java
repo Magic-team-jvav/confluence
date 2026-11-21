@@ -16,8 +16,8 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
@@ -29,34 +29,7 @@ public final class PrefixUtils {
     }
 
     public static boolean couldReforge(ItemStack stack) {
-        if (stack.is(ModTags.Items.UNABLE_TO_APPLY_PREFIX)) {
-            return false;
-        }
-        if (stack.is(ModTags.Items.PREFIX_SOUL_ONLY)) {
-            return true;
-        }
-        if (stack.is(ModTags.Items.SUMMONER_WEAPON)) {
-            return true;
-        }
-        if (stack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY)) {
-            return true;
-        }
-        if (stack.is(ModTags.Items.PREFIX_MELEE_ONLY)) {
-            return true;
-        }
-        if (stack.is(ModTags.Items.PREFIX_RANGED_ONLY)) {
-            return true;
-        }
-        if (stack.is(ModTags.Items.PREFIX_MAGIC_ONLY)) {
-            return true;
-        }
-        if (stack.is(ModTags.Items.PREFIX_SUMMON_ONLY)) {
-            return true;
-        }
-        if (stack.is(ModTags.Items.PREFIX_ACCESSORY_ONLY)) {
-            return true;
-        }
-        return false;
+        return getPrefixType(stack) != PrefixType.UNKNOWN;
     }
 
     public static @Nullable PrefixComponent initPrefix(RandomSource random, ItemStack itemStack) {
@@ -85,6 +58,8 @@ public final class PrefixUtils {
     }
 
     public static PrefixType getPrefixType(ItemStack itemStack) {
+        if (itemStack.isEmpty() || itemStack.is(ModTags.Items.UNABLE_TO_APPLY_PREFIX))
+            return PrefixType.UNKNOWN;
         if (itemStack.is(ModTags.Items.PREFIX_SOUL_ONLY) && itemStack.getItem() instanceof SoulWeaponItem) {
             return PrefixType.SOUL;
         }
@@ -121,7 +96,7 @@ public final class PrefixUtils {
 
     public static @Nullable PrefixComponent createWithMercy(RandomSource random, ItemStack stack, PrefixType type) {
         ModPrefix prefix = type.randomPrefix(random, stack);
-        if (prefix.canBeMercy() && random.nextInt(3) != 0) {
+        if (prefix == null || prefix.canBeMercy() && random.nextInt(3) != 0) {
             unknown(stack);
             return null;
         }
@@ -157,7 +132,8 @@ public final class PrefixUtils {
     public static @Nullable PrefixComponent random(RandomSource random, ItemStack stack) {
         PrefixType type = getPrefixType(stack);
         if (type != PrefixType.UNKNOWN) {
-            return setAndUpdate(stack, type, type.randomPrefix(random, stack));
+            ModPrefix prefix = type.randomPrefix(random, stack);
+            if (prefix != null) return setAndUpdate(stack, type, prefix);
         }
         return null;
     }
@@ -166,13 +142,13 @@ public final class PrefixUtils {
         PrefixComponent component = prefix.createComponent(type, stack);
         stack.set(ModDataComponentTypes.PREFIX, component);
 
-        int tier = ModRarity.TIER.inverse().getOrDefault(ModRarity.getRarity(stack, true), -2);
-        if (tier > -2) {
-            tier += prefix.tier();
-            if (tier < -1) tier = -1;
-            else if (tier > 11) tier = 11;
+        ModRarity base = ModRarity.getModRarity(stack, true);
+        if (base != null) {
+            Integer tier = ModRarity.TIER.inverse().get(base);
+            // 专家、大师等独立稀有度没有数字等级，重铸后仍使用物品原色。
+            ModRarity rarity = tier == null ? base : ModRarity.TIER.get(Math.max(-1, Math.min(11, tier + prefix.tier())));
+            stack.set(ConfluenceMagicLib.MOD_RARITY, rarity);
         }
-        stack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.TIER.get(tier));
         int value = ValueComponent.getValue(stack, 50, true);
         float finalValue = value + value * prefix.value();
         stack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) finalValue));

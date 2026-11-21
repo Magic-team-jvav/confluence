@@ -110,16 +110,13 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
             }
         }
         ModPrefix prefix = getPrefix(itemStack);
-        if (prefix != null) {
-            if (prefix instanceof ModPrefix.Summon summon) {
-                result *= 1 + summon.attackDamage();
-            }
-            if (prefix instanceof ModPrefix.Universal universal) {
-                result *= 1 + universal.attackDamage();
-            }
-        }
+        if (prefix instanceof ModPrefix.Summon summon) return result * (1 + summon.attackDamage());
+        if (prefix instanceof ModPrefix.Universal universal)
+            return result * (1 + universal.attackDamage());
         return result;
     }
+
+    public float getBaseSummonKnockback() {return knockback;}
 
     public float getSummonKnockback(@Nullable Player player, @NotNull ItemStack itemStack) {
         float result = knockback;
@@ -130,15 +127,7 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
             }
         }
         ModPrefix prefix = getPrefix(itemStack);
-        if (prefix != null) {
-            if (prefix instanceof ModPrefix.Summon summon) {
-                result *= 1 + summon.knockBack();
-            }
-            if (prefix instanceof ModPrefix.Universal universal) {
-                result *= 1 + universal.knockBack();
-            }
-        }
-        return result;
+        return prefix == null ? result : result * (1 + prefix.knockBack());
     }
 
     public float getSummonArmorPierce(@Nullable Player player, @NotNull ItemStack itemStack) {
@@ -176,15 +165,16 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
 
     public ModPrefix getPrefix(@NotNull ItemStack itemStack) {
         PrefixComponent component = PrefixUtils.getPrefix(itemStack);
-        ModPrefix prefix = null;
-        if (component != null) {
-            prefix = switch (component.type()) {
-                case SUMMON -> ModPrefix.Summon.VALUES.get(component.name());
-                case UNIVERSAL -> ModPrefix.Universal.VALUES.get(component.name());
-                default -> null;
-            };
-        }
-        return prefix;
+        if (component == null) return null;
+        return switch (component.type()) {
+            // SUMMON 是武器的词缀池，池内同时包含召唤专属和通用词缀。
+            case SUMMON -> {
+                ModPrefix summon = ModPrefix.Summon.VALUES.get(component.name());
+                yield summon != null ? summon : ModPrefix.Universal.VALUES.get(component.name());
+            }
+            case UNIVERSAL -> ModPrefix.Universal.VALUES.get(component.name());
+            default -> null;
+        };
     }
 
     public void summon(@NotNull Player player, @NotNull ItemStack itemStack) {

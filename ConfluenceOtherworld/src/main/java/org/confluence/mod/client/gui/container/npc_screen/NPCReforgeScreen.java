@@ -4,11 +4,13 @@ import com.mojang.blaze3d.pipeline.TextureTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -16,8 +18,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.npc.BaseNPC;
@@ -30,12 +34,18 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
+import org.mesdag.particlestorm.api.IntAllocator;
+import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.particle.MolangParticleManager;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
+import org.mesdag.particlestorm.particle.screen.IParticleManagerScreen;
+import org.mesdag.particlestorm.particle.screen.ScreenParticleEmitter;
 import org.mesdag.portlib.wrapper.common.extensions.IPortInventoryScreenExtension;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
+public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> implements IParticleManagerScreen {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/reforge.png");
 
     private static final ResourceLocation COIN_PANEL = Confluence.asResource("textures/gui/container/piggy_bank.png");
@@ -139,6 +149,16 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     private static final int SLOT_FRAME_FILL = 0x20808080;
     private static final int SLOT_FRAME_DARK = 0x70606060;
 
+    private static final ResourceLocation TRACK_BACKGROUND = Confluence.asResource("dialog_background");
+    private static final ResourceLocation TRACK_TAIL = Confluence.asResource("dialog_tail");
+    private static final int TRACK_TAIL_SIZE = 8;
+    private static final int TRACK_X = -32;
+    private static final int TRACK_Y = 19;
+    private static final int TRACK_WIDTH = 74;
+    private static final int TRACK_ROW_HEIGHT = 15;
+    private static final int TRACK_MAX_ROWS = 7;
+    private static final ResourceLocation HAMMER_SPARK = Confluence.asResource("reforge_hammer_spark");
+
     private int hammerSwingAge = HAMMER_RETURN_TICKS;
 
     private record ReforgePopup(Component text, int createdAt, boolean best) {}
@@ -146,7 +166,12 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     private final Deque<ReforgePopup> prefixPopups = new ArrayDeque<>();
     private int popupClock;
     private int bestPrefixPauseTicks;
-    private boolean hammerImpactPending;
+    private boolean trackingListOpen;
+    private int trackingScroll;
+    private final MolangParticleManager reforgeParticles = new MolangParticleManager(new IntAllocator());
+    private final SparkCamera sparkCamera = new SparkCamera();
+    private final Frustum sparkFrustum = new Frustum(new Matrix4f(), new Matrix4f().scaling(0.1F));
+
     private TextureTarget previewTarget;
     private BaseNPC tinkererPreview;
 
@@ -192,7 +217,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
         NPCReforgeMenu.ReforgeResult result;
         while ((result = menu.pollReforgeResult()) != null) {
             hammerSwingAge = 0;
-            hammerImpactPending = true;
+            spawnHammerSparks();
             PrefixComponent prefix = PrefixUtils.getPrefix(result.item());
             if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
                 prefixPopups.addLast(new ReforgePopup(ModRarity.withColor(result.item(), prefix.getName()), popupClock, result.best()));
@@ -200,17 +225,36 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
             }
             if (result.best()) bestPrefixPauseTicks = NPCReforgeMenu.BEST_PREFIX_PAUSE_TICKS;
         }
+        if (minecraft.player != null) reforgeParticles.tick(minecraft, minecraft.player);
     }
 
     public boolean isTinkererPreview(BaseNPC npc) {
         return npc == tinkererPreview;
     }
 
-    public float getHammerArmRotation(float partialTick) {
-        if (hammerImpactPending) {
-            hammerImpactPending = false;
-            return (float) Math.toRadians(HAMMER_STRIKE_X);
+    @Override
+    public MolangParticleManager getManager() {
+        return reforgeParticles;
+    }
+
+    private static class SparkCamera extends Camera {
+        void moveTo(Vec3 origin) {
+            setPosition(origin.x, origin.y, origin.z);
         }
+    }
+
+    private void spawnHammerSparks() {
+        if (minecraft.player == null) return;
+        Vec3 origin = minecraft.player.position();
+        sparkCamera.moveTo(origin);
+        sparkFrustum.prepare(origin.x, origin.y, origin.z);
+        reforgeParticles.removeAll();
+        reforgeParticles.addEmitter(new ScreenParticleEmitter(ParticleEmitter.TYPE, minecraft.player.level(),
+                origin, HAMMER_SPARK, MolangExp.EMPTY));
+    }
+
+    public float getHammerArmRotation(float partialTick) {
+        if (hammerSwingAge == 0) return (float) Math.toRadians(HAMMER_STRIKE_X);
         float progress = 1.0F - Math.min(1.0F, (hammerSwingAge + partialTick) / HAMMER_RETURN_TICKS);
         float eased = progress * progress * (3.0F - 2.0F * progress);
         return (float) Math.toRadians(HAMMER_RAISED_X + (HAMMER_STRIKE_X - HAMMER_RAISED_X) * eased);
@@ -232,6 +276,28 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        var choices = menu.getReforgePrefixIds();
+        int trackX = leftPos + TRACK_X;
+        int trackY = topPos + TRACK_Y;
+        if (button == 0 && !choices.isEmpty() && menu.getCarried().isEmpty()
+                && mouseX >= trackX && mouseX < trackX + TRACK_WIDTH && mouseY >= trackY) {
+            int row = (int) (mouseY - trackY) / TRACK_ROW_HEIGHT;
+            if (row == 0) {
+                trackingListOpen = !trackingListOpen;
+                trackingScroll = 0;
+                return true;
+            }
+            if (trackingListOpen && row <= trackingVisibleRows(choices.size())) {
+                clampTrackingScroll(choices.size());
+                minecraft.gameMode.handleInventoryButtonClick(menu.containerId, choices.get(trackingScroll + row - 1) + 1);
+                trackingListOpen = false;
+                return true;
+            }
+        }
+        if (trackingListOpen) {
+            trackingListOpen = false;
+            return true;
+        }
         if (button == 0 && isHoveringTinkerer(mouseX, mouseY)) {
             if (canReforge() && menu.clickMenuButton(minecraft.player, 0)) {
                 minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 0);
@@ -240,6 +306,31 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollY) {
+        if (trackingListOpen) {
+            int count = menu.getReforgePrefixIds().size();
+            int x = leftPos + TRACK_X;
+            int y = topPos + TRACK_Y;
+            if (mouseX >= x && mouseX < x + TRACK_WIDTH && mouseY >= y
+                    && mouseY < y + TRACK_ROW_HEIGHT * (trackingVisibleRows(count) + 1)) {
+                trackingScroll -= (int) Math.signum(scrollY);
+                clampTrackingScroll(count);
+                return true;
+            }
+        }
+        return super.mouseScrolled(mouseX, mouseY, scrollY);
+    }
+
+    private int trackingVisibleRows(int count) {
+        int space = height - topPos - TRACK_Y - TRACK_ROW_HEIGHT;
+        return Math.min(count, Math.max(1, Math.min(TRACK_MAX_ROWS, space / TRACK_ROW_HEIGHT)));
+    }
+
+    private void clampTrackingScroll(int count) {
+        trackingScroll = Math.max(0, Math.min(trackingScroll, count - trackingVisibleRows(count)));
     }
 
     private boolean canReforge() {
@@ -380,6 +471,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
 
     @Override
     public void removed() {
+        reforgeParticles.removeAll();
         if (previewTarget != null) {
             previewTarget.destroyBuffers();
             previewTarget = null;
@@ -424,6 +516,88 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
         }
     }
 
+    private void renderHammerSparks(GuiGraphics graphics, float partialTick) {
+        graphics.flush();
+        boolean blend = GL11.glIsEnabled(GL11.GL_BLEND);
+        boolean depthWrite = GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK);
+        var modelView = RenderSystem.getModelViewStack();
+        modelView.pushPose();
+        try {
+            modelView.translate(leftPos + NPCReforgeMenu.REFORGE_SLOT_X + SLOT_SIZE / 2.0F,
+                    topPos + NPCReforgeMenu.REFORGE_SLOT_Y + SLOT_SIZE / 2.0F, 250.0F);
+            modelView.scale(30.0F, -30.0F, 1.0F);
+            RenderSystem.applyModelViewMatrix();
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            reforgeParticles.renderParticles(minecraft.gameRenderer.lightTexture(), minecraft.getTextureManager(),
+                    sparkCamera, partialTick, sparkFrustum, type -> true);
+        } finally {
+            // 粒子风暴的加法混合和深度写入设置不能带到后续 GUI 绘制。
+            RenderSystem.defaultBlendFunc();
+            if (!blend) RenderSystem.disableBlend();
+            RenderSystem.depthMask(depthWrite);
+            modelView.popPose();
+            RenderSystem.applyModelViewMatrix();
+        }
+    }
+
+    private Component trackingName(int id) {
+        ModPrefix prefix = ModPrefix.ID_MAP.get(id);
+        var item = menu.getReforgeItem();
+        return prefix == null ? Component.translatable("gui.confluence.reforge.track")
+                : prefix.createComponent(PrefixUtils.getPrefixType(item), item).getName();
+    }
+
+    private void renderTracking(GuiGraphics graphics, int mouseX, int mouseY) {
+        var choices = menu.getReforgePrefixIds();
+        if (choices.isEmpty()) {
+            trackingListOpen = false;
+            return;
+        }
+        int x = leftPos + TRACK_X;
+        int y = topPos + TRACK_Y;
+        graphics.pose().pushPose();
+        graphics.pose().translate(0, 0, 300);
+        int visibleRows = trackingVisibleRows(choices.size());
+        clampTrackingScroll(choices.size());
+        int panelHeight = TRACK_ROW_HEIGHT * (trackingListOpen ? visibleRows + 1 : 1);
+        graphics.blitSprite(TRACK_BACKGROUND, x, y, TRACK_WIDTH, panelHeight);
+        if (!trackingListOpen) renderTrackingTail(graphics, x, y);
+        graphics.drawString(font, font.plainSubstrByWidth(trackingName(menu.getTrackedPrefix()).getString(), TRACK_WIDTH - 16), x + 4, y + 4, 0x222733, false);
+        graphics.drawString(font, "▾", x + TRACK_WIDTH - 10, y + 4, 0x222733, false);
+        if (trackingListOpen) {
+            for (int i = 0; i < visibleRows; i++) {
+                int rowY = y + TRACK_ROW_HEIGHT * (i + 1);
+                boolean hovered = mouseX >= x && mouseX < x + TRACK_WIDTH && mouseY >= rowY && mouseY < rowY + TRACK_ROW_HEIGHT;
+                if (hovered)
+                    graphics.fill(x + 3, rowY, x + TRACK_WIDTH - 3, rowY + TRACK_ROW_HEIGHT - 2, 0xFFE1EAF5);
+                graphics.drawString(font, font.plainSubstrByWidth(trackingName(choices.get(trackingScroll + i)).getString(), TRACK_WIDTH - 8), x + 4, rowY + 4, 0x222733, false);
+            }
+            if (choices.size() > visibleRows) {
+                int trackTop = y + TRACK_ROW_HEIGHT + 2;
+                int trackHeight = visibleRows * TRACK_ROW_HEIGHT - 4;
+                int thumbHeight = Math.max(5, trackHeight * visibleRows / choices.size());
+                int thumbY = trackTop + (trackHeight - thumbHeight) * trackingScroll / (choices.size() - visibleRows);
+                graphics.fill(x + TRACK_WIDTH - 4, thumbY, x + TRACK_WIDTH - 2, thumbY + thumbHeight, 0xFF7788A0);
+            }
+        }
+        graphics.pose().popPose();
+    }
+
+    private void renderTrackingTail(GuiGraphics graphics, int x, int y) {
+        // 原贴图的尾尖朝左，镜像后朝向右侧的哥布林。
+        graphics.pose().pushPose();
+        graphics.pose().translate(x + TRACK_WIDTH + TRACK_TAIL_SIZE - 1, y + TRACK_ROW_HEIGHT - 2, 0);
+        graphics.pose().scale(-1, 1, 1);
+        boolean cull = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+        if (cull) RenderSystem.disableCull();
+        try {
+            graphics.blitSprite(TRACK_TAIL, 0, 0, TRACK_TAIL_SIZE, TRACK_TAIL_SIZE);
+        } finally {
+            if (cull) RenderSystem.enableCull();
+            graphics.pose().popPose();
+        }
+    }
+
     @Override
     protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {}
 
@@ -431,6 +605,8 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         renderBackground(graphics);
         super.render(graphics, mouseX, mouseY, partialTick);
-        renderTooltip(graphics, mouseX, mouseY);
+        renderHammerSparks(graphics, partialTick);
+        if (!trackingListOpen) renderTooltip(graphics, mouseX, mouseY);
+        renderTracking(graphics, mouseX, mouseY);
     }
 }

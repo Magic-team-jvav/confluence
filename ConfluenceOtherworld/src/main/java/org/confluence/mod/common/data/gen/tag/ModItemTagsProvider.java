@@ -1,7 +1,5 @@
 package org.confluence.mod.common.data.gen.tag;
 
-import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
-
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -28,6 +26,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.potion.AbstractPotionItem;
+import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_furniture.common.init.TFBlocks;
@@ -533,6 +532,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY).addTags(
                 ModTags.Items.FLAIL,
                 ModTags.Items.SPEAR,
+                ModTags.Items.LANCE,
                 ModTags.Items.YOYO,
                 ModTags.Items.BOOMERANG,
                 ModTags.Items.TOOLS_CHAINSAW,
@@ -544,7 +544,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ItemTags.PICKAXES,
                 ItemTags.SHOVELS,
                 ItemTags.HOES,
-                ModTags.Items.LANCE,
+                ModTags.Items.TOOLS_HAMMER,
                 ModTags.Items.WHIP
         );
         /*.add(Items.MACE)*/

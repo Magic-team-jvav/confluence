@@ -82,7 +82,13 @@ public class TreasureBagItem extends CustomRarityItem {
         if (itemStack != null) {
             Vec3 position = living instanceof BaseBoss boss ? boss.getRewardPosition(owner) : living.position();
             TreasureBagItemEntity bag = new TreasureBagItemEntity(living.level(), position, itemStack, owner);
-            if (living.level().addFreshEntity(bag)) return bag;
+            // 穿墙 Boss 的奖励点可能埋在实心方块中，按宝藏袋自身的碰撞箱检查。
+            Level level = living.level();
+            if (level.isOutsideBuildHeight(bag.blockPosition()) || !level.hasChunkAt(bag.blockPosition())
+                    || level.getBlockCollisions(bag, bag.getBoundingBox()).iterator().hasNext()) {
+                bag.setPos(owner.position());
+            }
+            if (level.addFreshEntity(bag)) return bag;
         }
         return null;
     }

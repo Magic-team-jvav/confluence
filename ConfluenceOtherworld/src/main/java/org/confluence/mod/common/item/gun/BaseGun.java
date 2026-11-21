@@ -16,6 +16,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.api.animation.first_person.HandAnimationApi;
 import org.confluence.lib.api.animation.first_person.HandAnimationChannel;
 import org.confluence.lib.api.animation.first_person.HandAnimationProfile;
@@ -62,7 +63,7 @@ public class BaseGun extends Item implements GeoItem, IWeaponTooltip {
     }
 
     public BaseGun(Properties properties, GunDefinition definition, HandAnimationProfile animationProfile) {
-        super(properties.stacksTo(1));
+        super(properties.stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, definition.rarity()));
         this.definition = definition;
         this.animationProfile = animationProfile;
         SingletonGeoAnimatable.registerSyncedAnimatable(this);

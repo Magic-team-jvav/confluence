@@ -65,23 +65,23 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.ORES_SAPPHIRE), MaterialItems.SAPPHIRE.toStack(), 1.0F, 100);
         cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.ORES_AMETHYST), MaterialItems.AMETHYST.toStack(), 1.0F, 100);
 
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.COAL_ORE_SMELTING), Items.COAL.getDefaultInstance(), 0.1F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.COPPER_ORE_SMELTING), Items.COPPER_INGOT.getDefaultInstance(), 0.7F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.IRON_ORE_SMELTING), Items.IRON_INGOT.getDefaultInstance(), 0.7F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.GOLD_ORE_SMELTING), Items.GOLD_INGOT.getDefaultInstance(), 1.0F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.DIAMOND_ORE_SMELTING), Items.DIAMOND.getDefaultInstance(), 1.0F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.EMERALD_ORE_SMELTING), Items.EMERALD.getDefaultInstance(), 1.0F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.REDSTONE_ORE_SMELTING), Items.REDSTONE.getDefaultInstance(), 0.7F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.LAPIS_ORE_SMELTING), Items.LAPIS_ORE.getDefaultInstance(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmelting(OreBlocks.SANCTIFICATION_COAL_ORE, OreBlocks.CORRUPTION_COAL_ORE, OreBlocks.FLESHIFICATION_COAL_ORE), Items.COAL.getDefaultInstance(), 0.1F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmelting(OreBlocks.SANCTIFICATION_COPPER_ORE, OreBlocks.CORRUPTION_COPPER_ORE, OreBlocks.FLESHIFICATION_COPPER_ORE), Items.COPPER_INGOT.getDefaultInstance(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmelting(OreBlocks.SANCTIFICATION_IRON_ORE, OreBlocks.CORRUPTION_IRON_ORE, OreBlocks.FLESHIFICATION_IRON_ORE), Items.IRON_INGOT.getDefaultInstance(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmelting(OreBlocks.SANCTIFICATION_GOLD_ORE, OreBlocks.CORRUPTION_GOLD_ORE, OreBlocks.FLESHIFICATION_GOLD_ORE), Items.GOLD_INGOT.getDefaultInstance(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmelting(OreBlocks.SANCTIFICATION_DIAMOND_ORE, OreBlocks.CORRUPTION_DIAMOND_ORE, OreBlocks.FLESHIFICATION_DIAMOND_ORE), Items.DIAMOND.getDefaultInstance(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmelting(OreBlocks.SANCTIFICATION_EMERALD_ORE, OreBlocks.CORRUPTION_EMERALD_ORE, OreBlocks.FLESHIFICATION_EMERALD_ORE), Items.EMERALD.getDefaultInstance(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmelting(OreBlocks.SANCTIFICATION_REDSTONE_ORE, OreBlocks.CORRUPTION_REDSTONE_ORE, OreBlocks.FLESHIFICATION_REDSTONE_ORE), Items.REDSTONE.getDefaultInstance(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmelting(OreBlocks.SANCTIFICATION_LAPIS_ORE, OreBlocks.CORRUPTION_LAPIS_ORE, OreBlocks.FLESHIFICATION_LAPIS_ORE), Items.LAPIS_LAZULI.getDefaultInstance(), 0.7F, 100);
 
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.TIN_ORE_SMELTING), MaterialItems.TIN_INGOT.toStack(), 0.7F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.LEAD_ORE_SMELTING), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.SILVER_ORE_SMELTING), MaterialItems.SILVER_INGOT.toStack(), 0.7F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.TUNGSTEN_ORE_SMELTING), MaterialItems.TUNGSTEN_INGOT.toStack(), 0.7F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.PLATINUM_ORE_SMELTING), MaterialItems.PLATINUM_INGOT.toStack(), 1.0F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.CRIMTANE_ORE_SMELTING), MaterialItems.CRIMTANE_INGOT.toStack(), 1.0F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.DEMONITE_ORE_SMELTING), MaterialItems.DEMONITE_INGOT.toStack(), 1.0F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.METEORITE_ORE_SMELTING), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_TIN, OreBlocks.TIN_ORE, OreBlocks.DEEPSLATE_TIN_ORE, OreBlocks.CORRUPTION_TIN_ORE, OreBlocks.FLESHIFICATION_TIN_ORE, OreBlocks.SANCTIFICATION_TIN_ORE), MaterialItems.TIN_INGOT.toStack(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_LEAD, OreBlocks.LEAD_ORE, OreBlocks.DEEPSLATE_LEAD_ORE, OreBlocks.CORRUPTION_LEAD_ORE, OreBlocks.FLESHIFICATION_LEAD_ORE, OreBlocks.SANCTIFICATION_LEAD_ORE), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_SILVER, OreBlocks.SILVER_ORE, OreBlocks.DEEPSLATE_SILVER_ORE, OreBlocks.CORRUPTION_SILVER_ORE, OreBlocks.FLESHIFICATION_SILVER_ORE, OreBlocks.SANCTIFICATION_SILVER_ORE), MaterialItems.SILVER_INGOT.toStack(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_TUNGSTEN, OreBlocks.TUNGSTEN_ORE, OreBlocks.DEEPSLATE_TUNGSTEN_ORE, OreBlocks.CORRUPTION_TUNGSTEN_ORE, OreBlocks.FLESHIFICATION_TUNGSTEN_ORE, OreBlocks.SANCTIFICATION_TUNGSTEN_ORE), MaterialItems.TUNGSTEN_INGOT.toStack(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_PLATINUM, OreBlocks.PLATINUM_ORE, OreBlocks.DEEPSLATE_PLATINUM_ORE, OreBlocks.CORRUPTION_PLATINUM_ORE, OreBlocks.FLESHIFICATION_PLATINUM_ORE, OreBlocks.SANCTIFICATION_PLATINUM_ORE), MaterialItems.PLATINUM_INGOT.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_CRIMTANE, OreBlocks.CRIMTANE_ORE, OreBlocks.DEEPSLATE_CRIMTANE_ORE, OreBlocks.CORRUPTION_CRIMTANE_ORE, OreBlocks.FLESHIFICATION_CRIMTANE_ORE, OreBlocks.SANCTIFICATION_CRIMTANE_ORE), MaterialItems.CRIMTANE_INGOT.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_DEMONITE, OreBlocks.DEMONITE_ORE, OreBlocks.DEEPSLATE_DEMONITE_ORE, OreBlocks.CORRUPTION_DEMONITE_ORE, OreBlocks.FLESHIFICATION_DEMONITE_ORE, OreBlocks.SANCTIFICATION_DEMONITE_ORE), MaterialItems.DEMONITE_INGOT.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_METEORITE, OreBlocks.METEORITE_ORE), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 100);
         cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.COLD_CRYSTAL_ORE), MaterialItems.COLD_CRYSTAL.toStack(), 1.0F, 100);
         cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.GELSTONE_ORE), MaterialItems.GELSTONE.toStack(), 1.0F, 100);
         cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.SPORE_ROOT_BLOCK), MaterialItems.SPORE_ROOT.toStack(), 1.0F, 100);
@@ -98,23 +98,23 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.ORES_SAPPHIRE), MaterialItems.SAPPHIRE.toStack(), 1.0F, 200);
         cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.ORES_AMETHYST), MaterialItems.AMETHYST.toStack(), 1.0F, 200);
 
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.COAL_ORE_SMELTING), Items.COAL.getDefaultInstance(), 0.1F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.COPPER_ORE_SMELTING), Items.COPPER_INGOT.getDefaultInstance(), 0.7F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.IRON_ORE_SMELTING), Items.IRON_INGOT.getDefaultInstance(), 0.7F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_ORE_SMELTING), Items.GOLD_INGOT.getDefaultInstance(), 1.0F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.DIAMOND_ORE_SMELTING), Items.DIAMOND.getDefaultInstance(), 1.0F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.EMERALD_ORE_SMELTING), Items.EMERALD.getDefaultInstance(), 1.0F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.REDSTONE_ORE_SMELTING), Items.REDSTONE.getDefaultInstance(), 0.7F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.LAPIS_ORE_SMELTING), Items.LAPIS_ORE.getDefaultInstance(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmelting(OreBlocks.SANCTIFICATION_COAL_ORE, OreBlocks.CORRUPTION_COAL_ORE, OreBlocks.FLESHIFICATION_COAL_ORE), Items.COAL.getDefaultInstance(), 0.1F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmelting(OreBlocks.SANCTIFICATION_COPPER_ORE, OreBlocks.CORRUPTION_COPPER_ORE, OreBlocks.FLESHIFICATION_COPPER_ORE), Items.COPPER_INGOT.getDefaultInstance(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmelting(OreBlocks.SANCTIFICATION_IRON_ORE, OreBlocks.CORRUPTION_IRON_ORE, OreBlocks.FLESHIFICATION_IRON_ORE), Items.IRON_INGOT.getDefaultInstance(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmelting(OreBlocks.SANCTIFICATION_GOLD_ORE, OreBlocks.CORRUPTION_GOLD_ORE, OreBlocks.FLESHIFICATION_GOLD_ORE), Items.GOLD_INGOT.getDefaultInstance(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmelting(OreBlocks.SANCTIFICATION_DIAMOND_ORE, OreBlocks.CORRUPTION_DIAMOND_ORE, OreBlocks.FLESHIFICATION_DIAMOND_ORE), Items.DIAMOND.getDefaultInstance(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmelting(OreBlocks.SANCTIFICATION_EMERALD_ORE, OreBlocks.CORRUPTION_EMERALD_ORE, OreBlocks.FLESHIFICATION_EMERALD_ORE), Items.EMERALD.getDefaultInstance(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmelting(OreBlocks.SANCTIFICATION_REDSTONE_ORE, OreBlocks.CORRUPTION_REDSTONE_ORE, OreBlocks.FLESHIFICATION_REDSTONE_ORE), Items.REDSTONE.getDefaultInstance(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmelting(OreBlocks.SANCTIFICATION_LAPIS_ORE, OreBlocks.CORRUPTION_LAPIS_ORE, OreBlocks.FLESHIFICATION_LAPIS_ORE), Items.LAPIS_LAZULI.getDefaultInstance(), 0.7F, 200);
 
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.TIN_ORE_SMELTING), MaterialItems.TIN_INGOT.toStack(), 0.7F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.LEAD_ORE_SMELTING), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.SILVER_ORE_SMELTING), MaterialItems.SILVER_INGOT.toStack(), 0.7F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.TUNGSTEN_ORE_SMELTING), MaterialItems.TUNGSTEN_INGOT.toStack(), 0.7F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.PLATINUM_ORE_SMELTING), MaterialItems.PLATINUM_INGOT.toStack(), 1.0F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.CRIMTANE_ORE_SMELTING), MaterialItems.CRIMTANE_INGOT.toStack(), 1.0F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.DEMONITE_ORE_SMELTING), MaterialItems.DEMONITE_INGOT.toStack(), 1.0F, 200);
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.METEORITE_ORE_SMELTING), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_TIN, OreBlocks.TIN_ORE, OreBlocks.DEEPSLATE_TIN_ORE, OreBlocks.CORRUPTION_TIN_ORE, OreBlocks.FLESHIFICATION_TIN_ORE, OreBlocks.SANCTIFICATION_TIN_ORE), MaterialItems.TIN_INGOT.toStack(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_LEAD, OreBlocks.LEAD_ORE, OreBlocks.DEEPSLATE_LEAD_ORE, OreBlocks.CORRUPTION_LEAD_ORE, OreBlocks.FLESHIFICATION_LEAD_ORE, OreBlocks.SANCTIFICATION_LEAD_ORE), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_SILVER, OreBlocks.SILVER_ORE, OreBlocks.DEEPSLATE_SILVER_ORE, OreBlocks.CORRUPTION_SILVER_ORE, OreBlocks.FLESHIFICATION_SILVER_ORE, OreBlocks.SANCTIFICATION_SILVER_ORE), MaterialItems.SILVER_INGOT.toStack(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_TUNGSTEN, OreBlocks.TUNGSTEN_ORE, OreBlocks.DEEPSLATE_TUNGSTEN_ORE, OreBlocks.CORRUPTION_TUNGSTEN_ORE, OreBlocks.FLESHIFICATION_TUNGSTEN_ORE, OreBlocks.SANCTIFICATION_TUNGSTEN_ORE), MaterialItems.TUNGSTEN_INGOT.toStack(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_PLATINUM, OreBlocks.PLATINUM_ORE, OreBlocks.DEEPSLATE_PLATINUM_ORE, OreBlocks.CORRUPTION_PLATINUM_ORE, OreBlocks.FLESHIFICATION_PLATINUM_ORE, OreBlocks.SANCTIFICATION_PLATINUM_ORE), MaterialItems.PLATINUM_INGOT.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_CRIMTANE, OreBlocks.CRIMTANE_ORE, OreBlocks.DEEPSLATE_CRIMTANE_ORE, OreBlocks.CORRUPTION_CRIMTANE_ORE, OreBlocks.FLESHIFICATION_CRIMTANE_ORE, OreBlocks.SANCTIFICATION_CRIMTANE_ORE), MaterialItems.CRIMTANE_INGOT.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_DEMONITE, OreBlocks.DEMONITE_ORE, OreBlocks.DEEPSLATE_DEMONITE_ORE, OreBlocks.CORRUPTION_DEMONITE_ORE, OreBlocks.FLESHIFICATION_DEMONITE_ORE, OreBlocks.SANCTIFICATION_DEMONITE_ORE), MaterialItems.DEMONITE_INGOT.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", oreSmeltingWithRaw(ModTags.Items.RAW_MATERIALS_METEORITE, OreBlocks.METEORITE_ORE), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 200);
         cooking(writer, smelting, "smelting/", "", Ingredient.of(OreBlocks.COLD_CRYSTAL_ORE), MaterialItems.COLD_CRYSTAL.toStack(), 1.0F, 200);
         cooking(writer, smelting, "smelting/", "", Ingredient.of(OreBlocks.GELSTONE_ORE), MaterialItems.GELSTONE.toStack(), 1.0F, 200);
         cooking(writer, smelting, "smelting/", "", Ingredient.of(OreBlocks.SPORE_ROOT_BLOCK), MaterialItems.SPORE_ROOT.toStack(), 1.0F, 200);
@@ -487,6 +487,25 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         dyeVat(writer, VanityArmorItems.BRIGHT_PURPLE_DYE.toStack(), Ingredient.of(VanityArmorItems.PURPLE_DYE), silverDye);
         dyeVat(writer, VanityArmorItems.BRIGHT_VIOLET_DYE.toStack(), Ingredient.of(VanityArmorItems.VIOLET_DYE), silverDye);
         dyeVat(writer, VanityArmorItems.BRIGHT_PINK_DYE.toStack(), Ingredient.of(VanityArmorItems.PINK_DYE), silverDye);
+    }
+
+    /// 矿石冶炼的多物品 ingredient：把矿石变种逐个写成独立条目（原版矿石已有自身配方，不重复写石头/深板岩）。
+    private static Ingredient oreSmelting(ItemLike... ores) {
+        return oreSmeltingWithRaw(null, ores);
+    }
+
+    /// 矿石变种与粗矿共用同一条配方：粗矿不再另起一条，而是把 raw_materials 标签并入同一个 ingredient。
+    ///
+    /// @param rawMaterials 粗矿标签，可为 null（原版矿物只写变种矿石）
+    private static Ingredient oreSmeltingWithRaw(TagKey<Item> rawMaterials, ItemLike... ores) {
+        List<Ingredient.Value> values = new ArrayList<>(ores.length + 1);
+        for (ItemLike ore : ores) {
+            values.add(new Ingredient.ItemValue(new ItemStack(ore)));
+        }
+        if (rawMaterials != null) {
+            values.add(new Ingredient.TagValue(rawMaterials));
+        }
+        return Ingredient.fromValues(values.stream());
     }
 
     protected void cooking(Consumer<FinishedRecipe> writer, RecipeSerializer<?> serializer, String prefix, String suffix, Ingredient ingredient, ItemStack result, float experience, int cookingTime) {

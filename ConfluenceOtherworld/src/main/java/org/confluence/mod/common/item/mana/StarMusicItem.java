@@ -81,9 +81,11 @@ public class StarMusicItem extends ManaStaffItem<HomingFallingStarProjectile> {
         return ItemUtils.startUsingInstantly(level, player, hand);
     }
 
+    /// 使用时长就是蓄满时长：蓄满后由原版 `completeUsingItem` 自动回调 {@link #releaseUsing} 释放，
+    /// 中途松手则按已蓄力刻数释放（`stopUsingItem` 不会触发 `releaseUsing`，所以不能靠它收尾）。
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
-        return 72000;
+        return FULL_CHARGE_TICKS;
     }
 
     @Override
@@ -91,26 +93,33 @@ public class StarMusicItem extends ManaStaffItem<HomingFallingStarProjectile> {
         return UseAnim.BOW;
     }
 
-    /// 蓄满后立刻停手，交给 {@link #releaseUsing} 结算，避免继续空蓄。
     @Override
-    public void onUseTick(Level level, LivingEntity living, ItemStack stack, int remainingUseDuration) {
-        if (level.isClientSide || !(living instanceof ServerPlayer player)) return;
-        int chargeTicks = getUseDuration(stack, living) - remainingUseDuration;
-        if (chargeTicks >= FULL_CHARGE_TICKS) {
-            player.stopUsingItem();
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
+        if (living instanceof ServerPlayer player) {
+            fireStars(player, stack, getUseDuration(stack, living) - timeLeft);
         }
     }
 
+    /// 蓄满自动释放：原版在 `useItemRemaining` 归零时走的是 `completeUsingItem` → `finishUsingItem`，
+    /// 只有「手上物品与 useItem 不一致」才会回调 `releaseUsing`，所以自动释放必须挂在这里。
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
-        if (!(living instanceof ServerPlayer player)) return;
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
+        if (living instanceof ServerPlayer player) {
+            fireStars(player, stack, FULL_CHARGE_TICKS);
+        }
+        return stack;
+    }
+
+    /// 按已蓄力刻数释放坠星：手动松手与蓄满自动释放共用这一条结算路径。
+    private void fireStars(ServerPlayer player, ItemStack stack, int chargeTicks) {
         discardCharge(player);
-        int stars = starsForCharge(getUseDuration(stack, living) - timeLeft);
+        int stars = starsForCharge(chargeTicks);
         if (stars <= 0) return;
         // 按凝聚数量结算魔力；魔力不足时自动削减到付得起的那部分
         stars = payMana(player, stack, stars);
         if (stars <= 0) return;
         player.awardStat(Stats.ITEM_USED.get(this));
+        Level level = player.level();
         /// 从凝聚的大坠星位置向四周随机方向喷出；每颗先直线散开一段距离，再开始追踪。
         Vec3 origin = player.position().add(StarMusicChargeEntity.followOffset(player));
         for (int i = 0; i < stars; i++) {

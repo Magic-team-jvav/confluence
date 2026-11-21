@@ -14,9 +14,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.function.Consumer;
 
 /// 通用的「从天而降的追踪坠星」。
@@ -32,6 +35,8 @@ public class HomingFallingStarProjectile extends AbstractManaProjectile {
     private static final double HOMING_SPEED = STAR_FURY_FALL_SPEED;
     private static final double HOMING_RANGE = 24.0;
     private static final int MAX_AGE = 200;
+    /// 追踪只认敌怪阵营：被动生物（动物、水生生物、环境生物）不参与自动索敌，正在敌视射手的猪灵/中立生物仍会被追踪。
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
     /// 生成延迟同步给客户端：等待中的坠星要隐藏、也不能让客户端自己往下掉。
     private static final EntityDataAccessor<Integer> DATA_SPAWN_DELAY = SynchedEntityData.defineId(HomingFallingStarProjectile.class, EntityDataSerializers.INT);
     /// 发散阶段同步给客户端：星乐的坠星要先直线散开一段距离，再开始追踪。
@@ -229,18 +234,10 @@ public class HomingFallingStarProjectile extends AbstractManaProjectile {
     }
 
     private @Nullable Entity findNearest() {
-        Entity nearest = null;
-        double best = HOMING_RANGE * HOMING_RANGE;
-        for (Entity candidate : LibEntityUtils.queryHitCandidates(level(), this, new AABB(blockPosition()).inflate(HOMING_RANGE), e -> LibEntityUtils.effectTarget(e) != null)) {
-            if (candidate == getOwner() || !candidate.isAlive() || candidate.isSpectator()) continue;
-            if (!LibEntityUtils.canHit(getOwner(), candidate)) continue;
-            double distance = candidate.distanceToSqr(this);
-            if (distance < best) {
-                best = distance;
-                nearest = candidate;
-            }
-        }
-        return nearest;
+        return LibEntityUtils.nearest(
+                LibEntityUtils.queryHitCandidates(level(), this, new AABB(blockPosition()).inflate(HOMING_RANGE), e -> true),
+                candidate -> TARGETING.canAcquire(getOwner(), candidate),
+                Comparator.comparingDouble(candidate -> candidate.distanceToSqr(getX(), getY(), getZ())));
     }
 
     @Override

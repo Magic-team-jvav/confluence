@@ -497,7 +497,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(MaterialItems.RAW_TIN),
                 Ingredient.of(MaterialItems.RAW_TIN)
         );
-        shapeless(output, "", "_from_raw_copper",
+        shapeless(output, "", "_from_raw_iron",
                 new ItemStack(Items.IRON_INGOT),
                 Ingredient.of(Items.RAW_IRON),
                 Ingredient.of(Items.RAW_IRON),

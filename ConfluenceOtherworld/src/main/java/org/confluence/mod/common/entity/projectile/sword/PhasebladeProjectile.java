@@ -323,7 +323,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         LivingEntity immunityTarget = LibEntityUtils.logicalLivingTarget(target);
         boolean hurt = immunityTarget != null
                 ? Immunity.hurt(this, target, immunityTarget, source, damage)
-                : Immunity.withCause(this, () -> target.hurt(source, damage));
+                : Immunity.withCause(this, source, () -> target.hurt(source, damage));
         if (hurt) {
             float knockback = entityData.get(DATA_KNOCKBACK) * (state() == State.STUCK ? groundKnockbackMultiplier() : airKnockbackMultiplier());
             applyHitKnockback(immunityTarget != null ? immunityTarget : target, knockback);

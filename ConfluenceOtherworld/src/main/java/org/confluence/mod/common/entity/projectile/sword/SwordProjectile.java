@@ -237,10 +237,10 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(target);
         DamageSource source = damageSource();
         /// 静态无敌帧按弹射物类型共享，局部无敌帧按当前实例区分。
-        Immunity cause = confluence$getImmunityType() == Type.STATIC ? (Immunity) getType() : this;
+
         boolean hurt = logicalTarget != null
-                ? Immunity.hurt(cause, damageRecipient, logicalTarget, source, baseAttackDamage)
-                : Immunity.withCause(cause, () -> target.hurt(source, baseAttackDamage));
+                ? Immunity.hurt(this, damageRecipient, logicalTarget, source, baseAttackDamage)
+                : Immunity.withCause(this, source, () -> target.hurt(source, baseAttackDamage));
         if (!hurt) {
             return false;
         }

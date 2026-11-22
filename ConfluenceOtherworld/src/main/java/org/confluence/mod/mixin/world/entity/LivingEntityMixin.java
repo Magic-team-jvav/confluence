@@ -5,8 +5,8 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2LongMap;
+import it.unimi.dsi.fastutil.objects.Reference2LongOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -33,7 +33,6 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.mixed.ILivingEntity;
-import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.FlushArmorSetBonusPacketS2C;
 import org.confluence.mod.util.SoulcererUtils;
 import org.confluence.mod.util.VoidSeaHelper;
@@ -76,7 +75,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     @Final
     public int invulnerableDuration;
     @Unique
-    private final Object2IntMap<Immunity> confluence$entityImmunityTicks = new Object2IntOpenHashMap<>();
+    private final Reference2LongMap<Object> confluence$immunityDeadlines = new Reference2LongOpenHashMap<>();
     @Unique
     private boolean confluence$breakingEasyCrashBlock;
     @Unique
@@ -133,8 +132,8 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     }
 
     @Override
-    public Object2IntMap<Immunity> confluence$getImmunityTicks() {
-        return confluence$entityImmunityTicks;
+    public Reference2LongMap<Object> confluence$getImmunityDeadlines() {
+        return confluence$immunityDeadlines;
     }
 
     @Override

@@ -181,7 +181,7 @@ public final class EntityEvents {
             event.setInvulnerable(true);
             return;
         }
-        if (ILivingEntity.of(victim).confluence$getImmunityTicks().containsKey(Immunity.getCause(event.getSource()))) {
+        if (Immunity.isActive(Immunity.getCause(event.getSource()), victim)) {
             event.setInvulnerable(true);
         }
     }

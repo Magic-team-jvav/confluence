@@ -1,0 +1,63 @@
+{
+    "format_version": "1.10.0",
+    "particle_effect": {
+        "description": {
+            "identifier": "confluence:reforge_hammer_flash",
+            "basic_render_parameters": {
+                "material": "particles_add",
+                "texture": "confluence:reforge_hammer_flash"
+            }
+        },
+        "components": {
+            "minecraft:emitter_rate_instant": {
+                "num_particles": 25
+            },
+            "minecraft:emitter_lifetime_once": {
+                "active_time": 1
+            },
+            "minecraft:emitter_shape_point": {},
+            "minecraft:particle_lifetime_expression": {
+                "max_lifetime": "math.random(0.1, 0.25)"
+            },
+            "minecraft:particle_initial_speed": "math.random(3,8)",
+            "minecraft:particle_motion_dynamic": {
+                "linear_acceleration": [
+                    0,
+                    -40,
+                    0
+                ],
+                "linear_drag_coefficient": 0.5
+            },
+            "minecraft:particle_appearance_billboard": {
+                "size": [
+                    0.1,
+                    0.01
+                ],
+                "facing_camera_mode": "lookat_direction",
+                "uv": {
+                    "texture_width": 16,
+                    "texture_height": 16,
+                    "uv": [
+                        0,
+                        0
+                    ],
+                    "uv_size": [
+                        16,
+                        16
+                    ]
+                }
+            },
+            "minecraft:particle_appearance_tinting": {
+                "color": {
+                    "interpolant": "v.particle_age / v.particle_lifetime",
+                    "gradient": {
+                        "0.0": "#ffffffff",
+                        "0.3": "#FFFFEE00",
+                        "0.64": "#FFFF7100",
+                        "1.0": "#40FF0700"
+                    }
+                }
+            }
+        }
+    }
+}

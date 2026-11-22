@@ -39,7 +39,12 @@ public abstract class ItemStackMixin implements Immunity {
 
     @Override
     public Type confluence$getImmunityType() {
-        return Type.LOCAL;
+        return getItem() instanceof Immunity immunity ? immunity.confluence$getImmunityType() : Type.LOCAL;
+    }
+
+    @Override
+    public Object confluence$getStaticImmunityKey() {
+        return getItem() instanceof Immunity immunity ? immunity.confluence$getStaticImmunityKey() : getItem();
     }
 
     @Override

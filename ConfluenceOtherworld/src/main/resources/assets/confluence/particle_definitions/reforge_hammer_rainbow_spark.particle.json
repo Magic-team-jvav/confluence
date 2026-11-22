@@ -1,0 +1,62 @@
+{
+    "format_version": "1.10.0",
+    "particle_effect": {
+        "description": {
+            "identifier": "confluence:reforge_hammer_rainbow_spark",
+            "basic_render_parameters": {
+                "material": "particles_add",
+                "texture": "confluence:reforge_hammer_rainbow_spark"
+            }
+        },
+        "components": {
+            "minecraft:emitter_rate_instant": {
+                "num_particles": 30
+            },
+            "minecraft:emitter_lifetime_once": {
+                "active_time": 1
+            },
+            "minecraft:emitter_shape_sphere": {
+                "radius": 0.3,
+                "direction": "outwards"
+            },
+            "minecraft:particle_initialization": {
+                "per_render_expression": "v.size = 0.3 * (1 - v.particle_age / v.particle_lifetime);v.h = v.particle_random_2 * 360;v.r = math.clamp(2.0-math.abs(math.mod(v.h/60.0,6.0)-3.0),0.0,1.0);v.g = math.clamp(2.0-math.abs(math.mod(v.h/60.0+4.0,6.0)-3.0),0.0,1.0);v.b = math.clamp(2.0-math.abs(math.mod(v.h/60.0+2.0,6.0)-3.0),0.0,1.0);"
+            },
+            "minecraft:particle_lifetime_expression": {
+                "max_lifetime": "math.random(0.03, 0.1)"
+            },
+            "minecraft:particle_initial_spin": {
+                "rotation": "math.random(-180, 180)"
+            },
+            "minecraft:particle_initial_speed": 0,
+            "minecraft:particle_motion_dynamic": {},
+            "minecraft:particle_appearance_billboard": {
+                "size": [
+                    "v.size",
+                    "v.size"
+                ],
+                "facing_camera_mode": "rotate_xyz",
+                "uv": {
+                    "texture_width": 16,
+                    "texture_height": 16,
+                    "uv": [
+                        0,
+                        0
+                    ],
+                    "uv_size": [
+                        16,
+                        16
+                    ]
+                }
+            },
+            "minecraft:particle_appearance_tinting": {
+                "color": [
+                    "v.r",
+                    "v.g",
+                    "v.b",
+                    1
+                ]
+            }
+        }
+    }
+}

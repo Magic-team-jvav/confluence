@@ -108,8 +108,8 @@ public abstract class BaseYoyoProjectile extends Projectile implements Immunity 
                         continue;
                     Entity recipient = candidate;
                     DamageSource damageSource = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, owner);
-                    Immunity immunity = confluence$getImmunityType() == Type.LOCAL ? this : (Immunity) getType();
-                    if (!Immunity.hurt(immunity, recipient, logical, damageSource, damage))
+
+                    if (!Immunity.hurt(this, recipient, logical, damageSource, damage))
                         continue;
                     hitTargets.add(id);
                     logical.knockback(knockback, -motion.x, -motion.z);

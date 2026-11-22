@@ -14,9 +14,8 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.common.init.ModEffects;
@@ -113,6 +112,6 @@ public final class FirecrackerItem extends BaseWhipItem {
     private static void damageExplosionTarget(Immunity explosion, Entity target, DamageSource source, float damage) {
         LivingEntity owner = LibEntityUtils.logicalLivingTarget(target);
         if (owner != null) Immunity.hurt(explosion, target, owner, source, damage);
-        else Immunity.withCause(explosion, () -> target.hurt(source, damage));
+        else Immunity.withCause(explosion, source, () -> target.hurt(source, damage));
     }
 }

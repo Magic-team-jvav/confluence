@@ -148,8 +148,8 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
         if (logical == null) return;
         DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, getOwner());
         /// 静态配置使用实体类型作为键，普通蜂与巨蜂共享，不能每只蜂各算一份。
-        Immunity cause = confluence$getImmunityType() == Type.STATIC ? (Immunity) getType() : this;
-        if (!Immunity.hurt(cause, candidate, logical, source, damage))
+
+        if (!Immunity.hurt(this, candidate, logical, source, damage))
             return;
         if (knockback > 0) {
             Vec3 motion = getDeltaMovement();

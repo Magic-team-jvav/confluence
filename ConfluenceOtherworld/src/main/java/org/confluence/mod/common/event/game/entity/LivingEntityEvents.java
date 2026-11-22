@@ -663,7 +663,7 @@ public final class LivingEntityEvents {
         if (itemStack.getItem() instanceof HealingPotionItem) {
             ModArmorBonus.onHealingPotionUsed(player, ((HealingPotionItem) itemStack.getItem()).getHealAmount());
             /// 附魔：食物储备 / 万兽鼓舞 / 药水护盾 / 惊喜礼物
-            EnchantmentBehaviors.onHealingPotionUsed(player, (HealingPotionItem) itemStack.getItem());
+            EnchantmentBehaviors.onHealingPotionUsed(player);
         }
         RandomSource random = player.getRandom1211();
         if (itemStack.is(FoodItems.GREEN_DUMPLING.get()) && random.nextInt(6) == 0) {

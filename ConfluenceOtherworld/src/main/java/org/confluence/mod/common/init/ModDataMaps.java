@@ -10,7 +10,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fml.loading.LoadingModList;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.map.*;
@@ -27,11 +26,10 @@ import java.util.List;
 
 public final class ModDataMaps {
     private static List<PortDataMapType<?, ?>> types = new LinkedList<>();
-    private static final boolean jei = LoadingModList.get().getModFileById("jei") != null;
 
     public static final PortDataMapType<Item, ValueComponent> VALUE = register("value", Registries.ITEM, ValueComponent.CODEC, true);
-    public static final PortDataMapType<Item, ExtractinatorData> EXTRACTINATOR = register("extractinator", Registries.ITEM, ExtractinatorData.CODEC, jei);
-    public static final PortDataMapType<Item, ExtractinatorData> CHLOROPHYTE_EXTRACTINATOR = register("chlorophyte_extractinator", Registries.ITEM, ExtractinatorData.CODEC, jei);
+    public static final PortDataMapType<Item, ExtractinatorData> EXTRACTINATOR = register("extractinator", Registries.ITEM, ExtractinatorData.CODEC, Confluence.JEI_LOADED);
+    public static final PortDataMapType<Item, ExtractinatorData> CHLOROPHYTE_EXTRACTINATOR = register("chlorophyte_extractinator", Registries.ITEM, ExtractinatorData.CODEC, Confluence.JEI_LOADED);
     public static final PortDataMapType<Item, DiggingPower> DIGGING_POWER = register("digging_power", Registries.ITEM, DiggingPower.CODEC, true);
     public static final PortDataMapType<EntityType<?>, TreasureBagDrop> TREASURE_BAG = register("treasure_bag", Registries.ENTITY_TYPE, TreasureBagDrop.CODEC, false);
     public static final PortDataMapType<EntityType<?>, CreatureDefinition> CREATURE_DEFINITION = register("creature_definition", Registries.ENTITY_TYPE, CreatureDefinition.CODEC, false);

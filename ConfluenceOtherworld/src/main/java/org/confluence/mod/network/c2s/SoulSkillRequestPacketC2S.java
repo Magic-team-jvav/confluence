@@ -33,11 +33,6 @@ public record SoulSkillRequestPacketC2S(Action action, int index, ResourceLocati
     /// 处理技能数据请求；槽数请求仅返回服务端认可的容量。
     @Override
     public void work(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS) {
-            SoulSkillSyncPacketS2C.sendToClient(player);
-            return;
-        }
-
         SoulcererUtils.refreshSoulSkills(player);
         switch (action) {
             case SET_SLOT_COUNT -> {

@@ -251,14 +251,12 @@ public final class ModClientEvents {
         event.registerBelow(VanillaGuiOverlay.CROSSHAIR.id(), Confluence.asResource("house_select"), new HouseSelectHud());
         event.registerBelow(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.id(), Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
 
-        if (Confluence.SOUL_SKILLS) {
-            event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("card_horizontal_l_hud"), ClientSoulHandler.CARD_HORIZONTAL_L_HUD_INSTANCE);
-            event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("card_horizontal_r_hud"), ClientSoulHandler.CARD_HORIZONTAL_R_HUD_INSTANCE);
-            event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), Confluence.asResource("roulette_wheel_small_hud"), ClientSoulHandler.ROULETTE_WHEEL_SMALL_HUD_INSTANCE);
-            event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), Confluence.asResource("current_selected_skill_hud"), ClientSoulHandler.CURRENT_SELECTED_SKILL_HUD_INSTANCE);
-            event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("roulette_wheel_big_hud"), ClientSoulHandler.ROULETTE_WHEEL_BIG_HUD_INSTANCE);
-            ClientSoulHandler.initSoulSkills();
-        }
+        event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("card_horizontal_l_hud"), ClientSoulHandler.CARD_HORIZONTAL_L_HUD_INSTANCE);
+        event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("card_horizontal_r_hud"), ClientSoulHandler.CARD_HORIZONTAL_R_HUD_INSTANCE);
+        event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), Confluence.asResource("roulette_wheel_small_hud"), ClientSoulHandler.ROULETTE_WHEEL_SMALL_HUD_INSTANCE);
+        event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), Confluence.asResource("current_selected_skill_hud"), ClientSoulHandler.CURRENT_SELECTED_SKILL_HUD_INSTANCE);
+        event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("roulette_wheel_big_hud"), ClientSoulHandler.ROULETTE_WHEEL_BIG_HUD_INSTANCE);
+        ClientSoulHandler.initSoulSkills();
     }
 
     private static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {

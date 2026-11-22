@@ -44,7 +44,6 @@ import org.confluence.lib.api.event.RenderSelectedItemNameEvent;
 import org.confluence.lib.client.color.ExpertColorAnimation;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.api.item.ILeftClickStateItem;
@@ -209,9 +208,7 @@ public final class GameClientEvents {
             HouseSelectHud.updatePlayerRegionAt(player);
             ClientBiomeEffectSystem.tick(player);
             ScryingOrbHandler.handle(minecraft, player);
-            if (Confluence.SOUL_SKILLS) {
-                ClientSoulHandler.handleSoulSkills(minecraft);
-            }
+            ClientSoulHandler.handleSoulSkills(minecraft);
             if (!minecraft.isPaused()) {
                 if (player.hasEffect(ModEffects.ELECTRIFIED.get())) {
                     boolean moving = minecraft.screen == null && (player.input.forwardImpulse != 0.0F
@@ -355,10 +352,8 @@ public final class GameClientEvents {
         double scrollDeltaY = event.getScrollDeltaY();
         if (ThunderstrikeVfx.scroll(scrollDeltaY) || LeftClickItemHandler.scroll(player, scrollDeltaY > 0 ? 1 : -1) || ClientWeaponInputManager.scroll(player, scrollDeltaY)) {
             event.setCanceled(true);
-        } else if (Confluence.SOUL_SKILLS) {
-            if (ClientSoulHandler.scrollSoulSkills(scrollDeltaY)) {
-                event.setCanceled(true);
-            }
+        } else if (ClientSoulHandler.scrollSoulSkills(scrollDeltaY)) {
+            event.setCanceled(true);
         }
     }
 

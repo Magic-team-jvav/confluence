@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -29,13 +28,14 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.SoulCollectionEvent;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.SoulStorage;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.item.potion.HealingPotionItem;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -149,7 +149,7 @@ public final class EnchantmentBehaviors {
 
     // region 治疗药水（食物储备 / 万兽鼓舞 / 药水护盾 / 惊喜礼物）
 
-    public static void onHealingPotionUsed(ServerPlayer player, HealingPotionItem potion) {
+    public static void onHealingPotionUsed(ServerPlayer player) {
         long gameTime = gameTime(player);
         foodReserve(player, gameTime);
         beastInspire(player, gameTime);
@@ -186,10 +186,11 @@ public final class EnchantmentBehaviors {
             case 1 -> giveOrDrop(player, ModItems.STAR.toStack());
             case 2 -> player.giveExperiencePoints(10 + player.getRandom().nextInt(15));
             default -> {
-                if (Confluence.SOUL_SKILLS) {
-                    SoulStorage.of(player).receive(1.0F);
+                SoulStorage soul = SoulStorage.of(player);
+                if (soul.isSoulMode()) {
+                    soul.receive(1.0F);
                 } else {
-                    giveOrDrop(player, ModItems.STAR.toStack());
+                    ManaStorage.of(player).receiveMana(() -> 1);
                 }
             }
         }

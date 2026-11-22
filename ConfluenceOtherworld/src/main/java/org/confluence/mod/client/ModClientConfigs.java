@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeConfigSpec.*;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
@@ -212,10 +211,8 @@ public final class ModClientConfigs {
         manaStyle = MANA_STYLE.get();
         manaOffsetX = MANA_OFFSET_X.get();
         manaOffsetY = MANA_OFFSET_Y.get();
-        if (Confluence.SOUL_SKILLS) {
-            soulStyle = SOUL_STYLE.get();
-            soulQuickSkillStyle = SOUL_QUICK_SKILL_STYLE.get();
-        }
+        soulStyle = SOUL_STYLE.get();
+        soulQuickSkillStyle = SOUL_QUICK_SKILL_STYLE.get();
         terraStyleArmor = TERRA_STYLE_ARMOR.get();
         armorStyle = ARMOR_STYLE.get();
         terraStyleFood = TERRA_STYLE_FOOD.get();
@@ -309,7 +306,7 @@ public final class ModClientConfigs {
                 MANA_OFFSET_Y = builder.defineInRange("manaOffsetY", 0, -256, 256);
                 builder.pop();
             }
-            if (Confluence.SOUL_SKILLS) {
+            {
                 builder.push("Soulcerer");
                 SOUL_STYLE = builder.defineEnum("soulStyle", TerraStyleManaHud.Soul.OVERLAY);
                 SOUL_QUICK_SKILL_STYLE = builder.defineEnum("soulcererQuickSkillStyle", ClientSoulHandler.Type.ROULETTE_WHEEL_SMALL);

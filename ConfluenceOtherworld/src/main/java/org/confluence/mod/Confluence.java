@@ -47,6 +47,7 @@ import org.confluence.mod.common.summoner.SummonerEvents;
 import org.confluence.mod.common.summoner.register.*;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
+import org.mesdag.portlib.wrapper.PortEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,10 +59,10 @@ import java.util.function.Consumer;
 public final class Confluence {
     public static final String MODID = ConfluenceMagicLib.CONFLUENCE_ID;
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
+    public static final boolean JEI_LOADED = PortEnvironment.isModLoaded("jei");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
     // todo 1.3.0
-    public static final boolean SOUL_SKILLS = true ;
     public static final boolean THE_END_BIOMES = LibUtils.isDev();
     public static final boolean UNRELEASED_SPAWNS = LibUtils.isDev();
     public static final boolean UNRELEASED_EVENTS = LibUtils.isDev();

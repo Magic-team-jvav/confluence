@@ -1,16 +1,16 @@
 package org.confluence.mod.util;
 
 import net.minecraft.SharedConstants;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -47,6 +47,9 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.attachment.SoulSkillStorage;
 import org.confluence.mod.common.attachment.SoulStorage;
+import org.confluence.mod.common.component.prefix.ModPrefix;
+import org.confluence.mod.common.component.prefix.PrefixComponent;
+import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.boss.AbstractTwinEye;
@@ -61,21 +64,18 @@ import org.confluence.mod.common.item.soulcerer.SoulArtifactItem;
 import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.soulcerer.skill.*;
+import org.confluence.mod.mixed.IDamageContainer;
 import org.confluence.mod.network.s2c.SoulSkillIndexSyncPacketS2C;
 import org.confluence.mod.network.s2c.SoulSkillSyncPacketS2C;
 import org.confluence.mod.network.s2c.SoulSkillUsePacketS2C;
-import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
-import org.confluence.mod.common.component.prefix.ModPrefix;
-import org.confluence.mod.common.component.prefix.PrefixComponent;
-import org.confluence.mod.common.component.prefix.PrefixType;
+import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
-import org.confluence.mod.mixed.IDamageContainer;
 import org.mesdag.portlib.diff.IPortLivingEntity;
-import org.mesdag.portlib.wrapper.common.damagesource.PortDamageContainer;
 import org.mesdag.portlib.event.PortEventHandler;
-import org.mesdag.portlib.event.entity.living.PortLivingIncomingDamageEvent;
 import org.mesdag.portlib.event.entity.living.PortLivingDamageEvent;
+import org.mesdag.portlib.event.entity.living.PortLivingIncomingDamageEvent;
+import org.mesdag.portlib.wrapper.common.damagesource.PortDamageContainer;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.*;
@@ -358,7 +358,7 @@ public final class SoulcererUtils {
     /// 佩戴灵魂手环系列时，切换只改变当前生效的资源条，**不清空另一条的数值**；
     /// 未佩戴时沿用旧行为（把另一条清零），避免普通玩家靠来回切换白嫖资源。
     public static boolean switchSoulMode(ServerPlayer player, boolean soulMode, float targetResource) {
-        if (!Confluence.SOUL_SKILLS || isSoulMode(player) == soulMode) {
+        if (isSoulMode(player) == soulMode) {
             return false;
         }
 
@@ -421,14 +421,14 @@ public final class SoulcererUtils {
     ///
     /// 没解锁时保持原样（只能用堕魂星核手动切换），避免开局就把资源模式抢走。
     public static void ensureResourceModeForSoulWeapon(ServerPlayer player) {
-        if (Confluence.SOUL_SKILLS && SoulStorage.of(player).isMasterSwitchUnlocked() && !isSoulMode(player)) {
+        if (SoulStorage.of(player).isMasterSwitchUnlocked() && !isSoulMode(player)) {
             switchSoulMode(player, true);
         }
     }
 
     /// 用过堕魂星核之后：使用魔法武器时自动把灵魂条切成魔力条。
     public static void ensureResourceModeForMagicWeapon(ServerPlayer player) {
-        if (Confluence.SOUL_SKILLS && SoulStorage.of(player).isMasterSwitchUnlocked() && isSoulMode(player)) {
+        if (SoulStorage.of(player).isMasterSwitchUnlocked() && isSoulMode(player)) {
             switchSoulMode(player, false);
         }
     }
@@ -827,9 +827,6 @@ public final class SoulcererUtils {
 
     /// 服务端推进冷却，仅结束或可用性改变时发送校正。
     public static void tickSoulSkills(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS) {
-            return;
-        }
         SoulSkillStorage storage = SoulSkillStorage.of(player);
         boolean changed = refreshSoulSkills(player);
         /// 换武器后当前选中的技能可能已经失效：立即回退到手持武器的专属技能。
@@ -1136,7 +1133,7 @@ public final class SoulcererUtils {
         if (player.hasEffect(ModEffects.SOUL_DRAIN_LOCK.get())) {
             return false;
         }
-        if (!Confluence.SOUL_SKILLS || !isSoulMode(player)) {
+        if (!isSoulMode(player)) {
             return false;
         }
         boolean availabilityChanged = refreshSoulSkills(player);
@@ -1315,7 +1312,7 @@ public final class SoulcererUtils {
     }
 
     public static boolean tryUseSoulArtifact(ServerPlayer player, ItemStack stack) {
-        if (!Confluence.SOUL_SKILLS || !(stack.getItem() instanceof SoulArtifactItem artifact)
+        if (!(stack.getItem() instanceof SoulArtifactItem artifact)
                 || getSoulArtifactCooldown(player, stack.getItem()) > 0
                 || countCoolingSoulArtifacts(player) >= SoulSkillParameters.MAX_COOLING_SOUL_ARTIFACT_SLOTS
                 || !artifact.canUse(player, stack)) {
@@ -1341,7 +1338,7 @@ public final class SoulcererUtils {
 
     /// 每秒按最终恢复比例结算一次，两个基础环境不叠加。
     public static void regenerateSoul(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS || !isSoulMode(player) && !hasBandOfSoul(player)
+        if (!isSoulMode(player) && !hasBandOfSoul(player)
                 || player.level().getGameTime() % SharedConstants.TICKS_PER_SECOND != 0) {
             return;
         }
@@ -1364,7 +1361,7 @@ public final class SoulcererUtils {
 
     /// 击杀时直接补充灵魂；Boss 部件不参与普通敌怪收益。
     public static void collectSoul(LivingEntity victim, DamageSource source) {
-        if (!Confluence.SOUL_SKILLS || !(victim.level() instanceof ServerLevel level)
+        if (!(victim.level() instanceof ServerLevel level)
                 || victim instanceof Boss boss && !boss.isMainBody()
                 || victim instanceof AbstractTwinEye eye && !eye.shouldShowMessage()
                 || victim instanceof PartHitTarget part && part.encounterOwner() instanceof Boss && part.encounterOwner() != victim
@@ -1429,9 +1426,6 @@ public final class SoulcererUtils {
     }
 
     public static void learnSoulSkillsOnRitual(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS) {
-            return;
-        }
         int rituals = SoulStorage.of(player).getRitualCount();
         for (RitualUnlock unlock : RITUAL_UNLOCKS) {
             if (rituals < unlock.ritual()) {
@@ -1527,7 +1521,7 @@ public final class SoulcererUtils {
     }
 
     public static void soulWeaponHitSoul(PortLivingDamageEvent.Post event) {
-        if (!Confluence.SOUL_SKILLS || !(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player)
+        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player)
                 || !EnemyDamageRules.isEnemy(event.getEntity()) || !SoulStorage.of(player).canReceive()) {
             return;
         }
@@ -1828,7 +1822,7 @@ public final class SoulcererUtils {
 
     /// 首次获得登记过的主武器即永久学会其附带技能，并在真正学会时提示一次。
     public static void learnSoulSkillsOnFirstObtain(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS || SoulItems.FIRST_OBTAIN_SOUL_SKILLS.isEmpty()) {
+        if (SoulItems.FIRST_OBTAIN_SOUL_SKILLS.isEmpty()) {
             return;
         }
         for (var entry : SoulItems.FIRST_OBTAIN_SOUL_SKILLS.entrySet()) {
@@ -1934,9 +1928,6 @@ public final class SoulcererUtils {
     }
 
     public static void tickSoulSkillStates(ServerPlayer player, long gameTime) {
-        if (!Confluence.SOUL_SKILLS) {
-            return;
-        }
         SoulStorage storage = SoulStorage.of(player);
         if (player.hasEffect(ModEffects.STAR_CALL.get()) && gameTime % SoulSkillParameters.STAR_CALL_INTERVAL_TICKS == 0) {
             tickStarCall(player, storage);

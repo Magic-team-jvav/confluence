@@ -2172,7 +2172,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(MAGES.getId())
                     .build());
-    public static final RegistryObject<CreativeModeTab> SOUL = Confluence.SOUL_SKILLS ? TABS.register("soulcerer",
+    public static final RegistryObject<CreativeModeTab> SOUL = TABS.register("soulcerer",
             () -> CreativeModeTab.builder().icon(IconItems.SOULCERER_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.soulcerer"))
                     .displayItems((parameters, output) -> {
@@ -2203,7 +2203,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(MAGES.getId())
                     .withTabsAfter(SUMMONERS.getId())
-                    .build()) : null;
+                    .build());
     public static final RegistryObject<CreativeModeTab> ENTITY = TABS.register("entity",
             () -> CreativeModeTab.builder().icon(IconItems.ENTITY_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.entity"))

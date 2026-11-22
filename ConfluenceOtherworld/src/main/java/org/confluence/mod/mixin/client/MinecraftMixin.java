@@ -13,7 +13,6 @@ import net.minecraft.server.WorldStem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.effect.GlowingHelper;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
@@ -50,9 +49,7 @@ public abstract class MinecraftMixin {
     /// 数字键完成快捷栏选择后尝试使用前三格中的法器。
     @Inject(method = "handleKeybinds", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/player/Inventory;selected:I", opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
     private void confluence$useQuickSoulArtifact(CallbackInfo ci) {
-        if (Confluence.SOUL_SKILLS) {
-            ClientSoulHandler.useQuickSoulArtifact();
-        }
+        ClientSoulHandler.useQuickSoulArtifact();
     }
 
     @Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;setScreen(Lnet/minecraft/client/gui/screens/Screen;)V"))

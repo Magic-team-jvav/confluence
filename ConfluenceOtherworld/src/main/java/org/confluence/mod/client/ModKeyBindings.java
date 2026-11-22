@@ -69,13 +69,13 @@ public final class ModKeyBindings {
     ///
     /// 原来这里有两份绑定（「灵魂快捷技能切换」与「释放灵魂技能」），但只有前者被真正读取，
     /// 改后者完全没效果；现已合并成这一条，界面里显示为「切换灵魂技能」。
-    public static final Lazy<KeyMapping> MAGIC_SKILL_SWITCHING = Confluence.SOUL_SKILLS ? register(() -> new KeyMapping(
+    public static final Lazy<KeyMapping> MAGIC_SKILL_SWITCHING = register(() -> new KeyMapping(
             "key.confluence.soulcerer.skill_switching",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_LEFT_ALT,
             KEY_BINDINGS_CATEGORY
-    )) : null;
+    ));
 
     //endregion
 

@@ -4,9 +4,11 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import org.confluence.lib.common.PlayerContainer;
 import org.confluence.mod.common.block.functional.PiggyBankBlock;
 import org.confluence.mod.common.init.ModAttachmentTypes;
@@ -23,12 +25,13 @@ import static org.confluence.mod.util.PlayerUtils.decodeCoin;
 
 public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEntity> {
     private long totalMoney;
-    private Player owner;
+    private final LivingEntity owner;
 
-    public PlayerPiggyBankContainer() {
+    public PlayerPiggyBankContainer(IAttachmentHolder holder) {
         super(6);
+        this.owner = (LivingEntity) holder;
         addListener(container -> {
-            if (owner != null && owner.level().isClientSide) return;
+            if (owner.level().isClientSide) return;
             long res = 0;
             for (int i = 0; i < container.getContainerSize(); i++) {
                 ItemStack stack = container.getItem(i);
@@ -85,15 +88,8 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
         return res < 0 ? -res : 0;
     }
 
-    @ApiStatus.Internal
-    public void setOwner(Player player) {
-        this.owner = player;
-    }
-
     public static PlayerPiggyBankContainer of(Player player) {
-        PlayerPiggyBankContainer data = player.getData(ModAttachmentTypes.PIGGY_BANK);
-        data.setOwner(player);
-        return data;
+        return player.getData(ModAttachmentTypes.PIGGY_BANK);
     }
 
     public static long placeCoins(Container container, long amount) {

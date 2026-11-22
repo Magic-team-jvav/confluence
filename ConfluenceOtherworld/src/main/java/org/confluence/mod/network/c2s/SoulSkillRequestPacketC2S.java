@@ -14,7 +14,8 @@ import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
 import org.confluence.mod.network.s2c.SoulSkillSyncPacketS2C;
 import org.confluence.mod.util.SoulcererUtils;
 
-public record SoulSkillRequestPacketC2S(Action action, int index, ResourceLocation skillId, int cd, int maxCd) implements IPacketC2S {
+public record SoulSkillRequestPacketC2S(Action action, int index, ResourceLocation skillId, int cd,
+                                        int maxCd) implements IPacketC2S {
     public static final Type<SoulSkillRequestPacketC2S> TYPE = Confluence.createType("soulcerer_skill_request");
     public static final StreamCodec<FriendlyByteBuf, SoulSkillRequestPacketC2S> STREAM_CODEC = StreamCodec.composite(
             NeoForgeStreamCodecs.enumCodec(Action.class), SoulSkillRequestPacketC2S::action,
@@ -33,11 +34,6 @@ public record SoulSkillRequestPacketC2S(Action action, int index, ResourceLocati
     /// 处理技能数据请求；槽数请求仅返回服务端认可的容量。
     @Override
     public void work(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS) {
-            SoulSkillSyncPacketS2C.sendToClient(player);
-            return;
-        }
-
         SoulcererUtils.refreshSoulSkills(player);
         switch (action) {
             case SET_SLOT_COUNT -> {

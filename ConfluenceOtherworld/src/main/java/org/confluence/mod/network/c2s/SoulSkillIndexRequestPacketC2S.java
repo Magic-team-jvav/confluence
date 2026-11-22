@@ -29,13 +29,11 @@ public record SoulSkillIndexRequestPacketC2S(int index) implements IPacketC2S {
     /// 这时要一并补发技能数据同步，避免客户端还显示旧槽位。
     @Override
     public void work(ServerPlayer player) {
-        if (Confluence.SOUL_SKILLS) {
-            SoulcererUtils.setCurrentSoulSkillIndex(player, index);
-            boolean changed = SoulcererUtils.refreshSoulSkills(player);
-            changed |= SoulcererUtils.ensureHeldWeaponSkill(player);
-            if (changed) {
-                SoulSkillSyncPacketS2C.sendToClient(player);
-            }
+        SoulcererUtils.setCurrentSoulSkillIndex(player, index);
+        boolean changed = SoulcererUtils.refreshSoulSkills(player);
+        changed |= SoulcererUtils.ensureHeldWeaponSkill(player);
+        if (changed) {
+            SoulSkillSyncPacketS2C.sendToClient(player);
         }
         SoulSkillIndexSyncPacketS2C.sendToClient(player);
     }

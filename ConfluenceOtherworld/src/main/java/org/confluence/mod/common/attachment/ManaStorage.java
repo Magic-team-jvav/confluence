@@ -122,7 +122,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
 
     /// 只读取已存在的灵魂附件，避免构造和读档阶段相互创建。
     private boolean isSoulMode() {
-        return owner.hasData(ModAttachmentTypes.SOUL_STORAGE) && SoulStorage.of(owner).isSoulMode();
+        return SoulStorage.of(owner).isSoulMode();
     }
 
     public boolean addStar() {

@@ -31,6 +31,7 @@ import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.SoulCollectionEvent;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.SoulStorage;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.init.ModEffects;
@@ -38,6 +39,7 @@ import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.potion.HealingPotionItem;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -183,10 +185,11 @@ public final class EnchantmentBehaviors {
             case 1 -> giveOrDrop(player, ModItems.STAR.toStack());
             case 2 -> player.giveExperiencePoints(10 + player.getRandom().nextInt(15));
             default -> {
-                if (Confluence.SOUL_SKILLS) {
-                    SoulStorage.of(player).receive(1.0F);
+                SoulStorage soul = SoulStorage.of(player);
+                if (soul.isSoulMode()) {
+                    soul.receive(1.0F);
                 } else {
-                    giveOrDrop(player, ModItems.STAR.toStack());
+                    ManaStorage.of(player).receiveMana(() -> 1);
                 }
             }
         }

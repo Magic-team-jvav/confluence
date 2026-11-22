@@ -3,14 +3,15 @@ package org.confluence.mod.util;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.network.chat.Component;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
@@ -31,16 +31,14 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
-import org.confluence.mod.mixed.ILivingEntity;
-import org.confluence.mod.mixed.IDamageContainer;
-import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
-import org.confluence.lib.common.LibTags;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.common.LibTags;
 import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
@@ -54,11 +52,9 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.attachment.SoulSkillStorage;
 import org.confluence.mod.common.attachment.SoulStorage;
-import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixType;
-import net.minecraft.world.damagesource.DamageTypes;
-import top.theillusivec4.curios.api.CuriosApi;
+import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.boss.AbstractTwinEye;
 import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
@@ -73,11 +69,14 @@ import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.soulcerer.skill.*;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
+import org.confluence.mod.mixed.IDamageContainer;
+import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.network.s2c.SoulSkillIndexSyncPacketS2C;
 import org.confluence.mod.network.s2c.SoulSkillSyncPacketS2C;
 import org.confluence.mod.network.s2c.SoulSkillUsePacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.CuriosApi;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -464,7 +463,7 @@ public final class SoulcererUtils {
     /// 佩戴灵魂手环系列时，切换只改变当前生效的资源条，**不清空另一条的数值**；
     /// 未佩戴时沿用旧行为（把另一条清零），避免普通玩家靠来回切换白嫖资源。
     public static boolean switchSoulMode(ServerPlayer player, boolean soulMode, float targetResource) {
-        if (!Confluence.SOUL_SKILLS || isSoulMode(player) == soulMode) {
+        if (isSoulMode(player) == soulMode) {
             return false;
         }
 
@@ -530,14 +529,14 @@ public final class SoulcererUtils {
     ///
     /// 没解锁时保持原样（只能用堕魂星核手动切换），避免开局就把资源模式抢走。
     public static void ensureResourceModeForSoulWeapon(ServerPlayer player) {
-        if (Confluence.SOUL_SKILLS && SoulStorage.of(player).isMasterSwitchUnlocked() && !isSoulMode(player)) {
+        if (SoulStorage.of(player).isMasterSwitchUnlocked() && !isSoulMode(player)) {
             switchSoulMode(player, true);
         }
     }
 
     /// 用过堕魂星核之后：使用魔法武器时自动把灵魂条切成魔力条。
     public static void ensureResourceModeForMagicWeapon(ServerPlayer player) {
-        if (Confluence.SOUL_SKILLS && SoulStorage.of(player).isMasterSwitchUnlocked() && isSoulMode(player)) {
+        if (SoulStorage.of(player).isMasterSwitchUnlocked() && isSoulMode(player)) {
             switchSoulMode(player, false);
         }
     }
@@ -930,7 +929,7 @@ public final class SoulcererUtils {
 
     /// 首次获得登记过的主武器即永久学会其附带技能，并在真正学会时提示一次。
     public static void learnSoulSkillsOnFirstObtain(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS || SoulItems.FIRST_OBTAIN_SOUL_SKILLS.isEmpty()) {
+        if (SoulItems.FIRST_OBTAIN_SOUL_SKILLS.isEmpty()) {
             return;
         }
         for (var entry : SoulItems.FIRST_OBTAIN_SOUL_SKILLS.entrySet()) {
@@ -980,9 +979,6 @@ public final class SoulcererUtils {
 
     /// 服务端推进冷却，仅结束或可用性改变时发送校正。
     public static void tickSoulSkills(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS) {
-            return;
-        }
         SoulSkillStorage storage = SoulSkillStorage.of(player);
         boolean changed = refreshSoulSkills(player);
         /// 换武器后当前选中的技能可能已经失效：立即回退到手持武器的专属技能。
@@ -1217,7 +1213,7 @@ public final class SoulcererUtils {
 
     /// 成功后提交冷却、两端执行，再结算可能致死的生命代偿。
     public static boolean tryUseSoulSkill(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS || !isSoulMode(player) || player.hasEffect(ModEffects.SOUL_DRAIN_LOCK)) {
+        if (!isSoulMode(player) || player.hasEffect(ModEffects.SOUL_DRAIN_LOCK)) {
             return false;
         }
         boolean availabilityChanged = refreshSoulSkills(player);
@@ -1464,7 +1460,7 @@ public final class SoulcererUtils {
     }
 
     public static boolean tryUseSoulArtifact(ServerPlayer player, ItemStack stack) {
-        if (!Confluence.SOUL_SKILLS || !(stack.getItem() instanceof SoulArtifactItem artifact)
+        if (!(stack.getItem() instanceof SoulArtifactItem artifact)
                 || getSoulArtifactCooldown(player, stack.getItem()) > 0
                 || countCoolingSoulArtifacts(player) >= SoulSkillParameters.MAX_COOLING_SOUL_ARTIFACT_SLOTS
                 || !artifact.canUse(player, stack)) {
@@ -1518,7 +1514,7 @@ public final class SoulcererUtils {
 
     /// 每秒按最终恢复比例结算一次，两个基础环境不叠加。
     public static void regenerateSoul(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS || !(isSoulMode(player) || hasBandOfSoul(player))
+        if (!(isSoulMode(player) || hasBandOfSoul(player))
                 || player.level().getGameTime() % SharedConstants.TICKS_PER_SECOND != 0) {
             return;
         }
@@ -1541,7 +1537,7 @@ public final class SoulcererUtils {
 
     /// 击杀时直接补充灵魂；Boss 部件不参与普通敌怪收益。
     public static void collectSoul(LivingEntity victim, DamageSource source) {
-        if (!Confluence.SOUL_SKILLS || !(victim.level() instanceof ServerLevel level)
+        if (!(victim.level() instanceof ServerLevel)
                 || victim instanceof Boss boss && !boss.isMainBody()
                 || victim instanceof AbstractTwinEye eye && !eye.shouldShowMessage()
                 || victim instanceof PartHitTarget part && part.encounterOwner() instanceof Boss && part.encounterOwner() != victim
@@ -1596,9 +1592,6 @@ public final class SoulcererUtils {
     ///
     /// 表项为 `{仪式次数, 需要同时已学会的技能..., 目标技能}`，前置技能必须全部永久学会。
     public static void learnSoulSkillsOnRitual(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS) {
-            return;
-        }
         int rituals = SoulStorage.of(player).getRitualCount();
         boolean changed = false;
         for (RitualUnlock unlock : RITUAL_UNLOCKS) {
@@ -1635,9 +1628,6 @@ public final class SoulcererUtils {
 
     /// 每刻推进依赖“已学会 + 效果是否在身”的技能状态。
     public static void tickSoulSkillStates(ServerPlayer player, long gameTime) {
-        if (!Confluence.SOUL_SKILLS) {
-            return;
-        }
         SoulStorage storage = SoulStorage.of(player);
         /// 魂引天星：持续期间按间隔消耗灵魂召唤坠星
         if (player.hasEffect(ModEffects.STAR_CALL) && gameTime % SoulSkillParameters.STAR_CALL_INTERVAL_TICKS == 0) {
@@ -1899,7 +1889,7 @@ public final class SoulcererUtils {
 
     /// 玩家攻击命中敌怪后，只进行一次联合概率判定。
     public static void soulWeaponHitSoul(LivingDamageEvent.Post event) {
-        if (!Confluence.SOUL_SKILLS || event.getNewDamage() <= 0
+        if (event.getNewDamage() <= 0
                 || !(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player)
                 || !EnemyDamageRules.isEnemy(event.getEntity()) || !SoulStorage.of(player).canReceive()) {
             return;

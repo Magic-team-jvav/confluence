@@ -61,9 +61,12 @@ public final class SyncFieldDispatcher {
                 return false;
             }
 
-            byte[] currentValue = new byte[buf.writerIndex() - start];
-            buf.getBytes(start, currentValue);
-            previousValue = currentValue;
+            // 新观察者的全量快照不改变已有客户端的增量基线。
+            if (!initialSync) {
+                byte[] currentValue = new byte[buf.writerIndex() - start];
+                buf.getBytes(start, currentValue);
+                previousValue = currentValue;
+            }
             return true;
         }
 

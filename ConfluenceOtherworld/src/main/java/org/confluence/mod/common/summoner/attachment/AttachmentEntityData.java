@@ -1,6 +1,5 @@
 package org.confluence.mod.common.summoner.attachment;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
@@ -218,36 +217,40 @@ public class AttachmentEntityData {
         List<byte[]> snapshot = pendingPayloads.getAndSet(List.of());
         for (byte[] payload : snapshot) {
             PortRegistryFriendlyByteBuf buf = new PortRegistryFriendlyByteBuf(Unpooled.wrappedBuffer(payload), level.registryAccess(), PortConnectionType.MODDED);
-            // 保留现有实体的缓存引用
-            Map<UUID, AttachmentEntity> existing = new HashMap<>();
-            groups.values().forEach(list -> list.forEach(entity -> existing.put(entity.getUuid(), entity)));
-            // 清空分组
-            groups.clear();
-            // 读取 AttachmentEntityType → 实体列表
-            int typeCount = buf.readVarInt();
-            for (int i = 0; i < typeCount; i++) {
-                AttachmentEntityType<?> entityType = SummonerRegistries.ATTACHMENT_ENTITY_TYPES.get(buf.readResourceLocation());
-                assert entityType != null;
-                List<AttachmentEntity> list = groups.computeIfAbsent(entityType, k -> new ArrayList<>());
-                int listSize = buf.readVarInt();
-                for (int k = 0; k < listSize; k++) {
-                    UUID uuid = buf.readUUID();
-                    AttachmentEntity entity = existing.get(uuid);
-                    if (entity == null) {
-                        entity = entityType.factory().get();
-                        entity.setUuid(uuid);
+            try {
+                // 保留现有实体的缓存引用
+                Map<UUID, AttachmentEntity> existing = new HashMap<>();
+                groups.values().forEach(list -> list.forEach(entity -> existing.put(entity.getUuid(), entity)));
+                // 清空分组
+                groups.clear();
+                // 读取 AttachmentEntityType → 实体列表
+                int typeCount = buf.readVarInt();
+                for (int i = 0; i < typeCount; i++) {
+                    AttachmentEntityType<?> entityType = SummonerRegistries.ATTACHMENT_ENTITY_TYPES.get(buf.readResourceLocation());
+                    assert entityType != null;
+                    List<AttachmentEntity> list = groups.computeIfAbsent(entityType, k -> new ArrayList<>());
+                    int listSize = buf.readVarInt();
+                    for (int k = 0; k < listSize; k++) {
+                        UUID uuid = buf.readUUID();
+                        AttachmentEntity entity = existing.get(uuid);
+                        if (entity == null) {
+                            entity = entityType.factory().get();
+                            entity.setUuid(uuid);
+                        }
+                        entity.setOwner(owner);
+                        entity.getSyncFieldDispatcher().decode(buf, level);
+                        if (!buf.readBoolean()) {
+                            PathNode pathNode = LyraStreamCodecs.PATH_NODE.decode(buf);
+                            ArrayList<PathNode> historyNodes = entity.getHistoryNodes();
+                            historyNodes.clear();
+                            historyNodes.add(pathNode);
+                            historyNodes.add(pathNode);
+                        }
+                        list.add(entity);
                     }
-                    entity.setOwner(owner);
-                    entity.getSyncFieldDispatcher().decode(buf, level);
-                    if (!buf.readBoolean()) {
-                        PathNode pathNode = LyraStreamCodecs.PATH_NODE.decode(buf);
-                        ArrayList<PathNode> historyNodes = entity.getHistoryNodes();
-                        historyNodes.clear();
-                        historyNodes.add(pathNode);
-                        historyNodes.add(pathNode);
-                    }
-                    list.add(entity);
                 }
+            } finally {
+                buf.release();
             }
         }
     }
@@ -257,7 +260,10 @@ public class AttachmentEntityData {
 
         @Override
         public void write(PortRegistryFriendlyByteBuf buf, AttachmentEntityData data, boolean initialSync) {
-            // 写入 AttachmentEntityType → 实体列表的结构
+            // 初始同步会合并多个附件，载荷长度限定本附件的读取边界。
+            int lengthIndex = buf.writerIndex();
+            buf.writeInt(0);
+            int start = buf.writerIndex();
             buf.writeVarInt(data.groups.size());
             for (Map.Entry<AttachmentEntityType<?>, List<AttachmentEntity>> entityEntry : data.groups.entrySet()) {
                 buf.writeResourceLocation(entityEntry.getKey().location());
@@ -266,21 +272,24 @@ public class AttachmentEntityData {
                 for (AttachmentEntity entity : list) {
                     buf.writeUUID(entity.getUuid());
                     entity.getSyncFieldDispatcher().encode(buf, entity.getLevel(), initialSync);
-                    buf.writeBoolean(entity.isClientInit());
-                    if (!entity.isClientInit()) {
-                        entity.setClientInit(true);
+                    boolean clientInit = !initialSync && entity.isClientInit();
+                    buf.writeBoolean(clientInit);
+                    if (!clientInit) {
+                        if (!initialSync) {
+                            entity.setClientInit(true);
+                        }
                         LyraStreamCodecs.PATH_NODE.encode(buf, entity.getHistoryNodes().get(0));
                     }
                 }
             }
+            buf.setInt(lengthIndex, buf.writerIndex() - start);
         }
 
         @Override
         public AttachmentEntityData read(@NotNull IPortAttachmentHolder holder, @NotNull PortRegistryFriendlyByteBuf buf, @Nullable AttachmentEntityData oldData) {
             AttachmentEntityData data = oldData != null ? oldData : new AttachmentEntityData(holder);
-            ByteBuf copy = buf.copy();
-            byte[] payload = new byte[copy.readableBytes()];
-            copy.readBytes(payload);
+            byte[] payload = new byte[buf.readInt()];
+            buf.readBytes(payload);
             if (payload.length == 0) {
                 return data;
             }

@@ -1563,7 +1563,6 @@ public class ModDataProvider {
                     List.of(
                             new MobSpawnSettings.SpawnerData(CritterEntities.BUNNY.get(), 10, 1, 2),
                             new MobSpawnSettings.SpawnerData(CritterEntities.SQUIRREL.get(), 20, 1, 2),
-                            new MobSpawnSettings.SpawnerData(CritterEntities.CLOUD_SHEEP.get(), 2, 2, 3),
                             new MobSpawnSettings.SpawnerData(CritterEntities.DUCK.get(), 10, 1, 2),
                             new MobSpawnSettings.SpawnerData(CritterEntities.BIRD.get(), 10, 1, 2),
                             new MobSpawnSettings.SpawnerData(CritterEntities.BLUE_JAY.get(), 10, 1, 2),
@@ -2370,7 +2369,12 @@ public class ModDataProvider {
             context.register(ModStructures.Keys.JUNGLE_UNDERGROUND_CABINS, jigsaw(biome.getOrThrow(ModTags.Biomes.HAS_STRUCTURE_JUNGLE_UNDERGROUND_CABINS), GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TerrainAdjustment.BEARD_THIN, templatePool.getOrThrow(TemplatePools.JUNGLE_UNDERGROUND_CABINS$MAIN), -50, 10, 116));
             context.register(ModStructures.Keys.NETHER_TOWER, jigsaw(biome.getOrThrow(ModTags.Biomes.HAS_STRUCTURE_NETHER_TOWER), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.BEARD_BOX, templatePool.getOrThrow(TemplatePools.NETHER_TOWER$MAIN), 32, 35, 116));
             context.register(ModStructures.Keys.OBSIDIAN_CASTLE, jigsaw(biome.getOrThrow(ModTags.Biomes.HAS_STRUCTURE_NETHER_TOWER), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.BEARD_BOX, templatePool.getOrThrow(TemplatePools.OBSIDIAN_CASTLE$MAIN), 32, 40, 116));
-            context.register(ModStructures.Keys.SKY_VILLAGE, jigsaw(biome.getOrThrow(ModTags.Biomes.HAS_STRUCTURE_SKY_VILLAGE), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE, templatePool.getOrThrow(TemplatePools.SKY_VILLAGE$CENTER), 250, 260, 128));
+            /// 空岛村庄：飘飘羊只在这里生成；结构生成覆盖会替换该结构范围内的原版 creature 生成表
+            context.register(ModStructures.Keys.SKY_VILLAGE, jigsaw(biome.getOrThrow(ModTags.Biomes.HAS_STRUCTURE_SKY_VILLAGE), Map.of(
+                    MobCategory.CREATURE, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.PIECE, WeightedRandomList.create(
+                            new MobSpawnSettings.SpawnerData(CritterEntities.CLOUD_SHEEP.get(), 10, 2, 3)
+                    ))
+            ), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE, templatePool.getOrThrow(TemplatePools.SKY_VILLAGE$CENTER), 250, 260, 128));
             context.register(ModStructures.Keys.UNDERGROUND_CABINS, jigsaw(biome.getOrThrow(ModTags.Biomes.HAS_STRUCTURE_UNDERGROUND_CABINS), GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TerrainAdjustment.BEARD_THIN, templatePool.getOrThrow(TemplatePools.UNDERGROUND_CABINS$MAIN), -50, 10, 116));
             context.register(ModStructures.Keys.GLOWING_MUSHROOM_UNDERGROUND_CABINS, jigsaw(biome.getOrThrow(ModTags.Biomes.HAS_STRUCTURE_GLOWING_MUSHROOM_UNDERGROUND_CABINS), GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TerrainAdjustment.BEARD_THIN, templatePool.getOrThrow(TemplatePools.GLOWING_MUSHROOM_UNDERGROUND_CABINS$MAIN), -50, 10, 116));
             context.register(ModStructures.Keys.HEAVEN_ISLANDS, new HeavenIslandsStructure(settings(overworld, GenerationStep.Decoration.TOP_LAYER_MODIFICATION)));
@@ -2394,9 +2398,13 @@ public class ModDataProvider {
             return new Structure.StructureSettings(biomes, Map.of(), step, TerrainAdjustment.NONE);
         }
 
-        private static JigsawStructure jigsaw(HolderSet<Biome> biomes, GenerationStep.Decoration step, TerrainAdjustment terrain, Holder<StructureTemplatePool> pool, int minY, int maxY, int maxDistance) {
-            return new JigsawStructure(new Structure.StructureSettings(biomes, Map.of(), step, terrain), pool, Optional.empty(), 7,
+        private static JigsawStructure jigsaw(HolderSet<Biome> biomes, Map<MobCategory, StructureSpawnOverride> spawnOverrides, GenerationStep.Decoration step, TerrainAdjustment terrain, Holder<StructureTemplatePool> pool, int minY, int maxY, int maxDistance) {
+            return new JigsawStructure(new Structure.StructureSettings(biomes, spawnOverrides, step, terrain), pool, Optional.empty(), 7,
                     UniformHeight.of(VerticalAnchor.absolute(minY), VerticalAnchor.absolute(maxY)), false, Optional.empty(), maxDistance);
+        }
+
+        private static JigsawStructure jigsaw(HolderSet<Biome> biomes, GenerationStep.Decoration step, TerrainAdjustment terrain, Holder<StructureTemplatePool> pool, int minY, int maxY, int maxDistance) {
+            return jigsaw(biomes, Map.of(), step, terrain, pool, minY, maxY, maxDistance);
         }
     }
 

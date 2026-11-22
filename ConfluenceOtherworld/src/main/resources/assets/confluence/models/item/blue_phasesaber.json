@@ -23,6 +23,11 @@
                     0.55,
                     0.55,
                     0.55
+                ],
+                "rotation": [
+                    0,
+                    -90,
+                    0
                 ]
             },
             "thirdperson_lefthand": {
@@ -35,6 +40,11 @@
                     0.55,
                     0.55,
                     0.55
+                ],
+                "rotation": [
+                    0,
+                    90,
+                    0
                 ]
             },
             "firstperson_righthand": {

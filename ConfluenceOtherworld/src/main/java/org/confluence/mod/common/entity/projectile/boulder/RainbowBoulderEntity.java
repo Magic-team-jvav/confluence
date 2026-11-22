@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.projectile.boulder;
 import PortLib.extensions.java.util.List.PortListExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -18,6 +19,7 @@ import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.common.TCCommonConfigs;
 import org.jetbrains.annotations.Nullable;
 
@@ -144,6 +146,11 @@ public class RainbowBoulderEntity extends BoulderEntity {
                 targetToBlock(pos);
             }
         }
+    }
+
+    @Override
+    public void startSeenByPlayer(ServerPlayer serverPlayer) {
+        AchievementUtils.awardAchievement(serverPlayer, "fortune_favors_the_bould");
     }
 
     @Override

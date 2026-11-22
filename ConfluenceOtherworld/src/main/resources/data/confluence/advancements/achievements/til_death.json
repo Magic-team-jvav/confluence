@@ -1,8 +1,19 @@
 {
     "parent": "confluence:achievements/new_world",
     "criteria": {
-        "never": {
-            "trigger": "minecraft:impossible"
+        "kill_the_groom": {
+            "conditions": {
+                "entity": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type": "confluence:the_groom"
+                        }
+                    }
+                ]
+            },
+            "trigger": "minecraft:player_killed_entity"
         }
     },
     "display": {
@@ -13,7 +24,7 @@
         "frame": "challenge",
         "hidden": false,
         "icon": {
-            "item": "minecraft:barrier"
+            "item": "confluence:top_hat"
         },
         "show_toast": true,
         "title": {
@@ -22,7 +33,7 @@
     },
     "requirements": [
         [
-            "never"
+            "kill_the_groom"
         ]
     ],
     "sends_telemetry_event": false

@@ -13,7 +13,7 @@
         "frame": "challenge",
         "hidden": false,
         "icon": {
-            "item": "minecraft:barrier"
+            "item": "confluence:pirate_map"
         },
         "show_toast": true,
         "title": {

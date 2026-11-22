@@ -1,8 +1,15 @@
 {
     "parent": "confluence:achievements/new_world",
     "criteria": {
-        "never": {
-            "trigger": "minecraft:impossible"
+        "enter_spider_nest": {
+            "conditions": {
+                "player": {
+                    "location": {
+                        "structure": "confluence:spider_nest"
+                    }
+                }
+            },
+            "trigger": "minecraft:location"
         }
     },
     "display": {
@@ -13,7 +20,7 @@
         "frame": "challenge",
         "hidden": false,
         "icon": {
-            "item": "minecraft:barrier"
+            "item": "confluence:spider_nest_stone"
         },
         "show_toast": true,
         "title": {
@@ -22,7 +29,7 @@
     },
     "requirements": [
         [
-            "never"
+            "enter_spider_nest"
         ]
     ],
     "sends_telemetry_event": false

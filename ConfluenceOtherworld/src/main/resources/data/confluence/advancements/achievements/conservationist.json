@@ -13,7 +13,7 @@
         "frame": "challenge",
         "hidden": false,
         "icon": {
-            "item": "minecraft:barrier"
+            "item": "minecraft:oak_sapling"
         },
         "show_toast": true,
         "title": {

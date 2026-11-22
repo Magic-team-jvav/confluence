@@ -167,6 +167,7 @@ public enum GoblinArmyGameEvent implements GameEvent {
         this.ready = 53 * 20;
         int count = 0;
         Component component = Component.translatable("message.confluence.goblin_army.ready").withColor(GlobalColors.EVENT.get());
+        server.sendSystemMessage(component);
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             player.sendSystemMessage(component);
             if (player.getMaxHealth() >= ModCommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get()) {
@@ -182,6 +183,7 @@ public enum GoblinArmyGameEvent implements GameEvent {
         this.forceStart = false;
         this.killed = 0;
         Component component = Component.translatable("message.confluence.goblin_army.victory").withColor(GlobalColors.EVENT.get());
+        server.sendSystemMessage(component);
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             player.sendSystemMessage(component);
             AchievementUtils.awardAchievement(player, "goblin_punter");

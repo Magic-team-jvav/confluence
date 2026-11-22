@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.Entity;
@@ -13,11 +14,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 
@@ -67,7 +70,9 @@ public enum PirateInvasionGameEvent implements GameEvent {
     @Override
     public void tick() {
         if (!active) return;
-        if (ready > 0 && --ready == 0) broadcast("message.confluence.pirate_invasion.start");
+        if (ready > 0 && --ready == 0) {
+            level.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("message.confluence.pirate_invasion.start").withColor(GlobalColors.EVENT.get()), false);
+        }
         for (var player : Set.copyOf(progress.getPlayers())) {
             if (player.level() != level) progress.removePlayer(player);
         }
@@ -115,7 +120,7 @@ public enum PirateInvasionGameEvent implements GameEvent {
         ready = 600;
         killed = 0;
         required = 120 + 60 * (int) level.players().stream().filter(player -> player.getMaxHealth() >= 40).count();
-        broadcast("message.confluence.pirate_invasion.ready");
+        level.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("message.confluence.pirate_invasion.ready").withColor(GlobalColors.EVENT.get()), false);
     }
 
     @Override
@@ -123,11 +128,12 @@ public enum PirateInvasionGameEvent implements GameEvent {
         active = false;
         progress.removeAllPlayers();
         spawned.clear();
-        broadcast("message.confluence.pirate_invasion.victory");
-    }
-
-    private void broadcast(String key) {
-        level.getServer().getPlayerList().broadcastSystemMessage(Component.translatable(key), false);
+        Component component = Component.translatable("message.confluence.pirate_invasion.victory").withColor(GlobalColors.EVENT.get());
+        level.getServer().sendSystemMessage(component);
+        for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
+            player.sendSystemMessage(component);
+            AchievementUtils.awardAchievement(player, "walk_the_plank");
+        }
     }
 
     @Override
@@ -135,7 +141,7 @@ public enum PirateInvasionGameEvent implements GameEvent {
 
     @Override
     public boolean forceStart() {
-        if (active || level == null || GameEventSystem.anyInvasionStarted()
+        if (active || GameEventSystem.anyInvasionStarted()
                 || level.players().stream().noneMatch(player -> player.getMaxHealth() >= 40))
             return false;
         requested = true;

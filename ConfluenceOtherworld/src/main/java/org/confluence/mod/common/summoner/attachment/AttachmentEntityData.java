@@ -170,6 +170,7 @@ public class AttachmentEntityData {
         }
     }
 
+    /// for summoner, use [org.confluence.mod.common.summoner.SummonerHelper#add] instead
     public void add(AttachmentEntity entity) {
         pendingAdd.computeIfAbsent(entity.getType(), key -> new ArrayList<>()).add(entity);
     }

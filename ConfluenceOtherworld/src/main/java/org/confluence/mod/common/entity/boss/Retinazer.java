@@ -27,6 +27,7 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.common.TreasureBagItem;
+import org.confluence.mod.util.AchievementUtils;
 import org.joml.Vector3f;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -811,6 +812,7 @@ public class Retinazer extends AbstractTwinEye {
                 KillBoard.INSTANCE.defeat(BossEntities.SPAZMATISM.get());
                 for (var player : getOnlineCombatParticipants()) {
                     TreasureBagItem.createItemEntity(this, player);
+                    AchievementUtils.mechanicalBossDefeated(player, this);
                 }
             }
         }

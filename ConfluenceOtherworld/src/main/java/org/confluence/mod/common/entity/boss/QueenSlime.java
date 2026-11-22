@@ -25,6 +25,7 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.item.common.TreasureBagItem;
+import org.confluence.mod.util.AchievementUtils;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -179,6 +180,7 @@ public class QueenSlime extends BaseBoss {
             KillBoard.INSTANCE.defeat(getType());
             for (var player : getOnlineCombatParticipants()) {
                 TreasureBagItem.createItemEntity(this, player);
+                AchievementUtils.awardAchievement(player, "just_desserts");
             }
         }
     }

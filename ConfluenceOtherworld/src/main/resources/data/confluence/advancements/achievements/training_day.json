@@ -13,7 +13,7 @@
         "frame": "challenge",
         "hidden": false,
         "icon": {
-            "item": "minecraft:barrier"
+            "item": "confluence:advanced_combat_techniques"
         },
         "show_toast": true,
         "title": {

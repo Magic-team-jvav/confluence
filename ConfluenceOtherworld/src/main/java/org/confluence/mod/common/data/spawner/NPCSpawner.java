@@ -66,6 +66,7 @@ import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IStructureStart;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -603,8 +604,11 @@ public enum NPCSpawner implements IGlobalData {
 
     private boolean trySpawnTruffle(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, NpcEntities.TRUFFLE.get())) {
-            if (ModUtils.isHardmode()) {
-                return spawnAtPos(player.serverLevel(), pos, NpcEntities.TRUFFLE.get());
+            if (ModUtils.isHardmode() && spawnAtPos(player.serverLevel(), pos, NpcEntities.TRUFFLE.get())) {
+                for (ServerPlayer sp : player.server.getPlayerList().getPlayers()) {
+                    AchievementUtils.awardAchievement(sp, "it_can_talk");
+                }
+                return true;
             }
         }
         return false;

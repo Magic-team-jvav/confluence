@@ -1,8 +1,20 @@
 {
     "parent": "confluence:achievements/new_world",
     "criteria": {
-        "never": {
-            "trigger": "minecraft:impossible"
+        "enter_glowing_mushroom_surface": {
+            "conditions": {
+                "player": {
+                    "location": {
+                        "biome": "confluence:glowing_mushroom",
+                        "position": {
+                            "y": {
+                                "min": 40
+                            }
+                        }
+                    }
+                }
+            },
+            "trigger": "minecraft:location"
         }
     },
     "display": {
@@ -13,7 +25,7 @@
         "frame": "challenge",
         "hidden": false,
         "icon": {
-            "item": "minecraft:barrier"
+            "item": "confluence:glowing_mushroom"
         },
         "show_toast": true,
         "title": {
@@ -22,7 +34,7 @@
     },
     "requirements": [
         [
-            "never"
+            "enter_glowing_mushroom_surface"
         ]
     ],
     "sends_telemetry_event": false

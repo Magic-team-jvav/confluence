@@ -13,7 +13,7 @@
         "frame": "challenge",
         "hidden": false,
         "icon": {
-            "item": "minecraft:barrier"
+            "item": "confluence:bunny_spawn_egg"
         },
         "show_toast": true,
         "title": {

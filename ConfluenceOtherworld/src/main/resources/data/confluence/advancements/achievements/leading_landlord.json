@@ -13,7 +13,7 @@
         "frame": "challenge",
         "hidden": false,
         "icon": {
-            "item": "minecraft:barrier"
+            "item": "confluence:gold_coin"
         },
         "show_toast": true,
         "title": {

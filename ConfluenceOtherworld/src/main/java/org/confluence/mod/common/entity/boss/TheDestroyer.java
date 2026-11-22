@@ -53,6 +53,7 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.network.s2c.TerraStyleExplosionPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -1175,6 +1176,7 @@ public class TheDestroyer extends MechanicalBoss {
                 KillBoard.INSTANCE.defeat(getType());
                 for (var player : getOnlineCombatParticipants()) {
                     TreasureBagItem.createItemEntity(this, player);
+                    AchievementUtils.mechanicalBossDefeated(player, this);
                 }
             }
         }

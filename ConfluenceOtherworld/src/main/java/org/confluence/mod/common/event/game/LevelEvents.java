@@ -43,6 +43,7 @@ import org.confluence.mod.common.item.common.StaffOfRegrowth;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.event.PortEventHandler;
@@ -56,6 +57,7 @@ public final class LevelEvents {
         PortEventHandler.addListener(LevelEvents::blockDrops);
         PortEventHandler.addListener(LevelEvents::chunkWatch$Watch);
         PortEventHandler.addListener(LevelEvents::block$Break);
+        PortEventHandler.addListener(LevelEvents::block$EntityPlace);
         PortEventHandler.addListener(LevelEvents::farmlandTrample);
         PortEventHandler.addListener(LevelEvents::modifyCustomSpawners);
     }
@@ -91,6 +93,12 @@ public final class LevelEvents {
         // 再生法杖/再生之斧 时运
         if (tool.is(ModTags.Items.CROP_FORTUNE) && breaker != null && (state.is(BlockTags.CROPS) || state.getBlock() instanceof CropBlock)) {
             StaffOfRegrowth.increaseDrops(breaker, tool, event.getDrops().stream().map(ItemEntity::getItem));
+        }
+    }
+
+    private static void block$EntityPlace(BlockEvent.EntityPlaceEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && event.getPlacedBlock().is(BlockTags.SAPLINGS)) {
+            AchievementUtils.conservationist(player);
         }
     }
 

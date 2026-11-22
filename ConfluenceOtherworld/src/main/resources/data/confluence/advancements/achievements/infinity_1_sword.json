@@ -1,8 +1,17 @@
 {
     "parent": "confluence:achievements/new_world",
     "criteria": {
-        "never": {
-            "trigger": "minecraft:impossible"
+        "requirement": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "confluence:zenith"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
         }
     },
     "display": {
@@ -13,7 +22,7 @@
         "frame": "challenge",
         "hidden": false,
         "icon": {
-            "item": "minecraft:barrier"
+            "item": "confluence:zenith"
         },
         "show_toast": true,
         "title": {
@@ -22,7 +31,7 @@
     },
     "requirements": [
         [
-            "never"
+            "requirement"
         ]
     ],
     "sends_telemetry_event": false

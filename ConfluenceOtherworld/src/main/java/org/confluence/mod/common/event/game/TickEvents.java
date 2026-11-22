@@ -108,9 +108,10 @@ public final class TickEvents {
             YoyoSession.of(player).tick(player);
             PlayerSpecialData.of(player).sync(player);
             AchievementUtils.youCanDoIt(player, level, gameTime);
-            AchievementUtils.quietNeighborhood(player, level, gameTime);
-            AchievementUtils.aRareRealm(player, gameTime);
-            if (gameTime % 20 == player.getId() % 10) {
+            AchievementUtils.myPeopleNeedMe(player);
+            if (gameTime % 100 == player.getId() % 10) {
+                AchievementUtils.quietNeighborhood(player, level);
+                AchievementUtils.aRareRealm(player);
                 AchievementUtils.marathonMedalist(player);
             }
             TheConstant.applyDarkness(player, level, gameTime);

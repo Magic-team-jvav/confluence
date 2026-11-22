@@ -83,6 +83,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation TAX_COLLECTOR_ATTACK = RawAnimation.begin().thenPlay("attack");
+    /// 心情值达到该值时购买价格已触底，对应“尽可能快乐”。
+    private static final int HAPPIEST_MOOD = 134;
 
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -484,14 +486,20 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
+        if (player instanceof ServerPlayer sp) {
             initName();
-            if (hand == InteractionHand.OFF_HAND || !canStartInteraction(serverPlayer))
+            if (hand == InteractionHand.OFF_HAND || !canStartInteraction(sp))
                 return InteractionResult.SUCCESS;
-            recordInteraction(serverPlayer);
+            recordInteraction(sp);
+            if (isTownPet() && player.getItemInHand(hand).isEmpty()) {
+                AchievementUtils.awardAchievement(sp, "feeling_petty");
+            }
+            if (!isTownPet() && getMood().getValue() >= HAPPIEST_MOOD) {
+                AchievementUtils.awardAchievement(sp, "leading_landlord");
+            }
 
-            var shop = NPCTradeList.getAvailableOffers(serverPlayer, this);
-            PortPacketDistributor.sendToPlayer(serverPlayer, new OpenNPCDialogPacketS2C(getId(), !shop.offers().isEmpty()));
+            var shop = NPCTradeList.getAvailableOffers(sp, this);
+            PortPacketDistributor.sendToPlayer(sp, new OpenNPCDialogPacketS2C(getId(), !shop.offers().isEmpty()));
         }
         return InteractionResult.sidedSuccess(level().isClientSide);
     }

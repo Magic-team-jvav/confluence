@@ -84,6 +84,7 @@ public class TombstoneBoulderEntity extends BoulderEntity {
         Level level = living.level();
         Vec3 position = living.position();
         TombstoneBoulderEntity entity = new TombstoneBoulderEntity(level, position, blockState);
+        entity.setOwner(living);
         entity.text = entity.text
                 .setMessage(0, living.getCombatTracker().getDeathMessage())
                 .setMessage(1, Component.literal(DATE_FORMAT.format(Calendar.getInstance().getTime())));

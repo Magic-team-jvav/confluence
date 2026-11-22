@@ -4,17 +4,23 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
 import org.confluence.mod.common.entity.npc.ai.NPCCombatProgression;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.item.FoodItems;
+import org.confluence.mod.util.AchievementUtils;
 
 /// 树妖在敌人接近时维持会扩张的守护结界。
 public final class DryadNPC extends BaseNPC {
@@ -30,6 +36,22 @@ public final class DryadNPC extends BaseNPC {
     /// 若当前没有结界则开始一次完整施法，重复攻击请求不会重置进度。
     public void startWard() {
         if (wardTicks < 0) wardTicks = 0;
+    }
+
+    /// 树妖收下 Joja 可乐时结算“跨维度回收”。
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (hand == InteractionHand.MAIN_HAND && player instanceof ServerPlayer sp) {
+            ItemStack stack = player.getItemInHand(hand);
+            if (stack.is(FoodItems.JOJA_COLA.get())) {
+                if (!player.hasInfiniteMaterials()) {
+                    stack.shrink(1);
+                }
+                AchievementUtils.awardAchievement(sp, "interdimensional_recycling");
+                return InteractionResult.CONSUME;
+            }
+        }
+        return super.mobInteract(player, hand);
     }
 
     @Override

@@ -34,6 +34,8 @@ import java.util.Set;
 /// 这里只叠加指定骨骼组的噪声边缘，不接管克苏鲁之脑那种整只实体淡出的透明度。
 /// 这样变形特效能落在眼睛自己的结构上，也不会把主体、缆线或 Boss 血条相关渲染一起影响掉。
 public class TwinEyeDissolveRenderer<T extends AbstractTwinEye> extends BossGeoRenderer<T> {
+    private static final ResourceLocation WIRE = Confluence.asResource("textures/entity/boss/twins_wire.png");
+    private static final double WIRE_HALF_WIDTH = 0.15;
     private static final int DISSOLVE_TICKS = 24;
 
     private final Set<String> dissolveRoots;
@@ -70,12 +72,21 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye> extends BossGeoR
 
     @Override
     public boolean shouldRender(T entity, Frustum frustum, double x, double y, double z) {
-        return entity instanceof Retinazer eye && eye.getBeamLength() > 0 || super.shouldRender(entity, frustum, x, y, z);
+        if (super.shouldRender(entity, frustum, x, y, z)) return true;
+        if (!(entity instanceof Retinazer eye)) return false;
+        if (eye.getBeamLength() > 0) return true;
+        AbstractTwinEye partner = eye.getPartner();
+        return partner != null && frustum.isVisible(eye.getBoundingBox().minmax(partner.getBoundingBox()).inflate(0.3));
     }
 
     @Override
     public void render(T entity, float yaw, float partialTick, PoseStack poseStack, MultiBufferSource buffers, int light) {
         super.render(entity, yaw, partialTick, poseStack, buffers, light);
+        if (entity instanceof Retinazer && entity.isAlive()) {
+            AbstractTwinEye partner = entity.getPartner();
+            if (partner != null)
+                renderWire(entity, partner, partialTick, poseStack, buffers, light);
+        }
         if (!(entity instanceof Retinazer eye) || eye.getBeamLength() <= 0 || !eye.isAlive())
             return;
         Vec3 direction = eye.getBeamDirection();
@@ -91,6 +102,34 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye> extends BossGeoR
             renderBeamSection(eye, partialTick, poseStack, buffers, direction, 0, Math.min(eye.getBeamLength(), projection - halfGap));
             renderBeamSection(eye, partialTick, poseStack, buffers, direction, Math.max(0, projection + halfGap), eye.getBeamLength());
         }
+    }
+
+    private static void renderWire(AbstractTwinEye eye, AbstractTwinEye partner, float partialTick, PoseStack stack, MultiBufferSource buffers, int light) {
+        Vec3 origin = eye.getPosition(partialTick);
+        Vec3 start = new Vec3(0, eye.getBbHeight() * 0.5, 0);
+        Vec3 end = partner.getPosition(partialTick).subtract(origin).add(0, partner.getBbHeight() * 0.5, 0);
+        Vec3 axis = end.subtract(start).normalize();
+        if (axis.lengthSqr() == 0) return;
+        Vec3 reference = Math.abs(axis.y) < 0.99 ? new Vec3(0, 1, 0) : new Vec3(1, 0, 0);
+        Vec3 first = axis.cross(reference).normalize();
+        Vec3 second = axis.cross(first);
+        VertexConsumer buffer = buffers.getBuffer(RenderType.entityCutoutNoCull(WIRE));
+        PoseStack.Pose pose = stack.last();
+        renderWirePlane(buffer, pose, start, end, first.scale(WIRE_HALF_WIDTH), second, light);
+        renderWirePlane(buffer, pose, start, end, second.scale(WIRE_HALF_WIDTH), first.scale(-1), light);
+    }
+
+    private static void renderWirePlane(VertexConsumer buffer, PoseStack.Pose pose, Vec3 start, Vec3 end, Vec3 side, Vec3 normal, int light) {
+        wireVertex(buffer, pose, start.add(side), 0, 0, normal, light);
+        wireVertex(buffer, pose, end.add(side), 1, 0, normal, light);
+        wireVertex(buffer, pose, end.subtract(side), 1, 1, normal, light);
+        wireVertex(buffer, pose, start.subtract(side), 0, 1, normal, light);
+    }
+
+    private static void wireVertex(VertexConsumer buffer, PoseStack.Pose pose, Vec3 point, float u, float v, Vec3 normal, int light) {
+        buffer.vertex(pose.pose(), (float) point.x, (float) point.y, (float) point.z)
+                .color(255, 255, 255, 255).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light)
+                .normal(pose.normal(), (float) normal.x, (float) normal.y, (float) normal.z).endVertex();
     }
 
     /// 镜头附近留出可视空间，只裁剪光束外观，不改变服务端伤害范围。

@@ -21,7 +21,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.particle.TwinEyeLinkEmitter;
 import org.confluence.mod.common.entity.MoneyDropSource;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -106,7 +105,7 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
     private static final RawAnimation PHASE_TWO = RawAnimation.begin().thenLoop("type_2");
     private static final RawAnimation PHASE_TWO_DASH = RawAnimation.begin().thenLoop("type_2_run");
     private boolean settlingDeath;
-    private ParticleEmitter linkEmitter;
+    private AbstractTwinEye clientPartner;
     private int transitionTicks;
     private int leavingTicks;
     // 锁定方向与眼球视线相差五度以内才允许起冲。
@@ -162,9 +161,14 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
     public final @Nullable AbstractTwinEye getPartner() {
         if (getEncounterUUID() == null) return null;
         if (level() instanceof ServerLevel) return TwinEyeEncounter.state(this).partner(this);
-        return level().getEntitiesOfClass(AbstractTwinEye.class, getBoundingBox().inflate(PARTNER_SEARCH_RANGE),
+        if (clientPartner != null && clientPartner.isAlive() && !clientPartner.isRemoved()
+                && getEncounterUUID().equals(clientPartner.getEncounterUUID()))
+            return clientPartner;
+        if (tickCount % 10 != 0) return null;
+        clientPartner = level().getEntitiesOfClass(AbstractTwinEye.class, getBoundingBox().inflate(PARTNER_SEARCH_RANGE),
                 eye -> eye != this && eye.isRetinazer() != isRetinazer() && eye.isAlive()
                         && getEncounterUUID().equals(eye.getEncounterUUID())).stream().findFirst().orElse(null);
+        return clientPartner;
     }
 
     public final boolean ownsSharedBossBar() {return entityData.get(DATA_PRIMARY);}
@@ -295,10 +299,6 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
         if (isParalyzed() && (level().isClientSide || leavingTicks == 0 && !LibDateUtils.isDay(level())))
             return;
         if (level().isClientSide) {
-            if (isRetinazer() && getEncounterUUID() != null && (linkEmitter == null || linkEmitter.isRemoved())) {
-                linkEmitter = new TwinEyeLinkEmitter(this);
-                MolangParticleEngine.INSTANCE.addEmitter(linkEmitter);
-            }
             previousBank = visualBank;
             visualBank = visualBank + Mth.wrapDegrees(entityData.get(DATA_BANK) - visualBank) * BANK_SMOOTHING;
         }

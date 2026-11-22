@@ -9,6 +9,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -16,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.event.enchanting.EnchantedBlockLootEvent;
 import net.neoforged.neoforge.event.level.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ChunkBrushData;
@@ -33,6 +36,7 @@ import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.gameevent.MeteorShowerGameEvent;
 import org.confluence.mod.common.gameevent.PirateInvasionGameEvent;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
@@ -76,6 +80,21 @@ public final class LevelEvents {
         // 再生法杖/再生之斧 时运
         if (tool.is(ModTags.Items.CROP_FORTUNE) && breaker != null && (state.is(BlockTags.CROPS) || state.getBlock() instanceof CropBlock)) {
             StaffOfRegrowth.increaseDrops(breaker, tool, event.getDrops().stream().map(ItemEntity::getItem));
+        }
+        int experience = event.getDroppedExperience();
+        if (experience >= 0 && breaker instanceof Player player) {
+            event.setDroppedExperience(experience + EnchantmentHelper.processBlockExperience(
+                    event.getLevel(),
+                    event.getTool(),
+                    ModArmorBonus.getValue(player, ModArmorBonus.FORTUNE)
+            ));
+        }
+    }
+
+    @SubscribeEvent
+    public static void enchantedBlockLootEvent(EnchantedBlockLootEvent event) {
+        if (event.getEnchantment().is(Enchantments.FORTUNE) && event.getEntity() instanceof Player player) {
+            event.setEnchantmentLevel(event.getEnchantmentLevel() + ModArmorBonus.getValue(player, ModArmorBonus.FORTUNE));
         }
     }
 

@@ -84,7 +84,7 @@ public final class TerrarianProjectile extends Projectile implements Immunity, G
                     Entity recipient = candidate;
                     DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, owner);
                     /// 实体类型作为共享无敌帧身份，多发泰拉射弹仍共用四 tick 冷却。
-                    if (!Immunity.hurt((Immunity) getType(), recipient, logical, source, damage))
+                    if (!Immunity.hurt(this, recipient, logical, source, damage))
                         continue;
                     logical.knockback(knockback, -motion.x, -motion.z);
                     if (sourceYoyo != null) YoyoSession.of(owner).onHit(owner, sourceYoyo);

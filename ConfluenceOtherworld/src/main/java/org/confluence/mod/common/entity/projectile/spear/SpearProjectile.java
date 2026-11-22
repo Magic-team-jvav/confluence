@@ -330,8 +330,8 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         if (logicalTarget == null) return false;
         DamageSource source = damageSource();
         /// 静态无敌帧按弹射物类型共享，局部无敌帧按当前实例区分。
-        Immunity cause = confluence$getImmunityType() == Type.STATIC ? (Immunity) getType() : this;
-        boolean hurt = Immunity.hurt(cause, damageRecipient, logicalTarget, source, getDamage());
+
+        boolean hurt = Immunity.hurt(this, damageRecipient, logicalTarget, source, getDamage());
         if (!hurt) {
             return false;
         }

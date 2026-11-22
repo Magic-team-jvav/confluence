@@ -143,7 +143,6 @@
         "integration.betteradvancements.BetterAdvancementWidgetMixin",
         "integration.betteradvancements.BetterDisplayInfoMixin",
         "integration.create.ponder.PonderTooltipHandlerMixin",
-        "integration.curios.CuriosScreenMixin",
         "integration.ftbchunks.EntityMapIconMixin",
         "integration.ftbchunks.TrackedPlayerMapIconMixin",
         "integration.geckolib.FileLoaderMixin",

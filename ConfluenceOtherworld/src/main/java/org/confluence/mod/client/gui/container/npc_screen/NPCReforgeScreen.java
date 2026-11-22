@@ -157,7 +157,12 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> im
     private static final int TRACK_WIDTH = 74;
     private static final int TRACK_ROW_HEIGHT = 15;
     private static final int TRACK_MAX_ROWS = 7;
-    private static final ResourceLocation HAMMER_SPARK = Confluence.asResource("reforge_hammer_spark");
+    private static final ResourceLocation[] HAMMER_SPARK_EFFECTS = {
+            Confluence.asResource("reforge_hammer_spark"),
+            Confluence.asResource("reforge_hammer_flash"),
+            Confluence.asResource("reforge_hammer_rainbow_flash"),
+            Confluence.asResource("reforge_hammer_rainbow_spark")
+    };
 
     private int hammerSwingAge = HAMMER_RETURN_TICKS;
 
@@ -248,7 +253,9 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> im
         sparkCamera.moveTo(origin);
         sparkFrustum.prepare(origin.x, origin.y, origin.z);
         reforgeParticles.removeAll();
-        reforgeParticles.addEmitter(new ScreenParticleEmitter(ParticleEmitter.TYPE, minecraft.player.level(), origin, HAMMER_SPARK, MolangExp.EMPTY));
+        for (ResourceLocation effect : HAMMER_SPARK_EFFECTS) {
+            reforgeParticles.addEmitter(new ScreenParticleEmitter(ParticleEmitter.TYPE, minecraft.player.level(), origin, effect, MolangExp.EMPTY));
+        }
     }
 
     public float getHammerArmRotation(float partialTick) {

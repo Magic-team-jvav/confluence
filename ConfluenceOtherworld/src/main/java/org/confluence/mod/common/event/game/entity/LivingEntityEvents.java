@@ -133,6 +133,7 @@ public final class LivingEntityEvents {
                 victim.spawnAtLocation(ConsumableItems.PIRATE_MAP.get());
             }
             TombstoneBoulderEntity.createTombstoneEntity(victim);
+            AchievementUtils.graveMistake(damageSource, victim);
             Entity attacker = LibEntityUtils.getOwner(damageSource);
 
             if (attacker instanceof ServerPlayer) {

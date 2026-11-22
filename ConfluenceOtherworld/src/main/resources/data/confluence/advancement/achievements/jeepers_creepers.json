@@ -1,23 +1,30 @@
 {
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "enter_spider_nest": {
+            "conditions": {
+                "player": {
+                    "location": {
+                        "structures": "confluence:spider_nest"
+                    }
+                }
+            },
+            "trigger": "minecraft:location"
+        }
+    },
     "display": {
-        "icon": {
-            "id": "minecraft:barrier"
-        },
-        "title": {
-            "translate": "achievements.confluence.jeepers_creepers.title"
-        },
+        "announce_to_chat": false,
         "description": {
             "translate": "achievements.confluence.jeepers_creepers.description"
         },
         "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "id": "confluence:spider_nest_stone"
+        },
         "show_toast": true,
-        "announce_to_chat": false,
-        "hidden": false
-    },
-    "parent": "confluence:achievements/new_world",
-    "criteria": {
-        "never": {
-            "trigger": "minecraft:impossible"
+        "title": {
+            "translate": "achievements.confluence.jeepers_creepers.title"
         }
     }
 }

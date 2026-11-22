@@ -54,13 +54,11 @@ public enum SandstormGameEvent implements GameEvent, WindPushedEvent {
 
     /// 事件激活期间一律视为强风；未激活时才看是否够格触发（与大风天共用 20 mph 那条线）。
     private boolean strongWind() {
-        if (level == null) return false;
         return active || WindState.INSTANCE.instantSpeed(level.getGameTime()) >= WindMath.WINDY_DAY_MIN;
     }
 
     @Override
     public boolean canStart() {
-        if (level == null) return false;
         return requested || (strongWind() && level.random.nextInt(ModUtils.isHardmode() ? 14400 : 21600) == 0);
     }
 
@@ -90,7 +88,6 @@ public enum SandstormGameEvent implements GameEvent, WindPushedEvent {
     }
 
     private void releaseWind() {
-        if (level == null) return;
         WindState state = WindState.INSTANCE;
         state.setDirectionBlend(1.0F);
         state.clearOverride();
@@ -103,7 +100,7 @@ public enum SandstormGameEvent implements GameEvent, WindPushedEvent {
 
     @Override
     public boolean forceStart() {
-        if (active || level == null) return false;
+        if (active) return false;
         requested = true;
         return true;
     }

@@ -2,7 +2,6 @@ package org.confluence.mod.common.summoner.attachment;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import java.util.concurrent.atomic.AtomicReference;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
@@ -24,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 统一的世界级附件实体数据附件。
@@ -170,6 +170,7 @@ public class AttachmentEntityData {
         }
     }
 
+    /// for summoner, use [org.confluence.mod.common.summoner.SummonerHelper#add] instead
     public void add(AttachmentEntity entity) {
         pendingAdd.computeIfAbsent(entity.getType(), key -> new ArrayList<>()).add(entity);
     }

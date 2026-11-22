@@ -44,6 +44,7 @@ import org.confluence.mod.common.item.common.StaffOfRegrowth;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -95,6 +96,13 @@ public final class LevelEvents {
     public static void enchantedBlockLootEvent(EnchantedBlockLootEvent event) {
         if (event.getEnchantment().is(Enchantments.FORTUNE) && event.getEntity() instanceof Player player) {
             event.setEnchantmentLevel(event.getEnchantmentLevel() + ModArmorBonus.getValue(player, ModArmorBonus.FORTUNE));
+        }
+    }
+
+    @SubscribeEvent
+    public static void block$EntityPlace(BlockEvent.EntityPlaceEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && event.getPlacedBlock().is(BlockTags.SAPLINGS)) {
+            AchievementUtils.conservationist(player);
         }
     }
 

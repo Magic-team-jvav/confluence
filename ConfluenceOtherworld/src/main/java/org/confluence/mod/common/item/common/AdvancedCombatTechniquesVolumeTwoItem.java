@@ -19,6 +19,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.util.AchievementUtils;
 
 public class AdvancedCombatTechniquesVolumeTwoItem extends CustomRarityItem {
     public AdvancedCombatTechniquesVolumeTwoItem() {
@@ -43,6 +44,7 @@ public class AdvancedCombatTechniquesVolumeTwoItem extends CustomRarityItem {
                 if (!player.hasInfiniteMaterials()) {
                     itemStack.shrink(1);
                 }
+                AchievementUtils.trainingDay(serverLevel);
             }
         } else {
             player.playSound(ModSoundEvents.TRANSMUTATION_USE.get());

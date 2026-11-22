@@ -1,5 +1,6 @@
 package org.confluence.mod.common.summoner;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -9,11 +10,14 @@ import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.confluence.mod.common.summoner.minion.MinionSlotType;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.util.AchievementUtils;
 
 import java.util.Collection;
 import java.util.List;
 
 public final class SummonerHelper {
+    /// “你和什么军队？”所需的同时存在的召唤物数量。
+    private static final int YOU_AND_WHAT_ARMY_MINIONS = 9;
 
     private final Player player;
     private final AttachmentEntityData data;
@@ -33,6 +37,9 @@ public final class SummonerHelper {
 
     public void add(AttachmentEntity entity) {
         data.add(entity);
+        if (player instanceof ServerPlayer sp && SummonerHelper.get(player).getUsedSlots(MinionSlotType.Minion) + 1 >= YOU_AND_WHAT_ARMY_MINIONS) {
+            AchievementUtils.awardAchievement(sp, "you_and_what_army");
+        }
     }
 
     public void remove(AttachmentEntityType<?> entityType) {

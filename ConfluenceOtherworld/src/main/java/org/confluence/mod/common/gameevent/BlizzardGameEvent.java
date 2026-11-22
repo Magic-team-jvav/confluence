@@ -48,7 +48,6 @@ public enum BlizzardGameEvent implements GameEvent, WindPushedEvent {
 
     @Override
     public boolean canStart() {
-        if (level == null) return false;
         return requested || (level.isRaining() && anyPlayerInSnowyBiome());
     }
 
@@ -61,7 +60,6 @@ public enum BlizzardGameEvent implements GameEvent, WindPushedEvent {
 
     @Override
     public boolean canEnd() {
-        if (level == null) return true;
         return !requested && !level.isRaining();
     }
 
@@ -83,7 +81,7 @@ public enum BlizzardGameEvent implements GameEvent, WindPushedEvent {
 
     @Override
     public boolean forceStart() {
-        if (active || level == null) return false;
+        if (active) return false;
         requested = true;
         return true;
     }

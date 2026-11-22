@@ -1,23 +1,34 @@
 {
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "kill_doctor_bones": {
+            "conditions": {
+                "entity": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type": "confluence:doctor_bones"
+                        }
+                    }
+                ]
+            },
+            "trigger": "minecraft:player_killed_entity"
+        }
+    },
     "display": {
-        "icon": {
-            "id": "minecraft:barrier"
-        },
-        "title": {
-            "translate": "achievements.confluence.archaeologist.title"
-        },
+        "announce_to_chat": false,
         "description": {
             "translate": "achievements.confluence.archaeologist.description"
         },
         "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "id": "confluence:archaeologists_hat"
+        },
         "show_toast": true,
-        "announce_to_chat": false,
-        "hidden": false
-    },
-    "parent": "confluence:achievements/new_world",
-    "criteria": {
-        "never": {
-            "trigger": "minecraft:impossible"
+        "title": {
+            "translate": "achievements.confluence.archaeologist.title"
         }
     }
 }

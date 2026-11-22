@@ -1,23 +1,35 @@
 {
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "enter_glowing_mushroom_surface": {
+            "conditions": {
+                "player": {
+                    "location": {
+                        "position": {
+                            "y": {
+                                "min": 40
+                            }
+                        },
+                        "biomes": "confluence:glowing_mushroom"
+                    }
+                }
+            },
+            "trigger": "minecraft:location"
+        }
+    },
     "display": {
-        "icon": {
-            "id": "minecraft:barrier"
-        },
-        "title": {
-            "translate": "achievements.confluence.funkytown.title"
-        },
+        "announce_to_chat": false,
         "description": {
             "translate": "achievements.confluence.funkytown.description"
         },
         "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "id": "confluence:glowing_mushroom"
+        },
         "show_toast": true,
-        "announce_to_chat": false,
-        "hidden": false
-    },
-    "parent": "confluence:achievements/new_world",
-    "criteria": {
-        "never": {
-            "trigger": "minecraft:impossible"
+        "title": {
+            "translate": "achievements.confluence.funkytown.title"
         }
     }
 }

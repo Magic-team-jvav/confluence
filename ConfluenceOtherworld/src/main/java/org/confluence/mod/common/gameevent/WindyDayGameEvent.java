@@ -48,7 +48,7 @@ public enum WindyDayGameEvent implements GameEvent {
 
     @Override
     public void tick() {
-        if (!active || level == null) return;
+        if (!active) return;
         calmTicks = windSpeed() < WindMath.WINDY_DAY_MIN ? calmTicks + 1 : 0;
     }
 
@@ -58,13 +58,11 @@ public enum WindyDayGameEvent implements GameEvent {
 
     @Override
     public boolean canStart() {
-        if (level == null) return false;
         return requested || (LibDateUtils.isDay(level) && windSpeed() >= WindMath.WINDY_DAY_MIN);
     }
 
     @Override
     public boolean canEnd() {
-        if (level == null) return true;
         if (requested) return false;
         return LibDateUtils.isNight(level) || calmTicks > CALM_TOLERANCE;
     }
@@ -74,10 +72,8 @@ public enum WindyDayGameEvent implements GameEvent {
         active = true;
         requested = false;
         calmTicks = 0;
-        if (level == null) return;
-        WindState state = WindState.INSTANCE;
-        state.setSpeedFloor(SPEED_FLOOR);
-        state.setRerollHold(HOLD_TICKS);
+        WindState.INSTANCE.setSpeedFloor(SPEED_FLOOR);
+        WindState.INSTANCE.setRerollHold(HOLD_TICKS);
     }
 
     @Override
@@ -99,7 +95,7 @@ public enum WindyDayGameEvent implements GameEvent {
 
     @Override
     public boolean forceStart() {
-        if (active || level == null) return false;
+        if (active) return false;
         requested = true;
         return true;
     }

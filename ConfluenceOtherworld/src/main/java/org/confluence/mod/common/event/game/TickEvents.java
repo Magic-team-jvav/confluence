@@ -10,8 +10,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
-import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.TaskScheduler;
@@ -35,6 +33,8 @@ import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
+import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
+import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
@@ -112,8 +112,12 @@ public final class TickEvents {
             YoyoSession.of(player).tick(player);
             PlayerSpecialData.of(player).sync(player);
             AchievementUtils.youCanDoIt(player, level, gameTime);
-            AchievementUtils.quietNeighborhood(player, level, gameTime);
-            AchievementUtils.aRareRealm(player, gameTime);
+            AchievementUtils.myPeopleNeedMe(player);
+            if (gameTime % 100 == player.getId() % 10) {
+                AchievementUtils.quietNeighborhood(player, level);
+                AchievementUtils.aRareRealm(player);
+                AchievementUtils.marathonMedalist(player);
+            }
             TheConstant.applyDarkness(player, level, gameTime);
             TheConstant.instantlyDieWhenHasNoFoodLevel(player);
             DungeonStructure.checkSkeletronDefeated(player, level);

@@ -5,10 +5,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.NpcEntities;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 
 public enum PartyGameEvent implements GameEvent {
@@ -41,7 +43,6 @@ public enum PartyGameEvent implements GameEvent {
 
     @Override
     public boolean canStart() {
-        if (level == null) return false;
         if (requested) return true;
         long day = Math.floorDiv(level.getDayTime(), 24000);
         if (LibDateUtils.isNight(level) || Math.floorMod(level.getDayTime(), 24000) > 100 || checkedDay == day)
@@ -65,7 +66,7 @@ public enum PartyGameEvent implements GameEvent {
 
     @Override
     public boolean canEnd() {
-        return ending || level == null || LibDateUtils.isNight(level);
+        return ending || LibDateUtils.isNight(level);
     }
 
     @Override
@@ -76,6 +77,9 @@ public enum PartyGameEvent implements GameEvent {
         ending = false;
         if (natural) cooldownDays = 5 + level.random.nextInt(6);
         level.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("message.confluence.party.started"), false);
+        for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
+            AchievementUtils.awardAchievement(player, "jolly_jamboree");
+        }
     }
 
     @Override
@@ -98,7 +102,7 @@ public enum PartyGameEvent implements GameEvent {
 
     @Override
     public boolean forceStart() {
-        if (active || level == null) return false;
+        if (active) return false;
         requested = true;
         return true;
     }

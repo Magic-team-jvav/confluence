@@ -1,23 +1,30 @@
 {
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": "confluence:terrarian"
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
     "display": {
-        "icon": {
-            "id": "minecraft:barrier"
-        },
-        "title": {
-            "translate": "achievements.confluence.sick_throw.title"
-        },
+        "announce_to_chat": false,
         "description": {
             "translate": "achievements.confluence.sick_throw.description"
         },
         "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "id": "confluence:terrarian"
+        },
         "show_toast": true,
-        "announce_to_chat": false,
-        "hidden": false
-    },
-    "parent": "confluence:achievements/new_world",
-    "criteria": {
-        "never": {
-            "trigger": "minecraft:impossible"
+        "title": {
+            "translate": "achievements.confluence.sick_throw.title"
         }
     }
 }

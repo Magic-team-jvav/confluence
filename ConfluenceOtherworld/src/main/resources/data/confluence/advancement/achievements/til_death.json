@@ -1,23 +1,34 @@
 {
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "kill_the_groom": {
+            "conditions": {
+                "entity": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type": "confluence:the_groom"
+                        }
+                    }
+                ]
+            },
+            "trigger": "minecraft:player_killed_entity"
+        }
+    },
     "display": {
-        "icon": {
-            "id": "minecraft:barrier"
-        },
-        "title": {
-            "translate": "achievements.confluence.til_death.title"
-        },
+        "announce_to_chat": false,
         "description": {
             "translate": "achievements.confluence.til_death.description"
         },
         "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "id": "confluence:top_hat"
+        },
         "show_toast": true,
-        "announce_to_chat": false,
-        "hidden": false
-    },
-    "parent": "confluence:achievements/new_world",
-    "criteria": {
-        "never": {
-            "trigger": "minecraft:impossible"
+        "title": {
+            "translate": "achievements.confluence.til_death.title"
         }
     }
 }

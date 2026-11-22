@@ -42,8 +42,6 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     @Unique
     private boolean confluence$couldPickupItem = true;
     @Unique
-    private boolean confluence$marathon_medalist = false;
-    @Unique
     private short confluence$bulldozer = 0;
     @Unique
     private ChunkPos confluence$lastChunkPosition;
@@ -99,13 +97,6 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
         return confluence$titaniumShards != null && !confluence$titaniumShards.isRemoved();
     }
 
-    @Inject(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isSprinting()Z"))
-    private void checkMarathon(CallbackInfo ci) {
-        if (!confluence$marathon_medalist) {
-            this.confluence$marathon_medalist = AchievementUtils.marathonMedalist(confluence$self(), stats, confluence$marathon_medalist);
-        }
-    }
-
     @WrapWithCondition(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))
     private boolean replacePacket(ServerGamePacketListenerImpl instance, Packet<?> packet, PacketSendListener packetSendListener) {
         if (packet instanceof ClientboundPlayerCombatKillPacket combatKillPacket) {
@@ -117,12 +108,10 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     private void read(CompoundTag compound, CallbackInfo ci) {
         this.confluence$bulldozer = compound.getShort("confluence:bulldozer");
-        this.confluence$marathon_medalist = compound.getBoolean("confluence:marathon_medalist");
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void add(CompoundTag compound, CallbackInfo ci) {
         compound.putShort("confluence:bulldozer", confluence$bulldozer);
-        compound.putBoolean("confluence:marathon_medalist", confluence$marathon_medalist);
     }
 }

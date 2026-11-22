@@ -47,6 +47,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.prefix_separator", " ", " ");
         language.add("confluence.screen.soulcerer_overview", "Soul Skill Overview", "魂师技能总览");
         language.add("confluence.screen.soulcerer_overview.background_toggle", "Background rendering: on / off (off keeps only the base colour and the skills)", "背景渲染开关：关掉后只保留底色与技能，其余背景层全部停画");
+        language.add("confluence.screen.soulcerer_overview.default", "Default", "默认");
         language.add("confluence.screen.soulcerer_overview.tab.blood_nature", "Blood and Nature", "血与自然");
         language.add("confluence.screen.soulcerer_overview.tab.empty", "Empty", "空");
         language.add("confluence.screen.soulcerer_overview.tab.soul", "Soul", "灵魂");

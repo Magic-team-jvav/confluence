@@ -1586,7 +1586,6 @@ public class ModDataProvider {
                     List.of(
                             new MobSpawnSettings.SpawnerData(CritterEntities.BUNNY.get(), 10, 1, 2),
                             new MobSpawnSettings.SpawnerData(CritterEntities.SQUIRREL.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(CritterEntities.CLOUD_SHEEP.get(), 2, 2, 3),
                             new MobSpawnSettings.SpawnerData(CritterEntities.DUCK.get(), 10, 1, 2),
                             new MobSpawnSettings.SpawnerData(CritterEntities.BIRD.get(), 10, 1, 2),
                             new MobSpawnSettings.SpawnerData(CritterEntities.BLUE_JAY.get(), 10, 1, 2),
@@ -1893,7 +1892,7 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HAT_SPORE_ZOMBIE.get(), 15, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.WOODEN_MIMIC.get(), 1, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.GOLDEN_MIMIC.get(), 1, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CritterEntities.GLOWING_SNAIL.get(), 10, 1, 2))
+                            .addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(CritterEntities.GLOWING_SNAIL.get(), 10, 1, 2))
                             .build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         addDefaultGenerations(builder);

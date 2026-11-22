@@ -92,6 +92,11 @@ public class SoulOverviewScreen extends Screen {
         return Component.literal(ModClientConfigs.isSoulcererBackgroundEnabled() ? "☑" : "☐");
     }
 
+    /// 滑块的默认档文案：走翻译键，其余数值直接显示数字。
+    private static Component sliderLabel(int value, int defaultValue) {
+        return value == defaultValue ? Component.translatable("confluence.screen.soulcerer_overview.default") : Component.literal(String.valueOf(value));
+    }
+
     /// 缓存背景光点的位置、颜色与偏移参数。
     private void buildDotCache(int count, float radius, float minSize, float maxSize, int color, float minOffsetFactor, float maxOffsetFactor) {
         float r = ((color >> 16) & 0xFF) / 255.0f;
@@ -247,12 +252,12 @@ public class SoulOverviewScreen extends Screen {
         int hue = ModClientConfigs.soulcererBackgroundHue;
         double hueP = hue / 360.0;
 
-        hueSlider = new AbstractSliderButton(5, this.height - 50, 100, 20, Component.literal(hue == 270 ? "默认" : (String.valueOf(hue))), hueP) {
+        hueSlider = new AbstractSliderButton(5, this.height - 50, 100, 20, sliderLabel(hue, 270), hueP) {
             /// 更新色相滑块的显示文本。
             @Override
             protected void updateMessage() {
                 int newHue = (int) (this.value * 360);
-                this.setMessage(Component.literal(newHue == 270 ? "默认" : (String.valueOf(newHue))));
+                this.setMessage(sliderLabel(newHue, 270));
             }
 
             /// 将色相滑块值写入客户端配置。
@@ -267,12 +272,12 @@ public class SoulOverviewScreen extends Screen {
         int contrast = ModClientConfigs.soulcererBackgroundContrast;
         double contrastP = contrast / 255.0;
 
-        contrastSlider = new AbstractSliderButton(5, this.height - 75, 100, 20, Component.literal(contrast == 255 ? "默认" : (String.valueOf(contrast))), contrastP) {
+        contrastSlider = new AbstractSliderButton(5, this.height - 75, 100, 20, sliderLabel(contrast, 255), contrastP) {
             /// 更新对比度滑块的显示文本。
             @Override
             protected void updateMessage() {
                 int newContrast = (int) (this.value * 255);
-                this.setMessage(Component.literal(newContrast == 255 ? "默认" : (String.valueOf(newContrast))));
+                this.setMessage(sliderLabel(newContrast, 255));
             }
 
             /// 将对比度滑块值写入客户端配置。

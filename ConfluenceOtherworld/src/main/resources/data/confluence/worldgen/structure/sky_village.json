@@ -1,7 +1,19 @@
 {
   "biomes": "#confluence:has_structure/sky_village",
   "adapt_noise": false,
-  "spawn_overrides": {},
+  "spawn_overrides": {
+    "creature": {
+      "bounding_box": "piece",
+      "spawns": [
+        {
+          "type": "confluence:cloud_sheep",
+          "weight": 10,
+          "minCount": 2,
+          "maxCount": 3
+        }
+      ]
+    }
+  },
   "type": "minecraft:jigsaw",
   "start_pool": "confluence:sky_village/center",
   "size": 7,

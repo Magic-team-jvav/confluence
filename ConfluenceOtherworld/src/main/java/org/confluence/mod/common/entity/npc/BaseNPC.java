@@ -294,7 +294,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level().dimension(), house.center()));
             NPCSpawner.Region newRegion = new NPCSpawner.Region(house.center());
             NPCSpawner.INSTANCE.moveNPCToAnotherRegion(this, region, newRegion);
-            AchievementUtils.noHobo(this, newRegion);
+            AchievementUtils.noHobo_itCanTalk(this, newRegion);
         } else {
             getBrain().eraseMemory(MemoryModuleType.HOME);
             clearRestriction();

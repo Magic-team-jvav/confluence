@@ -42,8 +42,6 @@ public enum GameEventSystem implements IGlobalData {
         map.put(SlimeRainGameEvent.KEY, SlimeRainGameEvent.INSTANCE);
         map.put(BloodMoonGameEvent.KEY, BloodMoonGameEvent.INSTANCE);
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
-        if (Confluence.UNRELEASED_EVENTS)
-            map.put(PirateInvasionGameEvent.KEY, PirateInvasionGameEvent.INSTANCE);
         map.put(MeteorShowerGameEvent.KEY, MeteorShowerGameEvent.INSTANCE);
         map.put(LanternNightGameEvent.KEY, LanternNightGameEvent.INSTANCE);
         map.put(SpecificMoonGameEvent.KEY, SpecificMoonGameEvent.INSTANCE);
@@ -53,6 +51,7 @@ public enum GameEventSystem implements IGlobalData {
         map.put(WindyDayGameEvent.KEY, WindyDayGameEvent.INSTANCE);
         map.put(BlizzardGameEvent.KEY, BlizzardGameEvent.INSTANCE);
         if (Confluence.UNRELEASED_EVENTS) {
+            map.put(PirateInvasionGameEvent.KEY, PirateInvasionGameEvent.INSTANCE);
             map.put(SandstormGameEvent.KEY, SandstormGameEvent.INSTANCE);
             map.put(PartyGameEvent.KEY, PartyGameEvent.INSTANCE);
         }
@@ -228,10 +227,6 @@ public enum GameEventSystem implements IGlobalData {
             }
         }
         return false;
-    }
-
-    public static boolean shouldDenyNatureSpawn() {
-        return anyInvasionStarted(); // todo 日食，四柱
     }
 
     public static void removeUnTracked(Set<Entity> spawned, ServerLevel level) {

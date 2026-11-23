@@ -1,0 +1,49 @@
+{
+	"format_version": "1.10.0",
+	"particle_effect": {
+		"description": {
+			"identifier": "confluence:butterfly_yellow",
+			"basic_render_parameters": {
+				"material": "particles_add",
+				"texture": "confluence:butterfly_0"
+			}
+		},
+		"components": {
+			"minecraft:emitter_initialization": {
+				"creation_expression": "v.x_0=math.random(0,100);v.y_0=math.random(0,100);v.z_0=math.random(0,100);"
+			},
+			"minecraft:emitter_rate_instant": {
+				"num_particles": 1
+			},
+			"minecraft:emitter_lifetime_once": {
+				"active_time": 1
+			},
+			"minecraft:emitter_shape_point": {},
+			"minecraft:particle_lifetime_expression": {
+				"max_lifetime": "math.random(7,10)"
+			},
+			"minecraft:particle_motion_parametric": {
+				"relative_position": ["(math.sin((v.x_0+v.particle_age)*20)*1.2+math.sin((v.x_0+v.particle_age)*40)*1.2+math.sin((v.x_0+v.particle_age)*80)*0.6)*0.6", "(math.sin((v.y_0+v.particle_age)*20)*1.2+math.sin((v.y_0+v.particle_age)*40)*1.2+math.sin((v.y_0+v.particle_age)*80)*0.6)*0.3", "(math.sin((v.z_0+v.particle_age)*20)*1.2+math.sin((v.z_0+v.particle_age)*40)*1.2+math.sin((v.z_0+v.particle_age)*80)*1.2)*0.6"]
+			},
+			"minecraft:particle_appearance_billboard": {
+				"size": ["0.2*math.clamp(math.sin((v.particle_age/v.particle_lifetime)*180)*4,0,1)", "0.2*math.clamp(math.sin((v.particle_age/v.particle_lifetime)*180)*4,0,1)"],
+				"facing_camera_mode": "rotate_xyz",
+				"uv": {
+					"texture_width": 32,
+					"texture_height": 224,
+					"flipbook": {
+						"base_UV": [0, 0],
+						"size_UV": [32, 32],
+						"step_UV": [0, 32],
+						"frames_per_second": 10,
+						"max_frame": 7,
+						"loop": true
+					}
+				}
+			},
+			"minecraft:particle_appearance_tinting": {
+				"color": [1, 0.99608, 0.70196, 0.8]
+			}
+		}
+	}
+}

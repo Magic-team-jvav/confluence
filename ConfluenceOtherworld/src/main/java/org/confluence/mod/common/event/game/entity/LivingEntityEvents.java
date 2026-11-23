@@ -706,7 +706,7 @@ public final class LivingEntityEvents {
         if (event.getSpawnType() != MobSpawnType.NATURAL) return;
         Mob mob = event.getEntity();
         if (event.getResult() == MobSpawnEvent.PositionCheck.Result.FAIL) return;
-        if (DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) || GameEventSystem.shouldDenyNatureSpawn() || TownPopulation.suppressesSpawn(event.getLevel().getLevel(), mob)) {
+        if (DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) || ModUtils.shouldDenyNatureSpawn() || TownPopulation.suppressesSpawn(event.getLevel().getLevel(), mob)) {
             event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
             return;
         }

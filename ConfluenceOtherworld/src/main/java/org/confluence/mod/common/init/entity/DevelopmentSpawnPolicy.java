@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.confluence.mod.Confluence;
+import org.confluence.lib.util.LibUtils;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,6 +22,6 @@ public final class DevelopmentSpawnPolicy {
     }
 
     public static boolean allowsAutomaticSpawn(EntityType<?> type) {
-        return Confluence.UNRELEASED_SPAWNS || !DEVELOPMENT_ONLY.contains(BuiltInRegistries.ENTITY_TYPE.getKey(type));
+        return LibUtils.isDev() || !DEVELOPMENT_ONLY.contains(BuiltInRegistries.ENTITY_TYPE.getKey(type));
     }
 }

@@ -25,7 +25,6 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.mod.common.data.GamePhase;
@@ -1570,6 +1569,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.RAINBOW_WOOL)))
                 .withPool(rainbowSheep)
         );
+        // 史莱姆女皇
+        add(BossEntities.QUEEN_SLIME.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.SPARKLE_SLIME_BALLOON).apply(SetItemCountFunction.setCount(UniformGenerator.between(25, 75))))));
     }
 
     private static LootTable.Builder ghoulCommon(HolderLookup.Provider registries) {

@@ -44,6 +44,7 @@ import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntit
 import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.jetbrains.annotations.Nullable;
@@ -261,11 +262,14 @@ public final class AchievementUtils {
         tag.putShort("confluence:the_frequent_flyer", (short) total);
     }
 
-    public static void noHobo(BaseNPC npc, NPCSpawner.Region region) {
-        if (npc.level() instanceof ServerLevel serverLevel) {
-            for (ServerPlayer player : serverLevel.players()) {
+    public static void noHobo_itCanTalk(BaseNPC npc, NPCSpawner.Region region) {
+        if (npc.level() instanceof ServerLevel level) {
+            for (ServerPlayer player : level.players()) {
                 if (region.isOnRegion(player.chunkPosition())) {
                     AchievementUtils.awardAchievement(player, "no_hobo");
+                    if (npc.getType() == NpcEntities.TRUFFLE.get()) {
+                        AchievementUtils.awardAchievement(player, "it_can_talk");
+                    }
                 }
             }
         }

@@ -4,30 +4,38 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.lib.util.LibRenderUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.BiomeSkyEffectRegisterEvent;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.Map;
 
 public final class ClientBiomeEffectSystem {
     static final Map<ResourceLocation, BiomeSkyEffect> EFFECTS = new Object2ObjectOpenHashMap<>();
     private static final float BLEND_SPEED = 0.025F;
+    private static final RandomSource random = RandomSource.create();
 
     private static @Nullable BiomeSkyEffect current;
     private static @Nullable BiomeSkyEffect target;
@@ -48,7 +56,8 @@ public final class ClientBiomeEffectSystem {
     }
 
     public static void tick(LocalPlayer player) {
-        ResourceKey<Level> dimension = player.level().dimension();
+        ClientLevel level = player.clientLevel;
+        ResourceKey<Level> dimension = level.dimension();
         if (dimension != OverworldUtils.dimension() && dimension != Level.END) {
             current = null;
             target = null;
@@ -58,9 +67,39 @@ public final class ClientBiomeEffectSystem {
 
         updateBlend();
 
-        if (player.level().getGameTime() % 20 == 0) {
-            applyDesired(resolve(player.level().getBiome(player.blockPosition())));
+        Holder<Biome> biome = level.getBiome(player.blockPosition());
+        if (level.getGameTime() % 20 == 0) {
+            applyDesired(resolve(biome));
         }
+
+        if (level.getGameTime() % 60 == 0 && OverworldUtils.inSurface(player.getY()) && OverworldUtils.isHallow(biome)) {
+            int px = player.getBlockX() >> 3 << 3;
+            int pz = player.getBlockZ() >> 3 << 3;
+            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+            for (int x = -56; x < 64; x += 8) {
+                for (int z = -56; z < 64; z += 8) {
+                    int bx = px + x;
+                    int bz = pz + z;
+                    random.setSeed((long) bx * 10000L + (long) bz);
+                    if (random.nextInt(10) == 0) {
+                        int height = getHeight(player, level, mutable, bx, bz);
+                        if (Mth.lengthSquared(x, height - player.getY(), z) < 40 * 40) {
+                            MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level, new Vec3(bx, height + 2, bz), Confluence.asResource("butterfly_yellow")));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private static int getHeight(LocalPlayer player, ClientLevel level, BlockPos.MutableBlockPos mutable, int bx, int bz) {
+        mutable.setX(bx).setZ(bz);
+        for (int y = player.getBlockY() + 16; y > level.getMinBuildHeight(); y--) {
+            if (level.getBlockState(mutable.setY(y)).canOcclude()) {
+                return y;
+            }
+        }
+        return level.getMinBuildHeight();
     }
 
     private static void updateBlend() {

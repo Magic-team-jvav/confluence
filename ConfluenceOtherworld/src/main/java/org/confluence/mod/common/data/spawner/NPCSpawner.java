@@ -65,7 +65,6 @@ import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IStructureStart;
-import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -469,16 +468,16 @@ public enum NPCSpawner implements IGlobalData {
         }
     }
 
-    public void checkNpcRespawn(ServerLevel serverLevel) {
-        if (GameEventSystem.shouldDenyNatureSpawn()) return;
+    public void checkNpcRespawn(ServerLevel level) {
+        if (ModUtils.shouldDenyNatureSpawn()) return;
         Set<Region> processedRegions = new ObjectOpenHashSet<>();
-        List<ServerPlayer> players = serverLevel.players();
-        int start = players.isEmpty() ? 0 : (int) ((serverLevel.getGameTime() / ModCommonConfigs.NPC_SPAWN_INTERVAL.get()) % players.size());
+        List<ServerPlayer> players = level.players();
+        int start = players.isEmpty() ? 0 : (int) ((level.getGameTime() / ModCommonConfigs.NPC_SPAWN_INTERVAL.get()) % players.size());
         for (int index = 0; index < players.size(); index++) {
             ServerPlayer player = players.get((start + index) % players.size());
             if (player.isSpectator()) continue;
             trySpawnUndergroundVisitor(player);
-            if (!LibDateUtils.isDay(LibDateUtils.getDayTime(serverLevel))) continue;
+            if (LibDateUtils.isNight(level)) continue;
             BlockPos pos = getNpcSpawnPos(player);
             Region region = new Region(pos);
             if (processedRegions.contains(region)) continue;
@@ -516,7 +515,6 @@ public enum NPCSpawner implements IGlobalData {
         if (trySpawnWizard(player, pos, region)) return true;
         // 税收官
         if (trySpawnTruffle(player, pos, region)) return true;
-        if (!Confluence.UNRELEASED_SPAWNS) return false;
         if (trySpawnNerdySlime(serverLevel, region, pos)) return true;
         if (trySpawnCoolSlime(serverLevel, pos, region)) return true;
         // 海盗
@@ -572,18 +570,17 @@ public enum NPCSpawner implements IGlobalData {
         return false;
     }
 
-    private boolean trySpawnUndergroundVisitor(ServerPlayer player) {
-        if (!Confluence.UNRELEASED_SPAWNS) return false;
+    private void trySpawnUndergroundVisitor(ServerPlayer player) {
         ServerLevel level = player.serverLevel();
         if (level.canSeeSky(player.blockPosition()) || player.getY() >= level.getSeaLevel() - 8)
-            return false;
+            return;
         boolean golfer = !isNPCUnlocked(NpcEntities.GOLFER.get()) && OverworldUtils.isDesert(level.getBiome(player.blockPosition()));
         EntityType<? extends BaseNPC> type = golfer ? NpcEntities.GOLFER.get() : NpcEntities.SKELETON_MERCHANT.get();
         Region region = new Region(player.blockPosition());
         if (isNpcAlreadyPresent(level, player.blockPosition(), type) || player.getRandom().nextInt(8) != 0)
-            return false;
+            return;
         BaseNPC npc = type.create(level);
-        if (npc == null) return false;
+        if (npc == null) return;
         for (int attempt = 0; attempt < 32; attempt++) {
             BlockPos candidate = player.blockPosition().offset(player.getRandom().nextInt(41) - 20, player.getRandom().nextInt(13) - 6, player.getRandom().nextInt(41) - 20);
             if (!level.isLoaded(candidate) || candidate.distSqr(player.blockPosition()) < 64 || level.canSeeSky(candidate)
@@ -594,21 +591,15 @@ public enum NPCSpawner implements IGlobalData {
             if (!level.noCollision(npc)) continue;
             npc.setShouldInteract(golfer);
             npc.setRegion(region);
-            if (!level.addFreshEntity(npc)) return false;
+            if (!level.addFreshEntity(npc)) return;
             getRegionAliveDetails(region).put(type, true);
-            return true;
+            return;
         }
-        return false;
     }
 
     private boolean trySpawnTruffle(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, NpcEntities.TRUFFLE.get())) {
-            if (ModUtils.isHardmode() && spawnAtPos(player.serverLevel(), pos, NpcEntities.TRUFFLE.get())) {
-                for (ServerPlayer sp : player.server.getPlayerList().getPlayers()) {
-                    AchievementUtils.awardAchievement(sp, "it_can_talk");
-                }
-                return true;
-            }
+            return ModUtils.isHardmode() && spawnAtPos(player.serverLevel(), pos, NpcEntities.TRUFFLE.get());
         }
         return false;
     }

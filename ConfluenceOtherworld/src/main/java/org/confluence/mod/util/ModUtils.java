@@ -68,6 +68,7 @@ import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
@@ -359,5 +360,9 @@ public final class ModUtils {
         replacement.yBodyRot = original.yBodyRot;
         replacement.setDeltaMovement(original.getDeltaMovement());
         return replacement;
+    }
+
+    public static boolean shouldDenyNatureSpawn() {
+        return GameEventSystem.anyInvasionStarted(); // todo 日食，四柱
     }
 }

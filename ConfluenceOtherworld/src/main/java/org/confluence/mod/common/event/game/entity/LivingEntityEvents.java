@@ -694,7 +694,7 @@ public final class LivingEntityEvents {
         // 墓地的额外放行不能覆盖其他监听器或游戏事件已经作出的禁止生成决定。
         if (event.getResult() == PortMobSpawnEvent.PositionCheck.PortResult.FAIL.unwrap()) return;
         Mob mob = event.getEntity();
-        if (DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) || GameEventSystem.shouldDenyNatureSpawn()
+        if (DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) || ModUtils.shouldDenyNatureSpawn()
                 || TownPopulation.suppressesSpawn(event.getLevel().getLevel(), mob)) {
             event.setResult(PortMobSpawnEvent.PositionCheck.PortResult.FAIL.unwrap());
             return;

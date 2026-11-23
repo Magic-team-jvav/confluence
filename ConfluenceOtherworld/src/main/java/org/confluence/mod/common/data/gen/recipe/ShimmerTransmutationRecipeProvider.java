@@ -333,6 +333,8 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(writer, "helium_moss_from_argon_moss", addItem(NatureBlocks.ARGON_MOSS, NatureBlocks.HELIUM_MOSS));
         item(writer, "helium_moss_from_neon_moss", addItem(NatureBlocks.NEON_MOSS, NatureBlocks.HELIUM_MOSS));
 
+        item(writer, SwordItems.ZENITH, SwordItems.TRUE_COPPER_SHORTSWORD);
+        item(writer, SwordItems.TRUE_COPPER_SHORTSWORD, SwordItems.ZENITH);
     }
 
 

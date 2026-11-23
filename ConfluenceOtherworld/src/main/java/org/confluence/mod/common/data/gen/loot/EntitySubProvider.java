@@ -1546,6 +1546,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.RAINBOW_WOOL)))
                 .withPool(rainbowSheep)
         );
+        // 史莱姆女皇
+        add(BossEntities.QUEEN_SLIME.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.SPARKLE_SLIME_BALLOON).apply(SetItemCountFunction.setCount(UniformGenerator.between(25, 75))))));
     }
 
     private AnyOfCondition.Builder shouldSmeltLoot() {

@@ -327,7 +327,7 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return WormSegment.isWormDamage(source) || source == damageSources().inWall() || super.isInvulnerableTo(source);
+        return WormSegment.isWormDamage(source) || super.isInvulnerableTo(source);
     }
 
 

@@ -251,7 +251,7 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return WormSegment.isWormDamage(source) || source == damageSources().inWall() || super.isInvulnerableTo(source);
+        return WormSegment.isWormDamage(source) || BaseBoss.ignoresEnvironmentalDamage(source) || super.isInvulnerableTo(source);
     }
 
     @Override

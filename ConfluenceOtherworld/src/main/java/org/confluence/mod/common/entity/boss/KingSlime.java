@@ -374,7 +374,7 @@ public class KingSlime extends BaseBoss {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (phase != CombatPhase.NORMAL || source.is(net.minecraft.world.damagesource.DamageTypes.IN_WALL)) {
+        if (phase != CombatPhase.NORMAL) {
             return false;
         }
 

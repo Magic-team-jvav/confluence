@@ -7,7 +7,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -557,13 +556,6 @@ public class Plantera extends BaseBoss {
         enragedTicks = Mth.clamp(tag.getInt(ENRAGED_TICKS_TAG), 0, 200);
         java.util.Arrays.fill(hooks, null);
         java.util.Arrays.fill(tentacles, null);
-    }
-
-    @Override
-    public boolean isInvulnerableTo(DamageSource source) {
-        return source == damageSources().inWall()
-                || source.is(DamageTypeTags.IS_DROWNING)
-                || super.isInvulnerableTo(source);
     }
 
     @Override

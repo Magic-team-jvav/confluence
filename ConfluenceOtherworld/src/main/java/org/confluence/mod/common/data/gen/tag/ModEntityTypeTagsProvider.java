@@ -244,7 +244,36 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         );
         tag(EntityTypeTags.AXOLOTL_HUNT_TARGETS).add(MonsterEntities.PIRANHA.get(), MonsterEntities.ARAPAIMA.get(), MonsterEntities.CRAWDAD.get()).addTag(ModTags.EntityTypes.JELLY_FISH);
         tag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES).add(MonsterEntities.SNOW_FLINX.get(), MonsterEntities.ICE_MIMIC.get(), MonsterEntities.UNDEAD_VIKING.get());
-        tag(EntityTypeTags.CAN_BREATHE_UNDER_WATER).add(MonsterEntities.PIRANHA.get(), MonsterEntities.ARAPAIMA.get(), MonsterEntities.CRAWDAD.get()).addTag(ModTags.EntityTypes.JELLY_FISH);
+        tag(EntityTypeTags.CAN_BREATHE_UNDER_WATER).add(
+                BossEntities.KING_SLIME.get(),
+                BossEntities.EYE_OF_CTHULHU.get(),
+                BossEntities.EATER_OF_WORLDS.get(),
+                BossEntities.EATER_OF_WORLDS_SEGMENT.get(),
+                BossEntities.BRAIN_OF_CTHULHU.get(),
+                BossEntities.QUEEN_BEE.get(),
+                BossEntities.SKELETRON.get(),
+                BossEntities.SKELETRON_HAND.get(),
+                BossEntities.DEERCLOPS.get(),
+                BossEntities.DUNGEON_GUARDIAN.get(),
+                BossEntities.WALL_OF_FLESH.get(),
+                BossEntities.HILL_OF_FLESH.get(),
+                BossEntities.QUEEN_SLIME.get(),
+                BossEntities.THE_DESTROYER.get(),
+                BossEntities.RETINAZER.get(),
+                BossEntities.SPAZMATISM.get(),
+                BossEntities.SKELETRON_PRIME.get(),
+                BossEntities.SKELETRON_PRIME_PART.get(),
+                BossEntities.PLANTERA.get(),
+                BossEntities.PLANTERA_HOOK.get(),
+                BossEntities.PLANTERA_TENTACLE.get(),
+                BossEntities.DUKE_FISHRON.get(),
+                BossEntities.LUNATIC_CULTIST.get(),
+                BossEntities.ANCIENT_DOOM.get(),
+                BossEntities.ANCIENT_VISION.get(),
+                BossEntities.PRIME_ENDER_DRAGON.get(),
+                MonsterEntities.PIRANHA.get(),
+                MonsterEntities.ARAPAIMA.get(),
+                MonsterEntities.CRAWDAD.get()).addTag(ModTags.EntityTypes.JELLY_FISH);
         tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
                 MonsterEntities.GIANT_SHELLY.get(),
                 MonsterEntities.POSSESSED_ARMOR.get(),

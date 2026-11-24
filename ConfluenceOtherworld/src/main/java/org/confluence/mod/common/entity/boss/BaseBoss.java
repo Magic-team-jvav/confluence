@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -418,8 +419,11 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        if (source.is(DamageTypes.LAVA)) return true;
-        return super.isInvulnerableTo(source);
+        return source.is(DamageTypes.LAVA) || ignoresEnvironmentalDamage(source) || super.isInvulnerableTo(source);
+    }
+
+    static boolean ignoresEnvironmentalDamage(DamageSource source) {
+        return source.is(DamageTypeTags.IS_DROWNING) || source.is(DamageTypes.IN_WALL) || source.is(DamageTypeTags.IS_FALL);
     }
 
     @Override

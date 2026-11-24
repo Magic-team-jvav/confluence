@@ -78,6 +78,8 @@ public class DukeFishron extends BaseBoss {
     private static final int BUBBLE_FIRST_SHOT = 3, BUBBLE_INTERVAL = 2;
     private static final float BUBBLE_YAW_SPREAD = 0.95F;
     private static final double BUBBLE_VERTICAL_SPREAD = 0.55;
+    // 张嘴动画中，出弹点相对身体中心的前向和垂直偏移，单位为模型像素。
+    private static final double MOUTH_FORWARD = 51.0, MOUTH_VERTICAL = -9.0;
     private static final double FLOOD_SPEED = 2.0, BUBBLE_SPEED = 1.55, TYPHOON_SPEED = 1.8;
     // 暗幕瞬移在玩家视线后方取落点，同时避开离公爵太近的位置。
     private static final double TELEPORT_CHANCE = 0.5;
@@ -236,7 +238,7 @@ public class DukeFishron extends BaseBoss {
             case BUBBLES -> {
                 hover(aim);
                 if (ticks >= BUBBLE_FIRST_SHOT && (ticks - BUBBLE_FIRST_SHOT) % BUBBLE_INTERVAL == 0) {
-                    spitBubble(aim.normalize());
+                    spitBubble(player.getBoundingBox().getCenter());
                 }
                 if (ticks >= SHOOT_TIME) finishAttack();
             }
@@ -492,10 +494,20 @@ public class DukeFishron extends BaseBoss {
         }
     }
 
-    private void spitBubble(Vec3 forward) {
-        Vec3 spread = forward.yRot((random.nextFloat() - 0.5F) * BUBBLE_YAW_SPREAD)
-                .add(0, (random.nextDouble() - 0.5) * BUBBLE_VERTICAL_SPREAD, 0);
-        shot(FishronProjectile.Kind.BUBBLE, spread.normalize().scale(BUBBLE_SPEED), false, muzzle(forward));
+    private void spitBubble(Vec3 target) {
+        Vec3 from = bubbleMouth();
+        Vec3 forward = target.subtract(from).normalize();
+        Vec3 spread = forward.yRot((random.nextFloat() - 0.5F) * BUBBLE_YAW_SPREAD).add(0, (random.nextDouble() - 0.5) * BUBBLE_VERTICAL_SPREAD, 0);
+        shot(FishronProjectile.Kind.BUBBLE, spread.normalize().scale(BUBBLE_SPEED), false, from);
+    }
+
+    private Vec3 bubbleMouth() {
+        float pitch = getXRot();
+        float yaw = getYRot();
+        double scale = getScale() / 16.0;
+        return getBoundingBox().getCenter()
+                .add(Vec3.directionFromRotation(pitch, yaw).scale(MOUTH_FORWARD * scale))
+                .add(Vec3.directionFromRotation(pitch - 90.0F, yaw).scale(MOUTH_VERTICAL * scale));
     }
 
     private void typhoons(Vec3 forward) {

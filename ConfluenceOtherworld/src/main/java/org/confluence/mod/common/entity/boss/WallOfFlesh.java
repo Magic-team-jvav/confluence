@@ -943,7 +943,6 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return source.is(DamageTypeTags.IS_FIRE)
-                || source.is(DamageTypeTags.IS_DROWNING)
                 || super.isInvulnerableTo(source);
     }
 

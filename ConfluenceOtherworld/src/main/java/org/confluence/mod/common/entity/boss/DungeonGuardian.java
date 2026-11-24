@@ -2,7 +2,6 @@ package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -116,9 +115,6 @@ public class DungeonGuardian extends BaseBoss {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (source.is(DamageTypeTags.IS_DROWNING)) {
-            return false;
-        }
         return super.hurt(source, amount);
     }
 

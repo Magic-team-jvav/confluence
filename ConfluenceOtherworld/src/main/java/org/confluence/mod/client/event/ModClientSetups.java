@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -78,7 +79,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 import org.mesdag.portlib.registries.PortRegistryEntry;
-import org.mesdag.portlib.wrapper.common.extensions.IPortModelResourceLocationExtension;
 
 import java.awt.*;
 import java.io.IOException;
@@ -285,7 +285,7 @@ public final class ModClientSetups {
     /// 对于使用原版json模型，且使用了Extensions来自定义渲染的物品，需使用该方法标记为自定义模型
     static void asCustomModel(Map<ResourceLocation, BakedModel> modelRegistry, PortRegistryEntry<?, ?>... deferredItems) {
         for (PortRegistryEntry<?, ?> holder : deferredItems) {
-            modelRegistry.compute(IPortModelResourceLocationExtension.inventory(holder.getId()), (k, model) -> new WrappedBakedModel(model));
+            modelRegistry.compute(new ModelResourceLocation(holder.getId(), "standalone"), (k, model) -> new WrappedBakedModel(model));
         }
     }
 

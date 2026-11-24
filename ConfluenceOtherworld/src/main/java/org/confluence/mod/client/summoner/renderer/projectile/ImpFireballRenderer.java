@@ -6,8 +6,8 @@ import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.client.summoner.AbstractAttachmentEntityRenderer;
 import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
-import org.confluence.mod.client.summoner.model.LyraModelRenderer;
 import org.confluence.mod.client.summoner.model.virtual.VirtualEntityPose;
+import org.confluence.mod.client.summoner.model.virtual.VirtualEntityRenderer;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.projectile.ImpFireball;
 
@@ -21,8 +21,6 @@ public class ImpFireballRenderer extends AbstractAttachmentEntityRenderer<ImpFir
 
     @Override
     protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
-        LyraModelRenderer.virtualEntity(EntityType.SMALL_FIREBALL, context.partialTick)
-                .pose(VirtualEntityPose.create().packedLight(context.packedLight).alpha(context.color.getAlphaFloat()))
-                .render(poseStack, bufferSource);
+        VirtualEntityRenderer.render(EntityType.SMALL_FIREBALL, poseStack, bufferSource, context.partialTick, VirtualEntityPose.create().packedLight(context.packedLight).alpha(context.color.getAlphaFloat()));
     }
 }

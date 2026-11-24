@@ -3,6 +3,7 @@ package org.confluence.mod.client.summoner.renderer.projectile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.Confluence;
@@ -10,8 +11,7 @@ import org.confluence.mod.client.summoner.AbstractAttachmentEntityRenderer;
 import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
 import org.confluence.mod.client.summoner.RenderUtil;
-import org.confluence.mod.client.summoner.model.LyraModelRenderer;
-import org.confluence.mod.client.summoner.model.ZenithSwordModels;
+import org.confluence.mod.client.summoner.model.json.JsonModelRenderer;
 import org.confluence.mod.client.summoner.trail.RibbonTrailContext;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.projectile.Zenith;
@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/zenith.png");
 
     @Override
     protected RenderContext<Zenith> createContext(Zenith zenith, PathNode visualNode, float partialTick, int packedLight) {
@@ -29,14 +30,14 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
             context = super.createContext(zenith, visualNode, partialTick, packedLight);
             if (zenith.alpha > 0.3) {
                 context = context.trail(new ZenithTrailContext()
-                                                .downOffset(-1.32575f)
-                                                .tipAlphaBoost((entity, progress) -> (1.0F - progress) * 20.0F * zenith.alpha).timer(1)
-                                                .colorRGB(zenith.powerSource.getColorRGB()));
+                        .downOffset(-1.32575f)
+                        .tipAlphaBoost((entity, progress) -> (1.0F - progress) * 20.0F * zenith.alpha).timer(1)
+                        .colorRGB(zenith.powerSource.getColorRGB()));
             }
             return context.model(new ModelContext()
-                                         .scale(2)
-                                         .translateOffset(-1f, -1f, -0.5f)
-                                         .rotationOffset(0, 90, 45));
+                    .scale(2)
+                    .translateOffset(-1f, -1f, -0.5f)
+                    .rotationOffset(0, 90, 45));
         } else {
             return null;
         }
@@ -44,11 +45,7 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
 
     @Override
     protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
-        Zenith zenith = context.entity;
-        LyraModelRenderer.json(ZenithSwordModels.modelId(zenith.powerSource))
-                .color(context.color.argbInt())
-                .light(RenderUtil.FULL_LIGHT)
-                .render(poseStack, bufferSource);
+        JsonModelRenderer.render(context.entity.powerSource.getTexture(), poseStack, bufferSource, context.color.argbInt(), RenderUtil.FULL_LIGHT);
     }
 
     @Override
@@ -59,7 +56,7 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
         if (zenith.getTickCount() < 2) {
             light *= context.partialTick;
         }
-        if (!OpalLightIntegration.handlesAttachment(context.entity.getType().location())) {
+        if (!OpalLightIntegration.handlesAttachment(zenith.getType().location())) {
             DynamicLightDispatcher.INSTANCE.addLightSource(visualNode.pos(), light);
         }
         if (context.trail != null && zenith.alpha > 0.75) {
@@ -75,7 +72,7 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
             if (alpha > 0) {
                 Vec3 pos = visualNode.pos();
                 int color = zenith.powerSource.getColorARBG(alpha);
-                RenderUtil.renderImage(Confluence.asResource("textures/zenith.png"), pos, 4 * alpha, alpha, bufferSource, false, color);
+                RenderUtil.renderImage(TEXTURE, pos, 4 * alpha, alpha, bufferSource, false, color);
             }
         }
     }

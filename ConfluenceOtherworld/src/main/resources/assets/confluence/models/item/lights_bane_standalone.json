@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/handheld",
     "textures": {
-        "layer0": "confluence:item/projectile/zenith/lights_bane"
+        "layer0": "confluence:item/sword/lights_bane_standalone"
     }
 }

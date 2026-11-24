@@ -7,15 +7,14 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelManager;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.client.summoner.ColorBufferSource;
 import org.confluence.mod.client.summoner.AfterimageManager;
+import org.confluence.mod.client.summoner.ColorBufferSource;
 import org.confluence.mod.client.summoner.LyraRenderTypes;
 
 public final class JsonModelRenderer {
-
-    static boolean render(ResourceLocation modelLocation, PoseStack poseStack, MultiBufferSource bufferSource, int color, int packedLight) {
+    public static boolean render(ModelResourceLocation modelLocation, PoseStack poseStack, MultiBufferSource bufferSource, int color, int packedLight) {
         ModelManager modelManager = Minecraft.getInstance().getModelManager();
         BakedModel model = modelManager.getModel(modelLocation);
         if (model != modelManager.getMissingModel()) {

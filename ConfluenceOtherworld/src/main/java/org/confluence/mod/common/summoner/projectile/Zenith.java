@@ -2,7 +2,7 @@ package org.confluence.mod.common.summoner.projectile;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.Util;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -30,6 +30,7 @@ import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.List;
+import java.util.Locale;
 
 public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith> {
     public static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
@@ -203,37 +204,44 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
     }
 
     public enum PowerSource {
-        COPPER_SHORT_SWORD("copper_short_sword", 0xEBA687),
-        LIGHTS_BANE("lights_bane_projectile", 0x7A42BF),
-        MURAMASA("muramasa", 0x384ED2),
-        BLOOD_BUTCHERER("blood_butcherer_projectile", 0xED1C24),
-        STARFURY("starfury", 0xEC3EC0),
-        ENCHANTED_SWORD("enchanted_sword", 0x5B9EE8),
-        BEE_KEEPER("bee_keeper", 0xFFE745),
-        BLADE_OF_GRASS("blade_of_grass", 0x6BCB00),
-        FIERY_GREATSWORD("fiery_greatsword", 0xFE9E23),
-        NIGHTS_EDGE("nights_edge", 0xB336C9),
-        TRUE_NIGHTS_EDGE("true_nights_edge", 0xB336C9),
-        EXCALIBUR("excalibur", 0xECC813),
-        TRUE_EXCALIBUR("true_excalibur", 0xECC813),
-        TERRAGRIM("terragrim", 0xB2FFB4),
-        THE_HORSEMANS_BLADE("the_horsemans_blade", 0xFC5F04),
-        TERRA_BLADE("terra_blade", 0x50DE7A),
-        SEEDLER("seedler", 0x8FD71D),
-        INFLUX_WAVER("influx_waver", 0x54EAF5),
-        STAR_WRATH("star_wrath", 0xED3F85),
-        MEOWMERE("meowmere", 0xFEC2FA),
-        ZENITH("zenith", 0xB2FFB4);
+        COPPER_SHORT_SWORD(0xEBA687),
+        LIGHTS_BANE(0x7A42BF, true),
+        MURAMASA(0x384ED2),
+        BLOOD_BUTCHERER(0xED1C24, true),
+        STARFURY(0xEC3EC0),
+        ENCHANTED_SWORD(0x5B9EE8),
+        BEE_KEEPER(0xFFE745),
+        BLADE_OF_GRASS(0x6BCB00),
+        FIERY_GREATSWORD(0xFE9E23),
+        NIGHTS_EDGE(0xB336C9),
+        TRUE_NIGHTS_EDGE(0xB336C9),
+        EXCALIBUR(0xECC813),
+        TRUE_EXCALIBUR(0xECC813),
+        TERRAGRIM(0xB2FFB4),
+        THE_HORSEMANS_BLADE(0xFC5F04),
+        TERRA_BLADE(0x50DE7A),
+        SEEDLER(0x8FD71D),
+        INFLUX_WAVER(0x54EAF5),
+        STAR_WRATH(0xED3F85),
+        MEOWMERE(0xFEC2FA),
+        ZENITH(0xB2FFB4);
 
-        private final ResourceLocation texture;
+        private final ModelResourceLocation texture;
         private final int rgb;
 
-        PowerSource(String textureName, int rgb) {
-            this.texture = Confluence.asResource("item/sword/" + textureName);
+        PowerSource(int rgb) {
+            this(rgb, false);
+        }
+
+        PowerSource(int rgb, boolean standalone) {
+            String textureName = name().toLowerCase(Locale.ROOT);
+            this.texture = standalone
+                    ? new ModelResourceLocation(Confluence.asResource(textureName + "_standalone"), "inventory")
+                    : new ModelResourceLocation(Confluence.asResource(textureName), "inventory");
             this.rgb = rgb;
         }
 
-        public ResourceLocation getTexture() {
+        public ModelResourceLocation getTexture() {
             return texture;
         }
 

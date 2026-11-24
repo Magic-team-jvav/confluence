@@ -103,7 +103,6 @@ import org.confluence.mod.client.renderer.entity.yoyo.YoyoRenderer;
 import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
-import org.confluence.mod.client.summoner.model.ZenithSwordModels;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.animal.Fairy;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
@@ -124,6 +123,7 @@ import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
+import org.confluence.mod.common.summoner.projectile.Zenith;
 import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.util.ClientUtils;
 import org.mesdag.particlestorm.api.geckolib.RegisterLocatorPreTransformerEvent;
@@ -207,7 +207,8 @@ public final class ModClientEvents {
     private static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
         event.register(TongueRenderer.SEGMENT_MODEL);
         WhipModelRegister.register(event);
-        ZenithSwordModels.register(event);
+        event.register(Zenith.PowerSource.LIGHTS_BANE.getTexture());
+        event.register(Zenith.PowerSource.BLOOD_BUTCHERER.getTexture());
     }
 
     private static void registerMenuScreens(PortRegisterMenuScreensEvent event) {

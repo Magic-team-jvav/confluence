@@ -9,12 +9,12 @@ public final class ZenithSwordModels {
     private ZenithSwordModels() {
     }
 
-    public static ResourceLocation modelId(Zenith.RenderType type) {
+    public static ResourceLocation modelId(Zenith.PowerSource type) {
         return type.getTexture();
     }
 
     public static void register(ModelEvent.RegisterAdditional event) {
-        for (Zenith.RenderType type : Zenith.RenderType.values()) {
+        for (Zenith.PowerSource type : Zenith.PowerSource.values()) {
             event.register(modelId(type));
         }
     }

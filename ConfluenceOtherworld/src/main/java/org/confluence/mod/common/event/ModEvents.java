@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -40,6 +41,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.entity.CreatureSpawnPlacements;
 import org.confluence.mod.common.init.entity.CritterEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
@@ -62,6 +64,7 @@ public final class ModEvents {
         PortEventHandler.addListener(ModEvents::modConfig$Reloading);
         PortEventHandler.addListener(ModEvents::loadComplete);
         PortEventHandler.addListener(ModEvents::addPackFinders);
+        PortEventHandler.addListener(ModEvents::entityAttributeCreation);
         PortEventHandler.addListener(ModEvents::registerAccessoriesComponentUnitValueTypeLocalSync);
         PortEventHandler.addListener(PortEventPriority.LOW, ModEvents::buildCreativeModeTabContents);
         PortEventHandler.addListener(ModEvents::blockEntityTypeAddBlocks);
@@ -187,6 +190,10 @@ public final class ModEvents {
                 if (pack != null) consumer.accept(pack);
             });
         }
+    }
+
+    private static void entityAttributeCreation(EntityAttributeCreationEvent event) {
+        ModEntities.registerAttributes(event);
     }
 
     private static void registerAccessoriesComponentUnitValueTypeLocalSync(RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent event) {

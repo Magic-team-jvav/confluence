@@ -130,6 +130,7 @@ public class MaterialItems {
     public static final PortDeferredItem<Item> AETHERIUM_GOLD = register("aetherium_gold", "嬗金", ModRarity.ORANGE);
     public static final PortDeferredItem<Item> LUNARTEAR = register("lunartear", "月泣石", ModRarity.LIGHT_RED);
     public static final PortDeferredItem<Item> DRAGONSAL = register("dragonsal", "龙涎石", ModRarity.PINK);
+    public static final PortDeferredItem<Item> BROKEN_HERO_SWORD = register("broken_hero_sword", "断裂英雄剑", ModRarity.YELLOW);
     /// 蕴魔书页：空岛村与天堂岛宝箱里的独立掉落，用来给星体研究汇编装订书页。
     public static final PortDeferredItem<LostEnchantedPageItem> LOST_ENCHANTED_PAGE = registerItem("lost_enchanted_page", "蕴魔书页", () -> new LostEnchantedPageItem(ModRarity.BLUE));
 

@@ -799,6 +799,23 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         phasesaber(writer, SwordItems.BLUE_PHASESABER.toStack(), SwordItems.BLUE_PHASEBLADE);
         phasesaber(writer, SwordItems.PURPLE_PHASESABER.toStack(), SwordItems.PURPLE_PHASEBLADE);
         phasesaber(writer, SwordItems.PINK_PHASESABER.toStack(), SwordItems.PINK_PHASEBLADE);
+
+        hardmodeAnvil(writer, SwordItems.TRUE_NIGHTS_EDGE.toStack(), Ingredient.of(SwordItems.NIGHTS_EDGE), AmountIngredient.of(20, MaterialItems.SOUL_OF_MIGHT), AmountIngredient.of(20, MaterialItems.SOUL_OF_SIGHT), AmountIngredient.of(20, MaterialItems.SOUL_OF_FRIGHT));
+        hardmodeAnvil(writer, SwordItems.EXCALIBUR.toStack(), AmountIngredient.of(12, MaterialItems.HALLOWED_INGOT));
+        hardmodeAnvil(writer, SwordItems.TRUE_EXCALIBUR.toStack(), Ingredient.of(SwordItems.EXCALIBUR), AmountIngredient.of(24, MaterialItems.CHLOROPHYTE_INGOT));
+        hardmodeAnvil(writer, SwordItems.TERRA_BLADE.toStack(), Ingredient.of(SwordItems.TRUE_EXCALIBUR), Ingredient.of(SwordItems.TRUE_NIGHTS_EDGE), Ingredient.of(MaterialItems.BROKEN_HERO_SWORD));
+        hardmodeAnvil(writer, SwordItems.ZENITH.toStack(),
+                Ingredient.of(SwordItems.TERRA_BLADE),
+                Ingredient.of(SwordItems.MEOWMERE),
+                Ingredient.of(SwordItems.STAR_WRATH),
+                Ingredient.of(SwordItems.INFLUX_WAVER),
+                Ingredient.of(SwordItems.THE_HORSEMANS_BLADE),
+                Ingredient.of(SwordItems.SEEDLER),
+                Ingredient.of(SwordItems.STARFURY),
+                Ingredient.of(SwordItems.BEE_KEEPER),
+                Ingredient.of(SwordItems.ENCHANTED_SWORD),
+                Ingredient.of(SwordItems.COPPER_SHORT_SWORD)
+        );
     }
 
     /// 困难模式箭矢：叶绿箭 1 锭 → 150；圣箭 / 诅咒箭 / 灵液箭 / 毒液箭 用木箭做底料。

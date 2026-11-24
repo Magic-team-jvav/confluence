@@ -215,12 +215,22 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> WHITE_PHASESABER = register("white_phasesaber", "白晶光刃", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.WHITE));
     public static final PortDeferredItem<BaseSwordItem> PINK_PHASESABER = register("pink_phasesaber", "粉晶光刃", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.PINK));
 
+    public static final PortDeferredItem<BaseSwordItem> TRUE_NIGHTS_EDGE = register("true_nights_edge", "真永夜刃", () -> new BaseSwordItem(ModTiers.UNBREAKABLE, ModRarity.YELLOW, 70F / 2 + 2, 60 / 32F));
+    public static final PortDeferredItem<BaseSwordItem> EXCALIBUR = register("excalibur", "断钢剑", () -> new BaseSwordItem(ModTiers.UNBREAKABLE, ModRarity.PINK, 72F / 2 + 2, 60 / 20F));
+    public static final PortDeferredItem<BaseSwordItem> TRUE_EXCALIBUR = register("true_excalibur", "真断钢剑", () -> new BaseSwordItem(ModTiers.UNBREAKABLE, ModRarity.YELLOW, 72F / 2 + 2, 60 / 18F));
+    public static final PortDeferredItem<BaseSwordItem> TERRA_BLADE = register("terra_blade", "泰拉刃", () -> new BaseSwordItem(ModTiers.UNBREAKABLE, ModRarity.YELLOW, 85F / 2 + 2, 60 / 18F));
+    public static final PortDeferredItem<BaseSwordItem> INFLUX_WAVER = register("influx_waver", "波涌之刃", () -> new BaseSwordItem(ModTiers.UNBREAKABLE, ModRarity.YELLOW, 100F / 2 + 2, 60 / 20F));
+    public static final PortDeferredItem<BaseSwordItem> THE_HORSEMANS_BLADE = register("the_horsemans_blade", "无头骑士剑", () -> new BaseSwordItem(ModTiers.UNBREAKABLE, ModRarity.YELLOW, 150F / 2 + 2, 60 / 26F));
+    public static final PortDeferredItem<BaseSwordItem> SEEDLER = register("seedler", "种子弯刀", () -> new BaseSwordItem(ModTiers.UNBREAKABLE, ModRarity.PINK, 50F / 2 + 2, 60 / 23F));
+    public static final PortDeferredItem<BaseSwordItem> MEOWMERE = register("meowmere", "彩虹喵之刃", () -> new BaseSwordItem(ModTiers.UNBREAKABLE, ModRarity.RED, 200F / 2 + 2, 60 / 14F));
+    public static final PortDeferredItem<BaseSwordItem> STAR_WRATH = register("star_wrath", "狂星之怒", () -> new BaseSwordItem(ModTiers.UNBREAKABLE, ModRarity.RED, 170F / 2 + 2, 60 / 16F));
+
     public static final PortDeferredItem<ZenithItem> ZENITH = registerItem("zenith", "天顶剑", () -> new ZenithItem(ModTiers.UNBREAKABLE, ModRarity.RED, 97, 1.6F));
     public static final PortDeferredItem<ZenithItem> TRUE_COPPER_SHORTSWORD = registerItem("true_copper_shortsword", "真铜短剑", () -> new ZenithItem(ModTiers.UNBREAKABLE, ModRarity.RED, 97, 1.6F) {
         @Override
         public Zenith createZenith(Player owner) {
             Zenith zenith = super.createZenith(owner);
-            zenith.renderType = Zenith.RenderType.COPPER_SHORT_SWORD;
+            zenith.powerSource = Zenith.PowerSource.COPPER_SHORT_SWORD;
             return zenith;
         }
     });

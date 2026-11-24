@@ -996,6 +996,7 @@ public final class ModTabs {
                         monster_drops.accept(MaterialItems.NEBULA_FRAGMENT.get());
                         monster_drops.accept(MaterialItems.STARDUST_FRAGMENT.get());
                         monster_drops.accept(MaterialItems.TURTLE_SHELL.get());
+                        monster_drops.accept(MaterialItems.BROKEN_HERO_SWORD.get());
 
                         CreativeModeTab.Output plants_herbs = GroupItem.belongsTo("plants_herbs", output);
                         plants_herbs.accept(MaterialItems.WATERLEAF.get());
@@ -2011,6 +2012,15 @@ public final class ModTabs {
                         hardmode_broadswords.accept(SwordItems.BLADETONGUE.get());
                         hardmode_broadswords.accept(SwordItems.BREAKER_BLADE.get());
                         hardmode_broadswords.accept(SwordItems.WAFFLES_IRON.get());
+                        hardmode_broadswords.accept(SwordItems.TRUE_NIGHTS_EDGE.get());
+                        hardmode_broadswords.accept(SwordItems.EXCALIBUR.get());
+                        hardmode_broadswords.accept(SwordItems.TRUE_EXCALIBUR.get());
+                        hardmode_broadswords.accept(SwordItems.TERRA_BLADE.get());
+                        hardmode_broadswords.accept(SwordItems.INFLUX_WAVER.get());
+                        hardmode_broadswords.accept(SwordItems.THE_HORSEMANS_BLADE.get());
+                        hardmode_broadswords.accept(SwordItems.SEEDLER.get());
+                        hardmode_broadswords.accept(SwordItems.MEOWMERE.get());
+                        hardmode_broadswords.accept(SwordItems.STAR_WRATH.get());
                         hardmode_broadswords.accept(SwordItems.ZENITH.get());
                         hardmode_broadswords.accept(SwordItems.TRUE_COPPER_SHORTSWORD.get());
 

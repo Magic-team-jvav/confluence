@@ -45,19 +45,19 @@ public class BaseSwordItem extends SwordItem implements IWeaponTooltip, ISpecial
     private final SwordDefinition definition;
     private @Nullable TooltipComponent tooltipImage;
 
-    public BaseSwordItem(Tier tier, int rawDamage, float rawSpeed) {
+    public BaseSwordItem(Tier tier, float rawDamage, float rawSpeed) {
         this(tier, ModRarity.WHITE, rawDamage, rawSpeed);
     }
 
-    public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {
+    public BaseSwordItem(Tier tier, ModRarity rarity, float rawDamage, float rawSpeed) {
         this(tier, rarity, rawDamage, rawSpeed, SwordDefinition.builder());
     }
 
-    public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, SwordDefinition.Builder builder) {
+    public BaseSwordItem(Tier tier, ModRarity rarity, float rawDamage, float rawSpeed, SwordDefinition.Builder builder) {
         this(tier, rawDamage, rawSpeed, builder.build(tier, rarity, rawDamage, rawSpeed));
     }
 
-    private BaseSwordItem(Tier tier, int rawDamage, float rawSpeed, SwordDefinition.BuildResult result) {
+    private BaseSwordItem(Tier tier, float rawDamage, float rawSpeed, SwordDefinition.BuildResult result) {
         super(tier, (int) ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), result.properties());
         definition = result.definition();
     }

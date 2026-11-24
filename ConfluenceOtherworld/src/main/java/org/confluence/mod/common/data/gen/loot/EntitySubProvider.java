@@ -20,7 +20,6 @@ import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModLootTables;
@@ -1103,12 +1102,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
                                 PercentageLootEntry.rule(2, LootItem.lootTableItem(ModItems.ICE_TOFU_BRICK.get())
-                                .when(DamageSourceCondition.hasDamageSource(
-                                        DamageSourcePredicate.Builder.damageType()
-                                                .tag(TagPredicate.is(
-                                                        DamageTypeTags.IS_FALL
-                                                ))
-                                )))
+                                        .when(DamageSourceCondition.hasDamageSource(
+                                                DamageSourcePredicate.Builder.damageType()
+                                                        .tag(TagPredicate.is(
+                                                                DamageTypeTags.IS_FALL
+                                                        ))
+                                        )))
                         ))
                 )
                 .withPool(LootPool.lootPool()
@@ -1119,10 +1118,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
                                 PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(ModItems.ICE_TOFU_BRICK.get())
-                                .when(AnyOfCondition.anyOf(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.KILLER_PLAYER, EntityPredicate.Builder.entity()
-                                        .of(EntityType.PLAYER)
-                                        .equipment(EntityEquipmentPredicate.Builder.equipment()
-                                                .mainhand(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.FROST_WALKER, MinMaxBounds.Ints.atLeast(1))).build()).build())))))
+                                        .when(AnyOfCondition.anyOf(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.KILLER_PLAYER, EntityPredicate.Builder.entity()
+                                                .of(EntityType.PLAYER)
+                                                .equipment(EntityEquipmentPredicate.Builder.equipment()
+                                                        .mainhand(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.FROST_WALKER, MinMaxBounds.Ints.atLeast(1))).build()).build())))))
                         ))
                 )
         );
@@ -1241,20 +1240,20 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 )
         );
         add(MonsterEntities.LUMINOUS_SLIME.get(), LootTable.lootTable()
-                        .withPool(LootPool.lootPool()
-                                .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(difficultyLootChance(100F / 10000, 100F / 7000)).setQuality(14))
-                        )
-                        .withPool(LootPool.lootPool()
-                                .add(PercentageLootEntry.independent(false,
-                                        PercentageLootEntry.rule(100.0 / 150, LootItem.lootTableItem(FoodItems.APPLE_PIE))
-                                )).apply(random0To1)
-                        )
-                        .withPool(LootPool.lootPool()
-                                        .add(LootItem.lootTableItem(MaterialItems.GEL))
-                                        .apply(random0To1)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
-                                .apply(setGelColor(-4040988))
-                        )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(difficultyLootChance(100F / 10000, 100F / 7000)).setQuality(14))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 150, LootItem.lootTableItem(FoodItems.APPLE_PIE))
+                        )).apply(random0To1)
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.GEL))
+                        .apply(random0To1)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+                        .apply(setGelColor(-4040988))
+                )
         );
         add(MonsterEntities.CRIMSLIME.get(), corruptionSlimeLoot(-3386287));
         add(MonsterEntities.CORRUPT_SLIME.get(), corruptionSlimeLoot(-6522185));
@@ -1640,9 +1639,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(difficultyLootChance(normalPercent, expertPercent)).setQuality(1))
                 )
                 .withPool(LootPool.lootPool()
-                                .add(LootItem.lootTableItem(MaterialItems.GEL))
-                                .apply(random0To1)
-                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+                        .add(LootItem.lootTableItem(MaterialItems.GEL))
+                        .apply(random0To1)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
                         .apply(setGelColor(gelColor))
                 );
     }
@@ -1741,7 +1740,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
 
     @Override
     protected Stream<EntityType<?>> getKnownEntityTypes() {
-        return ModEntities.getEntities().stream().map(DeferredRegister::getEntries).flatMap(Collection::stream).map(RegistryObject::get);
+        return ModEntities.getEntities().stream().flatMap(r -> r.getEntries().stream()).map(RegistryObject::get);
     }
 
     @Override

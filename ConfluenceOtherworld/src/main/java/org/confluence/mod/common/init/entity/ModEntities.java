@@ -723,13 +723,16 @@ public final class ModEntities {
         return Map.copyOf(CREATURE_DEFINITIONS);
     }
 
+    public static void registerAttributes(EntityAttributeCreationEvent event) {
+//        event.put(ModEntities.INVERSE_ENDERMAN.get(), InverseEnderMan.createAttributes().build());
+        ATTRIBUTES.forEach((type, attributes) -> {
+            CreatureAttributeBuilder.Definition definition = attributes.get();
+            CREATURE_DEFINITIONS.put(type.get(), definition);
+            event.put(type.get(), definition.attributes());
+        });
+    }
+
     public static void register(IEventBus eventBus) {
-        eventBus.addListener((EntityAttributeCreationEvent event) ->
-                ATTRIBUTES.forEach((type, attributes) -> {
-                    var definition = attributes.get();
-                    CREATURE_DEFINITIONS.put(type.get(), definition);
-                    event.put(type.get(), definition.attributes());
-                }));
         for (DeferredRegister<EntityType<?>> register : getEntities()) {
             register.register(eventBus);
         }

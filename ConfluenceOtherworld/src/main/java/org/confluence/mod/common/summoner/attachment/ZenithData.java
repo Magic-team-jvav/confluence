@@ -12,8 +12,8 @@ import org.confluence.mod.common.item.sword.ZenithItem;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.projectile.Zenith;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
-import org.confluence.mod.common.summoner.util.ZenithTargeting;
 import org.confluence.mod.common.summoner.register.SummonerSoundEvents;
+import org.confluence.mod.common.summoner.util.ZenithTargeting;
 import org.mesdag.portlib.attachment.IPortAttachmentHolder;
 
 import java.util.List;
@@ -76,7 +76,7 @@ public class ZenithData {
                 RandomSource random = owner.getRandom();
                 float distance = (float) eyePos.distanceTo(endEndPos);
                 Vec3 endPos = endEndPos.offsetRandom(random, distance * 0.1f);
-                if (zenith.renderType != Zenith.RenderType.ZENITH) {
+                if (zenith.powerSource != Zenith.PowerSource.ZENITH) {
                     List<Entity> radius = zenith.getTargetCache().getHitTargets(endPos, 10, predicate);
                     if (!radius.isEmpty()) {
                         Entity living = radius.get(random.nextInt(radius.size()));

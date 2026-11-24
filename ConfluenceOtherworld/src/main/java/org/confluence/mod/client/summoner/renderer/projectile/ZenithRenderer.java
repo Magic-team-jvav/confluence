@@ -31,7 +31,7 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
                 context = context.trail(new ZenithTrailContext()
                                                 .downOffset(-1.32575f)
                                                 .tipAlphaBoost((entity, progress) -> (1.0F - progress) * 20.0F * zenith.alpha).timer(1)
-                                                .colorRGB(zenith.renderType.getColor()));
+                                                .colorRGB(zenith.powerSource.getColorRGB()));
             }
             return context.model(new ModelContext()
                                          .scale(2)
@@ -45,7 +45,7 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
     @Override
     protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
         Zenith zenith = context.entity;
-        LyraModelRenderer.json(ZenithSwordModels.modelId(zenith.renderType))
+        LyraModelRenderer.json(ZenithSwordModels.modelId(zenith.powerSource))
                 .color(context.color.argbInt())
                 .light(RenderUtil.FULL_LIGHT)
                 .render(poseStack, bufferSource);
@@ -74,7 +74,7 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
             alpha = EasingCurve.EASE_IN_OUT_QUAD.apply(alpha);
             if (alpha > 0) {
                 Vec3 pos = visualNode.pos();
-                int color = zenith.renderType.getColorARBG(alpha);
+                int color = zenith.powerSource.getColorARBG(alpha);
                 RenderUtil.renderImage(Confluence.asResource("textures/zenith.png"), pos, 4 * alpha, alpha, bufferSource, false, color);
             }
         }

@@ -1,8 +1,8 @@
 package org.confluence.mod.common.summoner.projectile;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -18,7 +18,6 @@ import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
 import org.confluence.mod.common.summoner.particle.ParticleHelper;
 import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
@@ -31,24 +30,23 @@ import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.List;
-import java.util.Random;
 
 public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith> {
     public static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
 
     public Vec3 offest;
     public Entity target;
-    public RenderType renderType;
-    public Random random;
+    public PowerSource powerSource;
+    public RandomSource random;
     public float alpha;
     public static final EasingCurve ZENITH_EASING_CURVE = EasingCurve.bezier().control(0.1f).control(0.2f).control(0.3f).control(0.4f).control(0.45f).control(0.475f).control(0.5f).control(0.5f).control(0.525f).control(0.575f).control(0.6f).control(0.7f).control(0.8f).control(0.9f).control(1f).build();
-    private static final PortStreamCodec<ByteBuf, RenderType> ZENITH_RENDER_TYPE = PortByteBufCodecs.STRING_UTF8.map(RenderType::valueOf, Enum::name);
+    private static final PortStreamCodec<ByteBuf, PowerSource> ZENITH_RENDER_TYPE = PortByteBufCodecs.STRING_UTF8.map(PowerSource::valueOf, Enum::name);
 
     public Zenith() {
         super(SummonerAttachmentEntityTypes.ZENITH);
-        this.random = new Random();
-        this.renderType = RenderType.values()[random.nextInt(RenderType.values().length)];
-        this.alpha = random.nextFloat(0.2f, 1);
+        this.random = RandomSource.create();
+        this.powerSource = Util.getRandom(PowerSource.values(), random);
+        this.alpha = Mth.randomBetween(random, 0.2f, 1);
         if (alpha > 0.75) {
             alpha = 1;
         }
@@ -58,7 +56,7 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
     protected void registerSyncFields(SyncFieldDispatcher fields) {
         super.registerSyncFields(fields);
         fields.field(LibStreamCodecUtils.VEC_3, () -> offest, value -> offest = value);
-        fields.field(ZENITH_RENDER_TYPE, () -> renderType, value -> renderType = value);
+        fields.field(ZENITH_RENDER_TYPE, () -> powerSource, value -> powerSource = value);
         fields.field(PortByteBufCodecs.INT, () -> target != null ? target.getId() : -1,
                 (level, value) -> target = LibEntityUtils.getEntityOrPart(level, value));
     }
@@ -74,19 +72,19 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
                 int count = random.nextInt(-6, 2);
                 for (int j = 0; j < count; j++) {
                     PathNode currentNode = getRenderNode(partialTick);
-                    double factor = 1.15 * random.nextFloat(-2, 0);
+                    double factor = 1.15 * Mth.randomBetween(random, -2, 0);
                     Vec3 currentPos = currentNode.pos().add(Vec3.directionFromRotation(currentNode.pitch(), currentNode.yaw()).normalize().scale(factor));
                     PathNode nextNode = getRenderNode(Math.min(partialTick + 0.01f, 1));
                     Vec3 nextPos = nextNode.pos().add(Vec3.directionFromRotation(nextNode.pitch(), nextNode.yaw()).normalize().scale(factor));
                     Vec3 subtract = nextPos.subtract(currentPos);
-                    float range = 0.1f;
-                    Vec3 velocity = nextPos.add(subtract.normalize()).add(random.nextFloat(-range, range), random.nextFloat(-range, range), random.nextFloat(-range, range)).subtract(currentPos).normalize();
-                    float scale = random.nextFloat(0.01f, 0.03f);
-                    float speed = random.nextFloat(0.3F, 0.6F);
-                    float friction = random.nextFloat(0.5F, 0.75F);
+                    float range = 0.2f;
+                    Vec3 velocity = nextPos.add(subtract.normalize()).offsetRandom(random, range).subtract(currentPos).normalize();
+                    float scale = Mth.randomBetween(random, 0.01f, 0.03f);
+                    float speed = Mth.randomBetween(random, 0.3F, 0.6F);
+                    float friction = Mth.randomBetween(random, 0.5F, 0.75F);
                     int life = random.nextInt(5, 15) + i * 2;
                     ParticleHelper.create(getLevel())
-                            .type(new ZenithParticleOptions(renderType.getColor(), life, friction, scale))
+                            .type(new ZenithParticleOptions(powerSource.getColorRGB(), life, friction, scale))
                             .pos(currentPos)
                             .velocity(velocity.scale(speed))
                             .count(0)
@@ -204,12 +202,11 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
         }
     }
 
-    public enum RenderType {
+    public enum PowerSource {
         COPPER_SHORT_SWORD("copper_short_sword", 0xEBA687),
-        LIGHTS_BANE("lights_bane", 0x7A42BF),
+        LIGHTS_BANE("lights_bane_projectile", 0x7A42BF),
         MURAMASA("muramasa", 0x384ED2),
-        TERRA_BLADE("terra_blade", 0xB2FFB4),
-        BLOOD_BUTCHERER("blood_butcherer", 0xED1C24),
+        BLOOD_BUTCHERER("blood_butcherer_projectile", 0xED1C24),
         STARFURY("starfury", 0xEC3EC0),
         ENCHANTED_SWORD("enchanted_sword", 0x5B9EE8),
         BEE_KEEPER("bee_keeper", 0xFFE745),
@@ -219,32 +216,33 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
         TRUE_NIGHTS_EDGE("true_nights_edge", 0xB336C9),
         EXCALIBUR("excalibur", 0xECC813),
         TRUE_EXCALIBUR("true_excalibur", 0xECC813),
+        TERRAGRIM("terragrim", 0xB2FFB4),
         THE_HORSEMANS_BLADE("the_horsemans_blade", 0xFC5F04),
+        TERRA_BLADE("terra_blade", 0x50DE7A),
         SEEDLER("seedler", 0x8FD71D),
-        TRUE_TERRA_BLADE("true_terra_blade", 0x50DE7A),
         INFLUX_WAVER("influx_waver", 0x54EAF5),
         STAR_WRATH("star_wrath", 0xED3F85),
         MEOWMERE("meowmere", 0xFEC2FA),
         ZENITH("zenith", 0xB2FFB4);
 
         private final ResourceLocation texture;
-        private final int color;
+        private final int rgb;
 
-        RenderType(String textureName, int color) {
-            this.texture = Confluence.asResource("item/projectile/zenith/" + textureName);
-            this.color = color;
+        PowerSource(String textureName, int rgb) {
+            this.texture = Confluence.asResource("item/sword/" + textureName);
+            this.rgb = rgb;
         }
 
         public ResourceLocation getTexture() {
             return texture;
         }
 
-        public int getColor() {
-            return color;
+        public int getColorRGB() {
+            return rgb;
         }
 
         public int getColorARBG(float alpha) {
-            return FastColor.ARGB32.color((int) (alpha * 255), FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color));
+            return ((int) (alpha * 255) << 24) | rgb & 0xFFFFFF;
         }
     }
 }

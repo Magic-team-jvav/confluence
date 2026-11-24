@@ -108,7 +108,6 @@ import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
 import org.confluence.mod.client.renderer.tooltip.NoopTooltip;
-import org.confluence.mod.client.summoner.model.ZenithSwordModels;
 import org.confluence.mod.common.block.functional.BasePylonBlock;
 import org.confluence.mod.common.block.functional.boulder.GeoBoulderBlock;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
@@ -129,6 +128,7 @@ import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
+import org.confluence.mod.common.summoner.projectile.Zenith;
 import org.confluence.mod.integration.appleskin.AppleskinHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.integration.opallight.OpalLightIntegration;
@@ -1184,7 +1184,8 @@ public final class ModClientEvents {
     public static void model$RegisterAdditional(ModelEvent.RegisterAdditional event) {
         event.register(TongueRenderer.SEGMENT_MODEL);
         WhipModelRegister.register(event);
-        ZenithSwordModels.register(event);
+        event.register(Zenith.PowerSource.LIGHTS_BANE.getTexture());
+        event.register(Zenith.PowerSource.BLOOD_BUTCHERER.getTexture());
     }
 
     @SubscribeEvent

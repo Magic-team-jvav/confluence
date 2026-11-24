@@ -11,8 +11,7 @@ import org.confluence.mod.client.summoner.AbstractAttachmentEntityRenderer;
 import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
 import org.confluence.mod.client.summoner.RenderUtil;
-import org.confluence.mod.client.summoner.model.LyraModelRenderer;
-import org.confluence.mod.client.summoner.model.ZenithSwordModels;
+import org.confluence.mod.client.summoner.model.json.JsonModelRenderer;
 import org.confluence.mod.client.summoner.trail.RibbonTrailContext;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.projectile.Zenith;
@@ -24,7 +23,6 @@ import java.util.List;
 
 /// 天顶剑模型、弧形拖尾及生命周期淡出。
 public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
-
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/zenith.png");
 
     @Override
@@ -48,11 +46,7 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
 
     @Override
     protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
-        Zenith zenith = context.entity;
-        LyraModelRenderer.json(ZenithSwordModels.modelId(zenith.powerSource))
-                .color(context.color.argbInt())
-                .light(RenderUtil.FULL_LIGHT)
-                .render(poseStack, bufferSource);
+        JsonModelRenderer.render(context.entity.powerSource.getTexture(), poseStack, bufferSource, context.color.argbInt(), RenderUtil.FULL_LIGHT);
     }
 
     @Override
@@ -63,7 +57,7 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
         if (zenith.getTickCount() < 2) {
             light *= context.partialTick;
         }
-        if (!OpalLightIntegration.handlesAttachment(context.entity.getType().location())) {
+        if (!OpalLightIntegration.handlesAttachment(zenith.getType().location())) {
             DynamicLightDispatcher.INSTANCE.addLightSource(visualNode.pos(), light);
         }
         if (context.trail != null && zenith.alpha > 0.75) {

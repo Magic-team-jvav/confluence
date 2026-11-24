@@ -6,8 +6,8 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.client.summoner.AbstractAttachmentEntityRenderer;
 import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
-import org.confluence.mod.client.summoner.model.LyraModelRenderer;
 import org.confluence.mod.client.summoner.model.virtual.VirtualEntityPose;
+import org.confluence.mod.client.summoner.model.virtual.VirtualEntityRenderer;
 import org.confluence.mod.common.entity.projectile.HornetStingerProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
@@ -27,15 +27,13 @@ public class HornetStingerRenderer extends AbstractAttachmentEntityRenderer<Horn
 
     @Override
     protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
-        LyraModelRenderer.virtualEntity(ModEntities.HORNET_STINGER.get(), context.partialTick)
-                .pose(VirtualEntityPose.create()
-                        .packedLight(context.packedLight)
-                        .alpha(context.color.getAlphaFloat())
-                        .customize(entity -> {
-                            if (entity instanceof HornetStingerProjectile projectile) {
-                                projectile.setDeltaMovement(Vec3.ZERO);
-                            }
-                        }))
-                .render(poseStack, bufferSource);
+        VirtualEntityRenderer.render(ModEntities.HORNET_STINGER.get(), poseStack, bufferSource, context.partialTick, VirtualEntityPose.create()
+                .packedLight(context.packedLight)
+                .alpha(context.color.getAlphaFloat())
+                .customize(entity -> {
+                    if (entity instanceof HornetStingerProjectile projectile) {
+                        projectile.setDeltaMovement(Vec3.ZERO);
+                    }
+                }));
     }
 }

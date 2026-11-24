@@ -64,6 +64,7 @@ import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.*;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
+import org.confluence.mod.client.effect.biome.DukeFishronSkyRenderer;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.effect.voidsea.VoidSeaFilterRenderer;
 import org.confluence.mod.client.effect.voidsea.VoidSeaRenderer;
@@ -211,6 +212,7 @@ public final class GameClientEvents {
             FlailHandler.handle(player, attackHeld);
             HouseSelectHud.updatePlayerRegionAt(player);
             ClientBiomeEffectSystem.tick(player);
+            DukeFishronSkyRenderer.tick(player);
             ScryingOrbHandler.handle(minecraft, player);
             ClientSoulHandler.handleSoulSkills(minecraft);
             if (!minecraft.isPaused()) {
@@ -263,6 +265,7 @@ public final class GameClientEvents {
         DeathEffectHandler.reset();
         DestroyerShellEffectHandler.reset();
         CameraShake.clear();
+        DukeFishronSkyRenderer.clear();
         EmpPulseRenderer.clear();
         ArcSurgeVfx.clear();
         ThunderstrikeVfx.clear();
@@ -478,6 +481,7 @@ public final class GameClientEvents {
             MeteorLandingHandler.render(event);
             ClientGameEventSystem.afterRenderSky(event, player);
             ClientBiomeEffectSystem.renderSky(player, event);
+            DukeFishronSkyRenderer.render(event);
         } else if (stage == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
             WallOfFleshRenderer.renderWalls(event);
             DestroyerRenderer.renderDestroyers(event);

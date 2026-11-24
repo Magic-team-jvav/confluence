@@ -8,9 +8,15 @@ import software.bernie.geckolib.model.GeoModel;
 // 女皇仆从和凝胶共用目录结构，具体资源由注册时指定。
 public class QueenSlimePartModel<T extends GeoEntity> extends GeoModel<T> {
     private final String name;
+    private final ResourceLocation texture;
 
     public QueenSlimePartModel(String name) {
+        this(name, Confluence.asResource("textures/entity/queen_slime/" + name + ".png"));
+    }
+
+    public QueenSlimePartModel(String name, ResourceLocation texture) {
         this.name = name;
+        this.texture = texture;
     }
 
     @Override
@@ -20,7 +26,7 @@ public class QueenSlimePartModel<T extends GeoEntity> extends GeoModel<T> {
 
     @Override
     public ResourceLocation getTextureResource(T entity) {
-        return Confluence.asResource("textures/entity/queen_slime/" + name + ".png");
+        return texture;
     }
 
     @Override

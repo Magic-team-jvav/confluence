@@ -63,6 +63,7 @@ import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.common.menu.NPCServiceMenu;
 import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -275,17 +276,26 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
         HouseHandler.INSTANCE.removeHouse(level.dimension(), getUUID());
         House found = HouseValidater.scan(level, scanPos).make(getUUID());
-        if (found.isValid() && HouseHandler.INSTANCE.isOccupiedByOther(level.dimension(), found, getUUID(), isTownPet())) {
+        if (found.isValid() && (!canLiveAt(found.center()) || HouseHandler.INSTANCE.isOccupiedByOther(level.dimension(), found, getUUID(), isTownPet()))) {
             found = House.EMPTY;
         }
         setHouse(found);
-        HouseHandler.INSTANCE.setHouse(this, found);
+        HouseHandler.INSTANCE.setHouse(this, house);
     }
 
     // === 房屋 ===
 
+    /// 住所按房屋中心的实际群系和世界层级判断，屋顶遮光不影响地表判定。
+    public boolean canLiveAt(BlockPos pos) {
+        return getType() != NpcEntities.TRUFFLE.get() || level().dimension() == OverworldUtils.dimension() && OverworldUtils.inSurface(pos.getY()) && OverworldUtils.isMushroom(level().getBiome(pos));
+    }
+
     public void setHouse(House house) {
         if (requiresRescue()) house = House.EMPTY;
+        if (house.isValid() && !canLiveAt(house.center())) return;
+        if (!house.isValid() && this.house.isValid() && !canLiveAt(this.house.center())) {
+            this.spawnAtPos = blockPosition();
+        }
         this.house = house;
         if (house.isValid()) {
             this.spawnAtPos = house.center();
@@ -385,7 +395,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         regionInitialized = source.regionInitialized;
         spawnAtPos = source.spawnAtPos;
         spawnAtPosInitialized = source.spawnAtPosInitialized;
-        house = !requiresRescue() && source.house.isValid() ? new House(Optional.of(getUUID()), source.house.min(), source.house.max()) : House.EMPTY;
+        house = !requiresRescue() && source.house.isValid() && canLiveAt(source.house.center())
+                ? new House(Optional.of(getUUID()), source.house.min(), source.house.max()) : House.EMPTY;
         if (house.isValid()) {
             restrictTo(house.center(), 20);
             getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level().dimension(), house.center()));

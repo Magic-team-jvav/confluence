@@ -39,6 +39,8 @@ public final class FishingSession {
 
     public ItemStack bait() {return bait;}
 
+    public boolean usesTruffleWorm() {return bait.is(BaitItems.TRUFFLE_WORM.get());}
+
     public boolean isDeveloper() {return rod.getItem() instanceof DevFishingRod;}
 
     /// 仪表仅在数值变化时同步，避免每个 tick 发送相同渔力。
@@ -57,6 +59,13 @@ public final class FishingSession {
         float chance = bait.is(BaitItems.GOLD_WORM.get()) ? 0.05F : 1.0F / (1 + IBait.of(bait).getBaitBonus() * 100 / 6);
         if (TCUtils.hasType(player, AccessoryItems.TACKLE$BOX)) chance *= 2.0F / 3.0F;
         if (player.getRandom().nextFloat() < chance) bait.shrink(1);
+    }
+
+    /// 召唤完成后消耗本次垂钓绑定的一只松露虫。
+    public void consumeSummoningBait(Player player) {
+        if (settled || !isValid(player)) return;
+        settled = true;
+        if (!player.hasInfiniteMaterials()) bait.shrink(1);
     }
 
     /// 无活动鱼钩时供渔力显示和物品提示选择钓竿，优先主手。

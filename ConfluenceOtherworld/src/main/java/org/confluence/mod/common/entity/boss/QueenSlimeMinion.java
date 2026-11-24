@@ -4,7 +4,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -123,8 +122,8 @@ public class QueenSlimeMinion extends BaseMonster implements BossOwnedEntity {
     private int releaseDelay;
     private RoyalGel.RelayChain storedChain;
 
-    Vec3 motionOf(Player player) {
-        return trackedTarget == player.getId() ? targetMotion : player.getDeltaMovement();
+    Vec3 motionOf(LivingEntity target) {
+        return trackedTarget == target.getId() ? targetMotion : target.getDeltaMovement();
     }
 
     void storeGel(RoyalGel.RelayChain chain) {
@@ -170,13 +169,8 @@ public class QueenSlimeMinion extends BaseMonster implements BossOwnedEntity {
     private void fight() {
         QueenSlime queen = ownerTracker.tickDependent(this, true, OWNER_TIMEOUT);
         if (queen == null) return;
-        LivingEntity target = queen.getTarget();
-        if (!(target instanceof Player) || !canAttack(target) || distanceToSqr(target) > FOLLOW_RANGE * FOLLOW_RANGE) {
-            Player nearby = level().getNearestPlayer(getX(), getY(), getZ(), FOLLOW_RANGE,
-                    candidate -> candidate instanceof Player player && queen.isValidCurrentCombatPlayer(player) && canAttack(player));
-            target = nearby;
-        }
-        if (target == null || !target.isAlive() || !canAttack(target) || !EnemyTargeting.allowsTarget(this, target)) {
+        LivingEntity target = queen.getAuthoritativeLivingTarget();
+        if (target == null || !canAttack(target) || !EnemyTargeting.allowsTarget(this, target)) {
             lastPosition = null;
             setTarget(null);
             setNoGravity(false);
@@ -201,14 +195,14 @@ public class QueenSlimeMinion extends BaseMonster implements BossOwnedEntity {
 
         if (getType() == BossEntities.HEAVENLY_SLIME.get()) {
             setNoGravity(true);
-            if (shotsLeft > 0 && --releaseDelay <= 0 && target instanceof Player player) {
-                RoyalGel.releaseStored(queen, this, player, targetMotion, storedChain);
+            if (shotsLeft > 0 && --releaseDelay <= 0) {
+                RoyalGel.releaseStored(queen, this, target, targetMotion, storedChain);
                 releaseDelay = STORED_INTERVAL;
                 if (--shotsLeft == 0) storedChain = null;
             }
             Vec3 center = getBoundingBox().getCenter();
             Vec3 predicted = center.add(aim).add(targetMotion.scale(FLANK_LEAD));
-            // 触及玩家即结束本轮冲撞；玩家的受伤无敌帧不应让仆从继续向其中心挤压。
+            // 触及目标即结束本轮冲撞，目标处于受伤无敌帧时也会脱离。
             boolean touching = getBoundingBox().inflate(CONTACT_MARGIN).intersects(target.getBoundingBox());
             if (strikeTicks > 0 && touching && !touchingLastTick) {
                 strikeTicks = 0;

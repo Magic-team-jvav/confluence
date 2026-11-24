@@ -243,15 +243,17 @@ public final class ClientBiomeEffectSystem {
         float dayTime = minecraft.level == null ? 6000 : minecraft.level.getTimeOfDay(partialTick);
         float nightFactor = 1.0F - Mth.clamp((Mth.abs(dayTime - 12000.0F) - 4000.0F) / 4000.0F, 0.0F, 1.0F);
         float baseAlpha = nightFactor * 0.35F * rainAlpha * alphaMul;
-        int a = (int) (baseAlpha * 255);
+        drawCubemap(event, texture, baseAlpha, 100.0F);
+    }
 
+    static void drawCubemap(RenderLevelStageEvent event, ResourceLocation texture, float alpha, float d) {
+        int a = (int) (alpha * 255);
         PoseStack poseStack = new PoseStack();
         poseStack.mulPose(event.getModelViewMatrix());
 
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, texture);
 
-        float d = 100.0F;
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder builder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         Matrix4f matrix4f = poseStack.last().pose();

@@ -216,6 +216,17 @@ public final class BossEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<PlanteraTentacle>> PLANTERA_TENTACLE = withAttributes(registerEntity("plantera_tentacle", "世纪之花触手", EntityType.Builder.of(PlanteraTentacle::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(10).updateInterval(1).noSave()),
             () -> CreatureAttributeBuilder.boss().maxHealth(520).armor(9).armorToughness(4).attackDamage(36).followRange(64).build());
 
+    public static final DeferredHolder<EntityType<?>, EntityType<DukeFishron>> DUKE_FISHRON = withAttributes(registerEntity("duke_fishron", "猪龙鱼公爵", EntityType.Builder.of(DukeFishron::new, MobCategory.MONSTER).sized(3.2F, 3.4F).clientTrackingRange(16).updateInterval(1)),
+            () -> CreatureAttributeBuilder.boss().maxHealth(20280).armor(23).armorToughness(8).armorPenetration(11).attackDamage(37).followRange(96).knockbackResistance(1)
+                    .state(DukeFishron.Temperament.ENRAGED, state -> state.attribute(Attributes.ATTACK_DAMAGE, 73).attribute(Attributes.ARMOR, 45))
+                    .build());
+    public static final DeferredHolder<EntityType<?>, EntityType<FishronProjectile>> FISHRON_TORNADO = registerEntity("fishron_tornado", "鲨鱼龙卷", EntityType.Builder.of(FishronProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(16).updateInterval(1).noSave());
+    public static final DeferredHolder<EntityType<?>, EntityType<FishronProjectile>> SHARKRON = registerEntity("sharkron", "鲨鱼龙", EntityType.Builder.of(FishronProjectile::new, MobCategory.MISC).sized(0.85F, 0.85F).clientTrackingRange(16).updateInterval(1).noSave());
+    public static final DeferredHolder<EntityType<?>, EntityType<FishronProjectile>> FISHRON_FLOOD = registerEntity("fishron_flood", "公爵洪流", EntityType.Builder.of(FishronProjectile::new, MobCategory.MISC).sized(0.65F, 0.65F).clientTrackingRange(16).updateInterval(1).noSave());
+    public static final DeferredHolder<EntityType<?>, EntityType<FishronProjectile>> DETONATING_BUBBLE = registerEntity("detonating_bubble", "爆破泡泡", EntityType.Builder.of(FishronProjectile::new, MobCategory.MISC).sized(0.65F, 0.65F).clientTrackingRange(16).updateInterval(1).noSave());
+    public static final DeferredHolder<EntityType<?>, EntityType<FishronProjectile>> RAZORBLADE_TYPHOON = registerEntity("razorblade_typhoon", "利刃台风", EntityType.Builder.of(FishronProjectile::new, MobCategory.MISC).sized(1.7F, 1.7F).clientTrackingRange(16).updateInterval(1).noSave());
+    public static final DeferredHolder<EntityType<?>, EntityType<FishronProjectile>> SMALL_RAZORBLADE_TYPHOON = registerEntity("small_razorblade_typhoon", "小型利刃台风", EntityType.Builder.of(FishronProjectile::new, MobCategory.MISC).sized(0.85F, 0.85F).clientTrackingRange(16).updateInterval(1).noSave());
+
     public static final DeferredHolder<EntityType<?>, EntityType<LunaticCultist>> LUNATIC_CULTIST = withAttributes(registerEntity("lunatic_cultist", "拜月教邪教徒", EntityType.Builder.of(LunaticCultist::new, MobCategory.MONSTER).sized(1.0F, 2.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(12480).armor(19).armorToughness(8).attackDamage(20).followRange(64)
                     .state(LunaticCultist.CombatState.WOUNDED, state -> state.armor(13).attribute(Attributes.ARMOR_TOUGHNESS, 5))

@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.client.ClientHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.voidsea.VoidSeaRenderer;
 
@@ -127,6 +128,19 @@ public class ModRenderTypes extends RenderStateShard {
 
     public static RenderType entityTranslucentCullOverlay(ResourceLocation texture) {
         return ENTITY_TRANSLUCENT_CULL_OVERLAY.apply(texture);
+    }
+
+    private static final Function<ResourceLocation, RenderType> ENTITY_NO_SHADE_CULL = Util.memoize(texture ->
+            RenderType.create("confluence_entity_no_shade_cull", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(new ShaderStateShard(ClientHooks.ClientEvents::getEntityTranslucentUnlitShader))
+                            .setTextureState(new TextureStateShard(texture, false, false))
+                            .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                            .setCullState(CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY)
+                            .createCompositeState(true)));
+
+    public static RenderType entityNoShadeCull(ResourceLocation texture) {
+        return ENTITY_NO_SHADE_CULL.apply(texture);
     }
 
     private static final Function<ResourceLocation, RenderType> ENTITY_EMISSIVE_CULL = Util.memoize(texture ->

@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.confluence.lib.network.SetEntityDataPacketS2C;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
+import org.confluence.mod.common.entity.boss.DukeFishron;
 import org.confluence.mod.common.entity.fishing.FishingSession;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IFishingHook;
@@ -84,14 +85,21 @@ public abstract class FishingHookMixin implements IFishingHook {
         }
     }
 
-    /// 收线前校验原来的手与鱼饵；禁止另一根钓竿代收，避免扣错耐久或使用错附魔。
+    /// 收竿时先校验会话。松露虫的有效咬钩直接结算为公爵召唤。
     @Inject(method = "retrieve", at = @At("HEAD"), cancellable = true)
-    private void validateRetrieve(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
+    private void retrieveWithSession(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
         FishingHook hook = confluence$self();
-        if (hook.getPlayerOwner() instanceof ServerPlayer player && confluence$session != null
-                && (stack != confluence$session.rod() || !confluence$session.isValid(player))) {
+        if (!(hook.getPlayerOwner() instanceof ServerPlayer player) || confluence$session == null)
+            return;
+        if (stack != confluence$session.rod() || !confluence$session.isValid(player)) {
             hook.discard();
             cir.setReturnValue(0);
+            return;
+        }
+        if (confluence$session.usesTruffleWorm()) {
+            boolean summoned = nibble > 0 && !hook.isRemoved() && DukeFishron.tryFishingSpawn(player, hook, confluence$session);
+            hook.discard();
+            cir.setReturnValue(summoned ? 1 : 0);
         }
     }
 

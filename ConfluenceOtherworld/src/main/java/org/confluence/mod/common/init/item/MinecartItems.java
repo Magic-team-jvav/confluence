@@ -39,7 +39,7 @@ public class MinecartItems {
     public static final DeferredItem<BaseMinecartItem> DIAMOND_MINECART = registerGeneric("diamond_minecart", "钻石矿车", Types.DIAMOND, Variant.DIAMOND);
     public static final DeferredItem<BaseMinecartItem> AMBER_MINECART = registerGeneric("amber_minecart", "琥珀矿车", Types.AMBER, Variant.AMBER);
     public static final DeferredItem<BaseMinecartItem> BEETLE_MINECART = registerGeneric("beetle_minecart", "甲虫矿车", Types.BEETLE, Variant.BEETLE);
-    public static final DeferredItem<BaseMinecartItem> MEOWMERE_MINECART = registerItemWithPropertiesWithEnglishName("meowmere", "彩虹猫矿车", "Meowmere Minecart", properties -> new BaseMinecartItem(properties, ModRarity.RED, Types.MEOWMERE, MeowmereMinecartEntity::new));
+    public static final DeferredItem<BaseMinecartItem> MEOWMERE_MINECART = registerItemWithProperties("meowmere_minecart", "彩虹猫矿车", properties -> new BaseMinecartItem(properties, ModRarity.RED, Types.MEOWMERE, MeowmereMinecartEntity::new));
     public static final DeferredItem<BaseMinecartItem> PARTY_WAGON = registerGeneric("party_wagon", "派对矿车", Types.PARTY, Variant.PARTY);
     public static final DeferredItem<BaseMinecartItem> THE_DUTCHMAN = registerGeneric("the_dutchman", "荷兰人矿车", Types.DUTCHMAN, Variant.DUTCHMAN);
     public static final DeferredItem<BaseMinecartItem> STEAMPUNK_MINECART = registerGeneric("steampunk_minecart", "蒸汽朋克矿车", Types.STEAMPUNK, Variant.STEAMPUNK);
@@ -102,12 +102,6 @@ public class MinecartItems {
     private static <T extends Item> DeferredItem<T> registerItemWithProperties(String registryId, String chineseName, Function<Item.Properties, T> factory) {
         DeferredItem<T> entry = ITEMS.registerItem(registryId, factory);
         Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
-        return entry;
-    }
-
-    private static <T extends Item> DeferredItem<T> registerItemWithPropertiesWithEnglishName(String registryId, String chineseName, String englishName, Function<Item.Properties, T> factory) {
-        DeferredItem<T> entry = ITEMS.registerItem(registryId, factory);
-        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

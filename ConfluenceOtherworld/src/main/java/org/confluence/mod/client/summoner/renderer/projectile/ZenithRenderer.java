@@ -3,6 +3,7 @@ package org.confluence.mod.client.summoner.renderer.projectile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.Confluence;
@@ -24,6 +25,8 @@ import java.util.List;
 /// 天顶剑模型、弧形拖尾及生命周期淡出。
 public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
 
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/zenith.png");
+
     @Override
     protected RenderContext<Zenith> createContext(Zenith zenith, PathNode visualNode, float partialTick, int packedLight) {
         if (zenith.getTickCount() >= 1) {
@@ -32,7 +35,7 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
                 context = context.trail(new ZenithTrailContext()
                         .downOffset(-1.32575f)
                         .tipAlphaBoost((entity, progress) -> (1.0F - progress) * 20.0F * zenith.alpha).timer(1)
-                        .colorRGB(zenith.renderType.getColor()));
+                        .colorRGB(zenith.powerSource.getColorRGB()));
             }
             return context.model(new ModelContext()
                     .scale(2, 2, 1)
@@ -46,7 +49,7 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
     @Override
     protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
         Zenith zenith = context.entity;
-        LyraModelRenderer.json(ZenithSwordModels.modelId(zenith.renderType))
+        LyraModelRenderer.json(ZenithSwordModels.modelId(zenith.powerSource))
                 .color(context.color.argbInt())
                 .light(RenderUtil.FULL_LIGHT)
                 .render(poseStack, bufferSource);
@@ -75,8 +78,8 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
             alpha = EasingCurve.EASE_IN_OUT_QUAD.apply(alpha);
             if (alpha > 0) {
                 Vec3 pos = visualNode.pos();
-                int color = zenith.renderType.getColorARBG(alpha);
-                RenderUtil.renderImage(Confluence.asResource("textures/zenith.png"), pos, 4 * alpha, alpha, bufferSource, false, color);
+                int color = zenith.powerSource.getColorARBG(alpha);
+                RenderUtil.renderImage(TEXTURE, pos, 4 * alpha, alpha, bufferSource, false, color);
             }
         }
     }

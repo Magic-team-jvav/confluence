@@ -185,7 +185,7 @@ public record SwordDefinition(
             return properties(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
         }
 
-        public BuildResult build(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {
+        public BuildResult build(Tier tier, ModRarity rarity, float rawDamage, float rawSpeed) {
             Item.Properties properties = new Item.Properties();
             propertyModifiers.forEach(modifier -> modifier.accept(properties));
             if (tier == ModTiers.UNBREAKABLE) properties.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE);

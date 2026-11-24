@@ -9,7 +9,6 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -63,7 +62,6 @@ import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.InverseEnderMan;
 import org.confluence.mod.common.entity.InverseEntityType;
-import org.confluence.mod.common.entity.RainbowSheep;
 import org.confluence.mod.common.entity.TargetingIntegration;
 import org.confluence.mod.common.entity.boss.TwinEyeEncounter;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -213,9 +211,6 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void entityAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
-        event.put(ModEntities.RAINBOW_SHEEP.get(), RainbowSheep.createAttributes().build());
-        event.put(ModEntities.INVERSE_ENDERMAN.get(), InverseEnderMan.createAttributes().build());
         ModEntities.registerAttributes(event);
     }
 

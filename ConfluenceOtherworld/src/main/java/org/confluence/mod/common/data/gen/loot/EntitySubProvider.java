@@ -24,7 +24,6 @@ import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.mod.common.data.GamePhase;
@@ -39,7 +38,6 @@ import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.loot.*;
 import org.confluence.mod.mixin.data.loot.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -1084,7 +1082,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                                                 ))
                                 ))
 
-                        .when(lootingScaledChance(registries, 0.02F)))
+                                .when(lootingScaledChance(registries, 0.02F)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.ICE_TOFU_BRICK.get()).when(lootingScaledChance(registries, 0.006666666666666667F)))
@@ -1092,12 +1090,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
                                 PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(ModItems.ICE_TOFU_BRICK.get()).apply(LootingBonusCountFunction.lootingBonusCount(registries))
-                                .when(AnyOfCondition.anyOf(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity()
-                                        .of(EntityType.PLAYER)
-                                        .equipment(EntityEquipmentPredicate.Builder.equipment()
-                                                .mainhand(ItemPredicate.Builder.item()
-                                                        .withSubPredicate(ItemSubPredicates.ENCHANTMENTS, ItemEnchantmentsPredicate.enchantments(
-                                                                List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FROST_WALKER), MinMaxBounds.Ints.atLeast(1)))))))))))
+                                        .when(AnyOfCondition.anyOf(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity()
+                                                .of(EntityType.PLAYER)
+                                                .equipment(EntityEquipmentPredicate.Builder.equipment()
+                                                        .mainhand(ItemPredicate.Builder.item()
+                                                                .withSubPredicate(ItemSubPredicates.ENCHANTMENTS, ItemEnchantmentsPredicate.enchantments(
+                                                                        List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FROST_WALKER), MinMaxBounds.Ints.atLeast(1)))))))))))
                         ))
                 )
         );
@@ -1746,9 +1744,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
     }
 
     @Override
-    protected @NotNull Stream<EntityType<?>> getKnownEntityTypes() {
-        return Stream.of(ModEntities.ENTITIES, BossEntities.ENTITIES, CritterEntities.ENTITIES, MonsterEntities.ENTITIES, NpcEntities.ENTITIES)
-                .map(DeferredRegister::getEntries).flatMap(Collection::stream).map(DeferredHolder::get);
+    protected Stream<EntityType<?>> getKnownEntityTypes() {
+        return ModEntities.getEntities().stream().flatMap(r -> r.getEntries().stream()).map(DeferredHolder::get);
     }
 
     @Override

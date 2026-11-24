@@ -656,7 +656,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         // 裂天剑
         hardmodeAnvil(recipeOutput, ManaWeaponItems.SKY_FRACTURE.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(MaterialItems.LIGHT_SHARD),
-                'b', AmountIngredient.of(8,MaterialItems.SOUL_OF_LIGHT),
+                'b', AmountIngredient.of(8, MaterialItems.SOUL_OF_LIGHT),
                 'c', Ingredient.of(ManaWeaponItems.MAGIC_MISSILE)
         ), List.of(
                 " b ",
@@ -665,11 +665,11 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         )));
         // 彩虹魔杖
         hardmodeAnvil(recipeOutput, ManaWeaponItems.RAINBOW_ROD.toStack(), ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(10,MaterialItems.PIXIE_DUST),
-                'd', AmountIngredient.of(15,MaterialItems.SOUL_OF_SIGHT),
-                'c', AmountIngredient.of(10,MaterialItems.CRYSTAL_SHARDS),
-                'b', AmountIngredient.of(4,MaterialItems.SOUL_OF_LIGHT),
-                'e', AmountIngredient.of(2,MaterialItems.UNICORN_HORN)
+                'a', AmountIngredient.of(10, MaterialItems.PIXIE_DUST),
+                'd', AmountIngredient.of(15, MaterialItems.SOUL_OF_SIGHT),
+                'c', AmountIngredient.of(10, MaterialItems.CRYSTAL_SHARDS),
+                'b', AmountIngredient.of(4, MaterialItems.SOUL_OF_LIGHT),
+                'e', AmountIngredient.of(2, MaterialItems.UNICORN_HORN)
         ), List.of(
                 " a ",
                 "bdb",
@@ -680,8 +680,8 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, FlailItems.DAO_OF_POW.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(MaterialItems.LIGHT_SHARD),
                 'b', Ingredient.of(MaterialItems.DARK_SHARD),
-                'c', AmountIngredient.of(7,MaterialItems.SOUL_OF_LIGHT),
-                'd', AmountIngredient.of(7,MaterialItems.SOUL_OF_NIGHT)
+                'c', AmountIngredient.of(7, MaterialItems.SOUL_OF_LIGHT),
+                'd', AmountIngredient.of(7, MaterialItems.SOUL_OF_NIGHT)
         ), List.of(
                 "ac",
                 "db"
@@ -798,6 +798,23 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         phasesaber(recipeOutput, SwordItems.BLUE_PHASESABER.toStack(), SwordItems.BLUE_PHASEBLADE);
         phasesaber(recipeOutput, SwordItems.PURPLE_PHASESABER.toStack(), SwordItems.PURPLE_PHASEBLADE);
         phasesaber(recipeOutput, SwordItems.PINK_PHASESABER.toStack(), SwordItems.PINK_PHASEBLADE);
+
+        hardmodeAnvil(recipeOutput, SwordItems.TRUE_NIGHTS_EDGE.toStack(), Ingredient.of(SwordItems.NIGHTS_EDGE), AmountIngredient.of(20, MaterialItems.SOUL_OF_MIGHT), AmountIngredient.of(20, MaterialItems.SOUL_OF_SIGHT), AmountIngredient.of(20, MaterialItems.SOUL_OF_FRIGHT));
+        hardmodeAnvil(recipeOutput, SwordItems.EXCALIBUR.toStack(), AmountIngredient.of(12, MaterialItems.HALLOWED_INGOT));
+        hardmodeAnvil(recipeOutput, SwordItems.TRUE_EXCALIBUR.toStack(), Ingredient.of(SwordItems.EXCALIBUR), AmountIngredient.of(24, MaterialItems.CHLOROPHYTE_INGOT));
+        hardmodeAnvil(recipeOutput, SwordItems.TERRA_BLADE.toStack(), Ingredient.of(SwordItems.TRUE_EXCALIBUR), Ingredient.of(SwordItems.TRUE_NIGHTS_EDGE), Ingredient.of(MaterialItems.BROKEN_HERO_SWORD));
+        hardmodeAnvil(recipeOutput, SwordItems.ZENITH.toStack(),
+                Ingredient.of(SwordItems.TERRA_BLADE),
+                Ingredient.of(SwordItems.MEOWMERE),
+                Ingredient.of(SwordItems.STAR_WRATH),
+                Ingredient.of(SwordItems.INFLUX_WAVER),
+                Ingredient.of(SwordItems.THE_HORSEMANS_BLADE),
+                Ingredient.of(SwordItems.SEEDLER),
+                Ingredient.of(SwordItems.STARFURY),
+                Ingredient.of(SwordItems.BEE_KEEPER),
+                Ingredient.of(SwordItems.ENCHANTED_SWORD),
+                Ingredient.of(SwordItems.COPPER_SHORT_SWORD)
+        );
     }
 
     /// 困难模式箭矢：叶绿箭 1 锭 → 150；圣箭 / 诅咒箭 / 灵液箭 / 毒液箭 用木箭做底料。

@@ -33,7 +33,7 @@ public class ZenithItem extends BaseSwordItem implements ILeftClickStateItem {
         zenith.setDamage((float) owner.getAttributeValue(Attributes.ATTACK_DAMAGE));
         zenith.setKnockback(1);
         if (owner.getRandom().nextFloat() < 0.33) {
-            zenith.renderType = Zenith.RenderType.ZENITH;
+            zenith.powerSource = Zenith.PowerSource.ZENITH;
         }
         return zenith;
     }

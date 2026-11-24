@@ -331,9 +331,19 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, "helium_moss_from_neon_moss", addItem(NatureBlocks.NEON_MOSS, NatureBlocks.HELIUM_MOSS));
 
         item(recipeOutput, SwordItems.ZENITH, SwordItems.TRUE_COPPER_SHORTSWORD);
-        item(recipeOutput, SwordItems.TRUE_COPPER_SHORTSWORD, SwordItems.ZENITH);
+        item(recipeOutput, "zenith_materials", new ItemTransmutationRecipe(Ingredient.of(SwordItems.TRUE_COPPER_SHORTSWORD), List.of(
+                SwordItems.TERRA_BLADE.toStack(),
+                SwordItems.MEOWMERE.toStack(),
+                SwordItems.STAR_WRATH.toStack(),
+                SwordItems.INFLUX_WAVER.toStack(),
+                SwordItems.THE_HORSEMANS_BLADE.toStack(),
+                SwordItems.SEEDLER.toStack(),
+                SwordItems.STARFURY.toStack(),
+                SwordItems.BEE_KEEPER.toStack(),
+                SwordItems.ENCHANTED_SWORD.toStack(),
+                SwordItems.COPPER_SHORT_SWORD.toStack()
+        ), 1, GamePhase.BEFORE_SKELETRON));
     }
-
 
     protected void item(RecipeOutput recipeOutput, String path, ItemTransmutationRecipe recipe) {
         recipeOutput.accept(Confluence.asResource("item_transmutation/" + path), recipe, null);
@@ -348,20 +358,12 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         return new ItemTransmutationRecipe(Ingredient.of(source), target, shrink, GamePhase.BEFORE_SKELETRON);
     }
 
-    public static ItemTransmutationRecipe addItem(TagKey<Item> source, Item target, int shrink) {
-        return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), shrink, GamePhase.BEFORE_SKELETRON);
+    public static ItemTransmutationRecipe addItem(TagKey<Item> source, ItemLike target, int shrink) {
+        return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.asItem().getDefaultInstance()), shrink, GamePhase.BEFORE_SKELETRON);
     }
 
     public static ItemTransmutationRecipe addItem(Ingredient source, List<ItemStack> target, int shrink) {
         return new ItemTransmutationRecipe(source, target, shrink, GamePhase.BEFORE_SKELETRON);
-    }
-
-    public static ItemTransmutationRecipe addItem(Item source, Item target, int shrink) {
-        return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), shrink, GamePhase.BEFORE_SKELETRON);
-    }
-
-    public static ItemTransmutationRecipe addItem(Item source, Item target) {
-        return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), 1, GamePhase.BEFORE_SKELETRON);
     }
 
     public static ItemTransmutationRecipe addItem(ItemLike source, ItemLike target, int shrink) {
@@ -380,12 +382,12 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         return new ItemTransmutationRecipe(source, target, shrink, gamePhase);
     }
 
-    public static ItemTransmutationRecipe addItem(Item source, Item target, int shrink, GamePhase gamePhase) {
-        return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), shrink, gamePhase);
+    public static ItemTransmutationRecipe addItem(ItemLike source, ItemLike target, int shrink, GamePhase gamePhase) {
+        return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.asItem().getDefaultInstance()), shrink, gamePhase);
     }
 
-    public static ItemTransmutationRecipe addItem(Item source, Item target, GamePhase gamePhase) {
-        return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), 1, gamePhase);
+    public static ItemTransmutationRecipe addItem(ItemLike source, ItemLike target, GamePhase gamePhase) {
+        return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.asItem().getDefaultInstance()), 1, gamePhase);
     }
 
     public static ItemTransmutationRecipe addItem(TagKey<Item> source, Item target, int shrink, GamePhase gamePhase) {
@@ -400,7 +402,7 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         return new ItemTransmutationRecipe(Ingredient.of(tagKey), List.of(), 1, GamePhase.BEFORE_SKELETRON);
     }
 
-    public static ItemTransmutationRecipe blacklist(Item item) {
+    public static ItemTransmutationRecipe blacklist(ItemLike item) {
         return new ItemTransmutationRecipe(Ingredient.of(item), List.of(), 1, GamePhase.BEFORE_SKELETRON);
     }
 }

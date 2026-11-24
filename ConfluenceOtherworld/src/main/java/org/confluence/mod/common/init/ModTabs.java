@@ -2510,6 +2510,7 @@ public final class ModTabs {
                         boss.accept(SpawnEggItems.QUEEN_SLIME_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.THE_DESTROYER_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.PLANTERA_SPAWN_EGG.get());
+                        boss.accept(SpawnEggItems.DUKE_FISHRON_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.LUNATIC_CULTIST_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.PHANTASM_DRAGON_SPAWN_EGG.get());
                         CreativeModeTab.Output environment = GroupItem.belongsTo("environment_entity", output);

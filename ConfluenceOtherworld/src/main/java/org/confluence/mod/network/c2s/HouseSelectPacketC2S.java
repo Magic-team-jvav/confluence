@@ -65,8 +65,12 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortP
         } else { // 添加、删除房屋模式
             if (isEmptyHouse) { // 如果是空房子就为该类型的npc添加房屋
                 getNpc(player, selected, region, npc -> {
-                    House maked = result.make(npc.getUUID());
-                    npc.setHouse(maked);
+                    House candidate = result.make(npc.getUUID());
+                    if (!npc.canLiveAt(candidate.center())) {
+                        player.sendSystemMessage(Component.translatable("message.confluence.house_detect.truffle_requires_surface_mushroom"));
+                        return;
+                    }
+                    npc.setHouse(candidate);
                     if (!npc.getHouse().isValid()) return;
                     HouseHandler.INSTANCE.setHouse(npc, npc.getHouse());
                     player.sendSystemMessage(Component.translatable("tooltip.confluence.house_detect.mode.add.success"));

@@ -309,6 +309,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("message.confluence.hoe_shovel.mode.1", "Hoe", "锄");
         language.add("message.confluence.house_detect.npc_not_fount", "NPC not found nearby!", "未在附近找到该NPC！");
         language.add("message.confluence.house_detect.occupied", "House has been occupied by %2$s the %1$s!", "这个房间已被%1$s %2$s占领！");
+        language.add("message.confluence.house_detect.truffle_requires_surface_mushroom", "The Truffle can only live in a surface Glowing Mushroom biome.", "松露人只能住在地表发光蘑菇群系。");
         language.add("message.confluence.house_select.check", "Check", "检查");
         language.add("message.confluence.house_select.tip1", "Press Esc to escape, hold Alt to select", "按一次Esc以退出，长按Alt以选择");
         language.add("message.confluence.house_select.tip2", "Right Click to check or add/remove house", "右击以检查、添加或移除房间");

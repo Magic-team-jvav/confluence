@@ -303,6 +303,7 @@ public final class SpawnEggItems {
     public static final PortDeferredItem<ForgeSpawnEggItem> QUEEN_SLIME_SPAWN_EGG = register(BossEntities.QUEEN_SLIME, "史莱姆女皇刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> THE_DESTROYER_SPAWN_EGG = register(BossEntities.THE_DESTROYER, "毁灭者刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> PLANTERA_SPAWN_EGG = register(BossEntities.PLANTERA, "世纪之花刷怪蛋");
+    public static final PortDeferredItem<ForgeSpawnEggItem> DUKE_FISHRON_SPAWN_EGG = register(BossEntities.DUKE_FISHRON, "猪龙鱼公爵刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> LUNATIC_CULTIST_SPAWN_EGG = register(BossEntities.LUNATIC_CULTIST, "拜月教邪教徒刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> PHANTASM_DRAGON_SPAWN_EGG = register(BossEntities.PHANTASM_DRAGON, "幻影龙刷怪蛋");
 

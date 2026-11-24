@@ -38,7 +38,7 @@ public class RoyalGel extends Projectile implements GeoEntity {
     // 凝胶的飞行时限（刻），通过新的仆从弹射时重新计时。
     private static final int FLIGHT_TICKS = 120;
     private int impactsLeft = 3;
-    private final Set<UUID> hitPlayers = new HashSet<>();
+    private final Set<UUID> hitTargets = new HashSet<>();
     private int remainingTicks = FLIGHT_TICKS;
     // 初次齐射由三发瞄准弹和五发传递弹组成；水晶接球后向八方散射。
     private static final int AIMED_COUNT = 3, RELAY_COUNT = 5, SPLIT_COUNT = 8;
@@ -107,15 +107,15 @@ public class RoyalGel extends Projectile implements GeoEntity {
         queen.level().addFreshEntity(gel);
     }
 
-    static void releaseStored(QueenSlime queen, QueenSlimeMinion minion, Player target, Vec3 motion, RelayChain chain) {
+    static void releaseStored(QueenSlime queen, QueenSlimeMinion minion, LivingEntity target, Vec3 motion, RelayChain chain) {
         Vec3 from = minion.getBoundingBox().getCenter();
         launchRelay(queen, from, aimed(from, target, motion, RELAY_SPEED), chain, false);
     }
 
-    private void relay(QueenSlime queen, QueenSlimeMinion minion, Player player) {
+    private void relay(QueenSlime queen, QueenSlimeMinion minion, LivingEntity target) {
         chain.visited.add(minion.getUUID());
         Vec3 from = minion.getBoundingBox().getCenter();
-        Vec3 aim = aimed(from, player, minion.motionOf(player), RELAY_SPEED);
+        Vec3 aim = aimed(from, target, minion.motionOf(target), RELAY_SPEED);
         if (minion.getType() == BossEntities.HEAVENLY_SLIME.get()) {
             minion.storeGel(chain);
         } else if (minion.getType() == BossEntities.CRYSTAL_SLIME.get()) {
@@ -154,29 +154,21 @@ public class RoyalGel extends Projectile implements GeoEntity {
                 discard();
                 return;
             }
-            Player target = queen.getTarget() instanceof Player p && queen.isValidCurrentCombatPlayer(p) && queen.canAttack(p) ? p : null;
-            if (target == null) {
-                double nearest = 256 * 256;
-                for (Player player : level().players()) {
-                    double distance = distanceToSqr(player);
-                    if (distance < nearest && queen.isValidCurrentCombatPlayer(player) && queen.canAttack(player)) {
-                        nearest = distance;
-                        target = player;
-                    }
-                }
-            }
+            LivingEntity target = queen.getAuthoritativeLivingTarget();
+            boolean hasTarget = target != null;
             BlockHitResult block = level().clip(new ClipContext(from, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-            boolean canRelay = target != null && source == queen;
+            boolean canRelay = hasTarget && source == queen;
             var hit = ProjectileUtil.getEntityHitResult(level(), this, from, block.getLocation(),
                     getBoundingBox().expandTowards(getDeltaMovement()).inflate(0.4),
                     e -> e != source && (canRelay && e instanceof QueenSlimeMinion m && m.isAlive() && m.getBossOwner() == queen && !chain.visited.contains(m.getUUID())
-                            || e instanceof Player player && !hitPlayers.contains(player.getUUID()) && queen.canAttack(player)));
+                            || e instanceof LivingEntity living && (living == target || living instanceof Player)
+                            && !hitTargets.contains(living.getUUID()) && queen.canAttack(living)));
             if (hit != null) {
                 if (hit.getEntity() instanceof QueenSlimeMinion minion) {
                     relay(queen, minion, target);
-                } else if (hit.getEntity() instanceof Player player) {
-                    player.hurt(damageSources().mobProjectile(this, source), (float) CreatureDifficultyScaling.projectileDamage(source, source instanceof QueenSlime ? 32 : 18, false) * (doubleDamage ? 2 : 1));
-                    hitPlayers.add(player.getUUID());
+                } else if (hit.getEntity() instanceof LivingEntity living) {
+                    living.hurt(damageSources().mobProjectile(this, source), (float) CreatureDifficultyScaling.projectileDamage(source, source instanceof QueenSlime ? 32 : 18, false) * (doubleDamage ? 2 : 1));
+                    hitTargets.add(living.getUUID());
                     if (source.getType() != BossEntities.BOUNCY_SLIME.get() || --impactsLeft <= 0)
                         discard();
                     else setPos(hit.getLocation());
@@ -194,7 +186,7 @@ public class RoyalGel extends Projectile implements GeoEntity {
                 setDeltaMovement(motion.subtract(normal.scale((normal.y == 0 ? 1.4 : 1.95) * motion.dot(normal))));
                 if (relayed) {
                     Vec3 reflected = getDeltaMovement().normalize().scale(RELAY_SPEED);
-                    if (target != null && random.nextFloat() < RETARGET_CHANCE) {
+                    if (hasTarget && random.nextFloat() < RETARGET_CHANCE) {
                         Vec3 toward = aimed(position(), target, target.getDeltaMovement(), RELAY_SPEED);
                         if (toward.dot(normal) > 0) reflected = toward;
                     }

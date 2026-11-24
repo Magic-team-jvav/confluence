@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.client.ForgeHooksClient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.voidsea.VoidSeaRenderer;
 import org.mesdag.portlib.diff.Diff;
@@ -132,6 +133,20 @@ public class ModRenderTypes extends RenderStateShard {
 
     public static RenderType entityTranslucentCullOverlay(ResourceLocation texture) {
         return ENTITY_TRANSLUCENT_CULL_OVERLAY.apply(texture);
+    }
+
+    // 封闭射弹模型剔除背面，避免背面的花纹透过贴图镂空叠到正面。
+    private static final Function<ResourceLocation, RenderType> ENTITY_NO_SHADE_CULL = Util.memoize(texture ->
+            RenderType.create("confluence_entity_no_shade_cull", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(new ShaderStateShard(ForgeHooksClient.ClientEvents::getEntityTranslucentUnlitShader))
+                            .setTextureState(new TextureStateShard(texture, false, false))
+                            .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                            .setCullState(CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY)
+                            .createCompositeState(true)));
+
+    public static RenderType entityNoShadeCull(ResourceLocation texture) {
+        return ENTITY_NO_SHADE_CULL.apply(texture);
     }
 
     // 半透明 + 自发光 + 背面剔除：原版 entityTranslucentEmissive 是不剔除的，这里补上剔除，

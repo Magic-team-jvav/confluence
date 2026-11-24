@@ -982,7 +982,8 @@ public enum NPCSpawner implements IGlobalData {
                     BlockPos column = origin.offset(dx, 0, dz);
                     if (!region.isOnRegion(column) || !level.hasChunkAt(column)) continue;
                     BlockPos candidate = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, column);
-                    if (isSafeSpawnLocation(level, candidate, npc)) return Optional.of(candidate);
+                    if (npc.canLiveAt(candidate) && isSafeSpawnLocation(level, candidate, npc))
+                        return Optional.of(candidate);
                 }
             }
         }

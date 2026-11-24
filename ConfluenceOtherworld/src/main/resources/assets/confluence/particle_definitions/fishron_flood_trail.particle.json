@@ -1,0 +1,69 @@
+{
+    "format_version": "1.10.0",
+    "particle_effect": {
+        "description": {
+            "identifier": "confluence:fishron_flood_trail",
+            "basic_render_parameters": {
+                "material": "particles_blend",
+                "texture": "minecraft:generic_6"
+            }
+        },
+        "components": {
+            "minecraft:emitter_rate_steady": {
+                "spawn_rate": 80,
+                "max_particles": 40
+            },
+            "minecraft:emitter_lifetime_expression": {},
+            "minecraft:emitter_shape_point": {
+                "offset": [
+                    "(query.attached_xo - query.attached_x) * v.particle_random_1 + (v.particle_random_2 - 0.5) * 0.65",
+                    "(query.attached_yo - query.attached_y) * v.particle_random_1 + (v.particle_random_3 - 0.5) * 0.36",
+                    "(query.attached_zo - query.attached_z) * v.particle_random_1 + (v.particle_random_4 - 0.5) * 0.65"
+                ],
+                "direction": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "minecraft:particle_lifetime_expression": {
+                "max_lifetime": "0.34 + v.particle_random_4 * 0.12"
+            },
+            "minecraft:particle_initial_speed": 2.6,
+            "minecraft:particle_motion_dynamic": {
+                "linear_acceleration": [
+                    0,
+                    -6,
+                    0
+                ]
+            },
+            "minecraft:particle_appearance_billboard": {
+                "size": [
+                    "0.95 + v.particle_random_2 * 0.45 + v.particle_age * 0.9",
+                    "0.58 + v.particle_random_2 * 0.35 + v.particle_age * 0.65"
+                ],
+                "facing_camera_mode": "rotate_xyz",
+                "uv": {
+                    "texture_width": 8,
+                    "texture_height": 8,
+                    "uv": [
+                        0,
+                        0
+                    ],
+                    "uv_size": [
+                        8,
+                        8
+                    ]
+                }
+            },
+            "minecraft:particle_appearance_tinting": {
+                "color": [
+                    "0.50 + v.particle_random_3 * 0.33",
+                    "0.83 + v.particle_random_3 * 0.15",
+                    1,
+                    "0.9 * math.clamp(1.25 - v.particle_age / v.particle_lifetime * 1.25, 0, 1)"
+                ]
+            }
+        }
+    }
+}

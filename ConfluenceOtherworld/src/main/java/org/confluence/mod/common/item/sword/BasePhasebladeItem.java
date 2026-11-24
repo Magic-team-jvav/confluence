@@ -91,6 +91,7 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
     private static PortItemAttributeModifiers createAttributes(float attackDamage, float attackSpeed) {
         return PortItemAttributeModifiers.builder()
                 .add(LibAttributes.getAttackDamage(), ModItems.BASE_ATTACK_DAMAGE_ID, attackDamage, PortAttributeModifier.Operation.ADD_VALUE, PortEquipmentSlotGroup.MAINHAND)
+                .add(LibAttributes.getCriticalChance(), ModItems.BASE_CRITICAL_CHANCE_ID, SwordDefinition.DEFAULT_CRITICAL_CHANCE, PortAttributeModifier.Operation.ADD_VALUE, PortEquipmentSlotGroup.MAINHAND)
                 .add(Attributes.ATTACK_SPEED, ModItems.BASE_ATTACK_SPEED_ID, attackSpeed, PortAttributeModifier.Operation.ADD_VALUE, PortEquipmentSlotGroup.MAINHAND)
                 .build();
     }

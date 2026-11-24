@@ -43,6 +43,9 @@ public record SwordDefinition(
         List<Consumer<MutableComponent>> tooltips,
         @Nullable Projectile projectile
 ) {
+    // 大部分剑的基础暴击率为 4%，少数剑在各自的定义中单独设置。
+    static final double DEFAULT_CRITICAL_CHANCE = 0.04;
+
     public static Builder builder() {
         return new Builder();
     }
@@ -111,6 +114,7 @@ public record SwordDefinition(
         private boolean specialSweep;
         private boolean tooltipImage;
         private boolean baseAttributes = true;
+        private double criticalChance = DEFAULT_CRITICAL_CHANCE;
         private Projectile projectile;
         private int modifierIndex;
         private final List<Consumer<MutableComponent>> tooltips = new ArrayList<>();
@@ -131,6 +135,11 @@ public record SwordDefinition(
 
         public Builder tooltipImage() {
             tooltipImage = true;
+            return this;
+        }
+
+        public Builder criticalChance(double chance) {
+            criticalChance = chance;
             return this;
         }
 
@@ -186,6 +195,7 @@ public record SwordDefinition(
             if (baseAttributes) {
                 attributesBuilder.add(LibAttributes.getAttackDamage(), new PortAttributeModifier(ModItems.BASE_ATTACK_DAMAGE_ID, rawDamage - 1, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND);
                 attributesBuilder.add(Attributes.ATTACK_SPEED, new PortAttributeModifier(ModItems.BASE_ATTACK_SPEED_ID, rawSpeed - 4, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND);
+                attributesBuilder.add(LibAttributes.getCriticalChance(), new PortAttributeModifier(ModItems.BASE_CRITICAL_CHANCE_ID, criticalChance, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND);
             }
             properties.attributes(attributesBuilder.build());
             return new BuildResult(new SwordDefinition(canSweep, specialSweep, tooltipImage, tooltips, projectile), properties);

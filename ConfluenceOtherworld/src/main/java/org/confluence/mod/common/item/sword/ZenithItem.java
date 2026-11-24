@@ -2,7 +2,8 @@ package org.confluence.mod.common.item.sword;
 
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.common.summoner.projectile.Zenith;
@@ -12,6 +13,7 @@ public class ZenithItem extends BaseSwordItem implements ILeftClickStateItem {
 
     public ZenithItem(Tier tier, ModRarity red, int rawDamage, float rawSpeed) {
         super(tier, red, rawDamage, rawSpeed, SwordDefinition.builder()
+                .criticalChance(0.14)
                 .tooltipImage());
     }
 

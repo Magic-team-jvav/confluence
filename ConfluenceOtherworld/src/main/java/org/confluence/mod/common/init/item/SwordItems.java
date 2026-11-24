@@ -130,7 +130,7 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> STYLISH_SCISSORS = register("stylish_scissors", "时尚剪刀", ModTiers.UNBREAKABLE, 5, 2.2F, ModRarity.GREEN, () -> SwordDefinition.builder().specialSweep(0.8F));
     public static final PortDeferredItem<BaseSwordItem> EXOTIC_SCIMITAR = register("exotic_scimitar", "异域弯刀", () -> new MomentumSwordItem(ModTiers.UNBREAKABLE, ModRarity.GREEN, 7, 2.3F,
             SwordDefinition.builder().specialSweep(0.8F)));
-    public static final PortDeferredItem<BaseSwordItem> KATANA = register("katana", "武士刀", ModTiers.UNBREAKABLE, 6, 3.7F, ModRarity.BLUE, () -> SwordDefinition.builder().specialSweep(0.8F));
+    public static final PortDeferredItem<BaseSwordItem> KATANA = register("katana", "武士刀", ModTiers.UNBREAKABLE, 6, 3.7F, ModRarity.BLUE, () -> SwordDefinition.builder().criticalChance(0.19).specialSweep(0.8F));
 
     // 改横扫大小的宽剑(由 ENTITY_INTERACTION_RANGE 属性控制)
     public static final PortDeferredItem<BaseSwordItem> TERRAGRIM = register("terragrim", "泰拉魔刃", ModTiers.UNBREAKABLE, 7, 7, ModRarity.ORANGE, () -> SwordDefinition.builder()
@@ -156,6 +156,7 @@ public class SwordItems {
 
     // 弹幕剑
     public static final PortDeferredItem<BaseSwordItem> ICE_BLADE = register("ice_blade", "冰雪刃", ModTiers.UNBREAKABLE, 10, 2.0F, ModRarity.BLUE, () -> SwordDefinition.builder()
+            .criticalChance(0.06)
             .projectile(new Projectile(1.0F, 0.6F, 0.9F, 40, 0.0F, 15,
                     ModSoundEvents.FROZEN_ARROW.getId(), ModEntities.ICE_BLADE_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
                     new SwordProjectileAppearance.Model(Confluence.asResource("ice_blade_sword_projectile"),

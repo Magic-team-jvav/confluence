@@ -32,6 +32,7 @@ import org.confluence.mod.client.renderer.item.PhasebladeRenderer;
 import org.confluence.mod.common.entity.projectile.sword.PhasebladeProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.item.ModItems;
 import software.bernie.geckolib.GeckoLibConstants;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -88,6 +89,7 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
     private static ItemAttributeModifiers createAttributes(float attackDamage, float attackSpeed) {
         return ItemAttributeModifiers.builder()
                 .add(LibAttributes.getAttackDamage(), new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, attackDamage, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(LibAttributes.getCriticalChance(), new AttributeModifier(ModItems.BASE_CRITICAL_CHANCE_ID, SwordDefinition.DEFAULT_CRITICAL_CHANCE, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, attackSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .build();
     }

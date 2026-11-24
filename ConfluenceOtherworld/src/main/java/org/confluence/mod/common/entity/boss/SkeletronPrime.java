@@ -6,7 +6,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -368,9 +367,6 @@ public class SkeletronPrime extends MechanicalBoss {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (source.is(DamageTypeTags.IS_DROWNING)) {
-            return false;
-        }
         boolean damaged = super.hurt(source, amount);
         if (damaged && getDamageFeedbackTarget() == this) emitHurtSparks();
         return damaged;

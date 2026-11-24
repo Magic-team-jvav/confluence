@@ -508,9 +508,6 @@ public class Skeletron extends BaseBoss {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (source.is(DamageTypeTags.IS_DROWNING)) {
-            return false;
-        }
         if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             int remainingHands = getRemainingHandCount();
             if (remainingHands != 0) {

@@ -23,6 +23,16 @@ public abstract class BaseLivingBossPart<T extends BaseBoss> extends BaseLivingP
     }
 
     @Override
+    public boolean canBreatheUnderwater() {
+        return true;
+    }
+
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        return BaseBoss.ignoresEnvironmentalDamage(source) || super.isInvulnerableTo(source);
+    }
+
+    @Override
     protected final boolean attachToOwner(T owner) {
         owner.addSubEntity(this);
         return true;

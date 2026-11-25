@@ -1,8 +1,0 @@
-{
-"parent":"minecraft:block/inner_stairs",
-"textures":{
-"bottom":"confluence:block/disc_block",
-"side":"confluence:block/disc_block",
-"top":"confluence:block/disc_block"
-}
-}

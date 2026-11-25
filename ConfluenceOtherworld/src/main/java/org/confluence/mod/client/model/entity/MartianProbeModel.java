@@ -1,7 +1,6 @@
 package org.confluence.mod.client.model.entity;
 
 import net.minecraft.resources.ResourceLocation;
-
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.MartianProbe;
 

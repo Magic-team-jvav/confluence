@@ -2,7 +2,6 @@ package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-
 import org.confluence.lib.util.LibEntityUtils;
 
 public class WandOfSparkingProjectile extends BaseManaStaffProjectileEntity {

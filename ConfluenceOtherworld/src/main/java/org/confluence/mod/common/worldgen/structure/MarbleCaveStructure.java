@@ -30,10 +30,7 @@ import java.util.*;
 
 import static org.confluence.lib.util.LibGeometryUtils.ellipsoidPos;
 import static org.confluence.lib.util.LibGeometryUtils.frustumSetPos;
-import static org.confluence.lib.util.LibStructureUtils.ellipsoid;
-import static org.confluence.lib.util.LibStructureUtils.getHeight;
-import static org.confluence.lib.util.LibStructureUtils.putStalactite;
-import static org.confluence.lib.util.LibStructureUtils.putStalagmite;
+import static org.confluence.lib.util.LibStructureUtils.*;
 
 public class MarbleCaveStructure extends Structure {
     public static final Codec<MarbleCaveStructure> CODEC = simpleCodec(MarbleCaveStructure::new);

@@ -1,8 +1,5 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
-import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
-import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,8 +14,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 

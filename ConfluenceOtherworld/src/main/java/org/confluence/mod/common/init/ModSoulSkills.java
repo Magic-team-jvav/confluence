@@ -1,37 +1,20 @@
 package org.confluence.mod.common.init;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
-import org.confluence.mod.common.soulcerer.skill.SoulProjectileSkill;
-import org.confluence.mod.common.soulcerer.skill.SoulBuffSkill;
-import org.confluence.mod.common.soulcerer.skill.SoulSurgeSkill;
-import org.confluence.mod.common.soulcerer.skill.SurgeBlastSkill;
-import org.confluence.mod.common.soulcerer.skill.SoulMarkSkill;
-import org.confluence.mod.common.soulcerer.skill.PassiveSoulSkill;
-import org.confluence.mod.common.soulcerer.skill.KarmaFlameSkill;
-import org.confluence.mod.common.soulcerer.skill.SoulAssaultSkill;
-import org.confluence.mod.common.soulcerer.skill.BoilingBloodSkill;
-import org.confluence.mod.common.soulcerer.skill.StatefulSoulSkill;
-import org.confluence.mod.common.soulcerer.skill.NaturesWrathSkill;
-import org.confluence.mod.common.soulcerer.skill.ProfaneSoulSkill;
-import org.confluence.mod.common.soulcerer.skill.SoulSkill;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
-import org.confluence.mod.common.soulcerer.skill.SoulLureSkill;
-import org.confluence.mod.common.soulcerer.skill.EnhancedSoulSkill;
-import org.confluence.mod.common.soulcerer.skill.SpiritSurgeSkill;
-import org.confluence.mod.common.soulcerer.skill.SurvivalInstinctSkill;
+import org.confluence.mod.common.soulcerer.skill.*;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.registries.PortCustomRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class ModSoulSkills {
     public static final ResourceKey<Registry<SoulSkill>> REGISTRY_KEY = Confluence.asResourceKey("soulcerer_skill");

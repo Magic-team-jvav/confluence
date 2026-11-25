@@ -2,12 +2,12 @@ package org.confluence.mod.common.item.soulcerer;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
-import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
-import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import net.minecraft.world.item.Item;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
+import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;

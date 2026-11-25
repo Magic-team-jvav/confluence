@@ -1,13 +1,15 @@
 // Adapted from minecraft-lightning skill. See META-INF/arc-surge-lightning-NOTICES.md.
 package org.confluence.mod.client.effect.lightning;
 
-import org.confluence.mod.Confluence;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
-import com.google.gson.*;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 

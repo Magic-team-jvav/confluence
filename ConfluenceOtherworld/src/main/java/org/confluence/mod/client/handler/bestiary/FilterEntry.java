@@ -1,9 +1,9 @@
 package org.confluence.mod.client.handler.bestiary;
 
 import com.google.common.collect.Maps;
-import net.minecraft.resources.ResourceLocation;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

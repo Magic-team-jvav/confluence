@@ -11,7 +11,6 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.boss.SkeletronPrime;

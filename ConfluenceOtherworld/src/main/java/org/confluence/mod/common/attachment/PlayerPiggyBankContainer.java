@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.PlayerContainer;
@@ -15,6 +16,7 @@ import org.confluence.mod.network.s2c.PiggyBankTotalMoneyPacket;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.ApiStatus;
+import org.mesdag.portlib.attachment.IPortAttachmentHolder;
 
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 import static org.confluence.mod.util.PlayerUtils.COIN_2_INDEX;
@@ -22,12 +24,13 @@ import static org.confluence.mod.util.PlayerUtils.decodeCoin;
 
 public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEntity> {
     private long totalMoney;
-    private Player owner;
+    private final LivingEntity owner;
 
-    public PlayerPiggyBankContainer() {
+    public PlayerPiggyBankContainer(IPortAttachmentHolder holder) {
         super(6);
+        this.owner = (LivingEntity) holder;
         addListener(container -> {
-            if (owner != null && owner.level().isClientSide) return;
+            if (owner.level().isClientSide) return;
             long res = 0;
             for (int i = 0; i < container.getContainerSize(); i++) {
                 ItemStack stack = container.getItem(i);
@@ -84,15 +87,8 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
         return res < 0 ? -res : 0;
     }
 
-    @ApiStatus.Internal
-    public void setOwner(Player player) {
-        this.owner = player;
-    }
-
     public static PlayerPiggyBankContainer of(Player player) {
-        PlayerPiggyBankContainer data = player.getData(ModAttachmentTypes.PIGGY_BANK);
-        data.setOwner(player);
-        return data;
+        return player.getData(ModAttachmentTypes.PIGGY_BANK);
     }
 
     public static long placeCoins(Container container, long amount) {

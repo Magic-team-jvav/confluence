@@ -9,7 +9,6 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.entity.projectile.flail.FlowerPowerPetalProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;

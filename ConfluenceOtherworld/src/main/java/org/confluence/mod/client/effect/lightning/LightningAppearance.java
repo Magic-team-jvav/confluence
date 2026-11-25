@@ -1,8 +1,6 @@
 // Adapted from minecraft-lightning skill. See META-INF/arc-surge-lightning-NOTICES.md.
 package org.confluence.mod.client.effect.lightning;
 
-import org.confluence.mod.Confluence;
-
 /** Pure material contract shared by both ribbon passes and their regression checks. */
 final class LightningAppearance {
     private LightningAppearance() {}

@@ -1,9 +1,9 @@
 package org.confluence.mod.client.summoner;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.MultiBufferSource;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
-import net.minecraft.client.renderer.MultiBufferSource;
 
 /**
  * 附件实体渲染器接口。

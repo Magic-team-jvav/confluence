@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen.data_map;
 
-import com.google.common.collect.ImmutableListMultimap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.effect.MobEffect;

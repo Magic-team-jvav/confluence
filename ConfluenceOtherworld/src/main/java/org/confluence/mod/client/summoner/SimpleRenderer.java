@@ -1,8 +1,6 @@
 package org.confluence.mod.client.summoner;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
-import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -10,6 +8,8 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
+import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 

@@ -1,9 +1,8 @@
 package org.confluence.mod.api.event;
 
-import net.minecraftforge.eventbus.api.Cancelable;
-
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.Cancelable;
 import org.confluence.mod.common.attachment.SoulStorage;
 
 @Cancelable

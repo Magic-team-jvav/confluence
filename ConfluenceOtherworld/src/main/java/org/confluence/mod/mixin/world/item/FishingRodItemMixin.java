@@ -1,14 +1,14 @@
 package org.confluence.mod.mixin.world.item;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import com.llamalad7.mixinextras.sugar.Local;
-import org.confluence.mod.common.entity.fishing.FishingSession;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.FishingRodItem;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
+import org.confluence.mod.common.entity.fishing.FishingSession;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.accessory.FishingBobber;
 import org.confluence.mod.mixed.IFishingHook;

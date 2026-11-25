@@ -2,7 +2,6 @@ package org.confluence.mod.common.summoner.projectile;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;

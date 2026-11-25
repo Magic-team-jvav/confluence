@@ -15,14 +15,14 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetLoreFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNameFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.loot.PercentageLootEntry;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.mesdag.portlib.PortLib;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 
 import java.util.ArrayList;
 import java.util.List;

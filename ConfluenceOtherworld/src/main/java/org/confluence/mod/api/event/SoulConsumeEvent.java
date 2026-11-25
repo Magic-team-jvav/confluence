@@ -1,9 +1,8 @@
 package org.confluence.mod.api.event;
 
-import net.minecraftforge.eventbus.api.Cancelable;
-
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.Cancelable;
 
 @Cancelable
 public class SoulConsumeEvent extends PlayerEvent {

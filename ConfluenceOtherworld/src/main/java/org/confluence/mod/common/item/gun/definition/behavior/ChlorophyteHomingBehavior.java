@@ -1,12 +1,11 @@
 package org.confluence.mod.common.item.gun.definition.behavior;
 
-import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
-import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.*;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 
 import java.util.Comparator;

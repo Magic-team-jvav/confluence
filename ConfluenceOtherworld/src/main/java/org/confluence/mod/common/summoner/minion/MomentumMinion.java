@@ -6,10 +6,8 @@ import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.attachmentEntity.IMomentumAttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
-import org.confluence.mod.common.summoner.attachmentEntity.PlannedPath;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.Random;
 
 /**

@@ -8,13 +8,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.minion.*;
-import org.confluence.mod.common.summoner.projectile.DestructionOmen;
-import org.confluence.mod.common.summoner.projectile.EyeFireball;
-import org.confluence.mod.common.summoner.projectile.ForbiddenOrb;
-import org.confluence.mod.common.summoner.projectile.HornetStinger;
-import org.confluence.mod.common.summoner.projectile.ImpFireball;
-import org.confluence.mod.common.summoner.projectile.ProbeLaser;
-import org.confluence.mod.common.summoner.projectile.Zenith;
+import org.confluence.mod.common.summoner.projectile.*;
 
 import java.util.function.Supplier;
 

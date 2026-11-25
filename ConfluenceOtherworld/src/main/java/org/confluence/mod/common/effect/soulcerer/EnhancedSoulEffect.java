@@ -1,11 +1,11 @@
 package org.confluence.mod.common.effect.soulcerer;
 
-import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 public class EnhancedSoulEffect extends PortMobEffect {
     public EnhancedSoulEffect() {

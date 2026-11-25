@@ -2,7 +2,6 @@ package org.confluence.mod.common.init;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
-
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.RepeaterContents;

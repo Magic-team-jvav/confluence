@@ -2,15 +2,15 @@ package org.confluence.mod.common.item.mana;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.common.entity.projectile.mana.ThunderstrikeProjectile;
 import org.confluence.mod.Confluence;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.confluence.mod.common.entity.projectile.mana.ThunderstrikeProjectile;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 

@@ -5,7 +5,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 
 public final class NanoRicochetBehavior extends AbstractBulletBehavior {

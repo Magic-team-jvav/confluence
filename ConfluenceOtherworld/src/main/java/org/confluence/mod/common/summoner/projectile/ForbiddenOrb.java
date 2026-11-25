@@ -4,7 +4,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;

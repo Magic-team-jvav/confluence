@@ -8,8 +8,8 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -18,7 +18,6 @@ import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.entity.projectile.mana.SkyFractureProjectile;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 

@@ -15,7 +15,9 @@ import org.mesdag.portlib.attachment.IPortAttachmentHolder;
 import org.mesdag.portlib.attachment.PortAttachmentSyncHandler;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WhipMarkTracker {
 

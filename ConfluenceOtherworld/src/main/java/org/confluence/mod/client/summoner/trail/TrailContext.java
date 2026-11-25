@@ -7,9 +7,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.client.summoner.RenderContext;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
-import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -3,7 +3,6 @@ package org.confluence.mod.common.entity.monster.slime;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
 public class TropicSlime extends BaseSlime {

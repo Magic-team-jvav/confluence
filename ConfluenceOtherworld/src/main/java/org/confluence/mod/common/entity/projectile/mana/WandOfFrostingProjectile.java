@@ -3,7 +3,6 @@ package org.confluence.mod.common.entity.projectile.mana;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModEffects;
 

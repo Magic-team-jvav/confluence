@@ -3,12 +3,7 @@ package org.confluence.mod.client.effect.lightning;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.util.ConductorArcPath;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 
 /** Warps the skill's cached fractal tree onto the conductor-field guide. */

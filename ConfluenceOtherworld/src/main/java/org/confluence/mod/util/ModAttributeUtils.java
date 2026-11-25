@@ -6,8 +6,8 @@ import net.minecraft.network.chat.MutableComponent;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.mesdag.portlib.event.client.PortAddAttributeTooltipsEvent;
 
 import static net.minecraft.world.item.ItemStack.ATTRIBUTE_MODIFIER_FORMAT;

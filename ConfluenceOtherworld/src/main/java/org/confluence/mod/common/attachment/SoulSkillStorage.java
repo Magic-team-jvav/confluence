@@ -8,19 +8,15 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import org.mesdag.portlib.wrapper.IPortNBTSerializable;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.IPortNBTSerializable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {

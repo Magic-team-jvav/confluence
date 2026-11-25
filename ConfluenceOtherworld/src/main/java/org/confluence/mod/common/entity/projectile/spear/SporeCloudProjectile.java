@@ -7,7 +7,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.mesdag.particlestorm.data.molang.MolangExp;

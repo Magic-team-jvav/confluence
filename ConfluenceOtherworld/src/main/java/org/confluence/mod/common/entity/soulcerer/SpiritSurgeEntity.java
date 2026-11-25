@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.soulcerer;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
-import org.confluence.mod.util.SoulcererUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -22,6 +21,7 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;

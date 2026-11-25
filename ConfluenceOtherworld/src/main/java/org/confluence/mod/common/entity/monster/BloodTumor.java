@@ -1,18 +1,18 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
-import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 
 /// 血腥孢子爆裂后生成的静止肿瘤。
 ///

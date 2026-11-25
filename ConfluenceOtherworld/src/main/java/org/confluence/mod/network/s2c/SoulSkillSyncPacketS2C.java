@@ -2,16 +2,16 @@ package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
-import org.mesdag.portlib.network.codec.PortStreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.resources.ResourceLocation;
-import org.mesdag.portlib.network.PortPacketDistributor;
-import org.mesdag.portlib.network.IPortPacket;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.attachment.SoulSkillStorage;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record SoulSkillSyncPacketS2C(CompoundTag data) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("soulcerer_skill_sync");

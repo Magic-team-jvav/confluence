@@ -1,9 +1,9 @@
 package org.confluence.mod.client.renderer.tooltip;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;

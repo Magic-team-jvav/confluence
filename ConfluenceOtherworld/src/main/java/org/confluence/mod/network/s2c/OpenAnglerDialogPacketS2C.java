@@ -15,7 +15,8 @@ public record OpenAnglerDialogPacketS2C(
         int entityId,
         byte state,
         Item questFish,
-        String levelName
+        String levelName,
+        int questCount
 ) implements IPacketS2C {
     public static final byte COMPLETED = 0;
     public static final byte NO_QUEST = 1;
@@ -30,6 +31,7 @@ public record OpenAnglerDialogPacketS2C(
                     ByteBufCodecs.BYTE, OpenAnglerDialogPacketS2C::state,
                     ByteBufCodecs.registry(Registries.ITEM), OpenAnglerDialogPacketS2C::questFish,
                     ByteBufCodecs.STRING_UTF8, OpenAnglerDialogPacketS2C::levelName,
+                    ByteBufCodecs.VAR_INT, OpenAnglerDialogPacketS2C::questCount,
                     OpenAnglerDialogPacketS2C::new
             );
 
@@ -41,7 +43,7 @@ public record OpenAnglerDialogPacketS2C(
             case WAKE_UP -> AnglerDialogScreen.State.WAKE_UP;
             default -> AnglerDialogScreen.State.SHOW_HINT;
         };
-        AnglerDialogScreen.open(entityId, s, questFish, levelName);
+        AnglerDialogScreen.open(entityId, s, questFish, levelName, questCount);
     }
 
     @Override

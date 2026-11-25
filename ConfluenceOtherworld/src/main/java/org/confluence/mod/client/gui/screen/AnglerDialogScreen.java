@@ -18,13 +18,15 @@ public class AnglerDialogScreen extends NPCDialogScreen {
     private final State state;
     private final ItemStack questFish;
     private final String levelName;
+    private final Component questCountText;
     private boolean showQuestFish;
 
-    public AnglerDialogScreen(int entityId, State state, Item questFish, String levelName) {
+    public AnglerDialogScreen(int entityId, State state, Item questFish, String levelName, int questCount) {
         super(entityId);
         this.state = state;
         this.questFish = questFish.getDefaultInstance();
         this.levelName = levelName;
+        this.questCountText = Component.translatable("gui.confluence.angler.quest_count", questCount);
         this.showQuestFish = state == State.SHOW_HINT;
     }
 
@@ -66,7 +68,7 @@ public class AnglerDialogScreen extends NPCDialogScreen {
             }
             case SHOW_HINT -> {
                 String key = "dialogs.confluence.angler." + questFish.getDescriptionId();
-                dialogText = Component.translatable(key);
+                dialogText = withQuestCount(Component.translatable(key));
             }
             case WAKE_UP ->
                     dialogText = Component.translatable(anglerDialogPrefix(npc) + ".wakeup." + npc.getRandom().nextInt(3));
@@ -76,9 +78,12 @@ public class AnglerDialogScreen extends NPCDialogScreen {
     private void showQuestText() {
         showQuestFish = state == State.SHOW_HINT;
         switch (state) {
-            case COMPLETED -> dialogText = Component.translatable("dialogs.confluence.angler.completed");
-            case NO_QUEST -> dialogText = Component.translatable("dialogs.confluence.angler.no_quest");
-            case SHOW_HINT -> dialogText = Component.translatable("dialogs.confluence.angler.quest_fish", Component.translatable(questFish.getDescriptionId()));
+            case COMPLETED ->
+                    dialogText = withQuestCount(Component.translatable("dialogs.confluence.angler.completed"));
+            case NO_QUEST ->
+                    dialogText = withQuestCount(Component.translatable("dialogs.confluence.angler.no_quest"));
+            case SHOW_HINT ->
+                    dialogText = withQuestCount(Component.translatable("dialogs.confluence.angler.quest_fish", Component.translatable(questFish.getDescriptionId())));
             case WAKE_UP -> {
                 if (minecraft == null || minecraft.level == null) break;
                 Entity entity = minecraft.level.getEntity(entityId);
@@ -87,6 +92,10 @@ public class AnglerDialogScreen extends NPCDialogScreen {
                 }
             }
         }
+    }
+
+    private Component withQuestCount(Component taskText) {
+        return Component.empty().append(taskText).append("\n\n").append(questCountText);
     }
 
     /// 两种渔夫共用任务界面，但人物语气使用各自的翻译前缀。
@@ -105,7 +114,7 @@ public class AnglerDialogScreen extends NPCDialogScreen {
         }
     }
 
-    public static void open(int entityId, State state, Item questFish, String levelName) {
-        Minecraft.getInstance().setScreen(new AnglerDialogScreen(entityId, state, questFish, levelName));
+    public static void open(int entityId, State state, Item questFish, String levelName, int questCount) {
+        Minecraft.getInstance().setScreen(new AnglerDialogScreen(entityId, state, questFish, levelName, questCount));
     }
 }

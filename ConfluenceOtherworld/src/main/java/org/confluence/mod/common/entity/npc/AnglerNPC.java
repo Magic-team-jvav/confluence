@@ -177,10 +177,11 @@ public class AnglerNPC extends BaseNPC {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
             if (hand == InteractionHand.OFF_HAND || !canStartInteraction(serverPlayer))
                 return InteractionResult.SUCCESS;
+            PlayerSpecialData data = PlayerSpecialData.of(serverPlayer);
             if (!isWakeUp()) {
                 initName();
                 recordInteraction(serverPlayer);
-                PacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.WAKE_UP, Items.AIR, levelName(serverPlayer)));
+                PacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.WAKE_UP, Items.AIR, levelName(serverPlayer), data.getAnglerQuestCount()));
                 return InteractionResult.sidedSuccess(level().isClientSide);
             }
             initName();
@@ -188,18 +189,17 @@ public class AnglerNPC extends BaseNPC {
 
             ServerLevel serverLevel = (ServerLevel) level();
             AnglerData.INSTANCE.refreshIfNeeded(serverLevel);
-            PlayerSpecialData data = PlayerSpecialData.of(serverPlayer);
             if (data.hasCompletedAnglerQuestToday(serverLevel)) {
-                PacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.COMPLETED, Items.AIR, levelName(serverPlayer)));
+                PacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.COMPLETED, Items.AIR, levelName(serverPlayer), data.getAnglerQuestCount()));
             } else if (!AnglerData.INSTANCE.hasValidQuest()) {
-                PacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.NO_QUEST, Items.AIR, levelName(serverPlayer)));
+                PacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.NO_QUEST, Items.AIR, levelName(serverPlayer), data.getAnglerQuestCount()));
             } else {
                 Item questFish = AnglerData.INSTANCE.getQuestFish();
                 if (player.getInventory().countItem(questFish) > 0) {
                     submitQuest(serverPlayer, questFish, data);
                     return InteractionResult.sidedSuccess(level().isClientSide);
                 } else {
-                    PacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.SHOW_HINT, questFish, levelName(serverPlayer)));
+                    PacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.SHOW_HINT, questFish, levelName(serverPlayer), data.getAnglerQuestCount()));
                 }
             }
         }

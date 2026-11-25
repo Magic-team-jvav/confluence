@@ -44,7 +44,7 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
             }
             if (totalMoney != res) {
                 this.totalMoney = res;
-                if (owner instanceof ServerPlayer player) {
+                if (owner instanceof ServerPlayer player && player.connection != null) {
                     PiggyBankTotalMoneyPacket.sendToClient(player, this, false);
                 }
             }

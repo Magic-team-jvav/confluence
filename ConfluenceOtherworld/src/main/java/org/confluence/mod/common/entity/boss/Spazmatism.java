@@ -181,7 +181,7 @@ public class Spazmatism extends AbstractTwinEye {
             }
         } else if (comboChargeEmitter == null || comboChargeEmitter.isRemoved()) {
             // 直接复用现有火焰，附着实体后以局部变换将发射器移到发射口。
-            comboChargeEmitter = new ParticleEmitter(level(), position(), Confluence.asResource("twins_flame_charge"));
+            comboChargeEmitter = new ParticleEmitter(level(), position(), Confluence.asResource("spazmatism_combo_charge_flame_1"));
             comboChargeEmitter.attachEntity(this);
             comboChargeEmitter.setLocalSpace(new Matrix4x3f());
             MolangParticleEngine.INSTANCE.addEmitter(comboChargeEmitter);
@@ -491,19 +491,19 @@ public class Spazmatism extends AbstractTwinEye {
     protected SoundEvent getDeathSound() {return ModSoundEvents.METAL_DEATH.get();}
 
     private enum State {
-        /// 接近目标并调整攻击位置。
+        // 接近目标并调整攻击位置。
         APPROACH,
-        /// 一阶段发射焰球，二阶段持续喷射魔焰流。
+        // 一阶段发射焰球，二阶段持续喷射魔焰流。
         FIRE,
-        /// 冲刺前预测目标位置并蓄力。
+        // 冲刺前预测目标位置并蓄力。
         WINDUP,
-        /// 沿锁定方向直线冲刺。
+        // 沿锁定方向直线冲刺。
         DASH,
-        /// 单次冲刺后的短暂减速，随后继续连冲或回到喷火循环。
+        // 单次冲刺后的短暂减速，随后继续连冲或回到喷火循环。
         RECOVER,
-        /// 蓄力并等待发射组合技巨焰。
+        // 蓄力并等待发射组合技巨焰。
         COMBO_CHARGE,
-        /// 巨焰发射后等待激光眼引爆。
+        // 巨焰发射后等待激光眼引爆。
         COMBO_WAIT
     }
 

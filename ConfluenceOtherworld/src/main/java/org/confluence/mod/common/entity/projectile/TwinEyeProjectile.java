@@ -202,8 +202,8 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
         }
         if (!level().isClientSide || isRemoved() || variant == Variant.LASER) return;
         if (flameEmitter == null || flameEmitter.isRemoved()) {
-            String effect = isGiantFlame() ? "twins_giant_flame"
-                    : entityData.get(RAIN) ? "twins_flame_rain" : "cursed_flames";
+            String effect = isGiantFlame() ? "spazmatism_combo_wait_fireball_1"
+                    : entityData.get(RAIN) ? "retinazer_combo_fire_fire_rain_1" : "cursed_flames";
             flameEmitter = new ParticleEmitter(level(), position(), Confluence.asResource(effect));
             flameEmitter.attachEntity(this);
             MolangParticleEngine.INSTANCE.addEmitter(flameEmitter);
@@ -220,7 +220,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
     @Override
     public void handleEntityEvent(byte event) {
         if (event == FLAME_BURST_EVENT && level().isClientSide) {
-            ParticleEmitter burst = new ParticleEmitter(level(), position(), Confluence.asResource("twins_flame_burst"));
+            ParticleEmitter burst = new ParticleEmitter(level(), position(), Confluence.asResource("retinazer_combo_fire_fireburst_1"));
             /// 一次性发射数量和寿命由粒子定义控制，Java 只负责触发。
             MolangParticleEngine.INSTANCE.addEmitter(burst);
         } else super.handleEntityEvent(event);

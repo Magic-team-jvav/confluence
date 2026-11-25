@@ -218,7 +218,8 @@ public final class BossEntities {
                     .state(DukeFishron.Temperament.ENRAGED, state -> state.attribute(Attributes.ATTACK_DAMAGE, 73).attribute(Attributes.ARMOR, 45))
                     .build());
     public static final RegistryObject<EntityType<FishronProjectile>> FISHRON_TORNADO = registerEntity("fishron_tornado", "鲨鱼龙卷", EntityType.Builder.of(FishronProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(16).updateInterval(1).noSave());
-    public static final RegistryObject<EntityType<FishronProjectile>> SHARKRON = registerEntity("sharkron", "鲨鱼龙", EntityType.Builder.of(FishronProjectile::new, MobCategory.MISC).sized(0.85F, 0.85F).clientTrackingRange(16).updateInterval(1).noSave());
+    public static final RegistryObject<EntityType<Sharkron>> SHARKRON = withAttributes(registerEntity("sharkron", "鲨鱼龙", EntityType.Builder.of(Sharkron::new, MobCategory.MONSTER).sized(0.85F, 0.85F).clientTrackingRange(16).updateInterval(1)),
+            () -> CreatureAttributeBuilder.aquatic().maxHealth(39).attackDamage(39).followRange(48).movementSpeed(1.2).build());
     public static final RegistryObject<EntityType<FishronProjectile>> FISHRON_FLOOD = registerEntity("fishron_flood", "公爵洪流", EntityType.Builder.of(FishronProjectile::new, MobCategory.MISC).sized(0.65F, 0.65F).clientTrackingRange(16).updateInterval(1).noSave());
     public static final RegistryObject<EntityType<FishronProjectile>> DETONATING_BUBBLE = registerEntity("detonating_bubble", "爆破泡泡", EntityType.Builder.of(FishronProjectile::new, MobCategory.MISC).sized(0.65F, 0.65F).clientTrackingRange(16).updateInterval(1).noSave());
     public static final RegistryObject<EntityType<FishronProjectile>> RAZORBLADE_TYPHOON = registerEntity("razorblade_typhoon", "利刃台风", EntityType.Builder.of(FishronProjectile::new, MobCategory.MISC).sized(1.7F, 1.7F).clientTrackingRange(16).updateInterval(1).noSave());

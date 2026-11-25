@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -33,6 +34,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.IntFunction;
 
 /// 女皇在半血时结束当前地面动作，切换到空中追击。
 public class QueenSlime extends BaseBoss {
@@ -140,7 +142,28 @@ public class QueenSlime extends BaseBoss {
     // 每刻在冲击波边缘均匀布置的粒子点数量。
     private static final int IMPACT_RING_POINTS = 32;
 
-    private enum Action {IDLE, HOPS, RISE, DROP, VOLLEY, RECOVER, LANDING}
+    private enum Action {
+        // 依据阶段与攻击间隔选择下一步行动。
+        IDLE,
+        // 以连续跳跃逼近目标。
+        HOPS,
+        // 移向目标上方，准备砸地。
+        RISE,
+        // 经过下落前摇后俯冲，触地时触发冲击。
+        DROP,
+        // 蓄力后齐射皇家凝胶。
+        VOLLEY,
+        // 传送后短暂恢复，再次选择动作。
+        RECOVER,
+        // 保持落地动作，结束后返回待机。
+        LANDING;
+
+        private static final IntFunction<Action> BY_ID = ByIdMap.sparse(Enum::ordinal, values(), IDLE);
+
+        private static Action fromOrdinal(int ordinal) {
+            return BY_ID.apply(ordinal);
+        }
+    }
 
     private static final EntityDataAccessor<Byte> DATA_ACTION =
             SynchedEntityData.defineId(QueenSlime.class, EntityDataSerializers.BYTE);
@@ -504,22 +527,22 @@ public class QueenSlime extends BaseBoss {
     private static final RawAnimation FOLD_WINGS = RawAnimation.begin().thenPlayAndHold("falling");
 
     private RawAnimation bodyAnimation() {
-        byte current = entityData.get(DATA_ACTION);
+        Action current = Action.fromOrdinal(entityData.get(DATA_ACTION));
         byte hop = entityData.get(HOP_STAGE);
         if (hop == WINDUP || hop == ASCENT) return JUMP;
-        if (current == Action.LANDING.ordinal() || landingAnimationTicks > 0 && onGround())
+        if (current == Action.LANDING || landingAnimationTicks > 0 && onGround())
             return REST;
         if (hop == DESCENT) return FALL;
         if (isFlyingPhase()) {
-            if (current == Action.IDLE.ordinal() && !isNoGravity())
+            if (current == Action.IDLE && !isNoGravity())
                 return onGround() ? IDLE_ANIMATION : FALL;
-            if (current == Action.DROP.ordinal())
+            if (current == Action.DROP)
                 return entityData.get(DATA_DIVING) ? FALL : FOLD_WINGS;
             return entityData.get(DATA_DESCENDING_FLIGHT) ? DIVE_FLIGHT : FLY;
         }
-        if (current == Action.VOLLEY.ordinal() && onGround()) return CHARGE;
-        if (current == Action.DROP.ordinal()) return FALL;
-        if (current == Action.RISE.ordinal()) return onGround() ? IDLE_ANIMATION : JUMP;
+        if (current == Action.VOLLEY && onGround()) return CHARGE;
+        if (current == Action.DROP) return FALL;
+        if (current == Action.RISE) return onGround() ? IDLE_ANIMATION : JUMP;
         if (onGround()) return IDLE_ANIMATION;
         return getDeltaMovement().y > 0 ? JUMP : FALL;
     }

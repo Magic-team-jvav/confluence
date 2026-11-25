@@ -452,21 +452,22 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             int trigger = (TheDestroyer.SEGMENT_COUNT - 1 - index) * 100 / (TheDestroyer.SEGMENT_COUNT - 1);
             if (last >= trigger || tick < trigger) continue;
             Entity section = boss.getBody().getSection(index);
-            ParticleEmitter lightning = new ParticleEmitter(boss.level(), section.position(), Confluence.asResource("destroyer_attack_lightning"));
+            ParticleEmitter lightning = new ParticleEmitter(boss.level(), section.position(), Confluence.asResource("the_destroyer_beam_lightning_1"));
             lightning.attach(IPSEntity.of(section));
             MolangParticleEngine.INSTANCE.addEmitter(lightning);
             SECTION_LIGHTNING.computeIfAbsent(boss, ignored -> new ArrayList<>()).add(lightning);
         }
         if (last < 100 && tick >= 100) {
-            addBeamEmitter(boss, emitters, "ball");
-            addBeamEmitter(boss, emitters, "inner2");
-            addBeamEmitter(boss, emitters, "inner");
+            addBeamEmitter(boss, emitters, "the_destroyer_beam_orb_1");
+            addBeamEmitter(boss, emitters, "the_destroyer_beam_core_2");
+            addBeamEmitter(boss, emitters, "the_destroyer_beam_core_1");
         }
-        if (last < 143 && tick >= 143) addBeamEmitter(boss, emitters, "inner_round");
+        if (last < 143 && tick >= 143)
+            addBeamEmitter(boss, emitters, "the_destroyer_beam_inner_ring_1");
         if (last < 220 && tick >= 220) {
-            addBeamEmitter(boss, emitters, "out");
-            addBeamEmitter(boss, emitters, "ball1");
-            addBeamEmitter(boss, emitters, "round");
+            addBeamEmitter(boss, emitters, "the_destroyer_beam_outer_glow_1");
+            addBeamEmitter(boss, emitters, "the_destroyer_beam_orb_2");
+            addBeamEmitter(boss, emitters, "the_destroyer_beam_ring_1");
         }
         if (last < 420 && tick >= 420) {
             emitters.forEach(ParticleEmitter::remove);
@@ -487,7 +488,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
     }
 
     private static void addBeamEmitter(TheDestroyer boss, List<ParticleEmitter> emitters, String name) {
-        ParticleEmitter emitter = new ParticleEmitter(boss.level(), boss.beamOrigin(), Confluence.asResource("destroyer_attack_" + name));
+        ParticleEmitter emitter = new ParticleEmitter(boss.level(), boss.beamOrigin(), Confluence.asResource(name));
         emitters.add(emitter);
         MolangParticleEngine.INSTANCE.addEmitter(emitter);
     }

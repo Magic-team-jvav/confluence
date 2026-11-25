@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -33,6 +34,8 @@ import org.confluence.mod.common.item.common.TreasureBagItem;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
+
+import java.util.function.IntFunction;
 
 
 /// 独眼巨鹿 Boss。
@@ -591,8 +594,7 @@ public class DeerClops extends BaseBoss {
 
     public CombatState getCombatState() {
         int state = entityData.get(DATA_COMBAT_STATE);
-        CombatState[] states = CombatState.values();
-        return state >= 0 && state < states.length ? states[state] : CombatState.IDLE;
+        return CombatState.fromOrdinal(state);
     }
 
     private void setCombatState(CombatState state) {
@@ -624,25 +626,31 @@ public class DeerClops extends BaseBoss {
 
     /// 客户端动画和测试共同使用的少量稳定战斗状态。
     public enum CombatState {
-        /// 等待下一次攻击。
+        // 等待下一次攻击。
         IDLE,
-        /// 进入吼叫的起手阶段。
+        // 进入吼叫的起手阶段。
         ROAR,
-        /// 持续播放吼叫并推进登场阶段。
+        // 持续播放吼叫并推进登场阶段。
         ROARING,
-        /// 追赶玩家，按距离选择攻击。
+        // 追赶玩家，按距离选择攻击。
         CHASE,
-        /// 执行本轮冰击或暗影手攻击。
-        ATTACK
+        // 执行本轮冰击或暗影手攻击。
+        ATTACK;
+
+        private static final IntFunction<CombatState> BY_ID = ByIdMap.sparse(Enum::ordinal, values(), IDLE);
+
+        private static CombatState fromOrdinal(int ordinal) {
+            return BY_ID.apply(ordinal);
+        }
     }
 
     /// 冰击的位置分支。该类型只描述本次已经选中的攻击方式，不承担状态机推进。
     enum AttackPattern {
-        /// 向远处目标抛射冰块。
+        // 向远处目标抛射冰块。
         THROWN_ICE,
-        /// 生成暗影手攻击目标。
+        // 生成暗影手攻击目标。
         SHADOW_HAND,
-        /// 沿地面生成冰柱波。
+        // 沿地面生成冰柱波。
         ICE_PILLAR
     }
 

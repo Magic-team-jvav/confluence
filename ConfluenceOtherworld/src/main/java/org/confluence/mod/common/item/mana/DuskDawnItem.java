@@ -1,8 +1,6 @@
 package org.confluence.mod.common.item.mana;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -32,10 +30,6 @@ public class DuskDawnItem extends ManaStaffItem<AbstractLittleCelestialEntity> {
 
     public DuskDawnItem(ModRarity rarity) {
         super(rarity, DuskDawnItem::createProjectile, BASE_DAMAGE, MANA_COST, 6.0F, 16, 0.04);
-        withTooltip(
-                Component.translatable("tooltip.item.confluence.dusk_dawn.0").withStyle(ChatFormatting.GRAY),
-                Component.translatable("tooltip.item.confluence.dusk_dawn.1").withStyle(ChatFormatting.GRAY)
-        );
     }
 
     /// 与裂天剑一致，在 tooltip 里额外画出大图预览（使用 HEAD 视角模型里的 24x 贴图）

@@ -38,7 +38,7 @@ public abstract class MechanicalBoss extends BaseBoss {
         if (paralyzed) {
             setDeltaMovement(Vec3.ZERO);
             if (level().isClientSide && tickCount % 6 == 0) {
-                ParticleEmitter arc = new ParticleEmitter(level(), position(), Confluence.asResource("destroyer_attack_lightning"));
+                ParticleEmitter arc = new ParticleEmitter(level(), position(), Confluence.asResource("the_destroyer_beam_lightning_1"));
                 arc.attach(IPSEntity.of(this));
                 MolangParticleEngine.INSTANCE.addEmitter(arc);
             }

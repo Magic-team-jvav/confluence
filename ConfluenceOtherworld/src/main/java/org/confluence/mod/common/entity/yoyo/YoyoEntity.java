@@ -181,7 +181,7 @@ public final class YoyoEntity extends Projectile implements GeoEntity, Immunity 
             }
             return;
         }
-        if (!(rawOwner instanceof ServerPlayer owner) || !owner.isAlive() || owner.isSpectator() || item == null || damage <= 0.0F) {
+        if (!(rawOwner instanceof ServerPlayer owner) || !owner.isAlive() || owner.isSpectator() || item == null) {
             discard();
             return;
         }
@@ -191,7 +191,7 @@ public final class YoyoEntity extends Projectile implements GeoEntity, Immunity 
             discard();
             return;
         }
-        if (!isCounterweight() && !isReturning()) item.tickAttack(this);
+        if (damage > 0 && !isCounterweight() && !isReturning()) item.tickAttack(this);
         if (isDetached()) tickDetached(owner, owner, item);
         else tickMovement(owner, owner, item);
     }
@@ -271,6 +271,7 @@ public final class YoyoEntity extends Projectile implements GeoEntity, Immunity 
     }
 
     private void damageTouchingTargets(ServerPlayer owner, YoyoItem item, ItemStack liveWeapon, Vec3 from, Vec3 to) {
+        if (damage <= 0) return;
         double radius = isCounterweight() ? 0.3 : item.hitRadius();
         List<Entity> nearby = level().getEntities(this, new AABB(from, to).inflate(radius + getBbWidth() * 0.5), entity -> entity != this);
         if (nearby.isEmpty()) return;

@@ -2,7 +2,7 @@
     "format_version": "1.10.0",
     "particle_effect": {
         "description": {
-            "identifier": "confluence:wall_of_flesh_bag_guide",
+            "identifier": "confluence:wall_of_flesh_death_bag_trail_1",
             "basic_render_parameters": {
                 "material": "particles_add",
                 "texture": "confluence:evil_granule"

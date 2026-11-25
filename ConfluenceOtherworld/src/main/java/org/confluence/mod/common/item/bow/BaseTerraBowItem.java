@@ -7,6 +7,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -26,6 +27,7 @@ import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.mixed.IAbstractArrow;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.ModUtils;
@@ -34,6 +36,9 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.mesdag.portlib.wrapper.common.extensions.IPortLivingEntityExtension;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileWeaponItemExtension;
+import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
+import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.List;
 
@@ -48,6 +53,12 @@ public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
 
     public BaseTerraBowItem(float baseDamage, Properties properties) {
         this(baseDamage, properties, null);
+    }
+
+    protected BaseTerraBowItem(float baseDamage, Properties properties, double knockback) {
+        this(baseDamage, properties.attributes(PortItemAttributeModifiers.builder()
+                .add(Attributes.ATTACK_KNOCKBACK, new PortAttributeModifier(ModItems.BASE_ATTACK_KNOCKBACK_ID, knockback,
+                        PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND).build()));
     }
 
     public BaseTerraBowItem(float baseDamage, Properties properties, @Nullable Ingredient repairIngredient) {

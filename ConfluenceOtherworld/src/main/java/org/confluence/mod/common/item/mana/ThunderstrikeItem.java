@@ -2,17 +2,13 @@ package org.confluence.mod.common.item.mana;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.mana.ThunderstrikeProjectile;
-import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
-import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 /** The server resolves the aim from its own player rotation and bounded scroll distance. */
 public final class ThunderstrikeItem extends ManaStaffItem<ThunderstrikeProjectile> {
@@ -21,11 +17,6 @@ public final class ThunderstrikeItem extends ManaStaffItem<ThunderstrikeProjecti
 
     public ThunderstrikeItem() {
         super(ModRarity.PINK, ThunderstrikeProjectile::new, 45, 12, 8, 20, 0.14);
-        withTooltip(net.minecraft.network.chat.Component.translatable("tooltip.item.confluence.thunderstrike.0")
-                .withStyle(net.minecraft.ChatFormatting.GRAY));
-        addAttributeModifiers(builder -> builder.add(Attributes.ATTACK_KNOCKBACK,
-                new PortAttributeModifier(Confluence.asResource("thunderstrike"), 0.5, PortAttributeModifier.Operation.ADD_VALUE),
-                PortEquipmentSlotGroup.MAINHAND));
     }
 
     public static boolean held(Player player) {

@@ -208,7 +208,7 @@ public final class DestroyerPart extends PartEntity<TheDestroyer> implements Bos
                 for (int id : ids) {
                     ParticleEmitter emitter = MolangParticleEngine.INSTANCE.getEmitter(id);
                     if (emitter != null && !emitter.isRemoved()) {
-                        boolean smoke = emitter.particleId.equals(Confluence.asResource("destroyer_smoke"));
+                        boolean smoke = emitter.particleId.equals(Confluence.asResource("the_destroyer_sky_smoke_1"));
                         boolean allowed = !smoke || index % 6 == 1 && !smokeEnabled;
                         if (smoke && allowed) smokeEnabled = true;
                         // 烟雾持续留下轨迹；火焰等喷流仍按原分组交替。

@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
@@ -22,17 +23,13 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Optional;
+import java.util.function.IntFunction;
 
 /// 世纪之花用于移动的三个临时抓钩之一。
 ///
 /// 抓钩锚定方块并为主体提供移动目标；它不独立持有 Boss 生命周期，
 /// 主体消失、脱战或重新构建附属实体时必须一并清理。
 public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEntity {
-    static final int STATE_IDLE = 0;
-    static final int STATE_EXTENDING = 1;
-    static final int STATE_GRABBED = 2;
-    static final int STATE_RETRACTING = 3;
-
     private static final String HOOK_INDEX_TAG = "HookIndex";
     private static final String ANCHOR_TAG = "Anchor";
     private static final String STATE_TAG = "State";
@@ -58,7 +55,7 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
         }
         entityData.set(HOOK_INDEX, Mth.clamp(hookIndex, 0, Plantera.HOOK_COUNT - 1));
         setAnchor(anchor);
-        setState(anchor == null ? STATE_IDLE : STATE_EXTENDING);
+        setState(anchor == null ? State.IDLE : State.EXTENDING);
         master.bindHook(this);
     }
 
@@ -74,23 +71,23 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
         entityData.set(ANCHOR, Optional.ofNullable(anchor == null ? null : anchor.immutable()));
     }
 
-    public int getState() {
-        return entityData.get(STATE);
+    State getState() {
+        return State.fromOrdinal(entityData.get(STATE));
     }
 
-    public void setState(int state) {
-        entityData.set(STATE, Mth.clamp(state, STATE_IDLE, STATE_RETRACTING));
+    void setState(State state) {
+        entityData.set(STATE, state.ordinal());
     }
 
     public boolean hasReachedAnchor() {
-        return getState() == STATE_GRABBED;
+        return getState() == State.GRABBED;
     }
 
     @Override
     protected void definePartSynchedData() {
         entityData.define(HOOK_INDEX, 0);
         entityData.define(ANCHOR, Optional.empty());
-        entityData.define(STATE, STATE_IDLE);
+        entityData.define(STATE, State.IDLE.ordinal());
     }
 
     @Override
@@ -102,24 +99,24 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
     protected void tickPart(Plantera master) {
         if (level().isClientSide) return;
 
-        int state = getState();
+        State state = getState();
         BlockPos anchor = getAnchor();
-        if ((state == STATE_EXTENDING || state == STATE_GRABBED) && (anchor == null || !master.isValidHookAnchor(anchor))) {
+        if ((state == State.EXTENDING || state == State.GRABBED) && (anchor == null || !master.isValidHookAnchor(anchor))) {
             setAnchor(null);
-            setState(STATE_RETRACTING);
-            state = STATE_RETRACTING;
+            setState(State.RETRACTING);
+            state = State.RETRACTING;
         }
 
-        Vec3 targetCenter = state == STATE_IDLE
-                || state == STATE_RETRACTING
+        Vec3 targetCenter = state == State.IDLE
+                || state == State.RETRACTING
                 ? master.getBoundingBox().getCenter()
                 : Vec3.atCenterOf(anchor);
         Vec3 offset = targetCenter.subtract(getBoundingBox().getCenter());
         if (offset.lengthSqr() <= HOOK_SPEED * HOOK_SPEED) {
-            if (state == STATE_RETRACTING) {
-                setState(STATE_IDLE);
-            } else if (state == STATE_EXTENDING) {
-                setState(STATE_GRABBED);
+            if (state == State.RETRACTING) {
+                setState(State.IDLE);
+            } else if (state == State.EXTENDING) {
+                setState(State.GRABBED);
                 spawnThorns(master, anchor);
             }
             Vec3 movement = offset.scale(FOLLOW_MOMENTUM);
@@ -161,13 +158,13 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
     protected void readPartSaveData(CompoundTag tag) {
         entityData.set(HOOK_INDEX, Mth.clamp(tag.getInt(HOOK_INDEX_TAG), 0, Plantera.HOOK_COUNT - 1));
         setAnchor(tag.contains(ANCHOR_TAG) ? BlockPos.of(tag.getLong(ANCHOR_TAG)) : null);
-        setState(tag.getInt(STATE_TAG));
+        setState(State.fromOrdinal(tag.getInt(STATE_TAG)));
     }
 
     @Override
     protected void addPartSaveData(CompoundTag tag) {
         tag.putInt(HOOK_INDEX_TAG, getHookIndex());
-        tag.putInt(STATE_TAG, getState());
+        tag.putInt(STATE_TAG, getState().ordinal());
         BlockPos anchor = getAnchor();
         if (anchor != null) tag.putLong(ANCHOR_TAG, anchor.asLong());
     }
@@ -183,5 +180,22 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+    enum State {
+        // 等待主体分配下一个落点。
+        IDLE,
+        // 向锚点伸出，抵达后允许牵引。
+        EXTENDING,
+        // 抓住锚点，供主体计算移动方向。
+        GRABBED,
+        // 收回钩爪，为下一轮抓取腾出位置。
+        RETRACTING;
+
+        private static final IntFunction<State> BY_ID = ByIdMap.continuous(Enum::ordinal, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
+
+        private static State fromOrdinal(int ordinal) {
+            return BY_ID.apply(ordinal);
+        }
     }
 }

@@ -35,7 +35,6 @@ public final class SpawnEggItems {
     public static final PortDeferredItem<ForgeSpawnEggItem> BLOOD_ZOMBIE_SPAWN_EGG = register(MonsterEntities.BLOOD_ZOMBIE, "血腥僵尸刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> BLOOD_TUMORS_SPAWN_EGG = register(MonsterEntities.BLOOD_TUMORS, "血瘤刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> BLOOD_FEEDER_SPAWN_EGG = register(MonsterEntities.BLOOD_FEEDER, "嗜血怪刷怪蛋");
-    public static final PortDeferredItem<ForgeSpawnEggItem> FLESH_SLIME_SPAWN_EGG = register(MonsterEntities.FLESH_SLIME, "血肉史莱姆刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> CORRUPT_SLIME_SPAWN_EGG = register(MonsterEntities.CORRUPT_SLIME, "腐化史莱姆刷怪蛋", 0x3f3885, 0x625b9f);
     public static final PortDeferredItem<ForgeSpawnEggItem> EATER_OF_SOULS_SPAWN_EGG = register(MonsterEntities.EATER_OF_SOULS, "噬魂怪刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> DEVOURER_SPAWN_EGG = register(MonsterEntities.DEVOURER, "吞噬怪刷怪蛋");
@@ -305,7 +304,6 @@ public final class SpawnEggItems {
     public static final PortDeferredItem<ForgeSpawnEggItem> PLANTERA_SPAWN_EGG = register(BossEntities.PLANTERA, "世纪之花刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> DUKE_FISHRON_SPAWN_EGG = register(BossEntities.DUKE_FISHRON, "猪龙鱼公爵刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> LUNATIC_CULTIST_SPAWN_EGG = register(BossEntities.LUNATIC_CULTIST, "拜月教邪教徒刷怪蛋");
-    public static final PortDeferredItem<ForgeSpawnEggItem> PHANTASM_DRAGON_SPAWN_EGG = register(BossEntities.PHANTASM_DRAGON, "幻影龙刷怪蛋");
 
     public static final PortDeferredItem<ForgeSpawnEggItem> BRAIN_SCRAMBLER_SPAWN_EGG = register(MonsterEntities.BRAIN_SCRAMBLER, "扰脑怪刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> GRAY_GRUNT_SPAWN_EGG = register(MonsterEntities.GRAY_GRUNT, "灰咕噜刷怪蛋");

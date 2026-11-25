@@ -19,7 +19,11 @@ public class DaedalusStormbow extends BaseTerraBowItem {
     private final IGeneration generation = new AboveFallenGeneration(30, 60, 25, 2, 25, 5);
 
     public DaedalusStormbow(float baseDamage, ModRarity rarity) {
-        super(baseDamage, new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
+        this(baseDamage, rarity, 0.225);
+    }
+
+    protected DaedalusStormbow(float baseDamage, ModRarity rarity, double knockback) {
+        super(baseDamage, new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity), knockback);
     }
 
     @Override

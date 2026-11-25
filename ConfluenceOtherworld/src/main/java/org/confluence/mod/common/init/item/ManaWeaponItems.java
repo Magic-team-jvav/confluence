@@ -1,7 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
@@ -59,22 +57,9 @@ public class ManaWeaponItems {
     public static final PortDeferredItem<ManaStaffItem<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = registerItem("crystal_vile_shard", "魔晶碎块", CrystalVileShardItem::new);
     public static final PortDeferredItem<RainbowRodItem> RAINBOW_ROD = registerItem("rainbow_rod", "彩虹魔杖", RainbowRodItem::new);
     public static final PortDeferredItem<SkyFractureItem> SKY_FRACTURE = registerItem("sky_fracture", "裂天剑", SkyFractureItem::new);
-    public static final PortDeferredItem<ManaStaffItem<CrystalChargeProjectile>> CRYSTAL_SERPENT = registerItem("crystal_serpent", "水晶蛇", () -> new ManaStaffItem<>(ModRarity.PINK, CrystalChargeProjectile::new, 25, 9, 8, 10, 0.04).withTooltip(Component.translatable("tooltip.item.confluence.crystal_serpent.0").withStyle(ChatFormatting.GRAY)));
-    public static final PortDeferredItem<ThunderstrikeItem> THUNDERSTRIKE = registerItem("thunderstrike", (item, language) -> {
-        language.add(item, "闪电之击");
-        language.addTooltip(item, 0,
-                "Hold right-click: 1–2 initial bolts every 2 ticks, up to 32 blocks; extra feeders connect distant enemies. Every branch deals magic damage.",
-                "按住右键：每 2 tick 释放 1–2 道初始闪电，射程 32 格；远处敌人可引出额外上级电流，所有支干均造成魔法伤害。");
-    }, ThunderstrikeItem::new);
-    public static final PortDeferredItem<ArcSurgeItem> ARC_SURGE = registerItem("arc_surge", (item, language) -> {
-        language.add(item, "电弧涌动");
-        // 三行说明（效果 / 风味 / 操作）由 DataTip 挂载，这里只提供语言键
-        language.addTooltip(item,
-                new String[]{"Unleashes powerful lightning to strike your foes", "'Unlimited power!'",
-                        "Shift + scroll to adjust aim distance. The spark attaches to enemies; blue lightning strikes after 0.5 seconds."},
-                new String[]{"释放强力闪电轰击敌人", "\u201C无限力量！\u201D",
-                        "Shift + 滚轮调节落点距离；电火花吸附敌人，0.5 秒后引下蓝色闪电。"});
-    }, ArcSurgeItem::new);
+    public static final PortDeferredItem<ManaStaffItem<CrystalChargeProjectile>> CRYSTAL_SERPENT = registerItem("crystal_serpent", "水晶蛇", () -> new ManaStaffItem<>(ModRarity.PINK, CrystalChargeProjectile::new, 25, 9, 8, 10, 0.04));
+    public static final PortDeferredItem<ThunderstrikeItem> THUNDERSTRIKE = registerItem("thunderstrike", "闪电之击", ThunderstrikeItem::new);
+    public static final PortDeferredItem<ArcSurgeItem> ARC_SURGE = registerItem("arc_surge", "电弧涌动", ArcSurgeItem::new);
     /// 欧泊法杖：洪流弹幕落地后贴地奔涌，折返时伤害翻倍，并额外吃 50% 近战攻击力。
     public static final PortDeferredItem<OpalStaffItem> OPAL_STAFF = registerItem("opal_staff", "欧泊法杖", () -> new OpalStaffItem(ModRarity.GREEN, OpalStaffProjectile::new, 20.0F, 8, 12, 12, 0.04));
     /// 昏晓：恶魔祭坛：永夜 + 极昼。

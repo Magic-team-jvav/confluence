@@ -5,6 +5,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -34,6 +35,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.EnumMap;
+import java.util.function.IntFunction;
 
 /// 本源末影龙的服务端权威战斗实现。
 ///
@@ -387,7 +389,7 @@ public final class PrimeEnderDragon extends BaseBoss {
     }
 
     public enum AttackType {
-        /// 使用激光攻击。
+        // 使用激光攻击。
         LASER
     }
 
@@ -582,27 +584,27 @@ public final class PrimeEnderDragon extends BaseBoss {
     }
 
     enum CombatState {
-        /// 出场后等待首轮进攻。
+        // 出场后等待首轮进攻。
         OPENING_WAIT,
-        /// 向本轮冲刺目标接近。
+        // 向本轮冲刺目标接近。
         APPROACH,
-        /// 冲过目标后沿惯性方向继续飞行。
+        // 冲过目标后沿惯性方向继续飞行。
         INERTIA,
-        /// 冲刺后游走，衔接下一轮攻击。
+        // 冲刺后游走，衔接下一轮攻击。
         POST_DASH_WANDER,
-        /// 飞往落地位置。
+        // 飞往落地位置。
         LAND_APPROACH,
-        /// 执行落地阶段。
+        // 执行落地阶段。
         LAND,
-        /// 跳过落地时等待下一轮行动。
+        // 跳过落地时等待下一轮行动。
         SKIPPED_LANDING_WAIT,
-        /// 游走飞行并持续射击。
+        // 游走飞行并持续射击。
         WANDER_FIRE;
 
+        private static final IntFunction<CombatState> BY_ID = ByIdMap.continuous(Enum::ordinal, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
 
-        static CombatState fromOrdinal(int ordinal) {
-            CombatState[] values = values();
-            return values[Mth.clamp(ordinal, 0, values.length - 1)];
+        private static CombatState fromOrdinal(int ordinal) {
+            return BY_ID.apply(ordinal);
         }
     }
 

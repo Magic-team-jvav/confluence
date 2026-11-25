@@ -2,10 +2,10 @@
     "format_version": "1.10.0",
     "particle_effect": {
         "description": {
-            "identifier": "confluence:destroyer_attack_round",
+            "identifier": "confluence:the_destroyer_beam_outer_glow_1",
             "basic_render_parameters": {
                 "material": "particles_add",
-                "texture": "confluence:bomb_round"
+                "texture": "confluence:destroyer_attack/inner"
             }
         },
         "components": {
@@ -14,28 +14,27 @@
                 "rotation": true
             },
             "minecraft:emitter_rate_steady": {
-                "spawn_rate": "50 * ((0.8 - v.emitter_age / v.emitter_lifetime) / math.abs(0.8 - v.emitter_age / v.emitter_lifetime) / 2 + 0.5)",
+                "spawn_rate": 70,
                 "max_particles": 100
             },
             "minecraft:emitter_lifetime_once": {
-                "active_time": 11
+                "active_time": 9
             },
-            "minecraft:emitter_shape_point": {},
+            "minecraft:emitter_shape_sphere": {
+                "radius": 7,
+                "surface_only": true
+            },
             "minecraft:particle_initialization": {
-                "per_render_expression": "v.a = math.floor(v.particle_random_1 * 4);v.t = (v.emitter_age / v.emitter_lifetime);v.f = (2 - math.pow(0.5 - (v.t * 0.5), 2)) * 2 ;v.size = (2 + (1 - math.pow(v.a / 4, 3)) * v.a) * v.f * math.random(0.8,1.1) + 30 * (1 / (10 * math.pow(v.emitter_age + 0.31, 2)));"
+                "per_render_expression": "v.p = v.particle_age / v.particle_lifetime;v.rotate = 360 * v.particle_random_2;v.size = (1 - v.p) * (1 + 2 * (v.particle_random_1));"
             },
             "minecraft:particle_lifetime_expression": {
-                "max_lifetime": "math.random(0.1,0.2)"
-            },
-            "minecraft:particle_initial_spin": {
-                "rotation": "math.random(-180, 180)",
-                "rotation_rate": "math.random(-180, 180)"
+                "max_lifetime": "math.random(0.3,0.9)"
             },
             "minecraft:particle_motion_parametric": {
                 "relative_position": [
-                    "math.random(-0.2,0.2)",
-                    "(math.pow(v.a / 6, 3) * v.a * 30 + 1) + math.random(-0.4,0.4)",
-                    "math.random(-0.2,0.2)"
+                    "math.sin(v.rotate + v.p * 180) * v.p * 50 * v.particle_random_4",
+                    "v.p * (30 + 100 * v.particle_random_1) * v.particle_random_3",
+                    "math.cos(v.rotate + v.p * 180) * v.p * 50 * v.particle_random_4"
                 ]
             },
             "minecraft:particle_appearance_billboard": {
@@ -43,7 +42,7 @@
                     "v.size",
                     "v.size"
                 ],
-                "facing_camera_mode": "emitter_transform_xz",
+                "facing_camera_mode": "rotate_xyz",
                 "uv": {
                     "texture_width": 16,
                     "texture_height": 16,
@@ -57,10 +56,9 @@
                 "color": {
                     "interpolant": "v.particle_age / v.particle_lifetime",
                     "gradient": {
-                        "0.0": "#FFFF0000",
-                        "0.32": "#FFFF0000",
-                        "0.52": "#FFFFFFFF",
-                        "1.0": "#FFFF0000"
+                        "0.0": "#FFFFFFFF",
+                        "0.35": "#FFFF0000",
+                        "1.0": "#ff000000"
                     }
                 }
             }

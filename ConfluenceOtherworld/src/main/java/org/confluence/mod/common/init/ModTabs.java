@@ -2510,7 +2510,6 @@ public final class ModTabs {
                         boss.accept(SpawnEggItems.SKELETRON_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.DEERCLOPS_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.WALL_OF_FLESH_SPAWN_EGG.get());
-                        boss.accept(SpawnEggItems.FLESH_SLIME_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.HILL_OF_FLESH_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.PRIME_ENDER_DRAGON_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.RETINAZER_SPAWN_EGG.get());
@@ -2522,7 +2521,6 @@ public final class ModTabs {
                         boss.accept(SpawnEggItems.PLANTERA_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.DUKE_FISHRON_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.LUNATIC_CULTIST_SPAWN_EGG.get());
-                        boss.accept(SpawnEggItems.PHANTASM_DRAGON_SPAWN_EGG.get());
                         CreativeModeTab.Output environment = GroupItem.belongsTo("environment_entity", output);
                         environment.accept(SpawnEggItems.ANGRY_DANDELION_SPAWN_EGG.get());
                         environment.accept(SpawnEggItems.ANGRY_TUMBLER_SPAWN_EGG.get());

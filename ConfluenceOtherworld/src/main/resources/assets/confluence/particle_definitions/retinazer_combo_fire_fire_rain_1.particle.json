@@ -2,7 +2,7 @@
     "format_version": "1.10.0",
     "particle_effect": {
         "description": {
-            "identifier": "confluence:twins_flame_rain",
+            "identifier": "confluence:retinazer_combo_fire_fire_rain_1",
             "basic_render_parameters": {
                 "material": "particles_alpha",
                 "texture": "confluence:cursed_flames"

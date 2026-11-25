@@ -5,6 +5,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -33,6 +34,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.List;
+import java.util.function.IntFunction;
 
 /// 克苏鲁之眼 Boss。
 ///
@@ -222,8 +224,8 @@ public class EyeOfCthulhu extends BaseBoss {
             if (getHealth() / getMaxHealth() < 0.15F) {
                 stateTicks++;
             }
-            /// 连续调用两次带冷却的生成入口，使冷却每 tick 推进两次，
-            /// 不是无冷却地直接生成两只实体。
+            // 连续调用两次带冷却的生成入口，使冷却每 tick 推进两次，
+            // 不是无冷却地直接生成两只实体。
             tickServantSummoning(PHASE_ONE_SERVANT_COOLDOWN);
             tickServantSummoning(PHASE_ONE_SERVANT_COOLDOWN);
         }
@@ -478,9 +480,7 @@ public class EyeOfCthulhu extends BaseBoss {
 
     public CombatState getCombatState() {
         int ordinal = entityData.get(DATA_COMBAT_STATE);
-        CombatState[] values = CombatState.values();
-        return ordinal >= 0 && ordinal < values.length
-                ? values[ordinal] : CombatState.IDLE;
+        return CombatState.fromOrdinal(ordinal);
     }
 
     private void setCombatState(CombatState state) {
@@ -564,9 +564,7 @@ public class EyeOfCthulhu extends BaseBoss {
         entityData.set(DATA_COMBAT_STAGE, stage);
 
         int stateOrdinal = tag.getInt("EyeCombatState");
-        CombatState[] states = CombatState.values();
-        setCombatState(stateOrdinal >= 0 && stateOrdinal < states.length
-                ? states[stateOrdinal] : CombatState.IDLE);
+        setCombatState(CombatState.fromOrdinal(stateOrdinal));
         stateTicks = Math.max(0, tag.getInt("EyeStateTicks"));
         remainingDashCount = Math.max(0, tag.getInt("EyeRemainingDashes"));
         servantTimer = Math.max(0, tag.getInt("EyeServantTimer"));
@@ -578,25 +576,31 @@ public class EyeOfCthulhu extends BaseBoss {
 
     /// 客户端动画、存档和测试共同使用的稳定战斗状态。
     public enum DefenseState {
-        /// 生命值低于 12% 时的伤害加成档位。
+        // 生命值低于 12% 时的伤害加成档位。
         WOUNDED,
-        /// 生命值低于 4% 时的伤害加成档位。
+        // 生命值低于 4% 时的伤害加成档位。
         CRITICAL
     }
 
     public enum CombatState {
-        /// 等待下一次攻击。
+        // 等待下一次攻击。
         IDLE,
-        /// 盯住目标并准备下一轮攻击。
+        // 盯住目标并准备下一轮攻击。
         STARING,
-        /// 冲刺前蓄力并锁定本次方向。
+        // 冲刺前蓄力并锁定本次方向。
         DASH_WINDUP,
-        /// 执行冲刺攻击。
+        // 执行冲刺攻击。
         DASHING,
-        /// 切换至下一形态的过渡阶段。
+        // 切换至下一形态的过渡阶段。
         TRANSFORMING,
-        /// 结束战斗并离场。
-        LEAVING
+        // 结束战斗并离场。
+        LEAVING;
+
+        private static final IntFunction<CombatState> BY_ID = ByIdMap.sparse(Enum::ordinal, values(), IDLE);
+
+        private static CombatState fromOrdinal(int ordinal) {
+            return BY_ID.apply(ordinal);
+        }
     }
 
     public record AfterimageSnapshot(Vec3 position, float xRot, float yRot, int tick) {}

@@ -13,7 +13,7 @@ import static org.confluence.lib.common.component.ModRarity.YELLOW;
 
 public class TheBeesKnees extends BaseTerraBowItem {
     public TheBeesKnees() {
-        super(6.7F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, YELLOW));
+        super(6.7F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, YELLOW), 0.3);
     }
 
     @Override

@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -32,8 +33,6 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
@@ -41,7 +40,7 @@ import java.util.Map;
 
 public class FishronProjectile extends Projectile implements GeoEntity {
     enum Kind {
-        TORNADO(160, 26), STORM(0, 0), SHARK(240, 39), FLOOD(40, 39),
+        TORNADO(160, 26), STORM(0, 0), FLOOD(40, 39),
         BUBBLE(62, 39), TYPHOON(55, 41), SMALL_TYPHOON(28, 24);
 
         final int flightTicks;
@@ -54,7 +53,11 @@ public class FishronProjectile extends Projectile implements GeoEntity {
     }
 
     // 普通龙卷风的伤害范围为圆柱，按固定间隔钻出鲨鱼龙。
-    private static final double TORNADO_RADIUS = 4.5, TORNADO_HEIGHT = 14;
+    // 风体腰部半径和高度，单位为格；粒子在前 6 秒从中心展开。
+    private static final double TORNADO_RADIUS = 1.15, TORNADO_HEIGHT = 12;
+    // 小风眼的吸力弱于风暴，接近中心时平滑减速。
+    private static final double TORNADO_PULL = 0.06, TORNADO_PULL_RADIUS = 5;
+    private static final int TORNADO_GROWTH_TICKS = 120;
     private static final int TORNADO_SHARK_INTERVAL = 24, TORNADO_DAMAGE_INTERVAL = 10;
     // 泡泡爆开时的伤害半径。
     private static final double BUBBLE_BLAST_RADIUS = 2.2;
@@ -63,19 +66,16 @@ public class FishronProjectile extends Projectile implements GeoEntity {
     // 每刻转向目标的比例，保留弹道速度。
     private static final double WEAK_HOMING = 0.035, STORM_HOMING = 0.13;
     // 鲨鱼龙初次飞出后受重力影响，接触地面或水面后按此速度再次跃起。
-    private static final int SHARK_FLIGHT = 11, SHARK_HOP_INTERVAL = 12;
-    private static final double SHARK_GRAVITY = 0.08, SHARK_HOP_SPEED = 0.95, SHARK_HOP_LIFT = 0.69;
-    private static final ResourceLocation TORNADO_PARTICLE = Confluence.asResource("fishron_tornado");
-    private static final ResourceLocation FLOOD_TRAIL_PARTICLE = Confluence.asResource("fishron_flood_trail");
+    private static final ResourceLocation SMALL_TORNADO_PARTICLE = Confluence.asResource("duke_fishron_tornado_vortex_1");
+    private static final ResourceLocation TORNADO_PARTICLE = Confluence.asResource("duke_fishron_storm_vortex_1");
+    private static final ResourceLocation FLOOD_TRAIL_PARTICLE = Confluence.asResource("duke_fishron_flood_trail_1");
+    private static final EntityDataAccessor<Float> WIND_HEIGHT = SynchedEntityData.defineId(FishronProjectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> LARGE_TORNADO = SynchedEntityData.defineId(FishronProjectile.class, EntityDataSerializers.BOOLEAN);
-    private static final RawAnimation SWIM = RawAnimation.begin().thenLoop("swimming");
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private ParticleEmitter particleEmitter;
     private int expiresAt;
-    private int nextHop;
     private boolean stormLifetime;
-    private float sharkHealth = 39;
     private Vec3 clientDestination = Vec3.ZERO;
     private float clientYaw, clientPitch;
     private int clientLerpSteps;
@@ -87,7 +87,6 @@ public class FishronProjectile extends Projectile implements GeoEntity {
     static FishronProjectile launch(DukeFishron owner, Kind kind, Vec3 position, Vec3 motion, boolean extended) {
         EntityType<FishronProjectile> type = switch (kind) {
             case TORNADO, STORM -> BossEntities.FISHRON_TORNADO.get();
-            case SHARK -> BossEntities.SHARKRON.get();
             case FLOOD -> BossEntities.FISHRON_FLOOD.get();
             case BUBBLE -> BossEntities.DETONATING_BUBBLE.get();
             case TYPHOON -> BossEntities.RAZORBLADE_TYPHOON.get();
@@ -96,6 +95,18 @@ public class FishronProjectile extends Projectile implements GeoEntity {
         FishronProjectile shot = new FishronProjectile(type, owner.level());
         shot.setOwner(owner);
         if (kind == Kind.STORM) shot.entityData.set(LARGE_TORNADO, true);
+        if (kind == Kind.TORNADO || kind == Kind.STORM) {
+            boolean storm = kind == Kind.STORM;
+            double top = position.y + (storm ? DukeFishron.STORM_HEIGHT / 2 : TORNADO_HEIGHT);
+            double bottom = storm ? position.y - DukeFishron.STORM_HEIGHT / 2 : position.y;
+            Vec3 below = new Vec3(position.x, owner.level().getMinBuildHeight(), position.z);
+            BlockHitResult surface = owner.level().clip(new ClipContext(position, below, ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, shot));
+            if (surface.getType() == HitResult.Type.BLOCK && owner.level().getFluidState(surface.getBlockPos()).is(FluidTags.WATER)) {
+                bottom = surface.getLocation().y;
+            }
+            shot.entityData.set(WIND_HEIGHT, (float) (top - bottom));
+            position = new Vec3(position.x, bottom, position.z);
+        }
         shot.setPos(position);
         shot.setDeltaMovement(motion);
         shot.expiresAt = extended ? SLAM_FLOOD_TICKS : kind.flightTicks;
@@ -108,7 +119,6 @@ public class FishronProjectile extends Projectile implements GeoEntity {
         if (getType() == BossEntities.FISHRON_TORNADO.get()) {
             return entityData.get(LARGE_TORNADO) ? Kind.STORM : Kind.TORNADO;
         }
-        if (getType() == BossEntities.SHARKRON.get()) return Kind.SHARK;
         if (getType() == BossEntities.FISHRON_FLOOD.get()) return Kind.FLOOD;
         if (getType() == BossEntities.DETONATING_BUBBLE.get()) return Kind.BUBBLE;
         if (getType() == BossEntities.SMALL_RAZORBLADE_TYPHOON.get()) return Kind.SMALL_TYPHOON;
@@ -120,6 +130,7 @@ public class FishronProjectile extends Projectile implements GeoEntity {
         super.tick();
         if (!(level() instanceof ServerLevel server)) {
             tickClientInterpolation();
+            updateTornadoBounds();
             tickClientParticles();
             return;
         }
@@ -136,6 +147,7 @@ public class FishronProjectile extends Projectile implements GeoEntity {
             return;
         }
         if (kind == Kind.TORNADO) {
+            updateTornadoBounds();
             tickTornado(duke);
             if (tickCount >= expiresAt) discard();
             return;
@@ -152,10 +164,7 @@ public class FishronProjectile extends Projectile implements GeoEntity {
 
         Vec3 start = position();
         Vec3 motion = getDeltaMovement();
-        if (kind == Kind.SHARK) {
-            if (motion.y <= 0 && isInWater() && tickCount >= nextHop) motion = sharkHop(target);
-            if (tickCount > SHARK_FLIGHT) motion = motion.add(0, -SHARK_GRAVITY, 0);
-        } else if (insideStorm || kind == Kind.TYPHOON || kind == Kind.SMALL_TYPHOON) {
+        if (insideStorm || kind == Kind.TYPHOON || kind == Kind.SMALL_TYPHOON) {
             Vec3 direction = target.getBoundingBox().getCenter().subtract(start).normalize();
             if (kind == Kind.TYPHOON && insideStorm)
                 direction = duke.stormTyphoonDirection(start, direction, tickCount, getId());
@@ -190,8 +199,6 @@ public class FishronProjectile extends Projectile implements GeoEntity {
                     explodeBubble(server, duke);
                     return;
                 }
-                case SHARK -> motion = block.getDirection().getAxis().isVertical() && motion.y < 0
-                        ? sharkHop(target) : motion.subtract(normal.scale(1.5 * motion.dot(normal)));
                 case TYPHOON, SMALL_TYPHOON ->
                         motion = motion.subtract(normal.scale(2 * motion.dot(normal)));
                 default -> {
@@ -201,7 +208,6 @@ public class FishronProjectile extends Projectile implements GeoEntity {
             }
         }
         setDeltaMovement(motion);
-        if (kind == Kind.SHARK && motion.lengthSqr() > 0) faceMotion(motion);
         drawTrail(server, kind, motion);
     }
 
@@ -232,13 +238,16 @@ public class FishronProjectile extends Projectile implements GeoEntity {
         if (getType() == BossEntities.FISHRON_FLOOD.get()) {
             // 水浪跟随实际射弹，撞到玩家或障碍后停止生成尾迹。
             particleEmitter = new ParticleEmitter(level(), position(), FLOOD_TRAIL_PARTICLE);
-        } else if (getType() == BossEntities.FISHRON_TORNADO.get()) {
-            boolean large = entityData.get(LARGE_TORNADO);
-            particleEmitter = new ParticleEmitter(level(), position(), TORNADO_PARTICLE, new MolangExp(Map.of(
-                    "variable.radius", Double.toString(large ? DukeFishron.STORM_RADIUS : TORNADO_RADIUS),
-                    "variable.height", Double.toString(large ? DukeFishron.STORM_HEIGHT : TORNADO_HEIGHT),
-                    "variable.large", large ? "1" : "0"
-            )));
+        } else if (kind() == Kind.TORNADO || kind() == Kind.STORM) {
+            boolean storm = kind() == Kind.STORM;
+            String prefix = storm ? "duke_fishron_storm_" : "duke_fishron_tornado_";
+            double height = entityData.get(WIND_HEIGHT);
+            double width = storm ? 1 : tornadoWidth();
+            startWindLayer(prefix + "mist_1", height, width, 0, 0, 0);
+            startWindLayer(prefix + "stream_1", height, width, 5, 0.48, 0.86);
+            startWindLayer(prefix + "stream_1", height, width, 180, 0.76, 0.96);
+            particleEmitter = new ParticleEmitter(level(), position(), storm ? TORNADO_PARTICLE : SMALL_TORNADO_PARTICLE,
+                    new MolangExp(Map.of("variable.height", Double.toString(height), "variable.width", Double.toString(width))));
         } else {
             return;
         }
@@ -246,13 +255,41 @@ public class FishronProjectile extends Projectile implements GeoEntity {
         MolangParticleEngine.INSTANCE.addEmitter(particleEmitter);
     }
 
+    private void startWindLayer(String layer, double height, double width, int phase, double red, double green) {
+        ParticleEmitter emitter = new ParticleEmitter(level(), position(), Confluence.asResource(layer),
+                new MolangExp(Map.of("variable.height", Double.toString(height), "variable.width", Double.toString(width),
+                        "variable.phase", Integer.toString(phase), "variable.red", Double.toString(red), "variable.green", Double.toString(green))));
+        emitter.attachEntity(this);
+        MolangParticleEngine.INSTANCE.addEmitter(emitter);
+    }
+
+    private double tornadoWidth() {
+        return Math.sqrt(entityData.get(WIND_HEIGHT) / TORNADO_HEIGHT);
+    }
+
+    private void updateTornadoBounds() {
+        if (kind() == Kind.TORNADO) {
+            double scale = Math.min(1.0, (double) tickCount / TORNADO_GROWTH_TICKS);
+            double radius = TORNADO_RADIUS * tornadoWidth() * scale;
+            setBoundingBox(new AABB(getX() - radius, getY(), getZ() - radius,
+                    getX() + radius, getY() + entityData.get(WIND_HEIGHT) * scale, getZ() + radius));
+        }
+    }
+
     private void tickTornado(DukeFishron duke) {
+        double radius = TORNADO_PULL_RADIUS * tornadoWidth() * Math.min(1.0, (double) tickCount / TORNADO_GROWTH_TICKS);
+        for (Player player : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(radius, 0, radius), duke::canAttack)) {
+            Vec3 inward = position().subtract(player.position()).multiply(1, 0, 1);
+            double distance = inward.length();
+            if (distance >= radius || distance < 0.01) continue;
+            Vec3 pull = inward.scale(TORNADO_PULL * (1 - distance / radius) / Math.max(1, distance));
+            player.push(pull.x, 0, pull.z);
+            player.hurtMarked = true;
+        }
         if (tickCount % TORNADO_SHARK_INTERVAL == 0)
-            duke.spawnShark(position().add(0, 2 + random.nextDouble() * (TORNADO_HEIGHT - 2), 0));
+            duke.spawnShark(position().add(0, 2 + random.nextDouble() * (entityData.get(WIND_HEIGHT) - 2), 0));
         if (tickCount % TORNADO_DAMAGE_INTERVAL == 0) {
-            AABB column = new AABB(getX() - TORNADO_RADIUS, getY(), getZ() - TORNADO_RADIUS, getX() + TORNADO_RADIUS, getY() + TORNADO_HEIGHT, getZ() + TORNADO_RADIUS);
-            for (Player player : level().getEntitiesOfClass(Player.class, column,
-                    p -> duke.canAttack(p) && p.position().subtract(position()).horizontalDistanceSqr() <= TORNADO_RADIUS * TORNADO_RADIUS))
+            for (Player player : level().getEntitiesOfClass(Player.class, getBoundingBox(), duke::canAttack))
                 damage(duke, player, Kind.TORNADO);
         }
     }
@@ -271,10 +308,6 @@ public class FishronProjectile extends Projectile implements GeoEntity {
         }
     }
 
-    private Vec3 sharkHop(Player player) {
-        nextHop = tickCount + SHARK_HOP_INTERVAL;
-        return player.position().subtract(position()).multiply(1, 0, 1).normalize().scale(SHARK_HOP_SPEED).add(0, SHARK_HOP_LIFT, 0);
-    }
 
     private void expire(ServerLevel server, DukeFishron duke, Kind kind) {
         if (kind == Kind.BUBBLE) {
@@ -309,19 +342,20 @@ public class FishronProjectile extends Projectile implements GeoEntity {
     }
 
     @Override
-    public boolean isPickable() {return kind() == Kind.BUBBLE || kind() == Kind.SHARK;}
+    public boolean isPickable() {return kind() == Kind.BUBBLE;}
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (level().isClientSide || !isPickable() || !(source.getEntity() instanceof LivingEntity) || source.getEntity() == getOwner() || amount <= 0)
             return false;
-        if (kind() == Kind.BUBBLE || (sharkHealth -= amount) <= 0) discard();
+        discard();
         return true;
     }
 
     @Override
     protected void defineSynchedData() {
         entityData.define(LARGE_TORNADO, false);
+        entityData.define(WIND_HEIGHT, (float) TORNADO_HEIGHT);
     }
 
     @Override
@@ -329,8 +363,6 @@ public class FishronProjectile extends Projectile implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        if (kind() == Kind.SHARK)
-            controllers.add(new AnimationController<>(this, "swim", 0, state -> state.setAndContinue(SWIM)));
     }
 
     @Override

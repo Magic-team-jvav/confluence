@@ -20,7 +20,7 @@ import java.util.Map;
 
 /// 一阶段沿用原激光，二阶段使用绑定射弹的三层粒子。
 public final class DestroyerLaserRenderer extends EntityRenderer<DestroyerLaserProjectile> {
-    private static final String[] EFFECTS = {"destroyer_attack_small_laser", "destroyer_attack_small_laser_1", "destroyer_attack_small_laser_round"};
+    private static final String[] EFFECTS = {"the_destroyer_small_laser_ray_1", "the_destroyer_small_laser_ray_2", "the_destroyer_small_laser_ring_1"};
     private final LaserProjectileRenderer<DestroyerLaserProjectile> original;
     private final Map<Integer, ParticleEmitter[]> emitters = new HashMap<>();
 

@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.mana;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -26,7 +24,6 @@ public class WindPageItem extends ManaStaffItem<WindBulletProjectile> {
 
     public WindPageItem(ModRarity rarity) {
         super(rarity, WindBulletProjectile::new, BASE_DAMAGE, MANA_COST, 6.0F, 6, 0.04);
-        withTooltip(Component.translatable("tooltip.item.confluence.wind_page.0").withStyle(ChatFormatting.GRAY));
     }
 
     @Override

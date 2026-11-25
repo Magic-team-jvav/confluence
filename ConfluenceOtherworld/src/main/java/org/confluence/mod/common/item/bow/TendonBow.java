@@ -9,7 +9,7 @@ import static org.confluence.lib.common.component.ModRarity.BLUE;
 
 public class TendonBow extends BaseTerraBowItem {
     public TendonBow() {
-        super(5.2F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, BLUE));
+        super(5.2F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, BLUE), 0.1);
     }
 
     @Override

@@ -1,8 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -14,7 +12,6 @@ import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.ChargeAttackAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.CircleAroundTargetAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
-import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;

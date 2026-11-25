@@ -25,12 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.confluence.lib.util.LibStructureUtils.ellipsoid;
-import static org.confluence.lib.util.LibStructureUtils.getHeight;
-import static org.confluence.lib.util.LibStructureUtils.putStalactite;
-import static org.confluence.lib.util.LibStructureUtils.putStalagmite;
 import static org.confluence.lib.util.LibGeometryUtils.ellipsoidPos;
 import static org.confluence.lib.util.LibGeometryUtils.frustumSetPos;
+import static org.confluence.lib.util.LibStructureUtils.*;
 
 public class GraniteCaveStructure extends Structure {
     public static final MapCodec<GraniteCaveStructure> CODEC = simpleCodec(GraniteCaveStructure::new);

@@ -17,9 +17,9 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.HorizontalDirectionalWithVerticalTwoPartBlock;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.common.entity.boss.QueenBee;
 import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.util.ModUtils;
 
 public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     protected static final VoxelShape SHAPE_UPPER = box(0, 0, 0, 16, 8, 16);

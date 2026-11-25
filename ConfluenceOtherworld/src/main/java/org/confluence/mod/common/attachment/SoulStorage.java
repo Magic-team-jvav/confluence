@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.attachment.AttachmentSyncHandler;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.util.INBTSerializable;
@@ -15,7 +16,6 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.util.SoulcererUtils;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 

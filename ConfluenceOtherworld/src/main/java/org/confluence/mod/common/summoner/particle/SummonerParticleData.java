@@ -1,7 +1,5 @@
 package org.confluence.mod.common.summoner.particle;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -9,6 +7,9 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.common.summoner.network.SummonerBatchedParticlesPayload;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

@@ -1,11 +1,9 @@
 package org.confluence.mod.common.data.map;
 
-import org.confluence.mod.common.data.saved.Bestiary;
-
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.entity.LivingEntity;
-
+import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.jetbrains.annotations.Nullable;
 

@@ -19,7 +19,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.data.saved.Bestiary;
-
 import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
 
 import java.util.List;

@@ -3,7 +3,6 @@ package org.confluence.mod.client.renderer.entity.flail;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -12,7 +11,6 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.mod.common.entity.flail.GuardianFlailEntity;
 
 /// 使用原版守卫者光束纹理渲染链锤与同步目标之间的实体光束。

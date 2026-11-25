@@ -1,13 +1,8 @@
 package org.confluence.mod.common.item.soulcerer;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
-import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.Confluence;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

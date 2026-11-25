@@ -1,20 +1,21 @@
 // Adapted from minecraft-lightning skill. See META-INF/arc-surge-lightning-NOTICES.md.
 package org.confluence.mod.client.effect.lightning;
 
-import org.confluence.mod.Confluence;
-
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.neoforged.api.distmarker.Dist;
-import net.neoforged.neoforge.client.event.RenderGuiEvent;
-import net.neoforged.neoforge.client.event.RenderFrameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RenderFrameEvent;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
+import org.confluence.mod.Confluence;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL30;
 
 /** Preserve world projection/depth, then render after the shader pack's final composite. */
 @EventBusSubscriber(modid=Confluence.MODID,value=Dist.CLIENT)

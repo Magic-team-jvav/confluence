@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.boss.SkeletronPrime;

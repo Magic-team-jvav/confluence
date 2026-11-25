@@ -11,8 +11,8 @@ import org.confluence.mod.common.soulcerer.skill.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /// 魂师技能注册表。
 ///

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
-import java.util.function.Function;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -11,6 +10,8 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.monster.BaseCasterMonster;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Function;
 
 
 /// 执行“预施法、延迟释放、循环传送”的完整法师战斗周期。

@@ -2,11 +2,12 @@ package org.confluence.mod.client.renderer.entity.bullet;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public final class BulletRenderTypes extends RenderStateShard {

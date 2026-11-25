@@ -1,9 +1,9 @@
 package org.confluence.mod.common.summoner.minion.goal.terraprisma;
 
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.TerraprismaMinion;
-import net.minecraft.world.phys.Vec3;
 
 public class TerraprismIdleGoal extends AttachmentEntityGoal<TerraprismaMinion> {
 

@@ -28,8 +28,6 @@ import org.confluence.mod.common.recipe.special.BoomBunnyRecipe;
 import org.confluence.mod.common.recipe.special.DragonPepperExtractingRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.mod.common.init.item.BoomerangItems;
-import org.confluence.mod.common.init.item.YoyoItems;
 
 import java.util.List;
 import java.util.Map;

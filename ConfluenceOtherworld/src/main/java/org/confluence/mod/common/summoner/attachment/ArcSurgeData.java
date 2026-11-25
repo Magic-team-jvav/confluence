@@ -10,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.item.mana.ArcSurgeItem;
@@ -21,7 +22,6 @@ import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.ArcSurgePacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
-import net.neoforged.neoforge.attachment.IAttachmentHolder;
 
 import java.util.*;
 

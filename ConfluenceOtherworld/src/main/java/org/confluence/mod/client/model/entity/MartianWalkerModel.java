@@ -3,7 +3,6 @@ package org.confluence.mod.client.model.entity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.MartianWalker;
 import org.confluence.mod.common.entity.monster.WalkerGeometry;
-
 import software.bernie.geckolib.animation.AnimationState;
 
 /// 火星走妖模型，将两边激光炮拆分

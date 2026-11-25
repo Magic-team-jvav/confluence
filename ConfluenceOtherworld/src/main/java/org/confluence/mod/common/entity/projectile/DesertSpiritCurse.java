@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.util.LibEntityUtils;
 
 public final class DesertSpiritCurse extends StraightMonsterProjectile {

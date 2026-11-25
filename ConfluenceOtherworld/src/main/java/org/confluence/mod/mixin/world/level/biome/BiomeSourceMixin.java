@@ -11,11 +11,7 @@ import org.confluence.mod.common.worldgen.biome.injector.BiomeSourceInjector;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
 
 /// 让 `possibleBiomes()` **在每次调用时**都是最新的，而不是被一次过早的记忆化冻住。
 ///

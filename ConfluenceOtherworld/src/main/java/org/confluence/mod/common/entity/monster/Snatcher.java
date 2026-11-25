@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.monster;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -25,6 +23,9 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.constant.DefaultAnimations;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /// 固定根部、通过连接段伸缩接近目标的植物类敌怪基类。

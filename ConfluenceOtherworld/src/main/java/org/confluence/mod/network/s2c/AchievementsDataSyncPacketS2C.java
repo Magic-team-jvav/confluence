@@ -1,7 +1,5 @@
 package org.confluence.mod.network.s2c;
 
-import org.confluence.mod.common.data.AchievementOffset;
-
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.network.FriendlyByteBuf;
@@ -13,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
-
+import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.util.AchievementUtils;
 
 import java.util.LinkedHashMap;

@@ -2,7 +2,6 @@ package org.confluence.mod.client.renderer.entity.projectile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -11,7 +10,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.SpearProjectileModels;
 import org.confluence.mod.common.entity.projectile.MartianElectricBolt;

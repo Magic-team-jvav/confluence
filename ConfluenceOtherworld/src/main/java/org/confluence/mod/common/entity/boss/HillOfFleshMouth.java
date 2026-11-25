@@ -5,8 +5,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.monster.HillHungry;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.UUID;
 
 /// 肉山之嘴——定位在肉山周围，并维持一只与当前嘴部锚点绑定的饿鬼。

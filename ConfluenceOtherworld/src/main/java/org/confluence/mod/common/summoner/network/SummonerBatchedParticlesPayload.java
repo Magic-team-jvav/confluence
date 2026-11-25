@@ -1,6 +1,5 @@
 package org.confluence.mod.common.summoner.network;
 
-import java.util.List;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -10,6 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
+
+import java.util.List;
 
 
 public record SummonerBatchedParticlesPayload(List<Entry> entries) implements IPacketS2C {

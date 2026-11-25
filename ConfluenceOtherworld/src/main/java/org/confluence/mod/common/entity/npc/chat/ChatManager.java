@@ -3,9 +3,6 @@ package org.confluence.mod.common.entity.npc.chat;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -17,6 +14,10 @@ import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /// 全局 NPC 对话管理器——按每个 NPC 的独立冷却触发附近玩家可见的对话。

@@ -1,29 +1,28 @@
 package org.confluence.mod.common.item.mana;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.core.Holder;
-import org.confluence.mod.common.summoner.attachment.ArcSurgeData;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.item.IWeaponTooltip;
+import org.confluence.mod.common.summoner.attachment.ArcSurgeData;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.mixed.Immunity;
-import org.jetbrains.annotations.Nullable;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
 import java.util.List;
 

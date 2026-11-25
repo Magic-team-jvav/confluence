@@ -1,6 +1,7 @@
 package org.confluence.mod.client.effect;
 
 import net.minecraft.world.phys.Vec3;
+
 import java.util.SplittableRandom;
 
 /** Straight particle rays sampled uniformly in solid angle around the outgoing current tangent. */

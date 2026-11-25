@@ -1,8 +1,8 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
@@ -25,8 +25,8 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.BowCombatAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
-import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 
 /// 腐骴远程骷髅。

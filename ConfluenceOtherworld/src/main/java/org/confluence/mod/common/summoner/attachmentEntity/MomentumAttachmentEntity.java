@@ -1,11 +1,12 @@
 package org.confluence.mod.common.summoner.attachmentEntity;
 
-import java.util.Collections;
 import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
 
 
 public abstract class MomentumAttachmentEntity extends AttachmentEntity implements IMomentumAttachmentEntity {

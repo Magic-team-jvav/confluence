@@ -7,12 +7,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.spear.GhastlyProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
-
 import software.bernie.geckolib.animation.EasingType;
 
 import java.util.Comparator;

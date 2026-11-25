@@ -4,11 +4,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModEffects;
-
 import software.bernie.geckolib.animation.EasingType;
 
 public class DarkLanceItem extends AbstractSpearItem {

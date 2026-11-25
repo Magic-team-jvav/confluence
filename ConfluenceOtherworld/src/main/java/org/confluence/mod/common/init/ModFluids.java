@@ -18,9 +18,9 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
+import org.confluence.mod.common.init.item.ToolItems;
 
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.addEntity;
 

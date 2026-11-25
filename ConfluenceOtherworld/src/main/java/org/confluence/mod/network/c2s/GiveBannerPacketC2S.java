@@ -1,7 +1,5 @@
 package org.confluence.mod.network.c2s;
 
-import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -12,10 +10,9 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
-
+import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.data.saved.Bestiary;
-
 import org.confluence.mod.common.init.item.ModItems;
 
 public record GiveBannerPacketC2S(String key) implements IPacketC2S {

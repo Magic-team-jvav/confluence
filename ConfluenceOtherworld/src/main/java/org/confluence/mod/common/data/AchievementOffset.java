@@ -19,6 +19,7 @@ import org.confluence.lib.common.data.SingleJsonFileReloadListener;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.AchievementToast;
+
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;

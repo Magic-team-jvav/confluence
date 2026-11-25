@@ -1,13 +1,12 @@
 package org.confluence.mod.network.c2s;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.mana.ThunderstrikeItem;
-import org.confluence.lib.network.IPacketC2S;
-import net.minecraft.network.codec.StreamCodec;
 
 public record ThunderstrikeRangePacketC2S(double range) implements IPacketC2S {
     public static final Type<ThunderstrikeRangePacketC2S> TYPE = Confluence.createType("thunderstrike_range");

@@ -1,7 +1,5 @@
 package org.confluence.mod.util;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,6 +11,9 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.item.BaseBullet;
 import org.confluence.mod.common.item.gun.BaseGun;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public final class ModGunUtils {

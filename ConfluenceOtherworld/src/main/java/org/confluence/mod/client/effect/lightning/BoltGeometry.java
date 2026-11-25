@@ -1,14 +1,9 @@
 // Adapted from minecraft-lightning skill. See META-INF/arc-surge-lightning-NOTICES.md.
 package org.confluence.mod.client.effect.lightning;
 
-import org.confluence.mod.Confluence;
-
 import net.minecraft.world.phys.Vec3;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.SplittableRandom;
-import java.util.ArrayDeque;
-import java.util.Comparator;
+
+import java.util.*;
 
 /** Deterministic midpoint-displacement channel tree. Endpoints are never displaced. */
 final class BoltGeometry {

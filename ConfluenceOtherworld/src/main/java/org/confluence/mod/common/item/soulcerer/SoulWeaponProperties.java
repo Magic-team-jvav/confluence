@@ -5,12 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem.Trait;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /// 魂师主武器的建造者属性：伤害、暴击率、临时解锁的灵魂技能与自带效果。
 ///

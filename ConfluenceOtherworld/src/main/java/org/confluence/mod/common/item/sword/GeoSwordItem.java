@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.sword;
 
-import java.util.function.Consumer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Tier;
@@ -12,6 +11,8 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.function.Consumer;
 
 
 public class GeoSwordItem extends BaseSwordItem implements GeoItem {

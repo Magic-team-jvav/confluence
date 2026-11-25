@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.monster;
 
-import java.util.Iterator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
@@ -30,6 +29,8 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
+
+import java.util.Iterator;
 
 
 public class Pixie extends BaseFlyingMonster {

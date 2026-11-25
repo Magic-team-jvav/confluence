@@ -19,9 +19,9 @@ import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModRecipes;
+import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.init.entity.CritterEntities;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

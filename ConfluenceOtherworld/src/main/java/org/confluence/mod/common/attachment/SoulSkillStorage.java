@@ -16,11 +16,7 @@ import org.confluence.mod.common.soulcerer.skill.SoulSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class SoulSkillStorage implements INBTSerializable<CompoundTag> {

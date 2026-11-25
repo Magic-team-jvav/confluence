@@ -1,6 +1,5 @@
 package org.confluence.mod.common.summoner.network;
 
-import java.util.List;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
@@ -12,6 +11,8 @@ import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summoner.attachment.InfoData;
+
+import java.util.List;
 
 
 public record SummonerBatchedInfoPayload(List<Number> numbers, List<Text> texts) implements IPacketS2C {

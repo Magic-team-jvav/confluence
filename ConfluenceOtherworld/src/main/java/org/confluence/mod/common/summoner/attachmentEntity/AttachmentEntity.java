@@ -8,7 +8,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.prefix.ModPrefix;
@@ -21,7 +20,6 @@ import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;

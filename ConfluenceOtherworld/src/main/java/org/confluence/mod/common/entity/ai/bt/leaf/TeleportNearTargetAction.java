@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
-import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
@@ -10,6 +9,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+
+import javax.annotation.Nullable;
 
 
 /// 将地面生物传送到目标附近的安全落点。

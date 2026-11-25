@@ -19,7 +19,6 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffset;
-
 import org.confluence.mod.util.AchievementUtils;
 
 import java.util.*;

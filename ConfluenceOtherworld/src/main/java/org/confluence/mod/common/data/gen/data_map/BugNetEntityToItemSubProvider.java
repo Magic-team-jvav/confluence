@@ -10,16 +10,11 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.BugNetEntityToItem;
 import org.confluence.mod.common.entity.IVariant;
-import org.confluence.mod.common.entity.animal.Butterfly;
-import org.confluence.mod.common.entity.animal.Dragonfly;
-import org.confluence.mod.common.entity.animal.Grasshopper;
-import org.confluence.mod.common.entity.animal.Ladybug;
-import org.confluence.mod.common.entity.animal.Scorpion;
-import org.confluence.mod.common.entity.animal.Worm;
+import org.confluence.mod.common.entity.animal.*;
 import org.confluence.mod.common.init.ModAdvancements;
 import org.confluence.mod.common.init.ModDataMaps;
-import org.confluence.mod.common.init.item.BaitItems;
 import org.confluence.mod.common.init.entity.CritterEntities;
+import org.confluence.mod.common.init.item.BaitItems;
 
 import java.util.Collections;
 import java.util.List;

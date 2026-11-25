@@ -1,12 +1,12 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
-import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.item.GunItems;
 
 public final class Werewolf extends BaseWarriorMonster {
     public Werewolf(EntityType<? extends Werewolf> type, Level level) {

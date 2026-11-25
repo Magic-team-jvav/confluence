@@ -9,6 +9,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.IronGolem;
@@ -26,7 +27,6 @@ import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
-import net.minecraft.world.entity.ai.goal.*;
 
 /// 泰拉近战骷髅族共用的基础行为。
 ///

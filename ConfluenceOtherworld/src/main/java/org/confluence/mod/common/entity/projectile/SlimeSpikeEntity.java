@@ -14,7 +14,6 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;

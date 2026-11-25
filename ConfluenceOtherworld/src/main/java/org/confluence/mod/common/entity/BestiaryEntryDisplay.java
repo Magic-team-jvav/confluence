@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity;
 
-import org.confluence.mod.common.data.saved.Bestiary;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;

@@ -6,8 +6,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.yoyo.TerrarianProjectile;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
-import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.mixed.Immunity;
 
 public final class TerrarianYoyoItem extends YoyoItem implements Immunity {
     private final int shotInterval;

@@ -1,8 +1,6 @@
 package org.confluence.mod.common.entity.animal;
 
 import com.mojang.serialization.Codec;
-import java.util.Locale;
-import java.util.function.IntFunction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -13,11 +11,13 @@ import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.VariantHolder;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
+
+import java.util.Locale;
+import java.util.function.IntFunction;
 
 
 

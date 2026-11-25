@@ -6,7 +6,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import org.confluence.lib.common.PlayerContainer;
@@ -104,7 +103,7 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
             if (stack.isEmpty()) {
                 emptySlots.add(i);
             } else if (stack.is(ModTags.Items.COINS)) {
-                long value = coinValue(stack.getItem());
+                long value = CoinItem.valueOf(stack.getItem());
                 if (value <= 0L) continue;
                 money += value * stack.getCount();
                 container.setItem(i, ItemStack.EMPTY);
@@ -120,7 +119,7 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
             int count = entry.getIntValue();
             if (count <= 0) continue;
             CoinItem coin = entry.getKey();
-            long value = coinValue(coin);
+            long value = CoinItem.valueOf(coin);
             while (count > 0 && slot < slotCount) {
                 int place = Math.min(count, capacity);
                 container.setItem(coinSlots.getInt(slot++), new ItemStack(coin, place));
@@ -131,10 +130,5 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
         }
         container.setChanged();
         return money;
-    }
-
-    private static long coinValue(Item item) {
-        int index = COIN_2_INDEX.applyAsInt(item);
-        return index == -1 ? 0L : (long) Math.pow(UPGRADES_COUNT, 3 - index);
     }
 }

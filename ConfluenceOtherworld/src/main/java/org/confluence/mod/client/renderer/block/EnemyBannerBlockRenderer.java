@@ -1,7 +1,5 @@
 package org.confluence.mod.client.renderer.block;
 
-import org.confluence.mod.common.data.saved.Bestiary;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -19,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.block.functional.enemybanner.EnemyBannerBlock;
 import org.confluence.mod.common.block.functional.enemybanner.WallEnemyBannerBlock;

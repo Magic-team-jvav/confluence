@@ -16,8 +16,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.block.NatureBlocks;
 
 public class CorruptedOvariesBlock extends Block {
     public CorruptedOvariesBlock() {

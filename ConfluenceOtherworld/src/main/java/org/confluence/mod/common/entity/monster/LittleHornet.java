@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.monster;
 
-import java.util.Optional;
-import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -24,6 +22,9 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
+
+import java.util.Optional;
+import java.util.UUID;
 
 
 /// 蜂王召唤的近战幼蜂。

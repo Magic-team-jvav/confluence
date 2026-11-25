@@ -1,8 +1,6 @@
 // Adapted from minecraft-lightning skill. See META-INF/arc-surge-lightning-NOTICES.md.
 package org.confluence.mod.client.effect.lightning;
 
-import org.confluence.mod.Confluence;
-
 /** Scalar port of Ashima Arts' 2D simplex noise (MIT), as used by Spektr.
  * Copyright (C) 2011 Ashima Arts. See THIRD_PARTY_NOTICES.md. */
 final class SimplexNoise {

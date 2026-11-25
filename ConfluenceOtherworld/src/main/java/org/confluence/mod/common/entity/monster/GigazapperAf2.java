@@ -16,14 +16,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;

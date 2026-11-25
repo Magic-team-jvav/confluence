@@ -8,8 +8,8 @@ import net.neoforged.neoforge.common.NeoForgeConfig;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 

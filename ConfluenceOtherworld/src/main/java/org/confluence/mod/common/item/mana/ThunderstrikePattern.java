@@ -1,8 +1,9 @@
 package org.confluence.mod.common.item.mana;
 
 import net.minecraft.world.phys.Vec3;
-import java.util.List;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.SplittableRandom;
 
 /** Fixed-endpoint midpoint displacement, shared by server damage and client rendering. */

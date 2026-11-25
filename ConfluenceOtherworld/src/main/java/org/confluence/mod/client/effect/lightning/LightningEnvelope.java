@@ -1,8 +1,6 @@
 // Adapted from minecraft-lightning skill. See META-INF/arc-surge-lightning-NOTICES.md.
 package org.confluence.mod.client.effect.lightning;
 
-import org.confluence.mod.Confluence;
-
 /** Deterministic shared leader / return / restrike timeline, evaluated in fractional ticks. */
 final class LightningEnvelope {
     private final LightningRecipe r;

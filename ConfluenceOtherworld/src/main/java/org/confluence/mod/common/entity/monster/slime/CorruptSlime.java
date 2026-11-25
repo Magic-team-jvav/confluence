@@ -1,13 +1,13 @@
 package org.confluence.mod.common.entity.monster.slime;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
-import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 
 /// 腐化史莱姆使用普通史莱姆行为，死亡时分裂出二至三个史莱姆灵。
 public class CorruptSlime extends BaseSlime {

@@ -1,8 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.entity.ai.bt.BTNode;

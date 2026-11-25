@@ -11,8 +11,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.client.summoner.ColorBufferSource;
 import org.confluence.mod.client.summoner.AfterimageManager;
+import org.confluence.mod.client.summoner.ColorBufferSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

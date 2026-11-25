@@ -14,11 +14,7 @@ import org.confluence.mod.common.summoner.attachmentEntity.RenderKeyframe;
 import org.confluence.mod.common.summoner.minion.TerraprismaMinion;
 import org.joml.Vector3f;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 
 public class TerraprismaTrailContext extends RibbonTrailContext<TerraprismaMinion> {
 

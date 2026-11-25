@@ -1,11 +1,7 @@
 package org.confluence.mod.api.event.bestiary;
 
-import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-
-import org.confluence.mod.common.data.saved.Bestiary;
-
 import net.neoforged.bus.api.Event;
-
+import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.init.ModTags;
 
 public class CheckBannerAvailableEvent extends Event {

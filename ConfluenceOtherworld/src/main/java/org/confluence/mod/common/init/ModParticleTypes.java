@@ -14,7 +14,6 @@ import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.particle.WholeItemParticleOptions;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public final class ModParticleTypes {
     public static final DeferredRegister<ParticleType<?>> TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Confluence.MODID);

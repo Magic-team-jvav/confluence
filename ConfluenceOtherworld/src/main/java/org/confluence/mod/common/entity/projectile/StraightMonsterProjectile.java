@@ -15,7 +15,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 

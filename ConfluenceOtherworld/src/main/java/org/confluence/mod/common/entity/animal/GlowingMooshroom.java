@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.animal;
 
-import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -18,6 +17,8 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.List;
 
 
 public final class GlowingMooshroom extends Cow implements GeoEntity, IShearable {

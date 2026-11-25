@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.whip;
 
-import java.util.HashMap;
-import java.util.Map;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
@@ -9,6 +7,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
 import org.confluence.mod.common.init.ModTags;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 // todo 换成attachment，正好解决渲染端需要查询WhipAttackEntity的问题

@@ -56,11 +56,7 @@ import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.entity.fishing.FishingSession;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
-import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.common.init.ModBlockCounters;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
@@ -630,7 +626,8 @@ public final class PlayerUtils {
         player.sweepAttack();
         player.swing(InteractionHand.MAIN_HAND, false);
         if (resetStrength) player.resetAttackStrengthTicker();
-        if (player.getMainHandItem().getItem() instanceof ISpecialSweepWeapon weapon) weapon.onSpecialSweep(player);
+        if (player.getMainHandItem().getItem() instanceof ISpecialSweepWeapon weapon)
+            weapon.onSpecialSweep(player);
     }
 
     /// 横扫对单个目标的伤害结算。

@@ -2,7 +2,6 @@ package org.confluence.mod.common.summoner.projectile;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.particle.GenericParticleBuilder;

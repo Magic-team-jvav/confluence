@@ -11,7 +11,7 @@ import static org.confluence.lib.common.component.ModRarity.RED;
 
 public class HellwingBow extends BaseTerraBowItem {
     public HellwingBow() {
-        super(7.5F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, RED));
+        super(7.5F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, RED), 0.55);
     }
 
     @Override

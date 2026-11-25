@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -33,6 +34,8 @@ import org.confluence.mod.util.OverworldUtils;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
+
+import java.util.function.IntFunction;
 
 /// 蜂王 Boss。
 ///
@@ -367,9 +370,7 @@ public class QueenBee extends BaseBoss {
 
     public CombatState getCombatState() {
         int ordinal = entityData.get(DATA_COMBAT_STATE);
-        CombatState[] values = CombatState.values();
-        return ordinal >= 0 && ordinal < values.length
-                ? values[ordinal] : CombatState.IDLE;
+        return CombatState.fromOrdinal(ordinal);
     }
 
     private void setCombatState(CombatState state) {
@@ -453,9 +454,7 @@ public class QueenBee extends BaseBoss {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         int ordinal = tag.getInt("QueenCombatState");
-        CombatState[] values = CombatState.values();
-        setCombatState(ordinal >= 0 && ordinal < values.length
-                ? values[ordinal] : CombatState.IDLE);
+        setCombatState(CombatState.fromOrdinal(ordinal));
         stateTicks = Math.max(0, tag.getInt("QueenStateTicks"));
         completedDashCycles = Math.max(0, tag.getInt("QueenCompletedDashes"));
         setAngry(tag.getBoolean("QueenAngry"));
@@ -464,27 +463,33 @@ public class QueenBee extends BaseBoss {
     }
 
     public enum Temperament {
-        /// 未激怒的常态，使用普通战斗参数。
+        // 未激怒的常态，使用普通战斗参数。
         CALM,
-        /// 激怒状态，使用激怒后的战斗参数。
+        // 激怒状态，使用激怒后的战斗参数。
         ENRAGED
     }
 
     public enum CombatState {
-        /// 初始化战斗并准备首轮攻击。
+        // 初始化战斗并准备首轮攻击。
         INITIALIZING,
-        /// 等待下一次攻击。
+        // 等待下一次攻击。
         IDLE,
-        /// 停留并召唤蜜蜂。
+        // 停留并召唤蜜蜂。
         SUMMONING_BEES,
-        /// 发射毒刺弹幕。
+        // 发射毒刺弹幕。
         SUMMONING_STINGERS,
-        /// 冲刺轮次开始前的短暂停顿。
+        // 冲刺轮次开始前的短暂停顿。
         PRE_DASH_IDLE,
-        /// 调整位置并准备本次冲刺。
+        // 调整位置并准备本次冲刺。
         PRE_DASH,
-        /// 执行冲刺攻击。
-        DASHING
+        // 执行冲刺攻击。
+        DASHING;
+
+        private static final IntFunction<CombatState> BY_ID = ByIdMap.sparse(Enum::ordinal, values(), IDLE);
+
+        private static CombatState fromOrdinal(int ordinal) {
+            return BY_ID.apply(ordinal);
+        }
     }
 
     @Override

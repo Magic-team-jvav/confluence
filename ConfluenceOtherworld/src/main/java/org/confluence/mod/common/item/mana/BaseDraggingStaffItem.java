@@ -30,6 +30,7 @@ public class BaseDraggingStaffItem<E extends BaseDraggingProjectile> extends Man
         super(rarity, factory, damage, manaCost, rawVelocity, cooldown, critChance);
     }
 
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         super.use(level, player, usedHand);

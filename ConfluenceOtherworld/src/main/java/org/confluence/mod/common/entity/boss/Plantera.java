@@ -124,8 +124,8 @@ public class Plantera extends BaseBoss {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                /// 世纪之花的位移由服务端 tick 统一计算。行为树只保持存活，不能再
-                /// 并行写入速度，否则钩爪牵引会与冲刺节点互相覆盖并产生瞬时加速。
+                // 世纪之花的位移由服务端 tick 统一计算。行为树只保持存活，不能再
+                // 并行写入速度，否则钩爪牵引会与冲刺节点互相覆盖并产生瞬时加速。
                 return new WaitAction(20);
             }
         };
@@ -439,13 +439,13 @@ public class Plantera extends BaseBoss {
         if (cycleTick == 0) {
             for (int index = 0; index < hooks.length; index++) {
                 PlanteraHook hook = hooks[index];
-                if (hook == null || hook.isRemoved() || hook.getState() != PlanteraHook.STATE_IDLE) {
+                if (hook == null || hook.isRemoved() || hook.getState() != PlanteraHook.State.IDLE) {
                     continue;
                 }
                 BlockPos anchor = findHookAnchor(index);
                 if (anchor != null) {
                     hook.setAnchor(anchor);
-                    hook.setState(PlanteraHook.STATE_EXTENDING);
+                    hook.setState(PlanteraHook.State.EXTENDING);
                 } else {
                     enrage();
                 }
@@ -460,7 +460,7 @@ public class Plantera extends BaseBoss {
         PlanteraHook farthest = null;
         double farthestDistance = -1.0;
         for (PlanteraHook hook : hooks) {
-            if (hook == null || hook.isRemoved() || hook.getState() != PlanteraHook.STATE_GRABBED) {
+            if (hook == null || hook.isRemoved() || hook.getState() != PlanteraHook.State.GRABBED) {
                 continue;
             }
             grabbed++;
@@ -472,7 +472,7 @@ public class Plantera extends BaseBoss {
         }
         if (grabbed == HOOK_COUNT && farthest != null) {
             farthest.setAnchor(null);
-            farthest.setState(PlanteraHook.STATE_RETRACTING);
+            farthest.setState(PlanteraHook.State.RETRACTING);
         }
     }
 
@@ -565,9 +565,9 @@ public class Plantera extends BaseBoss {
     }
 
     public enum Temperament {
-        /// 未激怒的常态，使用普通战斗参数。
+        // 未激怒的常态，使用普通战斗参数。
         CALM,
-        /// 激怒状态，使用激怒后的战斗参数。
+        // 激怒状态，使用激怒后的战斗参数。
         ENRAGED
     }
 

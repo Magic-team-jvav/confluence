@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -47,11 +49,12 @@ import software.bernie.geckolib.animation.RawAnimation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.IntFunction;
 
 public class DukeFishron extends BaseBoss {
     // 断线后在水面蓄势，再从水下冲到水面上方。时间单位为刻，距离单位为格。
     private static final int SUMMON_SWIRL_TICKS = 32, SUMMON_BREACH_TICKS = 12;
-    private static final double SUMMON_RISE_HEIGHT = 5.0, SUMMON_SWIRL_RADIUS = 3.4;
+    private static final double SUMMON_RISE_HEIGHT = 5.0;
     // 在浮漂上方寻找水面时最多检查的水深，避免水下洞穴沿水柱被当作海面。
     private static final int SUMMON_SURFACE_SCAN = 16;
     // 生命值比例，用于切换第二、第三阶段。
@@ -65,15 +68,18 @@ public class DukeFishron extends BaseBoss {
     private static final int RECOVERY = 22, SHOOT_TIME = 25, FLIP_TIME = 14;
     // 大龙卷的描边时间、存续时间及半径（格）。
     private static final int ORBIT_TIME = 24, STORM_TIME = 200;
-    static final double STORM_RADIUS = 25;
-    static final double STORM_HEIGHT = 23;
+    static final double STORM_RADIUS = 10;
+    static final double STORM_HEIGHT = 20;
+    // 岸边的采样点可能落在陆地，每次召唤只尝试有限个水面位置。
+    private static final int STORM_WATER_ATTEMPTS = 12;
     private static final double STORM_PULL = 0.12;
     // 鲨鱼龙生成间隔（刻）和单个公爵的在场上限。
     private static final int SHARK_INTERVAL = 22, MAX_SHARKS = 12;
     // 扇面左右各展开 60 度，落地洪流则向四周发射。
     private static final float FLOOD_HALF_ANGLE = (float) Math.PI / 3;
     private static final int FLOOD_COUNT = 11, SLAM_COUNT = 28;
-    private static final ResourceLocation SLAM_WATER_COLUMN = Confluence.asResource("fishron_slam_water_column");
+    private static final ResourceLocation SUMMON_WHIRLPOOL = Confluence.asResource("duke_fishron_summon_swirl_vortex_1");
+    private static final ResourceLocation SLAM_WATER_COLUMN = Confluence.asResource("duke_fishron_slam_water_column_1");
     // 翻转结束后等嘴部张开，每两刻喷出一发，直到喷吐动作结束。
     private static final int BUBBLE_FIRST_SHOT = 3, BUBBLE_INTERVAL = 2;
     private static final float BUBBLE_YAW_SPREAD = 0.95F;
@@ -92,6 +98,8 @@ public class DukeFishron extends BaseBoss {
     // 脱离地表海洋时缩短冲刺前摇，并提高冲刺速度。
     private static final double ENRAGED_DASH_MULTIPLIER = 1.4;
     private static final int ENRAGED_WINDUP = 7;
+    // 冲刺前一刻的朝向与预判方向相差不超过 10 度才可起步。
+    private static final double DASH_ALIGNMENT = Math.cos(Math.toRadians(10));
     private static final float TURN = 30;
     private static final EntityDataAccessor<Byte> ACTION = SynchedEntityData.defineId(DukeFishron.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Integer> ACTION_START = SynchedEntityData.defineId(DukeFishron.class, EntityDataSerializers.INT);
@@ -101,18 +109,59 @@ public class DukeFishron extends BaseBoss {
     private static final RawAnimation SHOOT = RawAnimation.begin().thenPlayAndHold("shoot");
     private static final RawAnimation OPEN_MOUTH = RawAnimation.begin().thenLoop("open_mouth");
 
-    public enum Temperament {ENRAGED}
+    public enum Temperament {
+        // 离开地表海洋时启用狂暴属性。
+        ENRAGED
+    }
 
-    private enum Action {RECOVER, TORNADO, ORBIT, STORM, ALIGN, DASH, FLOOD, FLIP, BUBBLES, TYPHOONS, RISE, SLAM, SUMMON_SWIRL, SUMMON_BREACH, BLINK_WINDUP}
+    private enum Action {
+        // 减速收招，按阶段选择下一招或接入瞬移冲刺。
+        RECOVER,
+        // 在目标前方放置固定小龙卷风。
+        TORNADO,
+        // 绕目标划出风圈，完成一圈后进入 STORM。
+        ORBIT,
+        // 维持风眼吸引，在圈内海面放出鲨鱼龙；目标离圈即结束。
+        STORM,
+        // 面向目标蓄力，结束时锁定冲刺方向。
+        ALIGN,
+        // 沿锁定方向冲刺，剩余段数决定是否重新瞄准。
+        DASH,
+        // 向前方扇形分批喷射洪流。
+        FLOOD,
+        // 完成前空翻后进入 BUBBLES。
+        FLIP,
+        // 朝目标持续喷泡泡，直到喷射窗口结束。
+        BUBBLES,
+        // 向目标放出成对的利刃台风。
+        TYPHOONS,
+        // 升至目标上方，为下砸留出高度。
+        RISE,
+        // 向下俯冲并释放环形洪流与中央水柱。
+        SLAM,
+        // 召唤入场时在水面形成漩涡。
+        SUMMON_SWIRL,
+        // 从召唤位置冲出水面，随后开始战斗。
+        SUMMON_BREACH,
+        // 第三阶段瞬移后短暂停顿，再锁定冲刺方向。
+        BLINK_WINDUP;
+
+        private static final IntFunction<Action> BY_ID = ByIdMap.sparse(Enum::ordinal, values(), RECOVER);
+
+        private static Action fromOrdinal(int ordinal) {
+            return BY_ID.apply(ordinal);
+        }
+    }
 
     private static final Action[] FIRST_SEQUENCE = {Action.TORNADO, Action.ALIGN, Action.FLOOD, Action.FLIP, Action.TYPHOONS};
     private static final Action[] SECOND_SEQUENCE = {Action.ORBIT, Action.ALIGN, Action.RISE, Action.FLIP, Action.TYPHOONS};
 
-    private final List<FishronProjectile> sharks = new ArrayList<>();
+    private final List<Sharkron> sharks = new ArrayList<>();
     private Action action = Action.RECOVER;
     private int phase = 1, ticks, nextAttack, dashes;
     private Vec3 dash = Vec3.ZERO;
     private Vec3 stormCenter;
+    private double stormBottom;
     private double orbitStart;
     private boolean enraged;
     private double summonWaterY, summonStartY;
@@ -176,7 +225,7 @@ public class DukeFishron extends BaseBoss {
 
         ticks++;
         Vec3 aim = player.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter());
-        if (action != Action.DASH && action != Action.ORBIT && action != Action.SLAM)
+        if (action != Action.DASH && action != Action.ALIGN && action != Action.BLINK_WINDUP && action != Action.ORBIT && action != Action.SLAM)
             faceCombatDirection(aim, TURN, TURN);
         switch (action) {
             case RECOVER -> {
@@ -199,15 +248,19 @@ public class DukeFishron extends BaseBoss {
             }
             case ALIGN, BLINK_WINDUP -> {
                 setDeltaMovement(phase == 3 ? Vec3.ZERO : getDeltaMovement().scale(0.55));
-                if (ticks < (phase == 3 ? DARK_WINDUP : enraged ? ENRAGED_WINDUP : WINDUP)) return;
-                Vec3 intercept = dashIntercept(player);
+                Vec3 direction = dashIntercept(player).subtract(getBoundingBox().getCenter()).normalize();
+                boolean aligned = Vec3.directionFromRotation(getXRot(), yBodyRot).dot(direction) >= DASH_ALIGNMENT;
+                faceCombatDirection(direction, TURN, TURN);
+                if (!aligned || ticks < (phase == 3 ? DARK_WINDUP : enraged ? ENRAGED_WINDUP : WINDUP))
+                    return;
                 double speed = phase == 3 ? DARK_DASH_SPEED : DASH_SPEED;
-                dash = intercept.subtract(getBoundingBox().getCenter()).normalize().scale(enraged ? speed * ENRAGED_DASH_MULTIPLIER : speed);
+                dash = direction.scale(enraged ? speed * ENRAGED_DASH_MULTIPLIER : speed);
                 faceCombatDirection(dash, 180, 180);
                 begin(Action.DASH);
                 if (phase == 3) setDeltaMovement(dash);
             }
             case DASH -> {
+                faceCombatDirection(dash, TURN, TURN);
                 setDeltaMovement(dash);
                 if (ticks >= (phase == 3 ? DARK_DASH_TIME : DASH_TIME) || horizontalCollision && ticks > 2) {
                     if (--dashes > 0) begin(Action.ALIGN);
@@ -275,7 +328,7 @@ public class DukeFishron extends BaseBoss {
             faceCombatDirection(course, TURN, TURN);
             if (ticks >= ORBIT_TIME) {
                 begin(Action.STORM);
-                FishronProjectile.launch(this, FishronProjectile.Kind.STORM, stormCenter, Vec3.ZERO, false);
+                stormBottom = FishronProjectile.launch(this, FishronProjectile.Kind.STORM, stormCenter, Vec3.ZERO, false).getY();
             }
             return;
         }
@@ -285,26 +338,43 @@ public class DukeFishron extends BaseBoss {
         }
         Vec3 toPlayer = player.position().subtract(position());
         hover(toPlayer);
-        for (Player caught : level().getEntitiesOfClass(Player.class, getBoundingBox().move(stormCenter.subtract(position())).inflate(STORM_RADIUS, STORM_HEIGHT, STORM_RADIUS),
+        for (Player caught : level().getEntitiesOfClass(Player.class, getBoundingBox().move(stormCenter.subtract(position())).inflate(STORM_RADIUS, Math.max(STORM_HEIGHT / 2, stormCenter.y - stormBottom), STORM_RADIUS),
                 p -> canAttack(p) && insideStorm(p.position()))) {
             Vec3 pull = stormCenter.subtract(caught.position()).multiply(1, 0, 1).normalize().scale(STORM_PULL);
             caught.push(pull.x, 0, pull.z);
             caught.hurtMarked = true;
         }
-        if (ticks % SHARK_INTERVAL == 0) {
-            double angle = random.nextDouble() * Math.PI * 2;
-            double radius = Math.sqrt(random.nextDouble()) * STORM_RADIUS;
-            spawnShark(stormCenter.add(Math.cos(angle) * radius, 2 + random.nextDouble() * 9, Math.sin(angle) * radius));
-        }
+        if (ticks % SHARK_INTERVAL == 0) spawnStormShark();
         if (ticks == 1 || ticks == 100)
             typhoons(player.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter()).normalize());
         if (ticks == 47 || ticks == 147) flood(toPlayer.normalize(), false);
     }
 
+    private void spawnStormShark() {
+        for (int attempt = 0; attempt < STORM_WATER_ATTEMPTS; attempt++) {
+            double angle = random.nextDouble() * Math.PI * 2;
+            double radius = Math.sqrt(random.nextDouble()) * STORM_RADIUS;
+            double x = stormCenter.x + Math.cos(angle) * radius;
+            double z = stormCenter.z + Math.sin(angle) * radius;
+            BlockPos column = BlockPos.containing(x, stormCenter.y, z);
+            if (!level().hasChunkAt(column)) continue;
+            BlockPos surface = level().getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, column).below();
+            if (!level().getFluidState(surface).is(FluidTags.WATER) || !isSurfaceOcean(level(), surface))
+                continue;
+            BlockPos submerged = surface.below();
+            if (!level().getFluidState(submerged).is(FluidTags.WATER)) continue;
+            Vec3 from = new Vec3(x, submerged.getY(), z);
+            if (!level().noCollision(BossEntities.SHARKRON.get().getDimensions().makeBoundingBox(from)))
+                continue;
+            spawnShark(from);
+            return;
+        }
+    }
+
     boolean insideStorm(Vec3 point) {
         if (stormCenter == null || action != Action.STORM) return false;
         Vec3 offset = point.subtract(stormCenter);
-        return offset.horizontalDistanceSqr() <= STORM_RADIUS * STORM_RADIUS && Math.abs(offset.y) <= STORM_HEIGHT;
+        return offset.horizontalDistanceSqr() <= STORM_RADIUS * STORM_RADIUS && point.y >= stormBottom && offset.y <= STORM_HEIGHT / 2;
     }
 
     // 大龙卷外缘优先转回风眼，内部在绕行和切向弹射之间变化。
@@ -380,7 +450,7 @@ public class DukeFishron extends BaseBoss {
         setDeltaMovement(Vec3.ZERO);
         ticks++;
         if (action == Action.SUMMON_SWIRL) {
-            if (ticks % 2 == 0) drawSummoningWhirlpool(level);
+            if (ticks == 1) emitSummoningWhirlpool();
             if (ticks >= SUMMON_SWIRL_TICKS) begin(Action.SUMMON_BREACH);
             return;
         }
@@ -400,16 +470,10 @@ public class DukeFishron extends BaseBoss {
         }
     }
 
-    private void drawSummoningWhirlpool(ServerLevel level) {
-        double strength = ticks / (double) SUMMON_SWIRL_TICKS;
-        for (int arm = 0; arm < 3; arm++) {
-            for (int point = 1; point <= 5; point++) {
-                double radius = SUMMON_SWIRL_RADIUS * point / 5.0 * (0.45 + strength * 0.55);
-                double angle = ticks * 0.28 + arm * Math.PI * 2 / 3 + point * 0.48;
-                level.sendParticles(ParticleTypes.SPLASH, getX() + Math.cos(angle) * radius, summonWaterY + 0.08,
-                        getZ() + Math.sin(angle) * radius, 2, 0.08, 0.04, 0.08, 0.07);
-            }
-        }
+    private void emitSummoningWhirlpool() {
+        EmitterCreationPacketS2C packet = new EmitterCreationPacketS2C(
+                SUMMON_WHIRLPOOL, new Vec3(getX(), summonWaterY + 0.08, getZ()).toVector3f(), MolangExp.EMPTY, -1);
+        PacketDistributor.sendToPlayersTrackingEntity(this, packet);
     }
 
     private boolean isSummoning() {
@@ -471,13 +535,21 @@ public class DukeFishron extends BaseBoss {
     @Override
     protected boolean hasEntityContactAttack() {return !isSummoning();}
 
+    boolean trackShark(Sharkron shark) {
+        sharks.removeIf(Entity::isRemoved);
+        if (sharks.contains(shark)) return true;
+        if (sharks.size() >= MAX_SHARKS) return false;
+        return sharks.add(shark);
+    }
+
     void spawnShark(Vec3 from) {
         sharks.removeIf(Entity::isRemoved);
         LivingEntity target = getTarget();
         if (sharks.size() >= MAX_SHARKS || target == null) return;
         Vec3 velocity = target.getBoundingBox().getCenter().subtract(from).normalize().scale(1.15);
-        FishronProjectile shark = FishronProjectile.launch(this, FishronProjectile.Kind.SHARK, from, velocity, false);
-        if (!shark.isRemoved()) sharks.add(shark);
+        Sharkron shark = new Sharkron(BossEntities.SHARKRON.get(), level());
+        shark.launch(this, from, velocity);
+        if (level().addFreshEntity(shark)) trackShark(shark);
     }
 
     private void emitSlamWaterColumn() {
@@ -607,7 +679,7 @@ public class DukeFishron extends BaseBoss {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "body", 3, state -> state.setAndContinue(switch (Action.values()[entityData.get(ACTION)]) {
+        controllers.add(new AnimationController<>(this, "body", 3, state -> state.setAndContinue(switch (Action.fromOrdinal(entityData.get(ACTION))) {
             case TORNADO, FLOOD, TYPHOONS -> SHOOT;
             case BUBBLES -> OPEN_MOUTH;
             case RECOVER, ALIGN, BLINK_WINDUP, SUMMON_SWIRL, SUMMON_BREACH -> IDLE;

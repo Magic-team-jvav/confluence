@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.mana;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.LibAttributes;
@@ -18,10 +16,6 @@ public class OpalStaffItem extends ManaStaffItem<OpalStaffProjectile> {
 
     public OpalStaffItem(ModRarity rarity, ProjectileFactory<OpalStaffProjectile> factory, float damage, int manaCost, float rawVelocity, int cooldown, double critChance) {
         super(rarity, factory, damage, manaCost, rawVelocity, cooldown, critChance);
-        withTooltip(
-                Component.translatable("tooltip.item.confluence.opal_staff.0").withStyle(ChatFormatting.GRAY),
-                Component.translatable("tooltip.item.confluence.opal_staff.1").withStyle(ChatFormatting.GRAY)
-        );
     }
 
     @Override

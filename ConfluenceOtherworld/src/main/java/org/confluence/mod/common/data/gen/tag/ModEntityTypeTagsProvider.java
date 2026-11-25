@@ -267,6 +267,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 BossEntities.PLANTERA_HOOK.get(),
                 BossEntities.PLANTERA_TENTACLE.get(),
                 BossEntities.DUKE_FISHRON.get(),
+                BossEntities.SHARKRON.get(),
                 BossEntities.LUNATIC_CULTIST.get(),
                 BossEntities.ANCIENT_DOOM.get(),
                 BossEntities.ANCIENT_VISION.get(),

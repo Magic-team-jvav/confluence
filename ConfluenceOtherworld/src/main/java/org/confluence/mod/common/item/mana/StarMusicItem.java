@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.mana;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -45,7 +43,6 @@ public class StarMusicItem extends ManaStaffItem<HomingFallingStarProjectile> {
 
     public StarMusicItem(ModRarity rarity) {
         super(rarity, HomingFallingStarProjectile::new, STAR_DAMAGE, MANA_COST_PER_STAR, 0.0F, 6, 0.04);
-        withTooltip(Component.translatable("tooltip.item.confluence.star_music.0").withStyle(ChatFormatting.GRAY));
     }
 
     /// 蓄力刻数对应的坠星数量：每满 {@link #TICKS_PER_STAR} 刻多一颗，上限 {@link #MAX_STARS}。

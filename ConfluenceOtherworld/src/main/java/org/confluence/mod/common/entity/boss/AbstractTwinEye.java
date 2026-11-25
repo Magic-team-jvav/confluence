@@ -279,8 +279,6 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                /// 两只眼睛各自维护明确战斗状态，通用行为树不得再并行覆盖冲刺或
-                /// 弹幕速度。
                 return new WaitAction(100);
             }
         };
@@ -601,7 +599,7 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
     }
 
     public enum Form {
-        /// 完成变形后的二阶段形态。
+        // 完成变形后的二阶段形态。
         TRANSFORMED
     }
 }

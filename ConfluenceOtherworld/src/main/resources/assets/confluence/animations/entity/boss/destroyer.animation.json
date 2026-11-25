@@ -6,35 +6,35 @@
             "particle_effects": {
                 "0.0": [
                     {
-                        "effect": "confluence:destroyer_fire",
+                        "effect": "confluence:the_destroyer_sky_fire_1",
                         "locator": "locator"
                     },
                     {
-                        "effect": "confluence:destroyer_flash",
+                        "effect": "confluence:the_destroyer_sky_flash_1",
                         "locator": "locator"
                     },
                     {
-                        "effect": "confluence:destroyer_round",
+                        "effect": "confluence:the_destroyer_sky_ring_1",
                         "locator": "locator"
                     },
                     {
-                        "effect": "confluence:destroyer_smoke",
+                        "effect": "confluence:the_destroyer_sky_smoke_1",
                         "locator": "locator"
                     },
                     {
-                        "effect": "confluence:destroyer_fire",
+                        "effect": "confluence:the_destroyer_sky_fire_1",
                         "locator": "locator2"
                     },
                     {
-                        "effect": "confluence:destroyer_flash",
+                        "effect": "confluence:the_destroyer_sky_flash_1",
                         "locator": "locator2"
                     },
                     {
-                        "effect": "confluence:destroyer_round",
+                        "effect": "confluence:the_destroyer_sky_ring_1",
                         "locator": "locator2"
                     },
                     {
-                        "effect": "confluence:destroyer_smoke",
+                        "effect": "confluence:the_destroyer_sky_smoke_1",
                         "locator": "locator2"
                     }
                 ]

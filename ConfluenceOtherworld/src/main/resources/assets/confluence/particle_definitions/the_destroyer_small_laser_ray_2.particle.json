@@ -2,19 +2,20 @@
     "format_version": "1.10.0",
     "particle_effect": {
         "description": {
-            "identifier": "confluence:destroyer_attack_small_laser_round",
+            "identifier": "confluence:the_destroyer_small_laser_ray_2",
             "basic_render_parameters": {
                 "material": "particles_add",
-                "texture": "confluence:bomb_round"
+                "texture": "confluence:destroyer_null"
             }
         },
         "components": {
             "minecraft:emitter_rate_steady": {
-                "spawn_rate": 40,
+                "spawn_rate": 100,
                 "max_particles": 100
             },
             "minecraft:emitter_lifetime_expression": {},
-            "minecraft:emitter_shape_point": {
+            "minecraft:emitter_shape_sphere": {
+                "radius": 0.175,
                 "direction": [
                     "v.laser_dx",
                     "v.laser_dy",
@@ -22,28 +23,20 @@
                 ]
             },
             "minecraft:particle_initialization": {
-                "per_render_expression": "v.rotate = v.particle_random_1 * 360;v.size = (1 - v.particle_age / v.particle_lifetime) * (0.2 + 0.2 * v.emitter_random_2);"
+                "per_render_expression": "v.size = (1 - (v.particle_age / v.particle_lifetime)) * 0.25;"
             },
             "minecraft:particle_lifetime_expression": {
                 "expiration_expression": "variable.laser_active < 0.5",
                 "max_lifetime": "math.random(0.1,0.2)"
             },
-            "minecraft:particle_initial_speed": "math.random(5,20)",
+            "minecraft:particle_initial_speed": "math.random(4, 20)",
             "minecraft:particle_motion_dynamic": {},
             "minecraft:particle_appearance_billboard": {
                 "size": [
                     "v.size",
-                    "v.size"
+                    "v.size * 0.25"
                 ],
-                "facing_camera_mode": "direction_z",
-                "direction": {
-                    "mode": "custom",
-                    "custom_direction": [
-                        "math.sin(v.rotate) * 0.75 * v.laser_basis_00 + v.laser_basis_10 + math.cos(v.rotate) * 0.75 * v.laser_basis_20",
-                        "math.sin(v.rotate) * 0.75 * v.laser_basis_01 + v.laser_basis_11 + math.cos(v.rotate) * 0.75 * v.laser_basis_21",
-                        "math.sin(v.rotate) * 0.75 * v.laser_basis_02 + v.laser_basis_12 + math.cos(v.rotate) * 0.75 * v.laser_basis_22"
-                    ]
-                },
+                "facing_camera_mode": "lookat_direction",
                 "uv": {
                     "texture_width": 16,
                     "texture_height": 16,
@@ -62,7 +55,7 @@
                     "interpolant": "v.particle_age / v.particle_lifetime",
                     "gradient": {
                         "0.0": "#ffffffff",
-                        "0.21": "#FFFF0000"
+                        "0.46": "#FFFF0000"
                     }
                 }
             }

@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -63,6 +64,7 @@ import java.util.BitSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.WeakHashMap;
+import java.util.function.IntFunction;
 
 /// 毁灭者的战斗主体：负责 AI、生命及目标，身体轨迹与碰撞部件交给 DestroyerBody。
 public class TheDestroyer extends MechanicalBoss {
@@ -196,25 +198,31 @@ public class TheDestroyer extends MechanicalBoss {
     private static final int DEATH_SHAKE_TICKS = 20;
 
     private enum SpecialAttack {
-        /// 未执行特殊攻击，按当前移动模式行动。
+        // 未执行特殊攻击，按当前移动模式行动。
         NONE,
-        /// 冲刺前蓄力并锁定本次方向。
+        // 冲刺前蓄力并锁定本次方向。
         DASH_WINDUP,
-        /// 沿锁定方向直线冲刺。
+        // 沿锁定方向直线冲刺。
         DASH,
-        /// 接近玩家，为环绕收紧建立位置。
+        // 接近玩家，为环绕收紧建立位置。
         COIL_APPROACH,
-        /// 倒计时内追踪玩家位置并环绕收紧。
+        // 倒计时内追踪玩家位置并环绕收紧。
         COIL
     }
 
     public enum Mode {
-        /// 地下游走和绕轴滚动，以冲撞为主。
+        // 地下游走和绕轴滚动，以冲撞为主。
         UNDERGROUND,
-        /// 在地面下接近玩家，出土后按抛物线运动。
+        // 在地面下接近玩家，出土后按抛物线运动。
         GROUND,
-        /// 空中追击并使用体节激光攻击。
-        SKY
+        // 空中追击并使用体节激光攻击。
+        SKY;
+
+        private static final IntFunction<Mode> BY_ID = ByIdMap.continuous(Enum::ordinal, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
+
+        private static Mode fromOrdinal(int ordinal) {
+            return BY_ID.apply(ordinal);
+        }
     }
 
     /// 部位基础值统一在 BossEntities 的状态参数中声明，共用头部的生命。
@@ -438,7 +446,7 @@ public class TheDestroyer extends MechanicalBoss {
         return ModSoundEvents.METAL_DEATH.get();
     }
 
-    public Mode getMode() {return Mode.values()[entityData.get(MODE)];}
+    public Mode getMode() {return Mode.fromOrdinal(entityData.get(MODE));}
 
     public boolean isMetal() {return entityData.get(METAL);}
 
@@ -1051,7 +1059,7 @@ public class TheDestroyer extends MechanicalBoss {
         beamCount = tag.getInt("DestroyerBeamCount");
         beamCooldown = tag.contains("DestroyerBeamCooldown") ? tag.getInt("DestroyerBeamCooldown") : BEAM_BASE_COOLDOWN;
         entityData.set(METAL, tag.getBoolean("DestroyerMetal"));
-        entityData.set(MODE, Mth.clamp(tag.getInt("DestroyerMode"), 0, Mode.values().length - 1));
+        entityData.set(MODE, Mode.fromOrdinal(tag.getInt("DestroyerMode")).ordinal());
         entityData.set(ROLL, tag.getFloat("DestroyerRoll"));
         probes.load(tag);
         airborne = tag.getBoolean("DestroyerAirborne");

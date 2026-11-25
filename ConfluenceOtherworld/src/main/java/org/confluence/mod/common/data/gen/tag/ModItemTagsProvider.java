@@ -556,6 +556,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         prefix_ranged_only
                 .addTags(Tags.Items.RANGED_WEAPON_TOOLS, ModTags.Items.GUN)
                 .add(Items.TRIDENT);
+        tag(ModTags.Items.PREFIX_NO_KNOCKBACK).add(
+                ManaWeaponItems.WAND_OF_SPARKING.get(), ManaWeaponItems.WAND_OF_FROSTING.get(),
+                ManaWeaponItems.CRIMSON_ROD.get(), ManaWeaponItems.NIMBUS_ROD.get()
+        );
         tag(ModTags.Items.PREFIX_MAGIC_ONLY)
                 .addTags(ModTags.Items.MANA_WEAPON);
         IntrinsicTagAppender<Item> prefix_soul_only = tag(ModTags.Items.PREFIX_SOUL_ONLY);
@@ -1654,6 +1658,97 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ArmorItems.AMBER_ROBE.get()
         );
 
+        tag(ModTags.Items.YOYO_STRING).add(
+                AccessoryItems.BLACK_YOYO_STRING.get(),
+                AccessoryItems.BLUE_YOYO_STRING.get(),
+                AccessoryItems.BROWN_YOYO_STRING.get(),
+                AccessoryItems.CYAN_YOYO_STRING.get(),
+                AccessoryItems.GREEN_YOYO_STRING.get(),
+                AccessoryItems.LIME_YOYO_STRING.get(),
+                AccessoryItems.ORANGE_YOYO_STRING.get(),
+                AccessoryItems.PINK_YOYO_STRING.get(),
+                AccessoryItems.PURPLE_YOYO_STRING.get(),
+                AccessoryItems.RAINBOW_YOYO_STRING.get(),
+                AccessoryItems.RED_YOYO_STRING.get(),
+                AccessoryItems.SKY_BLUE_YOYO_STRING.get(),
+                AccessoryItems.TEAL_YOYO_STRING.get(),
+                AccessoryItems.VIOLET_YOYO_STRING.get(),
+                AccessoryItems.WHITE_YOYO_STRING.get(),
+                AccessoryItems.YELLOW_YOYO_STRING.get()
+        );
+        var baitItems = tag(ModTags.Items.BAIT);
+        BaitItems.ITEMS.getEntries().forEach(entry -> baitItems.add(entry.get()));
+        tag(ModTags.Items.WIREABLE).add(
+                FunctionalBlocks.BOUNCY_BOULDER.get().asItem(),
+                FunctionalBlocks.DART_TRAP.get().asItem(),
+                FunctionalBlocks.DEEPSLATE_DART_TRAP.get().asItem(),
+                FunctionalBlocks.DEEPSLATE_PRESSURE_BLOCK.get().asItem(),
+                FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get().asItem(),
+                FunctionalBlocks.DETONATOR.get().asItem(),
+                FunctionalBlocks.EXPLODE_BOULDER.get().asItem(),
+                FunctionalBlocks.FLAME_TRAP.get().asItem(),
+                FunctionalBlocks.FOLLOWER_BOULDER.get().asItem(),
+                FunctionalBlocks.GEYSER_BLOCK.get().asItem(),
+                FunctionalBlocks.GHOULDER.get().asItem(),
+                FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().asItem(),
+                FunctionalBlocks.LAND_MINE.get().asItem(),
+                FunctionalBlocks.LAVA_BOULDER.get().asItem(),
+                FunctionalBlocks.LEVER.get().asItem(),
+                FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get().asItem(),
+                FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.get().asItem(),
+                FunctionalBlocks.NORMAL_BOULDER.get().asItem(),
+                FunctionalBlocks.OAK_LOG_BOULDER.get().asItem(),
+                FunctionalBlocks.PLAYER_PRESSURE_PLATE.get().asItem(),
+                FunctionalBlocks.POO_BOULDER.get().asItem(),
+                FunctionalBlocks.RAINBOW_BOULDER.get().asItem(),
+                FunctionalBlocks.ROLLING_CACTUS_BOULDER.get().asItem(),
+                FunctionalBlocks.SIGNAL_ADAPTER.get().asItem(),
+                FunctionalBlocks.SPEAR_TRAP.get().asItem(),
+                FunctionalBlocks.SPIDER_BOULDER.get().asItem(),
+                FunctionalBlocks.SPIKY_BALL_TRAP.get().asItem(),
+                FunctionalBlocks.STONE_DART_TRAP.get().asItem(),
+                FunctionalBlocks.STONE_PRESSURE_BLOCK.get().asItem(),
+                FunctionalBlocks.STONE_PRESSURE_PLATE.get().asItem(),
+                FunctionalBlocks.SUPER_DART_TRAP.get().asItem(),
+                FunctionalBlocks.SWITCH.get().asItem(),
+                FunctionalBlocks.TIMERS_BLOCK_1_1.get().asItem(),
+                FunctionalBlocks.TIMERS_BLOCK_1_2.get().asItem(),
+                FunctionalBlocks.TIMERS_BLOCK_1_4.get().asItem(),
+                FunctionalBlocks.TIMERS_BLOCK_3_1.get().asItem(),
+                FunctionalBlocks.TIMERS_BLOCK_5_1.get().asItem()
+        );
+        var crateItems = tag(ModTags.Items.CRATE);
+        CrateBlocks.BLOCKS.getEntries().forEach(entry -> crateItems.add(entry.get().asItem()));
+        tag(ModTags.Items.OPENABLE_CONTAINER).addTag(ModTags.Items.TREASURE_BAG).add(
+                ConsumableItems.CAN_OF_WORMS.get(),
+                ConsumableItems.CHRISTMAS_GIFT.get(),
+                ConsumableItems.CLAM.get(),
+                ConsumableItems.DELUXE_PACKAGE.get(),
+                ConsumableItems.GOODIE_BAG.get(),
+                ConsumableItems.HERB_BAG.get(),
+                ConsumableItems.PINE_CONE.get(),
+                ConsumableItems.RED_ENVELOPE.get(),
+                ConsumableItems.SUGAR_TANGERINE.get()
+        );
+        tag(ModTags.Items.MODE_SWITCH_TOOL).add(
+                HoeShovelItems.ADAMANTITE_HOE_SHOVEL.get(),
+                HoeShovelItems.CHLOROPHYTE_HOE_SHOVEL.get(),
+                HoeShovelItems.COBALT_HOE_SHOVEL.get(),
+                HamaxeItems.HAEMORRHAXE.get(),
+                HoeShovelItems.HALLOWED_HOE_SHOVEL.get(),
+                HoeShovelItems.METEOR_HOE_SHOVEL.get(),
+                HoeShovelItems.MOLTEN_HOE_SHOVEL.get(),
+                HoeShovelItems.MYTHRIL_HOE_SHOVEL.get(),
+                HamaxeItems.NEBULA_HAMAXE.get(),
+                HoeShovelItems.ORICHALCUM_HOE_SHOVEL.get(),
+                HoeShovelItems.PALLADIUM_HOE_SHOVEL.get(),
+                HamaxeItems.SOLAR_FLARE_HAMAXE.get(),
+                HamaxeItems.SPECTRE_HAMAXE.get(),
+                HamaxeItems.STARDUST_HAMAXE.get(),
+                HamaxeItems.THE_AXE.get(),
+                HoeShovelItems.TITANIUM_HOE_SHOVEL.get(),
+                HamaxeItems.VORTEX_HAMAXE.get()
+        );
         tag(ModTags.Items.LAVA_PROOF_BAIT).add(
                 BaitItems.HELL_BUTTERFLY.get(),
                 BaitItems.MAGMA_SNAIL.get(),

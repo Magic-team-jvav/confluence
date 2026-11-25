@@ -10,7 +10,7 @@ import static org.confluence.lib.common.component.ModRarity.ORANGE;
 
 public class MoltenFury extends BaseTerraBowItem {
     public MoltenFury() {
-        super(5.8F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ORANGE));
+        super(5.8F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ORANGE), 0.2);
     }
 
     @Override

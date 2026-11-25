@@ -424,6 +424,8 @@ public final class ModTags {
         public static final TagKey<Item> PREFIX_MELEE_ONLY = register("prefix_melee_only");
         public static final TagKey<Item> PREFIX_RANGED_ONLY = register("prefix_ranged_only");
         public static final TagKey<Item> PREFIX_MAGIC_ONLY = register("prefix_magic_only");
+        // 原版零击退法器，从候选池排除会改变击退的修饰语。
+        public static final TagKey<Item> PREFIX_NO_KNOCKBACK = register("prefix_no_knockback");
         public static final TagKey<Item> PREFIX_SUMMON_ONLY = register("prefix_summon_only"); // 没有鞭子
         public static final TagKey<Item> PREFIX_SOUL_ONLY = register("prefix_soul_only");
         public static final TagKey<Item> PREFIX_ACCESSORY_ONLY = register("prefix_accessory_only");
@@ -441,6 +443,18 @@ public final class ModTags {
         /// 尚未定稿的内容：本轮新增/改动的武器统一打上此标签，方便后续筛选与测试。
         public static final TagKey<Item> WIP = register("wip");
         public static final TagKey<Item> YOYO = register("yoyo");
+        // 带模式切换操作提示的工具。
+        public static final TagKey<Item> MODE_SWITCH_TOOL = register("mode_switch_tool");
+        // 按住右键开启的容器。
+        public static final TagKey<Item> OPENABLE_CONTAINER = register("openable_container");
+        // 可放置和开启的宝匣。
+        public static final TagKey<Item> CRATE = register("crate");
+        // 带接线提示的机关。
+        public static final TagKey<Item> WIREABLE = register("wireable");
+        // 可用作钓饵的物品。
+        public static final TagKey<Item> BAIT = register("bait");
+        // 悠悠球绳饰品。
+        public static final TagKey<Item> YOYO_STRING = register("yoyo_string");
         public static final TagKey<Item> BOOMERANG = register("boomerang");
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");
         public static final TagKey<Item> TREASURE_BAG = register("treasure_bag");

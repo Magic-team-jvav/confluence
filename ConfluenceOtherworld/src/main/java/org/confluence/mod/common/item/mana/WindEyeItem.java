@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.mana;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +20,6 @@ public class WindEyeItem extends ManaStaffItem<WindEyeTornadoEntity> {
 
     public WindEyeItem(ModRarity rarity) {
         super(rarity, WindEyeTornadoEntity::new, 1.0F, MANA_COST, 0.0F, 40, 0.04);
-        withTooltip(Component.translatable("tooltip.item.confluence.wind_eye.0").withStyle(ChatFormatting.GRAY));
     }
 
     @Override

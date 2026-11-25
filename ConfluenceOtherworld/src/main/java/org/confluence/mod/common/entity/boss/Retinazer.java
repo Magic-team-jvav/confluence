@@ -697,7 +697,7 @@ public class Retinazer extends AbstractTwinEye {
     @Override
     public void handleEntityEvent(byte event) {
         if ((event == MUZZLE_WARNING_EVENT || event == MUZZLE_FLASH_EVENT) && level().isClientSide) {
-            ParticleEmitter flash = new ParticleEmitter(level(), getBeamOrigin(), Confluence.asResource("twins_laser_flash"));
+            ParticleEmitter flash = new ParticleEmitter(level(), getBeamOrigin(), Confluence.asResource("retinazer_shoot_muzzle_flash_1"));
             flash.getVars().setValue("variable.flash_scale", instance -> event == MUZZLE_WARNING_EVENT ? 0.6F : 1.0F);
             MolangParticleEngine.INSTANCE.addEmitter(flash);
         } else super.handleEntityEvent(event);
@@ -773,33 +773,33 @@ public class Retinazer extends AbstractTwinEye {
     protected SoundEvent getDeathSound() {return ModSoundEvents.METAL_DEATH.get();}
 
     private enum State {
-        /// 冲刺前蓄力并锁定本次方向。
+        // 冲刺前蓄力并锁定本次方向。
         DASH_WINDUP,
-        /// 沿锁定方向直线冲刺。
+        // 沿锁定方向直线冲刺。
         DASH,
-        /// 冲刺后的减速恢复，结束后继续连冲或进入射击。
+        // 冲刺后的减速恢复，结束后继续连冲或进入射击。
         DASH_RECOVER,
-        /// 选择并移动到新的悬停射击位置。
+        // 选择并移动到新的悬停射击位置。
         RELOCATE,
-        /// 朝目标发射普通激光；二阶段按十连发计数。
+        // 朝目标发射普通激光；二阶段按十连发计数。
         SHOOT,
-        /// 激光连发后的后摇，结束后继续射击或蓄力追踪光束。
+        // 激光连发后的后摇，结束后继续射击或蓄力追踪光束。
         RECOVER,
-        /// 持续追踪光束的蓄力预警。
+        // 持续追踪光束的蓄力预警。
         TRACK_CHARGE,
-        /// 持续发射并缓慢转向追踪目标的长光束。
+        // 持续发射并缓慢转向追踪目标的长光束。
         TRACK,
-        /// 扇形横扫前的蓄力预警。
+        // 扇形横扫前的蓄力预警。
         SWEEP_CHARGE,
-        /// 按锁定扇形执行长光束横扫。
+        // 按锁定扇形执行长光束横扫。
         SWEEP,
-        /// 锁定方向并蓄力爆破激光。
+        // 锁定方向并蓄力爆破激光。
         BLAST_CHARGE,
-        /// 释放爆破激光并保留短暂光束画面。
+        // 释放爆破激光并保留短暂光束画面。
         BLAST,
-        /// 等待搭档发射巨焰，并将光束对准巨焰。
+        // 等待搭档发射巨焰，并将光束对准巨焰。
         COMBO_AIM,
-        /// 发射光束，实际命中同组巨焰后将其引爆。
+        // 发射光束，实际命中同组巨焰后将其引爆。
         COMBO_FIRE
     }
 

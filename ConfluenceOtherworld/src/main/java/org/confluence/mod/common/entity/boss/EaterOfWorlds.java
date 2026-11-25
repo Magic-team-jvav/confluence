@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -59,6 +60,7 @@ import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.IntFunction;
 
 /// 由可独立破坏体节和可分裂链条组成的世界吞噬怪战斗实体。
 ///
@@ -138,12 +140,18 @@ public class EaterOfWorlds extends BaseWormBoss {
     private float clientLerpPitch;
 
     private enum MovementPhase {
-        /// 在目标附近游走，准备冲刺路线。
+        // 在目标附近游走，准备冲刺路线。
         WANDER,
-        /// 对准目标并调整冲刺方向。
+        // 对准目标并调整冲刺方向。
         ALIGN,
-        /// 沿锁定方向直线冲刺。
-        DASH
+        // 沿锁定方向直线冲刺。
+        DASH;
+
+        private static final IntFunction<MovementPhase> BY_ID = ByIdMap.continuous(Enum::ordinal, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
+
+        private static MovementPhase fromOrdinal(int ordinal) {
+            return BY_ID.apply(ordinal);
+        }
     }
 
     private static final class EncounterState {
@@ -448,7 +456,7 @@ public class EaterOfWorlds extends BaseWormBoss {
             bodyParts.get(index).rebindTo(head, index + 1, index + 1 == bodyParts.size());
         }
         if (!serverLevel.addFreshEntity(head)) {
-            /// 新头加入失败时归还身体，不能因清理新头而误删原链。
+            // 新头加入失败时归还身体，不能因清理新头而误删原链。
             head.segments.clear();
             for (int index = 0; index < bodyParts.size(); index++) {
                 int oldIndex = previousIndices.get(index);
@@ -723,8 +731,7 @@ public class EaterOfWorlds extends BaseWormBoss {
             float health = index < healths.size() ? healths.getFloat(index) : maximum;
             segmentHealths.add(Mth.clamp(health, 0.0F, maximum));
         }
-        int phaseIndex = Mth.clamp(tag.getInt(MOVEMENT_PHASE_TAG), 0, MovementPhase.values().length - 1);
-        movementPhase = MovementPhase.values()[phaseIndex];
+        movementPhase = MovementPhase.fromOrdinal(tag.getInt(MOVEMENT_PHASE_TAG));
         if (movementPhase == MovementPhase.DASH) movementPhase = MovementPhase.ALIGN;
         movementTicks = Mth.clamp(tag.getInt(MOVEMENT_TICKS_TAG), 0, phaseDuration(movementPhase));
         if (tag.contains(WANDER_TARGET_TAG, Tag.TAG_LIST)) {

@@ -5,6 +5,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -27,6 +28,8 @@ import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.util.AchievementUtils;
+
+import java.util.function.IntFunction;
 
 /// 史莱姆王。
 ///
@@ -91,7 +94,7 @@ public class KingSlime extends BaseBoss {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(DATA_PHASE, CombatPhase.NORMAL.id);
+        builder.define(DATA_PHASE, (byte) CombatPhase.NORMAL.ordinal());
         builder.define(DATA_PHASE_TICKS, 0);
     }
 
@@ -258,7 +261,7 @@ public class KingSlime extends BaseBoss {
         if (phase != newPhase) setSpecialState(phase, false);
         phase = newPhase;
         setSpecialState(newPhase, true);
-        entityData.set(DATA_PHASE, newPhase.id);
+        entityData.set(DATA_PHASE, (byte) newPhase.ordinal());
         setPhaseTicks(0);
         if (newPhase == CombatPhase.NORMAL) {
             normalTicks = 0;
@@ -440,7 +443,7 @@ public class KingSlime extends BaseBoss {
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         if (DATA_PHASE.equals(key)) {
-            phase = CombatPhase.byId(entityData.get(DATA_PHASE));
+            phase = CombatPhase.fromOrdinal(entityData.get(DATA_PHASE));
             if (level().isClientSide) {
                 clientPhaseTicks = 0.0F;
                 clientPhaseTicksO = 0.0F;
@@ -494,7 +497,7 @@ public class KingSlime extends BaseBoss {
         }
         CombatPhase restoredPhase = CombatPhase.valueOf(runtime.getString("Phase"));
         phase = restoredPhase;
-        entityData.set(DATA_PHASE, restoredPhase.id);
+        entityData.set(DATA_PHASE, (byte) restoredPhase.ordinal());
         entityData.set(DATA_PHASE_TICKS, runtime.getInt("PhaseTicks"));
         normalTicks = runtime.getInt("NormalTicks");
         roundsRemaining = runtime.getInt("RoundsRemaining");
@@ -527,7 +530,7 @@ public class KingSlime extends BaseBoss {
 
     private void resetRuntime() {
         phase = CombatPhase.NORMAL;
-        entityData.set(DATA_PHASE, CombatPhase.NORMAL.id);
+        entityData.set(DATA_PHASE, (byte) CombatPhase.NORMAL.ordinal());
         entityData.set(DATA_PHASE_TICKS, 0);
         normalTicks = 0;
         roundsRemaining = 1;
@@ -551,25 +554,17 @@ public class KingSlime extends BaseBoss {
     }
 
     public enum CombatPhase {
-        /// 正常跳跃、追击和召唤阶段。
-        NORMAL(0),
-        /// 传送前缩小身体。
-        SHRINKING(1),
-        /// 传送后恢复体型。
-        ENLARGING(2);
+        // 正常跳跃、追击和召唤阶段。
+        NORMAL,
+        // 传送前缩小身体。
+        SHRINKING,
+        // 传送后恢复体型。
+        ENLARGING;
 
-        private final byte id;
+        private static final IntFunction<CombatPhase> BY_ID = ByIdMap.sparse(Enum::ordinal, values(), NORMAL);
 
-        CombatPhase(int id) {
-            this.id = (byte) id;
-        }
-
-        private static CombatPhase byId(byte id) {
-            return switch (id) {
-                case 1 -> SHRINKING;
-                case 2 -> ENLARGING;
-                default -> NORMAL;
-            };
+        private static CombatPhase fromOrdinal(int ordinal) {
+            return BY_ID.apply(ordinal);
         }
     }
 

@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
@@ -46,6 +47,7 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
 import java.util.*;
+import java.util.function.IntFunction;
 
 /// 克苏鲁之脑及其两阶段战斗控制器。
 ///
@@ -205,9 +207,9 @@ public class BrainOfCthulhu extends BaseBoss {
         super.defineSynchedData(builder);
         builder.define(DATA_PHASE_TWO, false);
         builder.define(DATA_OPAQUE_ILLUSIONS, false);
-        builder.define(DATA_PHASE_ONE_STATE, PhaseOneState.SUMMONING.id);
+        builder.define(DATA_PHASE_ONE_STATE, PhaseOneState.SUMMONING.ordinal());
         builder.define(DATA_PHASE_ONE_STATE_TICKS, 0);
-        builder.define(DATA_PHASE_TWO_STATE, PhaseTwoState.TRANSFORMING.id);
+        builder.define(DATA_PHASE_TWO_STATE, PhaseTwoState.TRANSFORMING.ordinal());
         builder.define(DATA_PHASE_TWO_STATE_TICKS, 0);
         builder.define(DATA_TARGET_ID, -1);
     }
@@ -256,7 +258,7 @@ public class BrainOfCthulhu extends BaseBoss {
     private void enterPhaseOneState(PhaseOneState state) {
         phaseOneState = state;
         phaseOneStateTicks = 0;
-        entityData.set(DATA_PHASE_ONE_STATE, state.id);
+        entityData.set(DATA_PHASE_ONE_STATE, state.ordinal());
         entityData.set(DATA_PHASE_ONE_STATE_TICKS, 0);
     }
 
@@ -435,7 +437,7 @@ public class BrainOfCthulhu extends BaseBoss {
         if (state == PhaseTwoState.FADING_IN) {
             doPhaseTwoTeleport();
         }
-        entityData.set(DATA_PHASE_TWO_STATE, state.id);
+        entityData.set(DATA_PHASE_TWO_STATE, state.ordinal());
         entityData.set(DATA_PHASE_TWO_STATE_TICKS, 0);
     }
 
@@ -745,7 +747,7 @@ public class BrainOfCthulhu extends BaseBoss {
     public float getFadeProgress(float partialTick) {
         if (isPhase2()) {
             PhaseTwoState state = level().isClientSide
-                    ? PhaseTwoState.byId(entityData.get(DATA_PHASE_TWO_STATE))
+                    ? PhaseTwoState.fromOrdinal(entityData.get(DATA_PHASE_TWO_STATE))
                     : phaseTwoState;
             float ticks = (level().isClientSide
                     ? entityData.get(DATA_PHASE_TWO_STATE_TICKS)
@@ -757,7 +759,7 @@ public class BrainOfCthulhu extends BaseBoss {
             };
         }
         PhaseOneState state = level().isClientSide
-                ? PhaseOneState.byId(entityData.get(DATA_PHASE_ONE_STATE))
+                ? PhaseOneState.fromOrdinal(entityData.get(DATA_PHASE_ONE_STATE))
                 : phaseOneState;
         float ticks = (level().isClientSide
                 ? entityData.get(DATA_PHASE_ONE_STATE_TICKS)
@@ -830,10 +832,10 @@ public class BrainOfCthulhu extends BaseBoss {
         super.addAdditionalSaveData(tag);
         tag.putBoolean(PHASE_TWO_TAG, phase2);
         tag.putBoolean("OpaqueIllusions", hasOpaqueIllusions());
-        tag.putInt(PHASE_TWO_STATE_TAG, phaseTwoState.id);
+        tag.putInt(PHASE_TWO_STATE_TAG, phaseTwoState.ordinal());
         tag.putInt(PHASE_TWO_STATE_TICKS_TAG, phaseTwoStateTicks);
         tag.putInt(PHASE_TWO_DASH_REMAINING_TAG, phaseTwoDashRemaining);
-        tag.putInt(PHASE_ONE_STATE_TAG, phaseOneState.id);
+        tag.putInt(PHASE_ONE_STATE_TAG, phaseOneState.ordinal());
         tag.putInt(PHASE_ONE_STATE_TICKS_TAG, phaseOneStateTicks);
         tag.putDouble(PHASE_ONE_INERTIA_X_TAG, phaseOneInertia.x);
         tag.putDouble(PHASE_ONE_INERTIA_Y_TAG, phaseOneInertia.y);
@@ -864,7 +866,7 @@ public class BrainOfCthulhu extends BaseBoss {
         super.readAdditionalSaveData(tag);
         phase2 = tag.getBoolean(PHASE_TWO_TAG);
         entityData.set(DATA_OPAQUE_ILLUSIONS, tag.getBoolean("OpaqueIllusions"));
-        phaseTwoState = PhaseTwoState.byId(tag.getInt(PHASE_TWO_STATE_TAG));
+        phaseTwoState = PhaseTwoState.fromOrdinal(tag.getInt(PHASE_TWO_STATE_TAG));
         phaseTwoStateTicks = Math.max(0, tag.getInt(PHASE_TWO_STATE_TICKS_TAG));
         phaseTwoDashRemaining = Math.max(0, tag.getInt(PHASE_TWO_DASH_REMAINING_TAG));
         // 曲线控制点不写入存档；恢复后从当前位置重新开始当前曲线段，避免跨版本坐标残留。
@@ -874,13 +876,13 @@ public class BrainOfCthulhu extends BaseBoss {
         phaseTwoCurveStart = null;
         phaseTwoCurveControl = null;
         phaseTwoCurveEnd = null;
-        phaseOneState = PhaseOneState.byId(tag.getInt(PHASE_ONE_STATE_TAG));
+        phaseOneState = PhaseOneState.fromOrdinal(tag.getInt(PHASE_ONE_STATE_TAG));
         phaseOneStateTicks = Math.max(0, tag.getInt(PHASE_ONE_STATE_TICKS_TAG));
         phaseOneInertia = new Vec3(tag.getDouble(PHASE_ONE_INERTIA_X_TAG), tag.getDouble(PHASE_ONE_INERTIA_Y_TAG), tag.getDouble(PHASE_ONE_INERTIA_Z_TAG));
         entityData.set(DATA_PHASE_TWO, phase2);
-        entityData.set(DATA_PHASE_TWO_STATE, phaseTwoState.id);
+        entityData.set(DATA_PHASE_TWO_STATE, phaseTwoState.ordinal());
         entityData.set(DATA_PHASE_TWO_STATE_TICKS, phaseTwoStateTicks);
-        entityData.set(DATA_PHASE_ONE_STATE, phaseOneState.id);
+        entityData.set(DATA_PHASE_ONE_STATE, phaseOneState.ordinal());
         entityData.set(DATA_PHASE_ONE_STATE_TICKS, phaseOneStateTicks);
         summonTicks = Math.max(0, tag.getInt(SUMMON_TICKS_TAG));
         spawnedNeuronCount = Mth.clamp(tag.getInt(SPAWNED_NEURON_COUNT_TAG), 0, neuronCount());
@@ -933,60 +935,40 @@ public class BrainOfCthulhu extends BaseBoss {
     }
 
     enum PhaseOneState {
-        /// 生成飞眼怪，准备一阶段战斗。
-        SUMMONING(0),
-        /// 接近玩家，等待下一次传送。
-        APPROACHING(1),
-        /// 传送前逐渐隐去。
-        FADING_OUT(2),
-        /// 传送到新位置后逐渐显现。
-        FADING_IN(3);
+        // 生成飞眼怪，准备一阶段战斗。
+        SUMMONING,
+        // 接近玩家，等待下一次传送。
+        APPROACHING,
+        // 传送前逐渐隐去。
+        FADING_OUT,
+        // 传送到新位置后逐渐显现。
+        FADING_IN;
 
-        private final int id;
+        private static final IntFunction<PhaseOneState> BY_ID = ByIdMap.sparse(Enum::ordinal, values(), SUMMONING);
 
-        PhaseOneState(int id) {
-            this.id = id;
-        }
-
-        private static PhaseOneState byId(int id) {
-            return switch (id) {
-                case 1 -> APPROACHING;
-                case 2 -> FADING_OUT;
-                case 3 -> FADING_IN;
-                default -> SUMMONING;
-            };
+        private static PhaseOneState fromOrdinal(int ordinal) {
+            return BY_ID.apply(ordinal);
         }
     }
 
     enum PhaseTwoState {
-        /// 切换至下一形态的过渡阶段。
-        TRANSFORMING(0),
-        /// 二阶段追踪玩家，准备冲刺或传送。
-        STALKING(1),
-        /// 执行冲刺攻击。
-        DASHING(2),
-        /// 传送前逐渐隐去。
-        FADING_OUT(3),
-        /// 传送到新位置后逐渐显现。
-        FADING_IN(4),
-        /// 显形完成后接近目标，再进入追踪状态。
-        APPROACHING(5);
+        // 切换至下一形态的过渡阶段。
+        TRANSFORMING,
+        // 二阶段追踪玩家，准备冲刺或传送。
+        STALKING,
+        // 执行冲刺攻击。
+        DASHING,
+        // 传送前逐渐隐去。
+        FADING_OUT,
+        // 传送到新位置后逐渐显现。
+        FADING_IN,
+        // 显形完成后接近目标，再进入追踪状态。
+        APPROACHING;
 
-        private final int id;
+        private static final IntFunction<PhaseTwoState> BY_ID = ByIdMap.sparse(Enum::ordinal, values(), TRANSFORMING);
 
-        PhaseTwoState(int id) {
-            this.id = id;
-        }
-
-        private static PhaseTwoState byId(int id) {
-            return switch (id) {
-                case 1 -> STALKING;
-                case 2 -> DASHING;
-                case 3 -> FADING_OUT;
-                case 4 -> FADING_IN;
-                case 5 -> APPROACHING;
-                default -> TRANSFORMING;
-            };
+        private static PhaseTwoState fromOrdinal(int ordinal) {
+            return BY_ID.apply(ordinal);
         }
     }
 }

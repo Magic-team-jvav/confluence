@@ -34,7 +34,6 @@ public final class SpawnEggItems {
     public static final DeferredItem<DeferredSpawnEggItem> BLOOD_ZOMBIE_SPAWN_EGG = register(MonsterEntities.BLOOD_ZOMBIE, "血腥僵尸刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> BLOOD_TUMORS_SPAWN_EGG = register(MonsterEntities.BLOOD_TUMORS, "血瘤刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> BLOOD_FEEDER_SPAWN_EGG = register(MonsterEntities.BLOOD_FEEDER, "嗜血怪刷怪蛋");
-    public static final DeferredItem<DeferredSpawnEggItem> FLESH_SLIME_SPAWN_EGG = register(MonsterEntities.FLESH_SLIME, "血肉史莱姆刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> CORRUPT_SLIME_SPAWN_EGG = register(MonsterEntities.CORRUPT_SLIME, "腐化史莱姆刷怪蛋", 0x3f3885, 0x625b9f);
     public static final DeferredItem<DeferredSpawnEggItem> EATER_OF_SOULS_SPAWN_EGG = register(MonsterEntities.EATER_OF_SOULS, "噬魂怪刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> DEVOURER_SPAWN_EGG = register(MonsterEntities.DEVOURER, "吞噬怪刷怪蛋");
@@ -304,7 +303,6 @@ public final class SpawnEggItems {
     public static final DeferredItem<DeferredSpawnEggItem> PLANTERA_SPAWN_EGG = register(BossEntities.PLANTERA, "世纪之花刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> DUKE_FISHRON_SPAWN_EGG = register(BossEntities.DUKE_FISHRON, "猪龙鱼公爵刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> LUNATIC_CULTIST_SPAWN_EGG = register(BossEntities.LUNATIC_CULTIST, "拜月教邪教徒刷怪蛋");
-    public static final DeferredItem<DeferredSpawnEggItem> PHANTASM_DRAGON_SPAWN_EGG = register(BossEntities.PHANTASM_DRAGON, "幻影龙刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> MARTIAN_OFFICER_SPAWN_EGG = register(MonsterEntities.MARTIAN_OFFICER, "火星军官刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> MARTIAN_WALKER_SPAWN_EGG = register(MonsterEntities.MARTIAN_WALKER, "火星走妖刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> BRAIN_SCRAMBLER_SPAWN_EGG = register(MonsterEntities.BRAIN_SCRAMBLER, "扰脑怪刷怪蛋");

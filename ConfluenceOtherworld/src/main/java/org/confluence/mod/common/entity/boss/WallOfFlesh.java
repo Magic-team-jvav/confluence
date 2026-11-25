@@ -222,7 +222,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
                                 "variable.up_y", Double.toString(up.y),
                                 "variable.up_z", Double.toString(up.z)));
                         EmitterCreationPacketS2C packet = new EmitterCreationPacketS2C(
-                                Confluence.asResource("wall_of_flesh_bag_guide"), start.toVector3f(), direction, -1);
+                                Confluence.asResource("wall_of_flesh_death_bag_trail_1"), start.toVector3f(), direction, -1);
                         PacketDistributor.sendToPlayer(player, packet);
                     }
                     AchievementUtils.awardAchievement(player, "still_hungry");
@@ -349,8 +349,8 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                /// 血肉墙使用自身的固定推进时序；行为树只保留空闲节点，避免通用追击
-                /// 行为在每个 tick 覆盖墙体的轴向速度。
+                // 血肉墙使用自身的固定推进时序；行为树只保留空闲节点，避免通用追击
+                // 行为在每个 tick 覆盖墙体的轴向速度。
                 return new WaitAction(100);
             }
         };
@@ -379,8 +379,8 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
         super.onAddedToLevel();
         if (!level().isClientSide) {
             if (initialPosition == Vec3.ZERO) {
-                /// 本回调执行时实体已加入当前区段。此时跨区块移动会使
-                /// 实体脱离 ticking 列表，因此初始后移必须等到首个正式 tick 再执行。
+                // 本回调执行时实体已加入当前区段。此时跨区块移动会使
+                // 实体脱离 ticking 列表，因此初始后移必须等到首个正式 tick 再执行。
                 needsInitialPlacement = true;
             } else {
                 ensureWallLayout();
@@ -596,7 +596,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
             if ((player.isCreative() && !isDeveloperTarget(player)) || player.isSpectator()) {
                 continue;
             }
-            /// 首次进入战斗带立即绑定，避免玩家在效果刷新前穿到背面后被当作无目标。
+            // 首次进入战斗带立即绑定，避免玩家在效果刷新前穿到背面后被当作无目标。
             if (player.getBoundingBox().intersects(pursuitBox) && !HorrifiedEffect.isBoundTo(player, this)) {
                 HorrifiedEffect.bind(player, this);
                 registerCombatParticipant(player);
@@ -798,13 +798,13 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
                 Vec3 anchor = new Vec3(
                         (x + 0.5 + (layoutRandom.nextDouble() - 0.5) * 0.5) * cellWidth - PURSUIT_WIDTH * 0.5,
                         (y + 0.5 + (layoutRandom.nextDouble() - 0.5) * 0.5) * cellHeight - PURSUIT_HEIGHT * 0.5, 0);
-                /// 每对位置随机决定眼嘴顺序，避免局部只出现一种部件。
+                // 每对位置随机决定眼嘴顺序，避免局部只出现一种部件。
                 if ((x & 1) == 0) eye = layoutRandom.nextBoolean();
                 if (eye) eyeAnchors.add(anchor);
                 else mouthAnchors.add(anchor);
                 eye = !eye;
 
-                /// 饿鬼独立于眼嘴覆盖，每隔两行、两列放置一个，不替代墙面部件。
+                // 饿鬼独立于眼嘴覆盖，每隔两行、两列放置一个，不替代墙面部件。
                 if ((x & 1) == 0 && (y & 1) == 0) {
                     hungryAnchors.add(anchor.add(0, cellHeight * 0.25, 0));
                 }
@@ -1015,7 +1015,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
     }
 
     public enum CombatState {
-        /// 低生命值时启用的数值状态。
+        // 低生命值时启用的数值状态。
         WOUNDED
     }
 

@@ -6,8 +6,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -15,6 +18,7 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
@@ -26,6 +30,7 @@ import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.mixed.IAbstractArrow;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.ModUtils;
@@ -45,6 +50,12 @@ public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
 
     public BaseTerraBowItem(float baseDamage, Properties properties) {
         this(baseDamage, properties, null);
+    }
+
+    protected BaseTerraBowItem(float baseDamage, Properties properties, double knockback) {
+        this(baseDamage, properties.attributes(ItemAttributeModifiers.builder()
+                .add(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ModItems.BASE_ATTACK_KNOCKBACK_ID, knockback,
+                        AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build()));
     }
 
     public BaseTerraBowItem(float baseDamage, Properties properties, @Nullable Ingredient repairIngredient) {

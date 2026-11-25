@@ -2,10 +2,10 @@
     "format_version": "1.10.0",
     "particle_effect": {
         "description": {
-            "identifier": "confluence:destroyer_attack_ball",
+            "identifier": "confluence:the_destroyer_beam_inner_ring_1",
             "basic_render_parameters": {
                 "material": "particles_add",
-                "texture": "confluence:destroyer_attack/inner"
+                "texture": "confluence:destroyer_attack/bomb"
             }
         },
         "components": {
@@ -14,33 +14,27 @@
                 "rotation": true
             },
             "minecraft:emitter_rate_steady": {
-                "spawn_rate": 13,
+                "spawn_rate": "30 * (v.emitter_age / v.emitter_lifetime)",
                 "max_particles": 100
             },
             "minecraft:emitter_lifetime_once": {
-                "active_time": 6
+                "active_time": 4
             },
-            "minecraft:emitter_shape_sphere": {
-                "radius": 0.5
-            },
+            "minecraft:emitter_shape_point": {},
             "minecraft:particle_initialization": {
-                "per_render_expression": "v.x = (v.emitter_age / v.emitter_lifetime);v.ab = 0.005 - math.abs(v.x - 0.995);v.up1 = (v.ab / 2 / math.abs(v.ab) + 0.5) * 10;v.size = (math.random(0.8, 1.1) * v.x) * 10 + v.up1;"
+                "per_render_expression": "v.size = math.pow(v.particle_age / v.particle_lifetime - 1, 2) * (14 * (v.emitter_age / v.emitter_lifetime) + 14);"
             },
             "minecraft:particle_lifetime_expression": {
-                "max_lifetime": 1
+                "max_lifetime": 0.4
             },
-            "minecraft:particle_initial_spin": {
-                "rotation": "math.random(-180, 180)",
-                "rotation_rate": "math.random(-180, 180)"
-            },
-            "minecraft:particle_initial_speed": 0,
+            "minecraft:particle_initial_speed": 0.2,
             "minecraft:particle_motion_dynamic": {},
             "minecraft:particle_appearance_billboard": {
                 "size": [
-                    "v.size * 0.5",
-                    "v.size * 0.5"
+                    "v.size",
+                    "v.size"
                 ],
-                "facing_camera_mode": "rotate_xyz",
+                "facing_camera_mode": "direction_z",
                 "uv": {
                     "texture_width": 16,
                     "texture_height": 16,
@@ -55,7 +49,6 @@
                     "interpolant": "v.particle_age / v.particle_lifetime",
                     "gradient": {
                         "0.0": "#FFFF0000",
-                        "0.65": "#FFFF0000",
                         "1.0": "#FFFFFFFF"
                     }
                 }

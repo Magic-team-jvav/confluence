@@ -59,7 +59,9 @@ public enum PrefixType implements StringRepresentable {
     /// 重铸抽取和定轨选项共用这个词条池。
     public List<ModPrefix> getRollablePrefixes(ItemStack stack) {
         if (this == UNKNOWN) return List.of();
-        if (this == RANGED || this == SUMMON || this == MAGIC) {
+        if (this == MAGIC)
+            return stack.is(ModTags.Items.PREFIX_NO_KNOCKBACK) ? withoutKnockback : available;
+        if (this == RANGED || this == SUMMON) {
             return hasKnockback(stack) ? available : withoutKnockback;
         }
         if (this == UNIVERSAL && stack.is(ModTags.Items.YOYO) && stack.is(YoyoItems.TERRARIAN)) {

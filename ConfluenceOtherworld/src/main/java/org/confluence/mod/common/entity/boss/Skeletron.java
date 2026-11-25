@@ -566,11 +566,11 @@ public class Skeletron extends BaseBoss {
     }
 
     public enum CombatState {
-        /// 悬浮追击玩家，等待旋转攻击。
+        // 悬浮追击玩家，等待旋转攻击。
         FLOATING,
-        /// 旋转头部并冲向玩家。
+        // 旋转头部并冲向玩家。
         SPINNING,
-        /// 激怒状态，使用激怒后的战斗参数。
+        // 激怒状态，使用激怒后的战斗参数。
         ENRAGED
     }
 

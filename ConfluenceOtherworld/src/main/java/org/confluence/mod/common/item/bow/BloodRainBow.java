@@ -17,7 +17,7 @@ public class BloodRainBow extends DaedalusStormbow {
     private static final int MAX_RAIN = 3;
 
     public BloodRainBow(float baseDamage, ModRarity rarity) {
-        super(baseDamage, rarity);
+        super(baseDamage, rarity, 0.3);
     }
 
     @Override

@@ -12,7 +12,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 /// 冰雪弓：把任何箭矢替换成高速的寒霜箭（不注册箭矢物品形态）。
 public class IceBow extends BaseTerraBowItem {
     public IceBow(float baseDamage) {
-        super(baseDamage, new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED));
+        super(baseDamage, new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED), 0.45);
     }
 
     @Override

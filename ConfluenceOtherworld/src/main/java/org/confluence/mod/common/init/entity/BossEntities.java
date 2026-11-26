@@ -193,28 +193,25 @@ public final class BossEntities {
                     .state(SkeletronPrimeArm.ArmRole.CANNON, state -> state.attribute(Attributes.MAX_HEALTH, 2730).attackDamage(14).armor(11).attribute(Attributes.ARMOR_TOUGHNESS, 4))
                     .build());
 
-    public static final DeferredHolder<EntityType<?>, EntityType<Plantera>> PLANTERA = withAttributes(registerEntity("plantera", "世纪之花", EntityType.Builder.of(Plantera::new, MobCategory.MONSTER).sized(10.0F, 10.0F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.boss().maxHealth(10920).armor(17).armorToughness(7).attackDamage(26).followRange(300)
+    public static final DeferredHolder<EntityType<?>, EntityType<Plantera>> PLANTERA = withAttributes(registerEntity("plantera", "世纪之花", EntityType.Builder.of(Plantera::new, MobCategory.MONSTER).sized(4.0F * Plantera.MODEL_SCALE, 4.0F * Plantera.MODEL_SCALE).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.boss().maxHealth(10920).armor(17).armorToughness(7).attackDamage(26).knockbackResistance(1).followRange(300)
                     .state(Plantera.Temperament.CALM, state -> state
                             .attribute(Attributes.ATTACK_DAMAGE, when(mob -> ((Plantera) mob).getPhase() == 0, 26, 37))
                             .attribute(Attributes.ARMOR, when(mob -> ((Plantera) mob).getPhase() == 0, 17, 5))
                             .attribute(Attributes.ARMOR_TOUGHNESS, when(mob -> ((Plantera) mob).getPhase() == 0, 7, 2))
-                            .moveSpeed(when(mob -> ((Plantera) mob).getPhase() == 0, 0.1, 0.2)))
+                            .moveSpeed(when(mob -> ((Plantera) mob).getPhase() == 0, Plantera.PHASE_ONE_MOVE_SPEED, Plantera.PHASE_TWO_MOVE_SPEED)))
                     .state(Plantera.Temperament.ENRAGED, state -> state
                             .attribute(Attributes.ATTACK_DAMAGE, when(mob -> ((Plantera) mob).getPhase() == 0, 52, 73))
                             .attribute(Attributes.ARMOR, when(mob -> ((Plantera) mob).getPhase() == 0, 33, 18))
                             .attribute(Attributes.ARMOR_TOUGHNESS, 8)
                             .moveSpeed(0.2))
-                    .projectile(ModEntities.PLANTERA_SEED, projectile -> projectile.damage(when(mob -> ((Plantera) mob).isEnraged(), 40, 20)))
-                    .projectile(ModEntities.PLANTERA_THORN_BALL, projectile -> projectile.damage(when(mob -> ((Plantera) mob).isEnraged(), 58, 29)))
-                    .projectile(ModEntities.PLANTERA_SPORE, projectile -> projectile.damage(when(mob -> ((Plantera) mob).isEnraged(), 74, 37)))
                     .build());
 
-    public static final DeferredHolder<EntityType<?>, EntityType<PlanteraHook>> PLANTERA_HOOK = withAttributes(registerEntity("plantera_hook", "世纪之花钩", EntityType.Builder.of(PlanteraHook::new, MobCategory.MONSTER).sized(1.25F, 1.25F).clientTrackingRange(10).updateInterval(1).noSave()),
-            () -> CreatureAttributeBuilder.boss().maxHealth(2080).armor(11).armorToughness(4).attackDamage(32).followRange(64).build());
+    public static final DeferredHolder<EntityType<?>, EntityType<PlanteraHook>> PLANTERA_HOOK = withAttributes(registerEntity("plantera_hook", "世纪之花钩", EntityType.Builder.of(PlanteraHook::new, MobCategory.MONSTER).sized(1.25F * Plantera.MODEL_SCALE, 1.25F * Plantera.MODEL_SCALE).clientTrackingRange(10).updateInterval(1).noSave()),
+            () -> CreatureAttributeBuilder.boss().maxHealth(2080).armor(11).armorToughness(4).armorPenetration(10).attackDamage(32).knockbackResistance(0.1).followRange(64).build());
 
-    public static final DeferredHolder<EntityType<?>, EntityType<PlanteraTentacle>> PLANTERA_TENTACLE = withAttributes(registerEntity("plantera_tentacle", "世纪之花触手", EntityType.Builder.of(PlanteraTentacle::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(10).updateInterval(1).noSave()),
-            () -> CreatureAttributeBuilder.boss().maxHealth(520).armor(9).armorToughness(4).attackDamage(36).followRange(64).build());
+    public static final DeferredHolder<EntityType<?>, EntityType<PlanteraTentacle>> PLANTERA_TENTACLE = withAttributes(registerEntity("plantera_tentacle", "世纪之花触手", EntityType.Builder.of(PlanteraTentacle::new, MobCategory.MONSTER).sized(1.5F * Plantera.MODEL_SCALE, 1.5F * Plantera.MODEL_SCALE).clientTrackingRange(10).updateInterval(1).noSave()),
+            () -> CreatureAttributeBuilder.boss().maxHealth(520).armor(9).armorToughness(4).armorPenetration(11).attackDamage(36).knockbackResistance(0.1).followRange(64).build());
 
     public static final DeferredHolder<EntityType<?>, EntityType<DukeFishron>> DUKE_FISHRON = withAttributes(registerEntity("duke_fishron", "猪龙鱼公爵", EntityType.Builder.of(DukeFishron::new, MobCategory.MONSTER).sized(3.2F, 3.4F).clientTrackingRange(16).updateInterval(1)),
             () -> CreatureAttributeBuilder.boss().maxHealth(20280).armor(23).armorToughness(8).armorPenetration(11).attackDamage(37).followRange(96).knockbackResistance(1)

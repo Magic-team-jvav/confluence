@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -48,6 +50,8 @@ import java.util.function.IntFunction;
 /// 保存时保留当前循环位置和锁定的冲刺方向，世界重载不会把第二阶段错误恢复成
 /// 第一阶段，也不会在冲刺中途突然改为追踪玩家。
 public class EyeOfCthulhu extends BaseBoss {
+    public static final ResourceLocation TRANSITION_BAR = Confluence.asResource("eye_of_cthulhu_transition");
+    public static final ResourceLocation PHASE_TWO_BAR = Confluence.asResource("eye_of_cthulhu_phase2");
     private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE = SynchedEntityData.defineId(EyeOfCthulhu.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_COMBAT_STAGE = SynchedEntityData.defineId(EyeOfCthulhu.class, EntityDataSerializers.INT);
 
@@ -142,6 +146,12 @@ public class EyeOfCthulhu extends BaseBoss {
     }
 
     @Override
+    protected ResourceLocation getBossBarStyle() {
+        if (getCombatState() == CombatState.TRANSFORMING) return TRANSITION_BAR;
+        return getCombatStage() == 1 ? super.getBossBarStyle() : PHASE_TWO_BAR;
+    }
+
+    @Override
     protected BossEvent.BossBarColor getBossBarColor() {
         return BossEvent.BossBarColor.RED;
     }
@@ -185,6 +195,10 @@ public class EyeOfCthulhu extends BaseBoss {
         updateCombatAttributes();
 
         LivingEntity target = getTarget();
+        if (getCombatState() == CombatState.TRANSFORMING) {
+            tickTransformation(target);
+            return;
+        }
         if (target == null) {
             setCombatState(CombatState.IDLE);
             setDeltaMovement(getDeltaMovement().scale(HOVER_MOMENTUM));
@@ -192,16 +206,11 @@ public class EyeOfCthulhu extends BaseBoss {
             return;
         }
 
-        if (getCombatStage() == 1 && getHealth() / getMaxHealth() < getTransformationHealthThreshold(isExpert())) {
-            beginTransformation();
-        }
-
         switch (getCombatState()) {
             case IDLE -> beginStaring();
             case STARING -> tickStaring(target);
             case DASH_WINDUP -> tickDashWindup(target);
             case DASHING -> tickDashing(target);
-            case TRANSFORMING -> tickTransformation(target);
             case LEAVING -> tickLeaving();
         }
     }
@@ -303,6 +312,14 @@ public class EyeOfCthulhu extends BaseBoss {
         }
     }
 
+    @Override
+    protected void updateHealthPhase() {
+        if (getCombatStage() == 1 && getCombatState() != CombatState.LEAVING && LibDateUtils.isNight(level())
+                && getHealth() / getMaxHealth() < getTransformationHealthThreshold(isExpert())) {
+            beginTransformation();
+        }
+    }
+
     private void beginTransformation() {
         entityData.set(DATA_COMBAT_STAGE, 2);
         stateTicks = 0;
@@ -315,11 +332,12 @@ public class EyeOfCthulhu extends BaseBoss {
 
     private void tickTransformation(LivingEntity target) {
         stateTicks++;
-        faceTowards(target.getEyePosition(), 360.0F, 360.0F);
+        if (target != null) faceTowards(target.getEyePosition(), 360.0F, 360.0F);
         setDeltaMovement(getDeltaMovement().scale(DASH_RECOVERY_MOMENTUM));
-        tickServantSummoning(TRANSFORM_SERVANT_COOLDOWN);
+        if (target != null) tickServantSummoning(TRANSFORM_SERVANT_COOLDOWN);
         if (stateTicks >= TRANSFORM_TICKS) {
-            beginStaring();
+            if (target == null) setCombatState(CombatState.IDLE);
+            else beginStaring();
         }
     }
 

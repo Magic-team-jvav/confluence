@@ -26,7 +26,10 @@ public class TerraStyleFoodHud implements LayeredDraw.Layer {
         LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(ModClientConfigs.foodLayoutX.get(), ModClientConfigs.foodLayoutY.get(), 0);
         ModClientConfigs.foodStyle.render(guiGraphics, minecraft);
+        guiGraphics.pose().popPose();
 
         minecraft.getProfiler().pop();
     }

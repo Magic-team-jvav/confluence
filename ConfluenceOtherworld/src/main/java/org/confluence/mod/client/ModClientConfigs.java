@@ -72,6 +72,8 @@ public final class ModClientConfigs {
     public static SellPriceDisplay sellPriceDisplay = SellPriceDisplay.EVERYWHERE;
     public static int customTitle = 71;
     public static CustomBossBarRenderer.Style bossBarStyle = CustomBossBarRenderer.Style.STATIC;
+    public static CustomBossBarRenderer.NamePosition bossBarNamePosition = CustomBossBarRenderer.NamePosition.TOP;
+    public static CustomBossBarRenderer.NumberPosition bossBarNumberPosition = CustomBossBarRenderer.NumberPosition.BOTTOM;
     public static boolean bossBarNumbersVisible = true;
 
     public static boolean terraStyleHealth = true;
@@ -132,22 +134,36 @@ public final class ModClientConfigs {
     private static BooleanValue WEAPON_TOOLTIP_BASE_STATS;
     private static EnumValue<SellPriceDisplay> SELL_PRICE_DISPLAY;
     private static IntValue CUSTOM_TITLE;
-    private static EnumValue<CustomBossBarRenderer.Style> BOSS_BAR_STYLE;
+    public static EnumValue<CustomBossBarRenderer.Style> BOSS_BAR_STYLE;
+    public static IntValue foodLayoutX;
+    public static IntValue foodLayoutY;
+    public static IntValue armorLayoutX;
+    public static IntValue armorLayoutY;
+    public static IntValue soulLayoutX;
+    public static IntValue soulLayoutY;
+    public static IntValue bossLayoutX;
+    public static IntValue bossLayoutY;
+    public static IntValue bossBarNameX;
+    public static IntValue bossBarNameY;
+    public static IntValue bossBarValueX;
+    public static IntValue bossBarValueY;
+    public static EnumValue<CustomBossBarRenderer.NamePosition> BOSS_BAR_NAME_POSITION;
+    public static EnumValue<CustomBossBarRenderer.NumberPosition> BOSS_BAR_NUMBER_POSITION;
     private static BooleanValue BOSS_BAR_NUMBERS_VISIBLE;
 
     private static BooleanValue TERRA_STYLE_HEALTH;
-    private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
-    private static IntValue HEALTH_OFFSET_X;
-    private static IntValue HEALTH_OFFSET_Y;
+    public static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
+    public static IntValue HEALTH_OFFSET_X;
+    public static IntValue HEALTH_OFFSET_Y;
     private static BooleanValue TERRA_STYLE_FOOD;
-    private static EnumValue<TerraStyleFoodHud.Food> FOOD_STYLE;
-    private static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
-    private static EnumValue<TerraStyleManaHud.Soul> SOUL_STYLE;
-    private static IntValue MANA_OFFSET_X;
-    private static IntValue MANA_OFFSET_Y;
+    public static EnumValue<TerraStyleFoodHud.Food> FOOD_STYLE;
+    public static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
+    public static EnumValue<TerraStyleManaHud.Soul> SOUL_STYLE;
+    public static IntValue MANA_OFFSET_X;
+    public static IntValue MANA_OFFSET_Y;
     private static EnumValue<ClientSoulHandler.Type> SOUL_QUICK_SKILL_STYLE;
     private static BooleanValue TERRA_STYLE_ARMOR;
-    private static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
+    public static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
     private static BooleanValue LEFT_EFFECT_ICON;
     private static BooleanValue CROSSHAIR_ANIMATION;
     private static ConfigValue<List<? extends String>> CROSSHAIR_ANIMATION_BLACKLIST;
@@ -202,6 +218,8 @@ public final class ModClientConfigs {
         sellPriceDisplay = SELL_PRICE_DISPLAY.get();
         customTitle = CUSTOM_TITLE.get();
         bossBarStyle = BOSS_BAR_STYLE.get();
+        bossBarNamePosition = BOSS_BAR_NAME_POSITION.get();
+        bossBarNumberPosition = BOSS_BAR_NUMBER_POSITION.get();
         bossBarNumbersVisible = BOSS_BAR_NUMBERS_VISIBLE.get();
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
@@ -281,7 +299,17 @@ public final class ModClientConfigs {
             builder.push("HUD");
             {
                 builder.push("Boss");
+                bossLayoutX = builder.defineInRange("bossLayoutX", 0, -8192, 8192);
+                bossLayoutY = builder.defineInRange("bossLayoutY", 0, -8192, 8192);
                 BOSS_BAR_STYLE = builder.defineEnum("bossBarStyle", CustomBossBarRenderer.Style.STATIC);
+                bossBarNameX = builder.defineInRange("bossBarNameX", 0, -8192, 8192);
+                bossBarNameY = builder.defineInRange("bossBarNameY", 0, -8192, 8192);
+                bossBarValueX = builder.defineInRange("bossBarValueX", 0, -8192, 8192);
+                bossBarValueY = builder.defineInRange("bossBarValueY", 0, -8192, 8192);
+                BOSS_BAR_NAME_POSITION = builder.comment("Position of boss names around custom boss bars.")
+                        .defineEnum("bossBarNamePosition", CustomBossBarRenderer.NamePosition.TOP);
+                BOSS_BAR_NUMBER_POSITION = builder.comment("Position of health values around custom boss bars.")
+                        .defineEnum("bossBarNumberPosition", CustomBossBarRenderer.NumberPosition.BOTTOM);
                 BOSS_BAR_NUMBERS_VISIBLE = builder.comment("Show exact health values on custom boss bars.")
                         .define("bossBarNumbersVisible", true);
                 builder.pop();
@@ -296,6 +324,8 @@ public final class ModClientConfigs {
             }
             {
                 builder.push("Food");
+                foodLayoutX = builder.defineInRange("foodLayoutX", 0, -8192, 8192);
+                foodLayoutY = builder.defineInRange("foodLayoutY", 0, -8192, 8192);
                 TERRA_STYLE_FOOD = builder.define("terraStyleFood", true);
                 FOOD_STYLE = builder.defineEnum("foodStyle", TerraStyleFoodHud.Food.OVERLAY);
                 builder.pop();
@@ -309,12 +339,16 @@ public final class ModClientConfigs {
             }
             {
                 builder.push("Soulcerer");
+                soulLayoutX = builder.defineInRange("soulLayoutX", 0, -8192, 8192);
+                soulLayoutY = builder.defineInRange("soulLayoutY", 0, -8192, 8192);
                 SOUL_STYLE = builder.defineEnum("soulStyle", TerraStyleManaHud.Soul.OVERLAY);
                 SOUL_QUICK_SKILL_STYLE = builder.defineEnum("soulcererQuickSkillStyle", ClientSoulHandler.Type.ROULETTE_WHEEL_SMALL);
                 builder.pop();
             }
             {
                 builder.push("Armor");
+                armorLayoutX = builder.defineInRange("armorLayoutX", 0, -8192, 8192);
+                armorLayoutY = builder.defineInRange("armorLayoutY", 0, -8192, 8192);
                 TERRA_STYLE_ARMOR = builder.define("terraStyleArmor", true);
                 ARMOR_STYLE = builder.defineEnum("armorStyle", TerraStyleArmorHud.Armor.OVERLAY);
                 builder.pop();

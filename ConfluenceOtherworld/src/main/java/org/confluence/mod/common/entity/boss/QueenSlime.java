@@ -277,14 +277,18 @@ public class QueenSlime extends BaseBoss {
         };
     }
 
-    private void tickQueenMovement() {
-        tickImpact();
+    @Override
+    protected void updateHealthPhase() {
         if (flying != isFlyingPhase()) {
             flying = isFlyingPhase();
             groundHopsDue = true;
             setDeltaMovement(Vec3.ZERO);
             begin(Action.IDLE);
         }
+    }
+
+    private void tickQueenMovement() {
+        tickImpact();
         releaseSlimes();
         LivingEntity target = getTarget();
         if (target == null || !target.isAlive() || !canAttack(target)) {

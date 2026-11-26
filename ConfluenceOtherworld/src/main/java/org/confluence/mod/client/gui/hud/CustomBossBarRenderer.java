@@ -35,31 +35,71 @@ public final class CustomBossBarRenderer {
         if (style == null) return;
 
         GuiGraphics graphics = event.getGuiGraphics();
-        int screenWidth = event.getWindow().getGuiScaledWidth();
-        int x = (screenWidth - style.frameWidth()) / 2;
-        int y = event.getY();
-        graphics.blit(style.frame(), x, y, 0, 0, style.frameWidth(), style.frameHeight(), style.textureWidth(), style.textureHeight());
-        // 血量与布局按同一顺序配对，渲染器无需认识激光眼、魔焰眼或其他具体 Boss。
-        for (int i = 0; i < style.sections().size() && i < data.health().size(); i++) {
-            drawHealth(graphics, style, style.sections().get(i), data.health().get(i), x, y);
-        }
-        Minecraft minecraft = Minecraft.getInstance();
-        graphics.drawString(minecraft.font, event.getBossEvent().getName(),
-                (screenWidth - minecraft.font.width(event.getBossEvent().getName())) / 2, y - 9, 0xFFFFFF);
-        event.setIncrement(style.verticalIncrement());
+        event.setIncrement(drawBar(graphics, data, style, event.getBossEvent().getName(), event.getY(),
+                ModClientConfigs.bossBarNameX.get(), ModClientConfigs.bossBarNameY.get(),
+                ModClientConfigs.bossBarValueX.get(), ModClientConfigs.bossBarValueY.get()));
         event.setCanceled(true);
     }
 
+    private static int drawBar(GuiGraphics graphics, BossBarData data, BarStyle style, Component name, int y,
+                               int nameOffsetX, int nameOffsetY, int valueOffsetX, int valueOffsetY) {
+        int screenWidth = graphics.guiWidth();
+        int x = (screenWidth - style.frameWidth()) / 2 + ModClientConfigs.bossLayoutX.get();
+        y += ModClientConfigs.bossLayoutY.get();
+        // 底框和填充取同一帧，过渡动画播完后停在末帧。
+        int frame = (int) Math.min(style.frames() - 1, (Util.getMillis() - data.styleSince()) / style.frameMillis());
+        int frameY = frame * style.frameHeight();
+        graphics.blit(style.frame(), x, y, 0, frameY, style.frameWidth(), style.frameHeight(), style.textureWidth(), style.textureHeight());
+        // 血量与布局按同一顺序配对，渲染器无需认识激光眼、魔焰眼或其他具体 Boss。
+        for (int i = 0; i < style.sections().size() && i < data.health().size(); i++) {
+            drawHealth(graphics, style, style.sections().get(i), data.health().get(i), x, y, frameY, valueOffsetX, valueOffsetY);
+        }
+        Minecraft minecraft = Minecraft.getInstance();
+        int nameWidth = minecraft.font.width(name);
+        int lineHeight = minecraft.font.lineHeight;
+        NamePosition position = ModClientConfigs.bossBarNamePosition;
+        if ((position == NamePosition.LEFT || position == NamePosition.RIGHT) && x + style.sections().get(0).left() - 12 < nameWidth + 4) {
+            position = NamePosition.TOP;
+        }
+        int nameX = x + (style.frameWidth() - nameWidth) / 2;
+        int nameY = y + style.nameTopInset() - lineHeight;
+        int increment = style.verticalIncrement();
+        if (ModClientConfigs.bossBarNumbersVisible) {
+            increment = Math.max(increment, style.frameHeight() + lineHeight + 10);
+        }
+        switch (position) {
+            case BOTTOM -> {
+                nameY = y + style.frameHeight();
+                if (ModClientConfigs.bossBarNumbersVisible) nameY += lineHeight;
+                increment = Math.max(increment, nameY - y + lineHeight * 2 + 2);
+            }
+            case LEFT, RIGHT -> {
+                nameX = position == NamePosition.LEFT ? x + style.sections().get(0).left() - 14 - nameWidth : x + style.frameWidth() - style.sections().get(0).left() + 14;
+                nameY = y + (style.frameHeight() - lineHeight) / 2;
+                // 同侧显示时，名称放在整组血量数字上方，为双子魔眼的两行读数留出空间。
+                if (ModClientConfigs.bossBarNumbersVisible && (position == NamePosition.LEFT
+                        ? ModClientConfigs.bossBarNumberPosition == NumberPosition.LEFT
+                        : ModClientConfigs.bossBarNumberPosition == NumberPosition.RIGHT)) {
+                    nameY = y + (style.frameHeight() - style.sections().size() * lineHeight) / 2 - lineHeight - 2;
+                }
+            }
+        }
+        nameX = Mth.clamp(nameX + nameOffsetX, 0, Math.max(0, screenWidth - nameWidth));
+        nameY = Mth.clamp(nameY + nameOffsetY, 0, graphics.guiHeight() - lineHeight);
+        graphics.drawString(minecraft.font, name, nameX, nameY, 0xFFFFFF);
+        return increment + Math.max(0, Math.max(nameOffsetY, valueOffsetY));
+    }
+
     // 静态和动态样式只在填充绘制处选择，底框、裁切方向与数字排版保持一致。
-    private static void drawHealth(GuiGraphics graphics, BarStyle style, BarSection section, Health health, int x, int y) {
+    private static void drawHealth(GuiGraphics graphics, BarStyle style, BarSection section, Health health, int x, int y, int frameY, int offsetX, int offsetY) {
         int width = filledWidth(section.width(), health.current(), health.maximum());
         int sourceX = section.left() + (section.reverse() ? section.width() - width : 0);
         if (width > 0) {
             if (ModClientConfigs.bossBarStyle == Style.DYNAMIC && flowingFillShader != null) {
                 graphics.flush();
-                renderFlowingFill(graphics, style.fill(), x + sourceX, y + style.healthY(), width, sourceX, style.fillY(), style.fillHeight(), style.textureWidth(), style.textureHeight());
+                renderFlowingFill(graphics, style.fill(), x + sourceX, y + style.healthY(), width, sourceX, style.fillY() + frameY, style.fillHeight(), style.textureWidth(), style.textureHeight());
             } else {
-                graphics.blit(style.fill(), x + sourceX, y + style.healthY(), sourceX, style.fillY(), width, style.fillHeight(), style.textureWidth(), style.textureHeight());
+                graphics.blit(style.fill(), x + sourceX, y + style.healthY(), sourceX, style.fillY() + frameY, width, style.fillHeight(), style.textureWidth(), style.textureHeight());
             }
         }
         if (!ModClientConfigs.bossBarNumbersVisible || health.maximum() <= 0) return;
@@ -68,7 +108,19 @@ public final class CustomBossBarRenderer {
         // 按该段可用宽度缩放，普通血条保持原字号，双子长数字也不会盖到中间眼睛。
         float scale = Math.min(1.0F, (section.width() - 4.0F) / font.width(value));
         graphics.pose().pushPose();
-        graphics.pose().translate(x + section.numberCenter(), y + section.numberY(), 0);
+        float center = x + (style.sections().size() == 1 ? style.frameWidth() * 0.5F : section.left() + section.width() * 0.5F);
+        int top = y + style.frameHeight() - 6;
+        NumberPosition position = ModClientConfigs.bossBarNumberPosition;
+        float halfWidth = font.width(value) * scale * 0.5F;
+        // 窄屏侧边容不下完整数值时，回到血条下方。
+        if (position != NumberPosition.BOTTOM && x + style.sections().get(0).left() - 14 >= 2 * halfWidth) {
+            center = position == NumberPosition.LEFT ? x + style.sections().get(0).left() - 14 - halfWidth : x + style.frameWidth() - style.sections().get(0).left() + 14 + halfWidth;
+            top = y + (style.frameHeight() - style.sections().size() * font.lineHeight) / 2
+                    + style.sections().indexOf(section) * font.lineHeight;
+        }
+        center = Mth.clamp(center + offsetX, halfWidth, graphics.guiWidth() - halfWidth);
+        top = Mth.clamp(top + offsetY, 0, graphics.guiHeight() - font.lineHeight);
+        graphics.pose().translate(center, top, 0);
         graphics.pose().scale(scale, scale, 1);
         int left = -font.width(value) / 2;
         if (section.numberColor() == section.numberEndColor()) {
@@ -125,6 +177,29 @@ public final class CustomBossBarRenderer {
     @ApiStatus.Internal
     public static void setShader(ShaderInstance instance) {
         flowingFillShader = instance;
+    }
+
+    public enum NamePosition implements TranslatableEnum {
+        TOP,
+        BOTTOM,
+        LEFT,
+        RIGHT;
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable("confluence.configuration.bossBarNamePosition." + name().toLowerCase(Locale.ROOT));
+        }
+    }
+
+    public enum NumberPosition implements TranslatableEnum {
+        BOTTOM,
+        LEFT,
+        RIGHT;
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable("confluence.configuration.bossBarNumberPosition." + name().toLowerCase(Locale.ROOT));
+        }
     }
 
     public enum Style implements TranslatableEnum {

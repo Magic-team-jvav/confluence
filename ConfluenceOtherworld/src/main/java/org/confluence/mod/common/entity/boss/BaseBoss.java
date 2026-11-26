@@ -94,6 +94,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     private boolean removingSubEntities;
     /// 本 tick 是否有创造模式玩家在交战范围内维持现场。它不参与索敌，只阻止无人脱战清理。
     private boolean encounterObserverNearby;
+    private ResourceLocation lastSynchronizedBossBarStyle;
     private float lastSynchronizedBossBarHealth = Float.NaN;
     private float lastSynchronizedBossBarMaximumHealth = Float.NaN;
     private final BossChunkTicket encounterChunkTicket = new BossChunkTicket(getUUID());
@@ -145,7 +146,10 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         bossEvent.setProgress(progress);
         float maximumHealth = getBossBarMaximumHealth();
         float health = progress * maximumHealth;
-        if (Float.compare(health, lastSynchronizedBossBarHealth) != 0 || Float.compare(maximumHealth, lastSynchronizedBossBarMaximumHealth) != 0 || tickCount % BOSS_BAR_RESYNC_INTERVAL == 0) {
+        // 阶段切换可能只改变样式，即使血量相同也需要通知客户端。
+        ResourceLocation style = getBossBarStyle();
+        if (!style.equals(lastSynchronizedBossBarStyle) || Float.compare(health, lastSynchronizedBossBarHealth) != 0 || Float.compare(maximumHealth, lastSynchronizedBossBarMaximumHealth) != 0 || tickCount % BOSS_BAR_RESYNC_INTERVAL == 0) {
+            lastSynchronizedBossBarStyle = style;
             lastSynchronizedBossBarHealth = health;
             lastSynchronizedBossBarMaximumHealth = maximumHealth;
             for (ServerPlayer player : bossEvent.getPlayers())
@@ -446,6 +450,9 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return animationSpeed;
     }
 
+    /// 存活的 Boss 在服务端选取目标和执行 AI 前更新血量阶段，失去目标时仍能进入下一形态。
+    protected void updateHealthPhase() {}
+
     @Override
     public void tick() {
         if (!isAlive()) {
@@ -459,6 +466,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         }
         LivingEntity targetBeforeAi = null;
         if (!level().isClientSide) {
+            updateHealthPhase();
             LivingEntity currentTarget = getTarget();
             UUID diedTargetId = currentTarget instanceof Player player && !player.isAlive() ? player.getUUID() : null;
             if (diedTargetId == null && currentTarget == null && synchronizedCombatTarget != null) {

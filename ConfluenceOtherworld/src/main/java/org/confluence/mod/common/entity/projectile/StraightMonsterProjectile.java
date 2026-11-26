@@ -117,7 +117,7 @@ public abstract class StraightMonsterProjectile extends Projectile {
 
         Vec3 velocity = modifyVelocity(getDeltaMovement());
         setDeltaMovement(velocity);
-        HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        HitResult hitResult = findImpact();
         boolean impacted = hitResult.getType() != HitResult.Type.MISS
                 && !NeoForge.EVENT_BUS.post(new ProjectileImpactEvent(this, hitResult)).isCanceled();
         if (impacted) {
@@ -140,6 +140,11 @@ public abstract class StraightMonsterProjectile extends Projectile {
         checkInsideBlocks();
         setPos(getX() + velocity.x, getY() + velocity.y, getZ() + velocity.z);
         updateRotation();
+    }
+
+    // 默认沿本 tick 的位移检测实体与方块，穿墙弹可覆盖此处选择碰撞目标。
+    protected HitResult findImpact() {
+        return ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
     }
 
     /// 允许子类在每个 tick 修改速度；默认保持匀速。

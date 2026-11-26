@@ -12,7 +12,7 @@ import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 public class LoomBlockRenderer extends GeoBlockRenderer<LoomBlock.BEntity> {
     public LoomBlockRenderer() {
-        super(new DefaultedBlockGeoModel<>(Confluence.asResource("loom")));
+        super(new DefaultedBlockGeoModel<LoomBlock.BEntity>(Confluence.asResource("loom")).withAltTexture(Confluence.asResource("functional/workstation/loom")));
     }
 
     @Override

@@ -3,6 +3,6 @@
   "textures": {
     "bottom": "minecraft:block/deepslate_top",
     "side": "minecraft:block/deepslate",
-    "top": "confluence:block/pneumatic_trap"
+      "top": "confluence:block/trap/pneumatic_trap"
   }
 }

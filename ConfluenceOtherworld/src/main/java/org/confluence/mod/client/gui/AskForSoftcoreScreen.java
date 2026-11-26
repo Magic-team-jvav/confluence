@@ -13,7 +13,7 @@ import org.confluence.mod.network.AskForSoftcorePacket;
 import org.mesdag.portlib.network.PortPacketDistributor;
 
 public class AskForSoftcoreScreen extends Screen {
-    private static final ResourceLocation BASE = Confluence.asResource("textures/gui/ask_for_softcore.png");
+    private static final ResourceLocation BASE = Confluence.asResource("textures/gui/dialog/ask_for_softcore.png");
 
     private int imageWidth;
     private int imageHeight;

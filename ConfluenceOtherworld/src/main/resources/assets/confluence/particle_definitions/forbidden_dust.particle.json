@@ -5,7 +5,7 @@
 			"identifier": "confluence:forbidden_dust",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:spore_cloud"
+                "texture": "confluence:ambient/spore_cloud"
 			}
 		},
 		"components": {

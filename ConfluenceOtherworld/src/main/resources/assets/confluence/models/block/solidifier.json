@@ -3,9 +3,9 @@
 	"render_type": "cutout",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "confluence:block/solidifier",
-		"2": "confluence:block/solidifier_light",
-		"particle": "confluence:block/solidifier_light"
+        "1": "confluence:block/functional/workstation/solidifier",
+        "2": "confluence:block/functional/workstation/solidifier_light",
+        "particle": "confluence:block/functional/workstation/solidifier_light"
 	},
 	"elements": [
 		{

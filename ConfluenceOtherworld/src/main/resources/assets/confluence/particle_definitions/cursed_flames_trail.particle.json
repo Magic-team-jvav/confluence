@@ -5,7 +5,7 @@
 			"identifier": "confluence:cursed_flames_trail",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:cursed_flames_trail"
+                "texture": "confluence:magic/cursed_flames_trail"
 			}
 		},
 		"components": {

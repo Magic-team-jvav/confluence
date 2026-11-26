@@ -16,7 +16,7 @@ import org.confluence.mod.common.entity.projectile.MartianElectricBolt;
 
 /// 特斯拉弹幕复用风暴长矛的模型与贴图，并以全亮方式渲染。
 public final class MartianElectricBoltRenderer extends EntityRenderer<MartianElectricBolt> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/storm_spear_shot_projectile.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/storm_spear_shot_projectile.png");
     private static final RenderType GLOW = RenderType.entityTranslucentEmissive(TEXTURE);
     private final ModelPart model;
 

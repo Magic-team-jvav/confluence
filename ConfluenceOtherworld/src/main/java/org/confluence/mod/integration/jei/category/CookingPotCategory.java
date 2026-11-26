@@ -28,7 +28,7 @@ import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
     public static final RecipeType<CookingPotRecipe> TYPE = new RecipeType<>(Confluence.asResource("cooking_pot"), CookingPotRecipe.class);
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/cooking_pot.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/jei/cooking_pot.png");
     private final IDrawable icon;
 
     public CookingPotCategory(IJeiHelpers jeiHelpers) {

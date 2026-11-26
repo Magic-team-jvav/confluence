@@ -14,7 +14,7 @@ import org.confluence.mod.common.entity.projectile.SuperSpikyBallProjectile;
 
 
 public class SuperSpikyBallProjectileRenderer extends EntityRenderer<SuperSpikyBallProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/super_spiky_ball_projectile.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/super_spiky_ball_projectile.png");
     private final SpikyBallProjectileModel model;
 
     public SuperSpikyBallProjectileRenderer(EntityRendererProvider.Context context) {

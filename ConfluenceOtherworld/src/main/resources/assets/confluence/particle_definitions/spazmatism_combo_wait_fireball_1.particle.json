@@ -5,7 +5,7 @@
             "identifier": "confluence:spazmatism_combo_wait_fireball_1",
             "basic_render_parameters": {
                 "material": "particles_alpha",
-                "texture": "confluence:cursed_flames"
+                "texture": "confluence:magic/cursed_flames"
             }
         },
         "components": {

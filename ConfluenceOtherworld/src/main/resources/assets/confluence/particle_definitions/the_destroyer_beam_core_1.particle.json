@@ -5,7 +5,7 @@
             "identifier": "confluence:the_destroyer_beam_core_1",
             "basic_render_parameters": {
                 "material": "particles_add",
-                "texture": "confluence:destroyer_null"
+                "texture": "confluence:destroyer_attack/destroyer_null"
             }
         },
         "components": {

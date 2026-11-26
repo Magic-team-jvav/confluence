@@ -14,7 +14,7 @@ import org.confluence.mod.client.model.entity.projectile.DungeonDemonBoneProject
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 
 public class DungeonDemonBoneProjectileRenderer extends EntityRenderer<ThrowableDropSelfProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/dungeon_demon_bone_projectile.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/dungeon_demon_bone_projectile.png");
     private final DungeonDemonBoneProjectileModel model;
 
     public DungeonDemonBoneProjectileRenderer(EntityRendererProvider.Context pContext) {

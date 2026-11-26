@@ -13,7 +13,7 @@ import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 public class BewitchingTableBlockRenderer extends GeoBlockRenderer<BewitchingTableBlock.BEntity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/bewitching_table.geo.json");
-    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/bewitching_table.png");
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/functional/workstation/bewitching_table.png");
     public static final ResourceLocation ANIMATION = Confluence.asResource("animations/block/bewitching_table.animation.json");
 
     public BewitchingTableBlockRenderer() {

@@ -3,9 +3,9 @@
 	"render_type": "cutout_mipped",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "confluence:block/crimson_heart",
-		"1": "confluence:block/crimson_heart_1",
-		"particle": "confluence:block/crimson_heart"
+        "0": "confluence:block/crimson/crimson_heart",
+        "1": "confluence:block/crimson/crimson_heart_1",
+        "particle": "confluence:block/crimson/crimson_heart"
 	},
 	"elements": [
 		{

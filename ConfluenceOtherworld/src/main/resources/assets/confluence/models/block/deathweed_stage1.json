@@ -1,8 +1,8 @@
 {
   "parent": "block/cross",
   "textures": {
-    "cross": "confluence:block/deathweed_stage1",
-    "particle": "confluence:block/deathweed_stage1"
+      "cross": "confluence:block/herb/deathweed_stage1",
+      "particle": "confluence:block/herb/deathweed_stage1"
   },
   "render_type": "cutout"
 }

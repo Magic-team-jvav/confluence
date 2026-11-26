@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [48, 48],
 	"textures": {
-		"2": "confluence:block/n_statue",
+        "2": "confluence:block/statue/n_statue",
 		"particle": "block/andesite"
 	},
 	"elements": [

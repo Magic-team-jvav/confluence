@@ -1,8 +1,8 @@
 {   "parent": "block/block",
     "textures": {
         "particle": "block/mud",
-        "top": "confluence:block/mushroom_path_top",
-        "side": "confluence:block/mushroom_path_side",
+        "top": "confluence:block/mushroom/mushroom_path_top",
+        "side": "confluence:block/mushroom/mushroom_path_side",
         "bottom": "block/mud"
     },
     "elements": [

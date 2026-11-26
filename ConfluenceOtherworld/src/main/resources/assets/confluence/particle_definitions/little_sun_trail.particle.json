@@ -5,7 +5,7 @@
 			"identifier": "confluence:little_sun_trail",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:little_sun_trail"
+                "texture": "confluence:magic/little_sun_trail"
 			}
 		},
 		"components": {

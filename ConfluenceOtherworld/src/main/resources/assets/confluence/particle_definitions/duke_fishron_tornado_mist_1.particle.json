@@ -5,7 +5,7 @@
             "identifier": "confluence:duke_fishron_tornado_mist_1",
             "basic_render_parameters": {
                 "material": "particles_blend",
-                "texture": "confluence:duke_fishron_bubble"
+                "texture": "confluence:duke_fishron/duke_fishron_bubble"
             }
         },
         "components": {

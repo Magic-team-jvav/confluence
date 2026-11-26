@@ -5,7 +5,7 @@
             "identifier": "confluence:retinazer_combo_fire_fireburst_1",
             "basic_render_parameters": {
                 "material": "particles_alpha",
-                "texture": "confluence:cursed_flames"
+                "texture": "confluence:magic/cursed_flames"
             }
         },
         "components": {

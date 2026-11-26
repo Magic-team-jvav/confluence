@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "confluence:block/flesh_block_10"
+        "all": "confluence:block/crimson/flesh_block_10"
     }
 }

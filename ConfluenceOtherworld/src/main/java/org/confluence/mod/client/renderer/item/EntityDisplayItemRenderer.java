@@ -41,7 +41,7 @@ public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
                 public ResourceLocation getSkinTextureLocation() {
                     if (playerSkin == null) {
                         getEntityData().set(DATA_PLAYER_MODE_CUSTOMISATION, (byte) 127); // 显示双层模型
-                        this.playerSkin = Confluence.asResource("textures/magic_harp_2333.png");
+                        this.playerSkin = Confluence.asResource("textures/entity/player/magic_harp_2333.png");
                     }
                     return playerSkin;
                 }

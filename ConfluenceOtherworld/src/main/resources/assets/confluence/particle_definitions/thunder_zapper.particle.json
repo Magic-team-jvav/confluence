@@ -5,7 +5,7 @@
 			"identifier": "confluence:thunder_zapper",
 			"basic_render_parameters": {
 				"material": "particles_blend",
-				"texture": "confluence:thunder_zapper"
+                "texture": "confluence:magic/thunder_zapper"
 			}
 		},
 		"events": {

@@ -5,7 +5,7 @@
 			"identifier": "confluence:balloon",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:balloon"
+                "texture": "confluence:ambient/balloon"
 			}
 		},
 		"curves": {

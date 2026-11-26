@@ -12,7 +12,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.boss.DukeFishron;
 
 public class DukeFishronSkyRenderer {
-    private static final ResourceLocation SKY = Confluence.asResource("textures/environment/duke_fishron_sky.png");
+    private static final ResourceLocation SKY = Confluence.asResource("textures/environment/sky/duke_fishron_sky.png");
     private static final double RANGE = 48.0;
     private static final float FADE_STEP = 0.05F;
     private static final float CUBE_HALF_SIZE = 32.0F;

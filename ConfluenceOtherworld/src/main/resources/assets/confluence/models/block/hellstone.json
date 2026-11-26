@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/hellstone"
+      "all": "confluence:block/underworld/hellstone"
   }
 }

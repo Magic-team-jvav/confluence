@@ -13,7 +13,7 @@ import org.confluence.mod.client.model.entity.projectile.ShurikenProjectileModel
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 
 public class ShurikenProjectileRenderer extends EntityRenderer<ThrowableDropSelfProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/shuriken_projectile.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/shuriken_projectile.png");
     private final ShurikenProjectileModel model;
 
     public ShurikenProjectileRenderer(EntityRendererProvider.Context pContext) {

@@ -22,7 +22,7 @@ import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class AlchemyTableCategory implements IRecipeCategory<AlchemyTableRecipe> {
     public static final RecipeType<AlchemyTableRecipe> TYPE = new RecipeType<>(Confluence.asResource("alchemy_table"), AlchemyTableRecipe.class);
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/alchemy_table.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/jei/alchemy_table.png");
     private final IDrawable icon;
 
     public AlchemyTableCategory(IJeiHelpers jeiHelpers) {

@@ -2,9 +2,9 @@
 	"credit": "Made with Blockbench",
 	"render_type": "cutout_mipped",
 	"textures": {
-		"0": "confluence:block/vine_rope",
-		"1": "confluence:block/vine_rope_1",
-		"particle": "confluence:block/vine_rope"
+        "0": "confluence:block/rope/vine_rope",
+        "1": "confluence:block/rope/vine_rope_1",
+        "particle": "confluence:block/rope/vine_rope"
 	},
 	"elements": [
 		{

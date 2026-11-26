@@ -3,8 +3,8 @@
 	"render_type": "cutout",
 	"texture_size": [64, 64],
 	"textures": {
-		"2": "confluence:block/ash_branches",
-		"particle": "confluence:block/ash_log"
+        "2": "confluence:block/underworld/ash_branches",
+        "particle": "confluence:block/wood/ash/ash_log"
 	},
 	"elements": [
 		{

@@ -5,7 +5,7 @@
 			"identifier": "confluence:stellar_studies_constellation",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:stellar_studies_constellation"
+                "texture": "confluence:magic/stellar_studies_constellation"
 			}
 		},
 		"components": {

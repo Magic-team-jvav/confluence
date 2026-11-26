@@ -17,7 +17,7 @@ import org.confluence.mod.common.entity.projectile.HostileDemonScytheProjectile;
 /// 与玩家武器弹幕共享模型和贴图，但读取各自独立的旋转状态，
 /// 从而不让客户端表现反向耦合玩家法力弹幕的运行时实现。
 public final class HostileDemonScytheProjectileRenderer extends EntityRenderer<HostileDemonScytheProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/demon_scythe_projectile.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/demon_scythe_projectile.png");
     private final DemonScytheProjectileModel model;
 
     public HostileDemonScytheProjectileRenderer(EntityRendererProvider.Context context) {

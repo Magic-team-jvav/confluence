@@ -8,8 +8,8 @@
         }
     },
     "textures": {
-        "particle": "confluence:block/life_campfire_log",
-        "log": "confluence:block/life_campfire_log"
+        "particle": "confluence:block/decorative/light/life_campfire_log",
+        "log": "confluence:block/decorative/light/life_campfire_log"
     },
     "elements": [
         {

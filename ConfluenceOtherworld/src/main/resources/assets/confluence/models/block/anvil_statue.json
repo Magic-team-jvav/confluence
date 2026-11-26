@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"particle": "confluence:block/anvil_statue",
-		"body": "confluence:block/anvil_statue"
+        "particle": "confluence:block/statue/anvil_statue",
+        "body": "confluence:block/statue/anvil_statue"
 	},
 	"elements": [
 		{

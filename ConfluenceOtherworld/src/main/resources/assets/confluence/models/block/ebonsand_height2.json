@@ -1,7 +1,7 @@
 {
     "textures": {
-        "particle": "confluence:block/ebonsand",
-        "texture": "confluence:block/ebonsand"
+        "particle": "confluence:block/corruption/ebonsand",
+        "texture": "confluence:block/corruption/ebonsand"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

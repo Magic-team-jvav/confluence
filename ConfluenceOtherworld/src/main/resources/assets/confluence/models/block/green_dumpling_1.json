@@ -3,8 +3,8 @@
 	"render_type": "cutout_mipped",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "confluence:block/green_dumpling",
-		"particle": "confluence:block/green_dumpling"
+        "0": "confluence:block/decorative/novelty/green_dumpling",
+        "particle": "confluence:block/decorative/novelty/green_dumpling"
 	},
 	"elements": [
 		{

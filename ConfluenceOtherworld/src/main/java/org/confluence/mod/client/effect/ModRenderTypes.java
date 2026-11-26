@@ -28,7 +28,7 @@ public class ModRenderTypes extends RenderStateShard {
             RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(GameRenderer::getPositionColorShader))
                     .setCullState(NO_CULL).setLightmapState(NO_LIGHTMAP).setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                     .setWriteMaskState(COLOR_WRITE).createCompositeState(false));
-    public static final RenderType HILL_OF_FLESH_BOUNDARY = RenderType.entityTranslucentEmissive(Confluence.asResource("textures/gui/noise.png"));
+    public static final RenderType HILL_OF_FLESH_BOUNDARY = RenderType.entityTranslucentEmissive(Confluence.asResource("textures/vfx/hill_of_flesh_noise.png"));
     public static final RenderType TRAIL_RENDER_TYPE = RenderType.create(
             "trail_render_type",
             DefaultVertexFormat.POSITION_COLOR,

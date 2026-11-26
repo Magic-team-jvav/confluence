@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "confluence:block/silent_drooping_vine_1"
+      "layer0": "confluence:block/plant/silent_drooping_vine_1"
   }
 }

@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/fragile_sandstone_background",
-		"4": "confluence:block/blue_bricks",
-		"particle": "confluence:block/blue_bricks"
+        "0": "confluence:block/underground_desert/fragile_sandstone_background",
+        "4": "confluence:block/decorative/bricks/blue_bricks",
+        "particle": "confluence:block/decorative/bricks/blue_bricks"
 	},
 	"elements": [
 		{

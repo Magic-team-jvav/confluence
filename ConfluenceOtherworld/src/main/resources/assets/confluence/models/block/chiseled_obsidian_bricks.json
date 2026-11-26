@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/chiseled_obsidian_bricks"
+      "all": "confluence:block/decorative/bricks/chiseled_obsidian_bricks"
   }
 }

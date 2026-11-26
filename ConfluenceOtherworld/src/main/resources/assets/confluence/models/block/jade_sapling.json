@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "confluence:block/jade_sapling"
+      "cross": "confluence:block/wood/gem/jade_sapling"
   },
   "render_type": "cutout"
 }

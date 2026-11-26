@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/raw_lead_block"
+      "all": "confluence:block/ore/raw/raw_lead_block"
   }
 }

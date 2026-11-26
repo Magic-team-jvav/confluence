@@ -29,10 +29,15 @@ public final class WeaponTooltip {
 
     /// 从真实属性修饰符计算悬停武器的数值，不临时装备物品或修改玩家属性。
     public static double attributeValue(ItemStack stack, @Nullable Player player, Attribute attribute, boolean baseStats) {
+        return attributeValue(stack, player, attribute, baseStats, 0);
+    }
+
+    private static double attributeValue(ItemStack stack, @Nullable Player player, Attribute attribute,
+                                         boolean baseStats, double baseAdjustment) {
         AttributeInstance preview = new AttributeInstance(attribute, ignored -> {});
         double defaultBase = attribute == Attributes.ATTACK_DAMAGE ? 1.0 : attribute.getDefaultValue();
         AttributeInstance current = player == null ? null : player.getAttribute(attribute);
-        preview.setBaseValue(current != null && !baseStats ? current.getBaseValue() : defaultBase);
+        preview.setBaseValue((current != null && !baseStats ? current.getBaseValue() : defaultBase) + baseAdjustment);
         if (player != null && !baseStats) {
             Set<UUID> heldModifiers = new HashSet<>();
             player.getMainHandItem().getAttributeModifiers(EquipmentSlot.MAINHAND).get(attribute)
@@ -67,7 +72,9 @@ public final class WeaponTooltip {
         Attribute damageAttribute = weapon.getTooltipDamageAttribute();
         Attribute criticalAttribute = LibAttributes.getCriticalChance().value();
         boolean base = ModClientConfigs.weaponTooltipBaseStats;
-        double damage = weapon.getTooltipDamage(stack, attributeValue(stack, player, damageAttribute, base), player, base);
+        double damage = stack.getItem() instanceof BoomerangItem boomerang
+                ? attributeValue(stack, player, damageAttribute, base, boomerang.baseDamage() - 1.0)
+                : weapon.getTooltipDamage(stack, attributeValue(stack, player, damageAttribute, base), player, base);
         if (damageAttribute == LibAttributes.getMagicDamage().value() || stack.getItem() instanceof BoomerangItem) {
             damage *= attributeValue(stack, player, LibAttributes.getRangedDamage().value(), base);
         }

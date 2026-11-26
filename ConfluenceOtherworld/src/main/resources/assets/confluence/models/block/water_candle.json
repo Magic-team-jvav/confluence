@@ -4,8 +4,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"2": "confluence:block/water_candle",
-		"3": "confluence:block/water_candle_fire",
+        "2": "confluence:block/decorative/light/water_candle",
+        "3": "confluence:block/decorative/light/water_candle_fire",
 		"particle": "confluence:block/particle/water_candle_particle"
 	},
 	"elements": [

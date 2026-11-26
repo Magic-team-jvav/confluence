@@ -1,10 +1,10 @@
 {
   "textures": {
     "bottom": "minecraft:block/mud",
-    "side": "confluence:block/mushroom_grass_block_side",
-    "side1": "confluence:block/mushroom_grass_block_side_mud",
-    "top": "confluence:block/mushroom_grass_block_top",
-    "particle": "confluence:block/mushroom_grass_block_top"
+      "side": "confluence:block/mushroom/mushroom_grass_block_side",
+      "side1": "confluence:block/mushroom/mushroom_grass_block_side_mud",
+      "top": "confluence:block/mushroom/mushroom_grass_block_top",
+      "particle": "confluence:block/mushroom/mushroom_grass_block_top"
   },
   "render_type": "cutout_mipped",
   "elements": [

@@ -2,9 +2,9 @@
 	"credit": "Made with Blockbench",
 	"render_type": "cutout_mipped",
 	"textures": {
-		"0": "confluence:block/silk_rope",
-		"1": "confluence:block/silk_rope_1",
-		"particle": "confluence:block/silk_rope"
+        "0": "confluence:block/rope/silk_rope",
+        "1": "confluence:block/rope/silk_rope_1",
+        "particle": "confluence:block/rope/silk_rope"
 	},
 	"elements": [
 		{

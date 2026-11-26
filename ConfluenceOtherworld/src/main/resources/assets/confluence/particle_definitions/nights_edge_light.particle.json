@@ -5,7 +5,7 @@
 			"identifier": "confluence:nights_edge_light",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:nights_edge_light"
+                "texture": "confluence:nights_edge/nights_edge_light"
 			}
 		},
 		"components": {

@@ -5,7 +5,7 @@
 			"identifier": "confluence:flamelash_expiration",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:flamelash_expiration"
+                "texture": "confluence:magic/flamelash_expiration"
 			}
 		},
         "components": {

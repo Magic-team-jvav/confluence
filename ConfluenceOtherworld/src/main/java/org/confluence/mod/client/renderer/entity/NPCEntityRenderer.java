@@ -33,9 +33,9 @@ import java.util.List;
 
 /// 渲染城镇 NPC 及其由服务端同步的短时聊天气泡。
 public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
-    private static final ResourceLocation CHAT_BUBBLE = Confluence.asResource("textures/gui/chat_bubble.png");
+    private static final ResourceLocation CHAT_BUBBLE = Confluence.asResource("textures/gui/npc/chat_bubble.png");
     private static final ResourceLocation REFORGE_HAMMER_MODEL = Confluence.asResource("geo/gui/reforge_hammer.geo.json");
-    private static final ResourceLocation REFORGE_HAMMER_TEXTURE = Confluence.asResource("textures/gui/reforge_hammer.png");
+    private static final ResourceLocation REFORGE_HAMMER_TEXTURE = Confluence.asResource("textures/gui/npc/reforge_hammer.png");
     private static final float HAMMER_GRIP_Y = 3.0F / 16.0F;
     private static final float HAMMER_SCALE = 0.85F;
     private static final float ICON_SIZE = 0.4F;

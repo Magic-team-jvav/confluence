@@ -7,7 +7,7 @@ import software.bernie.geckolib.model.GeoModel;
 
 public class GardenGnomeBlockModel extends GeoModel<GardenGnomeBlock.BEntity> {
     private static final ResourceLocation MODEL = Confluence.asResource("geo/entity/gnome.geo.json");
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/gnome.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/monster/surface/gnome.png");
     private static final ResourceLocation ANIMATION = Confluence.asResource("animations/entity/gnome.animation.json");
 
     @Override

@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "confluence:block/granite_tapered_block_tip_single"
+        "layer0": "confluence:block/granite_cave/granite_tapered_block_tip_single"
     }
 }

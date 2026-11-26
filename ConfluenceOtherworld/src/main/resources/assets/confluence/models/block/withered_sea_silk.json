@@ -1,8 +1,8 @@
 {
   "parent": "confluence:block/template_upping_vine",
   "textures": {
-    "vine": "confluence:block/withered_sea_silk",
-    "vine_1": "confluence:block/withered_sea_silk_1"
+      "vine": "confluence:block/ocean/withered_sea_silk",
+      "vine_1": "confluence:block/ocean/withered_sea_silk_1"
   },
     "elements": [
         {

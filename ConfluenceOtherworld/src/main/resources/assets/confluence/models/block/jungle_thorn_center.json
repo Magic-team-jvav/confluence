@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "confluence:block/jungle_thorn_center",
-		"inside": "confluence:block/jungle_thorn_center"
+        "particle": "confluence:block/jungle/jungle_thorn_center",
+        "inside": "confluence:block/jungle/jungle_thorn_center"
 	},
 	"elements": [
 		{

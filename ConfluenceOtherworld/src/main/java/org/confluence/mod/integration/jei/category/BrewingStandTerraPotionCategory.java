@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class BrewingStandTerraPotionCategory implements IRecipeCategory<BrewingStandTerraPotionCategory.Recipe> {
     public static final RecipeType<Recipe> TYPE = RecipeType.create(Confluence.MODID, "brewing_stand_terra_potion", Recipe.class);
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/brewing_stand_terra_potion.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/jei/brewing_stand_terra_potion.png");
     private final IDrawable icon;
 
     public BrewingStandTerraPotionCategory() {

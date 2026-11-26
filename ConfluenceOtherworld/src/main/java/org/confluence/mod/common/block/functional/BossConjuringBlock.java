@@ -209,7 +209,7 @@ public class BossConjuringBlock extends Block implements EntityBlock {
         }
 
         public ResourceLocation geoTexture() {
-            return Confluence.asResource("textures/block/" + path + ".png");
+            return Confluence.asResource("textures/block/functional/summoning/" + path + ".png");
         }
 
         public List<Component> tooltips() {

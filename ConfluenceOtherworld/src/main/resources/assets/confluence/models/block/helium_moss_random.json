@@ -2,8 +2,8 @@
     "ambientocclusion": false,
     "render_type": "cutout_mipped",
     "textures": {
-        "particle": "confluence:block/helium_moss_random",
-        "glow_lichen": "confluence:block/helium_moss_random"
+        "particle": "confluence:block/moss/helium_moss_random",
+        "glow_lichen": "confluence:block/moss/helium_moss_random"
     },
     "elements": [
         {

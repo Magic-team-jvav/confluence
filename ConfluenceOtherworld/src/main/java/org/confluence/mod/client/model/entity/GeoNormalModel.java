@@ -27,6 +27,11 @@ public class GeoNormalModel<T extends GeoEntity> extends DefaultedEntityGeoModel
     }
 
     @Override
+    public ResourceLocation getTextureResource(T animatable) {
+        return EntityTexturePaths.resolve(super.getTextureResource(animatable));
+    }
+
+    @Override
     public RenderType getRenderType(T animatable, ResourceLocation texture) {
         return RenderType.entityTranslucent(getTextureResource(animatable));
     }

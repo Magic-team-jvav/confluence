@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/granite_column"
+      "all": "confluence:block/granite_cave/granite_column"
   }
 }

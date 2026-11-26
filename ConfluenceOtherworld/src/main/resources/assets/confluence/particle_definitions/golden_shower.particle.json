@@ -5,7 +5,7 @@
 			"identifier": "confluence:golden_shower",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:golden_shower"
+                "texture": "confluence:magic/golden_shower"
 			}
 		},
 		"components": {

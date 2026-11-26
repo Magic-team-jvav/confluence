@@ -220,7 +220,7 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
         }
 
         public ResourceLocation texturePath() {
-            return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, "textures/entity/blood_zombie.png");
+            return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, "textures/entity/monster/undead/blood_zombie.png");
         }
 
         public ResourceLocation animationPath() {

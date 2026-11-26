@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/carpet",
   "textures": {
-    "wool": "confluence:block/rainbow_wool"
+      "wool": "confluence:block/decorative/novelty/rainbow_wool"
   }
 }

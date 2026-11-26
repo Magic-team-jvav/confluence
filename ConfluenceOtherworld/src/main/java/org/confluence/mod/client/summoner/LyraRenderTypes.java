@@ -30,7 +30,7 @@ public class LyraRenderTypes extends RenderType {
         return create("lyra_texture_no_depth", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, true, state);
     });
 
-    public static final RenderType TRAIL = RenderType.entityTranslucentEmissive(Confluence.asResource("textures/trail.png"));
+    public static final RenderType TRAIL = RenderType.entityTranslucentEmissive(Confluence.asResource("textures/vfx/summon/trail.png"));
 
     public static final RenderType MODEL = RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS);
 
@@ -41,7 +41,7 @@ public class LyraRenderTypes extends RenderType {
         return create(highlight ? "terraprisma_highlight" : "terraprisma_trail", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, false, true,
                 CompositeState.builder()
                         .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
-                        .setTextureState(new TextureStateShard(Confluence.asResource("textures/terraprisma_trail.png"), true, false))
+                        .setTextureState(new TextureStateShard(Confluence.asResource("textures/vfx/summon/terraprisma_trail.png"), true, false))
                         .setTransparencyState(highlight ? LIGHTNING_TRANSPARENCY : TRANSLUCENT_TRANSPARENCY)
                         .setCullState(NO_CULL)
                         .setDepthTestState(LEQUAL_DEPTH_TEST)

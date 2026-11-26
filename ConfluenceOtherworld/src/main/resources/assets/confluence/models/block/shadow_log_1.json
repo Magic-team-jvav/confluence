@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "end": "confluence:block/shadow_log_top",
-    "side": "confluence:block/shadow_log_1"
+      "end": "confluence:block/wood/shadow/shadow_log_top",
+      "side": "confluence:block/wood/shadow/shadow_log_1"
   }
 }

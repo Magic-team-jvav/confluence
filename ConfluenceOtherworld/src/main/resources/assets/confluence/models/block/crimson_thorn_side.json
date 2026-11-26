@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "confluence:block/crimson_thorn_side",
-		"inside": "confluence:block/crimson_thorn_side"
+        "particle": "confluence:block/crimson/crimson_thorn_side",
+        "inside": "confluence:block/crimson/crimson_thorn_side"
 	},
 	"elements": [
 		{

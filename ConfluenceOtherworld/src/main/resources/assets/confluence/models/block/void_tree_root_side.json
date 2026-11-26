@@ -2,9 +2,9 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/void_log",
-		"1": "confluence:block/void_root_top",
-		"particle": "confluence:block/void_log"
+        "0": "confluence:block/wood/void/void_log",
+        "1": "confluence:block/end/void_root_top",
+        "particle": "confluence:block/wood/void/void_log"
 	},
 	"elements": [
 		{

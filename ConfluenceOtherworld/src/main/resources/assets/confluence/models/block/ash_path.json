@@ -1,9 +1,9 @@
 {   "parent": "block/block",
     "textures": {
-        "particle": "confluence:block/ash_block",
-        "top": "confluence:block/ash_path_top",
-        "side": "confluence:block/ash_path_side",
-        "bottom": "confluence:block/ash_block"
+        "particle": "confluence:block/underworld/ash_block",
+        "top": "confluence:block/underworld/ash_path_top",
+        "side": "confluence:block/underworld/ash_path_side",
+        "bottom": "confluence:block/underworld/ash_block"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

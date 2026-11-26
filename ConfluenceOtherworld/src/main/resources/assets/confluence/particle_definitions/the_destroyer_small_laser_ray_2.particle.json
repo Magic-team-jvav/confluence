@@ -5,7 +5,7 @@
             "identifier": "confluence:the_destroyer_small_laser_ray_2",
             "basic_render_parameters": {
                 "material": "particles_add",
-                "texture": "confluence:destroyer_null"
+                "texture": "confluence:destroyer_attack/destroyer_null"
             }
         },
         "components": {

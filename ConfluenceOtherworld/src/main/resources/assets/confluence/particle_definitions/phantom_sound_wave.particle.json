@@ -5,7 +5,7 @@
 			"identifier": "confluence:phantom_sound_wave",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:phantom_sound_wave"
+                "texture": "confluence:magic/phantom_sound_wave"
 			}
 		},
 		"components": {

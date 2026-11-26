@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/leaves",
   "textures": {
-    "all": "confluence:block/shadow_leaves_1"
+      "all": "confluence:block/wood/shadow/shadow_leaves_1"
   }
 }

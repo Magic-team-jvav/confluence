@@ -2,8 +2,8 @@
 	"credit": "Made by Mesdag",
 	"texture_size": [32, 32],
 	"textures": {
-		"1": "confluence:block/switch",
-		"particle": "confluence:block/switch"
+        "1": "confluence:block/functional/mechanism/switch",
+        "particle": "confluence:block/functional/mechanism/switch"
 	},
 	"elements": [
 		{

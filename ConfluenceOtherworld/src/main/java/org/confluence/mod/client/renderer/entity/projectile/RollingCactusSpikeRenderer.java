@@ -13,7 +13,7 @@ import org.confluence.mod.client.model.entity.projectile.RollingCactusSpikeModel
 import org.confluence.mod.common.entity.projectile.boulder.RollingCactusBoulderEntity;
 
 public class RollingCactusSpikeRenderer extends EntityRenderer<RollingCactusBoulderEntity.SpikeProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/rolling_cactus_spike.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/rolling_cactus_spike.png");
 
     private final RollingCactusSpikeModel model;
 

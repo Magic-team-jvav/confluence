@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench                    model by Magnox",
 	"texture_size": [32, 32],
 	"textures": {
-		"3": "confluence:block/adamantite_forge",
-		"4": "confluence:block/adamantite_forge_flame",
+        "3": "confluence:block/functional/workstation/adamantite_forge",
+        "4": "confluence:block/functional/workstation/adamantite_forge_flame",
 		"particle": "confluence:block/particle/titanium_forge_particle"
 	},
 	"elements": [

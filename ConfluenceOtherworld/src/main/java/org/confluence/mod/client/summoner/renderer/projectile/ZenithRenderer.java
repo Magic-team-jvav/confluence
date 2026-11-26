@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
-    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/zenith.png");
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/summon/zenith.png");
 
     @Override
     protected RenderContext<Zenith> createContext(Zenith zenith, PathNode visualNode, float partialTick, int packedLight) {

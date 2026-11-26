@@ -20,7 +20,7 @@ import org.confluence.mod.integration.jei.EitherRecipe4xHelper;
 public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRecipe> {
     public static final RecipeType<HeavyWorkBenchRecipe> TYPE = new RecipeType<>(Confluence.asResource("heavy_work_bench"), HeavyWorkBenchRecipe.class);
     private static final Component TITLE = Component.translatable("title.confluence.heavy_work_bench");
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/heavy_work_bench.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/jei/heavy_work_bench.png");
     private final IDrawable icon;
     private final EitherRecipe4xHelper helper;
 

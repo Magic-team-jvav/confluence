@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"6": "confluence:block/question_mark_statue",
+        "6": "confluence:block/statue/question_mark_statue",
 		"particle": "block/andesite"
 	},
 	"elements": [

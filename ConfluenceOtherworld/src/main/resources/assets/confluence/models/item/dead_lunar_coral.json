@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:block/dead_lunar_coral"
+      "layer0": "confluence:block/ocean/coral/dead_lunar_coral"
   }
 }

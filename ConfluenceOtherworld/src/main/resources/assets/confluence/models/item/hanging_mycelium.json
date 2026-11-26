@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "confluence:block/hanging_mycelium"
+      "layer0": "confluence:block/mushroom/hanging_mycelium"
   }
 }

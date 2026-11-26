@@ -10,6 +10,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.model.entity.EntityTexturePaths;
 import org.confluence.mod.common.entity.monster.Snatcher;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.joml.Quaternionf;
@@ -25,7 +26,7 @@ public final class TetheredPlantRenderer extends PlantHeadRenderer {
         super(context, BuiltInRegistries.ENTITY_TYPE.getKey(type), headCenter(type));
         ResourceLocation path = BuiltInRegistries.ENTITY_TYPE.getKey(type);
         segmentModel = Confluence.asResource("geo/entity/" + path.getPath() + "_segment.geo.json");
-        segmentTexture = Confluence.asResource("textures/entity/" + path.getPath() + "_segment.png");
+        segmentTexture = EntityTexturePaths.resolve(Confluence.asResource("textures/entity/" + path.getPath() + "_segment.png"));
         boolean clinger = type == MonsterEntities.CLINGER.get();
         segmentLength = (clinger ? 15.0 : 17.0) / 16.0;
         segmentCenterY = (clinger ? 9.5 : 8.0) / 16.0;

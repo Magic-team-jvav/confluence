@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "confluence:block/ebony_sapling"
+        "layer0": "confluence:block/wood/ebony/ebony_sapling"
     }
 }

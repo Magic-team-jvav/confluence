@@ -1,9 +1,9 @@
 {
   "parent": "block/cube_bottom_top",
   "textures": {
-    "bottom": "confluence:block/snow_bricks",
-    "top": "confluence:block/snow_bricks",
-    "side": "confluence:block/snow_bricks"
+      "bottom": "confluence:block/decorative/bricks/snow_bricks",
+      "top": "confluence:block/decorative/bricks/snow_bricks",
+      "side": "confluence:block/decorative/bricks/snow_bricks"
   },
   "render_type": "solid"
 }

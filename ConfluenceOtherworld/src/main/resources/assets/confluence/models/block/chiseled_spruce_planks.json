@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_top",
   "textures": {
-    "side": "confluence:block/chiseled_spruce_planks_side",
-    "top": "confluence:block/chiseled_spruce_planks_top"
+      "side": "confluence:block/wood/spruce/chiseled_spruce_planks_side",
+      "top": "confluence:block/wood/spruce/chiseled_spruce_planks_top"
   }
 }

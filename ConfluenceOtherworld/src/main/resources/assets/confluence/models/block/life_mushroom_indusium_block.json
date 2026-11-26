@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/life_mushroom_indusium_block",
-		"particle": "confluence:block/life_mushroom_indusium_block"
+        "0": "confluence:block/mushroom/life/life_mushroom_indusium_block",
+        "particle": "confluence:block/mushroom/life/life_mushroom_indusium_block"
 	},
 	"render_type": "cutout_mipped",
 	"elements": [

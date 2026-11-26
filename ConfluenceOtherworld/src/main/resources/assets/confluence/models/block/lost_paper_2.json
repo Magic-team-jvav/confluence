@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/lost_paper",
-		"particle": "confluence:block/lost_paper"
+        "0": "confluence:block/decorative/paper/lost_paper",
+        "particle": "confluence:block/decorative/paper/lost_paper"
 	},
 	"elements": [
 		{

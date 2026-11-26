@@ -3,7 +3,7 @@
 	"render_type": "cutout",
 	"texture_size": [128, 128],
 	"textures": {
-		"1": "confluence:block/sawmill",
+        "1": "confluence:block/functional/workstation/sawmill",
 		"particle": "confluence:block/particle/sawmill_particle"
 	},
 	"elements": [

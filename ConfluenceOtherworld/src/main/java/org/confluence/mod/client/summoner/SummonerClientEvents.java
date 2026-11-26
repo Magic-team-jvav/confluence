@@ -63,7 +63,7 @@ public final class SummonerClientEvents {
                     float partialTick = event.getPartialTick();
                     Vec3 targetPos = target.getPosition(partialTick).add(0, target.getBbHeight() + 0.25, 0);
                     MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-                    RenderUtil.renderImageInWorld(Confluence.asResource("textures/summon_mark.png"), targetPos, event.getPoseStack(), 0.25F, 0.25F, bufferSource, true, FastColor.ARGB32.color(191, 255, 255, 255));
+                    RenderUtil.renderImageInWorld(Confluence.asResource("textures/vfx/summon/summon_mark.png"), targetPos, event.getPoseStack(), 0.25F, 0.25F, bufferSource, true, FastColor.ARGB32.color(191, 255, 255, 255));
                 }
             }
             if (level != null && event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {

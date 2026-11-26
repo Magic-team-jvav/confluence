@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/platinum_block"
+      "all": "confluence:block/ore/storage/platinum_block"
   }
 }

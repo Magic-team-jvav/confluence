@@ -1,7 +1,7 @@
 {
     "parent": "confluence:block/normal_boulder",
     "textures": {
-        "0": "confluence:block/follower_boulder",
-        "particle": "confluence:block/follower_boulder"
+        "0": "confluence:block/boulder/follower_boulder",
+        "particle": "confluence:block/boulder/follower_boulder"
     }
 }

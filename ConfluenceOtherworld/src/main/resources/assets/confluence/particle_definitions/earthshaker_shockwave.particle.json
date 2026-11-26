@@ -5,7 +5,7 @@
 			"identifier": "confluence:earthshaker_shockwave",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:earthshaker_shockwave"
+                "texture": "confluence:combat/earthshaker_shockwave"
 			}
 		},
 		"components": {

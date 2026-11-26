@@ -3,7 +3,7 @@
 	"texture_size": [32, 32],
 	"parent": "confluence:item/anvil_statue",
 	"textures": {
-		"0": "confluence:block/cross_statue"
+        "0": "confluence:block/statue/cross_statue"
 	},
 	"elements": [
 		{

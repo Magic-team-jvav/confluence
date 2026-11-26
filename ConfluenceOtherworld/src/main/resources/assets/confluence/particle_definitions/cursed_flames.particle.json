@@ -5,7 +5,7 @@
 			"identifier": "confluence:cursed_flames",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:cursed_flames"
+                "texture": "confluence:magic/cursed_flames"
 			}
 		},
 		"events": {

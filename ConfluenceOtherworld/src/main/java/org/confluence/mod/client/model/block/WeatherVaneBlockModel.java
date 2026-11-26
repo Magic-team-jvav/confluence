@@ -12,7 +12,7 @@ import org.confluence.mod.Confluence;
 
 public class WeatherVaneBlockModel {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("weather_vane"), "main");
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/weather_vane_top.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/functional/weather/weather_vane_top.png");
     private final ModelPart bone;
 
     public WeatherVaneBlockModel(ModelPart root) {

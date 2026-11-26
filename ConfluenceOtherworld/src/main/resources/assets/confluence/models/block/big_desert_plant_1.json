@@ -3,10 +3,10 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [128, 128],
 	"textures": {
-		"1": "confluence:block/big_desert_plant",
-		"2": "confluence:block/cattails_body",
-		"3": "confluence:block/cattails_head",
-		"particle": "confluence:block/cattails_body"
+        "1": "confluence:block/desert/big_desert_plant",
+        "2": "confluence:block/forest/cattails_body",
+        "3": "confluence:block/forest/cattails_head",
+        "particle": "confluence:block/forest/cattails_body"
 	},
 	"render_type": "cutout_mipped",
 	"elements": [

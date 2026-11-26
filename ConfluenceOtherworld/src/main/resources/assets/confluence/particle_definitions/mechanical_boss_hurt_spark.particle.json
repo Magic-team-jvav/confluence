@@ -5,7 +5,7 @@
             "identifier": "confluence:mechanical_boss_hurt_spark",
             "basic_render_parameters": {
                 "material": "particles_add",
-                "texture": "confluence:mechanical_boss_hurt_spark"
+                "texture": "confluence:combat/mechanical_boss_hurt_spark"
             }
         },
         "components": {

@@ -77,7 +77,7 @@ public class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNorma
 
     public static <T extends Mob & GeoEntity> VanillaHumanoidGeoModel<T> zombie(EntityRendererProvider.Context context, ResourceLocation id) {
         return new VanillaHumanoidGeoModel<>(context, id.withPrefix("geo/entity/").withSuffix(".geo.json"),
-                id.withPrefix("textures/entity/").withSuffix(".png"), Bones.STANDALONE, Posture.ZOMBIE, true);
+                EntityTexturePaths.resolve(id.withPrefix("textures/entity/").withSuffix(".png")), Bones.STANDALONE, Posture.ZOMBIE, true);
     }
 
     @Override

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:block/soul_of_light_in_a_bottle_item"
+      "layer0": "confluence:block/soul_bottle/soul_of_light_in_a_bottle_item"
   }
 }

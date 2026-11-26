@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/smooth_obsidian"
+      "all": "confluence:block/decorative/obsidian/smooth_obsidian"
   }
 }

@@ -98,7 +98,7 @@ public class CookingPotBlock extends BaseCauldronBlock {
                 @Override
                 public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                     if (renderer == null) {
-                        this.renderer = new GeoItemRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("cooking_pot")));
+                        this.renderer = new GeoItemRenderer<>(new DefaultedBlockGeoModel<BItem>(Confluence.asResource("cooking_pot")).withAltTexture(Confluence.asResource("functional/workstation/cooking_pot")));
                     }
                     return renderer;
                 }

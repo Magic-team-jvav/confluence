@@ -1,7 +1,7 @@
 {
   "textures": {
-    "texture": "confluence:block/life_mushroom_pileus_block_top",
-    "particle": "confluence:block/life_mushroom_pileus_block_top"
+      "texture": "confluence:block/mushroom/life/life_mushroom_pileus_block_top",
+      "particle": "confluence:block/mushroom/life/life_mushroom_pileus_block_top"
   },
   "elements": [
     {

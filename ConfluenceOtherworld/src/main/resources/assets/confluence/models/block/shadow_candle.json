@@ -4,8 +4,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"1": "confluence:block/shadow_candle_fire",
-		"2": "confluence:block/shadow_candle",
+        "1": "confluence:block/decorative/light/shadow_candle_fire",
+        "2": "confluence:block/decorative/light/shadow_candle",
 		"particle": "confluence:block/particle/shadow_candle_particle"
 	},
 	"elements": [

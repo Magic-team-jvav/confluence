@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.advancements.FrameType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.AdvancementToast;
@@ -17,6 +18,7 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +29,7 @@ import java.util.List;
 
 public class AchievementToast implements Toast {
     public static final Component DISPLAY = Component.translatable("achievements.toast.complete");
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/achievement/toast.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/gui/achievement/toast.png");
     private static final Hashtable<ResourceLocation, AchievementToast> ACHIEVEMENTS = new Hashtable<>();
     private static final Object2BooleanMap<ResourceLocation> HIDE_LINK = new Object2BooleanOpenHashMap<>();
     private final ResourceLocation icon;
@@ -157,11 +159,24 @@ public class AchievementToast implements Toast {
         return false;
     }
 
+    static ResourceLocation iconTexture(ResourceLocation id) {
+        String file = AchievementUtils.asPath(id) + ".png";
+        ResourceLocation legacy = id.withPath("textures/achievement/" + file);
+        var resources = Minecraft.getInstance().getResourceManager();
+        // Resource packs can still override icons at their original paths.
+        if (resources.getResource(legacy).isPresent()) return legacy;
+        for (AchievementOffset.Category category : AchievementOffset.Category.CATEGORIES) {
+            ResourceLocation icon = id.withPath("textures/achievement/" + category.getSerializedName() + "/" + file);
+            if (resources.getResource(icon).isPresent()) return icon;
+        }
+        return legacy;
+    }
+
     public static void registerToast(ResourceLocation id, boolean hideLink) {
         String namespace = id.getNamespace();
         String path = AchievementUtils.asPath(id);
         ACHIEVEMENTS.put(ResourceLocation.fromNamespaceAndPath(namespace, AchievementUtils.PREFIX + path), new AchievementToast(
-                ResourceLocation.fromNamespaceAndPath(namespace, "textures/achievement/" + path + ".png"),
+                iconTexture(id),
                 new Display(FrameType.CHALLENGE,
                         Component.translatable("achievements." + namespace + "." + path + ".title"),
                         Component.translatable("achievements." + namespace + "." + path + ".description")

@@ -1,0 +1,19 @@
+{
+    "sources": [
+        {
+            "type": "directory",
+            "source": "effect/beneficial",
+            "prefix": ""
+        },
+        {
+            "type": "directory",
+            "source": "effect/harmful",
+            "prefix": ""
+        },
+        {
+            "type": "directory",
+            "source": "effect/neutral",
+            "prefix": ""
+        }
+    ]
+}

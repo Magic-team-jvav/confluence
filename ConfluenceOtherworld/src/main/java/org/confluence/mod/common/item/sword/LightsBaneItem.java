@@ -21,7 +21,7 @@ public class LightsBaneItem extends BaseSwordItem {
                 .projectile(new Projectile(0.5F, 0.8F, 0.9F, 100, 0.0F, 20,
                         ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.LIGHTS_BANE.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
                         new SwordProjectileAppearance.Model(Confluence.asResource("enchanted_sword_projectile"),
-                                Confluence.asResource("textures/entity/lights_bane.png"), 1.0F, 0.125F, -0.125F, 0.0F,
+                                Confluence.asResource("textures/entity/projectile/lights_bane.png"), 1.0F, 0.125F, -0.125F, 0.0F,
                                 SwordProjectileAppearance.Lifecycle.GROW_FADE, SwordProjectileAppearance.Material.ENERGY_SWIRL)))
                 .tooltipImage()
                 .specialSweep(0.8F));

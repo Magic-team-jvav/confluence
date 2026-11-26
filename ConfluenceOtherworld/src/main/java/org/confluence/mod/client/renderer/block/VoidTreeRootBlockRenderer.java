@@ -21,7 +21,7 @@ import org.joml.Matrix4f;
 
 public class VoidTreeRootBlockRenderer implements BlockEntityRenderer<VoidTreeRootBlock.BEntity> {
     private static final Minecraft MC = Minecraft.getInstance();
-    private static final ResourceLocation VOID_PORTAL = Confluence.asResource("textures/block/void_portal.png");
+    private static final ResourceLocation VOID_PORTAL = Confluence.asResource("textures/block/end/void_portal.png");
 
     private static final long X_MIX = 1640531527L;
     private static final long Y_MIX = 3801415689L;

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:block/withered_sea_silk_1"
+      "layer0": "confluence:block/ocean/withered_sea_silk_1"
   }
 }

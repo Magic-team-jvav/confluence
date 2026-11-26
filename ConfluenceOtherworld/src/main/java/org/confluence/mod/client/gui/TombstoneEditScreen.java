@@ -11,8 +11,8 @@ import org.joml.Vector3f;
 
 public class TombstoneEditScreen extends AbstractSignEditScreen {
     private static final Vector3f TEXT_SCALE = new Vector3f(1.5F, 1.5F, 1.5F);
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/tombstone.png");
-    private static final ResourceLocation GOLD_BACKGROUND = Confluence.asResource("textures/gui/gold_tombstone.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/tombstone/tombstone.png");
+    private static final ResourceLocation GOLD_BACKGROUND = Confluence.asResource("textures/gui/tombstone/gold_tombstone.png");
     private final boolean isGold;
 
     public TombstoneEditScreen(SignBlockEntity sign, boolean isFrontText, boolean isFiltered, boolean isGold) {

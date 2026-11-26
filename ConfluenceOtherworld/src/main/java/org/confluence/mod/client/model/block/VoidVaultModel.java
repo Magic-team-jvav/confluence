@@ -7,7 +7,7 @@ import software.bernie.geckolib.model.GeoModel;
 
 public class VoidVaultModel<T extends GeoAnimatable> extends GeoModel<T> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/void_vault.geo.json");
-    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/void_vault.png");
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/functional/storage/void_vault.png");
     public static final ResourceLocation ANIMATION = Confluence.asResource("animations/block/void_vault.animation.json");
 
     @Override

@@ -22,7 +22,7 @@ import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class SolidifierCategory implements IRecipeCategory<SolidifierRecipe> {
     public static final RecipeType<SolidifierRecipe> TYPE = new RecipeType<>(Confluence.asResource("solidifier"), SolidifierRecipe.class);
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/solidifier.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/jei/solidifier.png");
     private final IDrawable icon;
     private final EitherRecipe4xHelper helper;
 

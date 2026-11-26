@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"2": "confluence:block/period_statue",
+        "2": "confluence:block/statue/period_statue",
 		"particle": "block/andesite"
 	},
 	"elements": [

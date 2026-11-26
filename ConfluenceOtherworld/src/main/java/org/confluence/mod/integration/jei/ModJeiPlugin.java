@@ -43,8 +43,8 @@ import java.util.Arrays;
 @JeiPlugin
 public final class ModJeiPlugin implements IModPlugin {
     public static final ResourceLocation UID = Confluence.asResource("jei_plugin");
-    public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/arrow_down.png");
-    public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/arrow_right.png");
+    public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/jei/arrow_down.png");
+    public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/jei/arrow_right.png");
     private static @Nullable IJeiRuntime jeiRuntime;
 
     @Override

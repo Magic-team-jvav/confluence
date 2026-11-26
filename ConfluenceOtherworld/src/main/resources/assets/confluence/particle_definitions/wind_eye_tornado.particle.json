@@ -5,7 +5,7 @@
       "identifier": "confluence:wind_eye_tornado",
       "basic_render_parameters": {
         "material": "particles_add",
-        "texture": "confluence:spark_projectile"
+          "texture": "confluence:magic/spark_projectile"
       }
     },
     "components": {

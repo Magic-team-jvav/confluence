@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:block/pruned_pine_sapling"
+      "layer0": "confluence:block/wood/pine/pruned_pine_sapling"
   }
 }

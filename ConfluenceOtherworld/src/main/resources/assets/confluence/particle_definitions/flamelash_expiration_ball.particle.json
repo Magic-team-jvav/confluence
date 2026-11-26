@@ -5,7 +5,7 @@
 			"identifier": "confluence:flamelash_expiration_ball",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:ball_of_fire_trail"
+                "texture": "confluence:magic/ball_of_fire_trail"
 			}
 		},
 		"curves": {

@@ -4,9 +4,9 @@
 	"texture_size": [32, 32],
     "render_type": "cutout",
 	"textures": {
-		"1": "confluence:block/rolling_cactus_boulder",
-		"2": "confluence:block/rolling_cactus_boulder_horn",
-		"particle": "confluence:block/rolling_cactus_boulder_horn"
+        "1": "confluence:block/boulder/rolling_cactus_boulder",
+        "2": "confluence:block/boulder/rolling_cactus_boulder_horn",
+        "particle": "confluence:block/boulder/rolling_cactus_boulder_horn"
 	},
 	"elements": [
 		{

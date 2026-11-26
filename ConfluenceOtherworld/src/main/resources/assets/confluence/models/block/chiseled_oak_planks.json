@@ -1,8 +1,8 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "confluence:block/chiseled_oak_planks",
-    "particle": "confluence:block/chiseled_oak_planks"
+      "all": "confluence:block/wood/oak/chiseled_oak_planks",
+      "particle": "confluence:block/wood/oak/chiseled_oak_planks"
   },
   "render_type": "solid"
 }

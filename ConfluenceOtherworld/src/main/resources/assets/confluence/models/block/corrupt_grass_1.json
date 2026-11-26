@@ -1,8 +1,8 @@
 {
   "parent": "block/cross",
   "textures": {
-    "cross": "confluence:block/corrupt_grass_1",
-    "particle": "confluence:block/corrupt_grass_1"
+      "cross": "confluence:block/corruption/corrupt_grass_1",
+      "particle": "confluence:block/corruption/corrupt_grass_1"
   },
   "render_type": "cutout"
 }

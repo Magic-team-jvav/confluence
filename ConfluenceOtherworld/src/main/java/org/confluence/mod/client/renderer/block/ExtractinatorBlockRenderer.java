@@ -13,7 +13,7 @@ import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 public class ExtractinatorBlockRenderer extends GeoBlockRenderer<ExtractinatorBlock.BEntity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/extractinator.geo.json");
-    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/extractinator.png");
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/functional/workstation/extractinator.png");
     public static final ResourceLocation ANIMATION = Confluence.asResource("animations/block/extractinator.animation.json");
 
     public ExtractinatorBlockRenderer() {

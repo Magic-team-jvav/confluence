@@ -5,7 +5,7 @@
 			"identifier": "confluence:little_moon_trail",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:little_moon_trail"
+                "texture": "confluence:magic/little_moon_trail"
 			}
 		},
 		"components": {

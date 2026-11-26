@@ -2,8 +2,8 @@
     "ambientocclusion": false,
     "render_type": "cutout_mipped",
     "textures": {
-        "particle": "confluence:block/purple_moss",
-        "glow_lichen": "confluence:block/purple_moss"
+        "particle": "confluence:block/moss/purple_moss",
+        "glow_lichen": "confluence:block/moss/purple_moss"
     },
     "elements": [
         {

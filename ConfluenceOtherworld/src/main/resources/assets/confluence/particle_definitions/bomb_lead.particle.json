@@ -5,7 +5,7 @@
 			"identifier": "confluence:bomb_lead",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:flame"
+                "texture": "confluence:fire/flame"
 			}
 		},
 		"components": {

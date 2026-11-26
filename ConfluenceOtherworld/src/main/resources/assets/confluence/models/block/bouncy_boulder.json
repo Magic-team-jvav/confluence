@@ -1,7 +1,7 @@
 {
     "parent": "confluence:block/normal_boulder",
     "textures": {
-        "0": "confluence:block/bouncy_boulder",
-        "particle": "confluence:block/bouncy_boulder"
+        "0": "confluence:block/boulder/bouncy_boulder",
+        "particle": "confluence:block/boulder/bouncy_boulder"
     }
 }

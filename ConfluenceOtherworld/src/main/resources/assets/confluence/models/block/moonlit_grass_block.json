@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "top": "confluence:block/moonlit_grass_block_top",
-    "side": "confluence:block/moonlit_grass_block_side",
+      "top": "confluence:block/hallow/moonlit_grass_block_top",
+      "side": "confluence:block/hallow/moonlit_grass_block_side",
     "bottom": "block/end_stone"
   }
 }

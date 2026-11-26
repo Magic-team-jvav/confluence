@@ -1,7 +1,7 @@
 {
     "parent": "minecraft:block/orientable_vertical",
     "textures": {
-        "front": "confluence:block/dart_trap_front_vertical",
-        "side": "confluence:block/dart_trap_top"
+        "front": "confluence:block/trap/dart_trap_front_vertical",
+        "side": "confluence:block/trap/dart_trap_top"
     }
 }

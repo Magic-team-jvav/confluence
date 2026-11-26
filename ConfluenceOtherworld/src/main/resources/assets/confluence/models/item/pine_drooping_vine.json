@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "confluence:block/pine_drooping_vine_head"
+      "layer0": "confluence:block/wood/pine/pine_drooping_vine_head"
   }
 }

@@ -23,7 +23,7 @@ import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class SkyMillCategory implements IRecipeCategory<SkyMillRecipe> {
     public static final RecipeType<SkyMillRecipe> TYPE = new RecipeType<>(Confluence.asResource("sky_mill"), SkyMillRecipe.class);
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/sky_mill.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/jei/sky_mill.png");
     private final IDrawable icon;
 
     public SkyMillCategory(IJeiHelpers jeiHelpers) {

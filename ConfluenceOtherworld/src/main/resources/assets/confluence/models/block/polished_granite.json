@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/polished_granite"
+      "all": "confluence:block/granite_cave/polished_granite"
   }
 }

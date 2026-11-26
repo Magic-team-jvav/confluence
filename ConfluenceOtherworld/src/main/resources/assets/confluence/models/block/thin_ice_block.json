@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/thin_ice_block"
+      "all": "confluence:block/tundra/thin_ice_block"
   }
 }

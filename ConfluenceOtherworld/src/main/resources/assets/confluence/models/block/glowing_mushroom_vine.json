@@ -2,11 +2,11 @@
 	"credit": "Made with Blockbench",
 	"render_type": "cutout",
 	"textures": {
-		"2": "confluence:block/glowing_mushroom_vine_light_1",
-		"3": "confluence:block/glowing_mushroom_vine_light",
-		"vine": "confluence:block/glowing_mushroom_vine",
-		"particle": "confluence:block/glowing_mushroom_vine_1",
-		"vine_1": "confluence:block/glowing_mushroom_vine_1"
+        "2": "confluence:block/mushroom/glowing/glowing_mushroom_vine_light_1",
+        "3": "confluence:block/mushroom/glowing/glowing_mushroom_vine_light",
+        "vine": "confluence:block/mushroom/glowing/glowing_mushroom_vine",
+        "particle": "confluence:block/mushroom/glowing/glowing_mushroom_vine_1",
+        "vine_1": "confluence:block/mushroom/glowing/glowing_mushroom_vine_1"
 	},
 	"elements": [
 		{

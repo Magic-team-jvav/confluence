@@ -14,7 +14,7 @@ import org.confluence.mod.client.model.entity.projectile.FrostDaggerfishProjecti
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 
 public class FrostDaggerfishProjectileRenderer extends EntityRenderer<ThrowableDropSelfProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/frost_daggerfish_projectile.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/frost_daggerfish_projectile.png");
     private final FrostDaggerfishProjectileModel model;
 
     public FrostDaggerfishProjectileRenderer(EntityRendererProvider.Context pContext) {

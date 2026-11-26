@@ -1,7 +1,7 @@
 {   "parent": "block/block",
     "textures": {
-        "particle": "confluence:block/lead_anvil",
-        "body": "confluence:block/lead_anvil"
+        "particle": "confluence:block/functional/workstation/lead_anvil",
+        "body": "confluence:block/functional/workstation/lead_anvil"
     },
     "display": {
         "fixed": {

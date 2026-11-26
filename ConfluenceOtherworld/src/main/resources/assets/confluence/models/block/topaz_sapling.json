@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "confluence:block/topaz_sapling"
+      "cross": "confluence:block/wood/gem/topaz_sapling"
   },
   "render_type": "cutout"
 }

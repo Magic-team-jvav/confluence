@@ -34,10 +34,10 @@ public final class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        OreBlocks.BLOCKS.getEntries().forEach(entry -> simpleBlockIfAbsent(entry.get()));
-        DecorativeBlocks.BLOCKS.getEntries().forEach(entry -> simpleBlockIfAbsent(entry.get()));
-        simpleBlockIfAbsent(NatureBlocks.SPIDER_NEST_STONE.get());
-        simpleBlockIfAbsent(FunctionalBlocks.VOID_VAULT.get());
+        OreBlocks.BLOCKS.getEntries().forEach(entry -> simpleBlockIfAbsent(entry.get(), oreTexture(entry.getId().getPath())));
+        DecorativeBlocks.BLOCKS.getEntries().forEach(entry -> simpleBlockIfAbsent(entry.get(), decorationTexture(entry.getId().getPath())));
+        simpleBlockIfAbsent(NatureBlocks.SPIDER_NEST_STONE.get(), Confluence.asResource("block/spider_nest/spider_nest_stone"));
+        simpleBlockIfAbsent(FunctionalBlocks.VOID_VAULT.get(), Confluence.asResource("block/functional/storage/void_vault"));
 
         for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
             registerLogSet(blockSet);
@@ -58,28 +58,30 @@ public final class ModBlockStateProvider extends BlockStateProvider {
     }
 
     private void registerLogSet(LogBlockSet blockSet) {
-        simpleBlockIfAbsent(blockSet.PLANKS.get());
         String id = blockSet.id;
+        String textureFolder = "block/wood/" + id + "/";
+        ResourceLocation planks = Confluence.asResource(textureFolder + id + "_planks");
+        simpleBlockIfAbsent(blockSet.PLANKS.get(), planks);
 
-        ResourceLocation logSide = Confluence.asResource("block/" + id + "_log");
-        ResourceLocation logTop = Confluence.asResource("block/" + id + "_log_top");
+        ResourceLocation logSide = Confluence.asResource(textureFolder + id + "_log");
+        ResourceLocation logTop = Confluence.asResource(textureFolder + id + "_log_top");
         if (blockSet.LOG.isBound() && hasTexture(logSide) && hasTexture(logTop)) {
             if (shouldGenerate(blockSet.LOG.get())) {
-                logBlock(blockSet.LOG.get());
+                axisBlock(blockSet.LOG.get(), logSide, logTop);
             } else {
                 ensureLogModels(id + "_log", logSide, logTop);
             }
         }
-        ResourceLocation strippedLogSide = Confluence.asResource("block/stripped_" + id + "_log");
-        ResourceLocation strippedLogTop = Confluence.asResource("block/stripped_" + id + "_log_top");
+        ResourceLocation strippedLogSide = Confluence.asResource(textureFolder + "stripped_" + id + "_log");
+        ResourceLocation strippedLogTop = Confluence.asResource(textureFolder + "stripped_" + id + "_log_top");
         if (blockSet.STRIPPED_LOG.isBound() && hasTexture(strippedLogSide) && hasTexture(strippedLogTop)) {
             if (shouldGenerate(blockSet.STRIPPED_LOG.get())) {
-                logBlock(blockSet.STRIPPED_LOG.get());
+                axisBlock(blockSet.STRIPPED_LOG.get(), strippedLogSide, strippedLogTop);
             } else {
                 ensureLogModels("stripped_" + id + "_log", strippedLogSide, strippedLogTop);
             }
         }
-        ResourceLocation leavesTexture = Confluence.asResource("block/" + id + "_leaves");
+        ResourceLocation leavesTexture = Confluence.asResource(textureFolder + id + "_leaves");
         if (blockSet.LEAVES.isBound() && hasTexture(leavesTexture)) {
             ResourceLocation leavesModel = Confluence.asResource("block/" + id + "_leaves");
             ModelFile leaves = hasHandwrittenModel(leavesModel)
@@ -99,7 +101,6 @@ public final class ModBlockStateProvider extends BlockStateProvider {
             axisBlock(blockSet.STRIPPED_WOOD.get(), model, model);
         }
 
-        ResourceLocation planks = Confluence.asResource("block/" + id + "_planks");
         if (blockSet.BUTTON.isBound() && shouldGenerate(blockSet.BUTTON.get())) {
             buttonBlock(blockSet.BUTTON.get(), planks);
             models().withExistingParent(id + "_button_inventory", "block/button_inventory")
@@ -117,7 +118,7 @@ public final class ModBlockStateProvider extends BlockStateProvider {
             pressurePlateBlock(blockSet.PRESSURE_PLATE.get(), planks);
         }
         if (blockSet.SLAB.isBound() && shouldGenerate(blockSet.SLAB.get())) {
-            slabBlock(blockSet.SLAB.get(), planks, planks);
+            slabBlock(blockSet.SLAB.get(), Confluence.asResource("block/" + id + "_planks"), planks);
         }
         if (blockSet.STAIRS.isBound() && shouldGenerate(blockSet.STAIRS.get())) {
             stairsBlock(blockSet.STAIRS.get(), planks);
@@ -125,12 +126,12 @@ public final class ModBlockStateProvider extends BlockStateProvider {
         if (blockSet.SIGN.isBound() && shouldGenerate(blockSet.SIGN.get()) && shouldGenerate(blockSet.WALL_SIGN.get())) {
             signBlock(blockSet.SIGN.get(), blockSet.WALL_SIGN.get(), planks);
         }
-        ResourceLocation trapdoor = Confluence.asResource("block/" + id + "_trapdoor");
+        ResourceLocation trapdoor = Confluence.asResource(textureFolder + id + "_trapdoor");
         if (blockSet.TRAPDOOR.isBound() && shouldGenerate(blockSet.TRAPDOOR.get()) && hasTexture(trapdoor)) {
             trapdoorBlockWithRenderType(blockSet.TRAPDOOR.get(), trapdoor, true, "cutout");
         }
-        ResourceLocation doorBottom = Confluence.asResource("block/" + id + "_door_bottom");
-        ResourceLocation doorTop = Confluence.asResource("block/" + id + "_door_top");
+        ResourceLocation doorBottom = Confluence.asResource(textureFolder + id + "_door_bottom");
+        ResourceLocation doorTop = Confluence.asResource(textureFolder + id + "_door_top");
         if (blockSet.DOOR.isBound() && shouldGenerate(blockSet.DOOR.get()) && hasTexture(doorBottom) && hasTexture(doorTop)) {
             doorBlockWithRenderType(blockSet.DOOR.get(), doorBottom, doorTop, "cutout");
         }
@@ -138,17 +139,18 @@ public final class ModBlockStateProvider extends BlockStateProvider {
             hangingSignBlock(blockSet.HANGING_SIGN.get(), blockSet.WALL_HANGING_SIGN.get(), planks);
         }
         if (blockSet.CHISELED_PLANKS.isBound()) {
-            simpleBlockIfAbsent(blockSet.CHISELED_PLANKS.get());
+            simpleBlockIfAbsent(blockSet.CHISELED_PLANKS.get(), Confluence.asResource(textureFolder + "chiseled_" + id + "_planks"));
         }
-        ResourceLocation sapling = Confluence.asResource("block/" + id + "_sapling");
-        if (blockSet.SAPLING.isBound() && !hasHandwrittenModel(sapling) && hasTexture(sapling)) {
+        ResourceLocation saplingModel = Confluence.asResource("block/" + id + "_sapling");
+        ResourceLocation saplingTexture = Confluence.asResource(textureFolder + id + "_sapling");
+        if (blockSet.SAPLING.isBound() && !hasHandwrittenModel(saplingModel) && hasTexture(saplingTexture)) {
             models().withExistingParent(id + "_sapling", "block/cross")
-                    .texture("cross", sapling);
+                    .texture("cross", saplingTexture);
         }
     }
 
     private void registerDecorationSet(DecoBlockSet blockSet) {
-        ResourceLocation texture = Confluence.asResource("block/" + blockSet.id);
+        ResourceLocation texture = decorationTexture(blockSet.id);
         if (!hasTexture(texture)) {
             return;
         }
@@ -205,18 +207,63 @@ public final class ModBlockStateProvider extends BlockStateProvider {
         }
     }
 
+    private static ResourceLocation decorationTexture(String path) {
+        if (path.endsWith("_bricks"))
+            return Confluence.asResource("block/decorative/bricks/" + path);
+        if (path.endsWith("pure_glass") || path.equals("soul_glass"))
+            return Confluence.asResource("block/decorative/glass/" + path);
+        if (path.endsWith("_paper_pane") || path.endsWith("_paper_pane_lamp"))
+            return Confluence.asResource("block/decorative/paper/" + path);
+        if (path.equals("sun_plate") || path.equals("moon_plate") || path.equals("disc_block"))
+            return Confluence.asResource("block/decorative/plate/" + path);
+        String folder = switch (path) {
+            case "asphalt_block", "copper_tiles", "tin_tiles" -> "decorative/building/";
+            case "flinx_fur_block", "poo_block", "rainbow_wool" -> "decorative/novelty/";
+            case "mural_block" -> "decorative/art/";
+            case "rainbow_gel_block" -> "decorative/gel/";
+            case "star_cloud_block", "fallen_star_block" -> "cloud/";
+            case "lihzahrd_tiles", "polished_lihzahrd" -> "lihzahrd/";
+            default -> "";
+        };
+        return Confluence.asResource("block/" + folder + path);
+    }
+
+    private static ResourceLocation oreTexture(String path) {
+        if (path.startsWith("corruption_"))
+            return Confluence.asResource("block/ore/corruption/" + path);
+        if (path.startsWith("fleshification_"))
+            return Confluence.asResource("block/ore/crimson/" + path);
+        if (path.startsWith("sanctification_"))
+            return Confluence.asResource("block/ore/hallow/" + path);
+        if (path.startsWith("deepslate_") && path.endsWith("_ore"))
+            return Confluence.asResource("block/ore/deepslate/" + path);
+        if (path.endsWith("_ore")) return Confluence.asResource("block/ore/" + path);
+        if (path.startsWith("raw_") && path.endsWith("_block"))
+            return Confluence.asResource("block/ore/raw/" + path);
+        String folder = switch (path) {
+            case "cold_crystal_block", "gelstone_block", "meteorite_block", "opal_block" ->
+                    "ore/storage/";
+            default -> "";
+        };
+        return Confluence.asResource("block/" + folder + path);
+    }
+
     private void simpleBlockIfAbsent(Block block) {
+        simpleBlockIfAbsent(block, Confluence.asResource("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath()));
+    }
+
+    private void simpleBlockIfAbsent(Block block, ResourceLocation texture) {
         if (!shouldGenerate(block)) {
             return;
         }
         ResourceLocation model = Confluence.asResource("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath());
         if (hasHandwrittenModel(model)) {
             simpleBlock(block, models().getExistingFile(model));
-        } else if (hasTexture(model)) {
+        } else if (hasTexture(texture)) {
             /// 只有存在同名纹理时才能从注册名完整推导 cube_all 模型。
             /// 没有同名纹理的方块通常复用其他纹理或需要复杂状态，应继续保留手写资源，
             /// 不能让通用生成规则猜测模型并阻断整个 DataGen。
-            simpleBlock(block);
+            simpleBlock(block, models().cubeAll(BuiltInRegistries.BLOCK.getKey(block).getPath(), texture));
         }
     }
 

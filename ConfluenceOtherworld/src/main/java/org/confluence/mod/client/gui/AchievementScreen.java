@@ -24,7 +24,7 @@ public class AchievementScreen extends Screen {
     public static final PortWidgetSprites SPRITES = new PortWidgetSprites(
             Confluence.asResource("achievement_icon"),
             Confluence.asResource("achievement_icon_highlighted"));
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/achievement.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/achievement/achievement.png");
     private static final int ENTRY_X = 4;
     private static final int ENTRY_Y = 22;
     private static final int ENTRY_U = 9;
@@ -106,7 +106,7 @@ public class AchievementScreen extends Screen {
                         String path = AchievementUtils.asPath(key);
                         String namespace = key.getNamespace();
                         displays.put(key, new ImmutableTriple<>(
-                                ResourceLocation.fromNamespaceAndPath(namespace, "textures/achievement/" + path + ".png"),
+                                AchievementToast.iconTexture(key),
                                 Component.translatable("achievements." + namespace + "." + path + ".title"),
                                 Component.translatable("achievements." + namespace + "." + path + ".description")
                         ));

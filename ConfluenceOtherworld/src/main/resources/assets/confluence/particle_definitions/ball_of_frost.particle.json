@@ -5,7 +5,7 @@
 			"identifier": "confluence:ball_of_frost",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:ball_of_frost"
+                "texture": "confluence:magic/ball_of_frost"
 			}
 		},
 		"events": {

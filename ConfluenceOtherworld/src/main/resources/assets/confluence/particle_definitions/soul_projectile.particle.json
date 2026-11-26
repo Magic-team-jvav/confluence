@@ -5,7 +5,7 @@
 			"identifier": "confluence:soul_projectile",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:soul_projectile"
+                "texture": "confluence:soul/soul_projectile"
 			}
 		},
 		"events": {

@@ -5,7 +5,7 @@
             "identifier": "confluence:the_destroyer_sky_fire_1",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:destroyer_fire"
+                "texture": "confluence:destroyer_attack/destroyer_fire"
 			}
 		},
 		"components": {

@@ -10,6 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -63,17 +64,30 @@ public class BoomerangProjectile extends Projectile {
     }
 
     public void configure(LivingEntity owner, ItemStack weapon, BoomerangItem.Settings settings) {
-        configure(owner, weapon, settings.damage(), settings.flySpeed(), settings.backSpeed(), settings.forwardTicks(), settings.penetration());
+        AttributeInstance attack = owner.getAttribute(LibAttributes.getAttackDamage());
+        float damage = settings.damage();
+        if (attack != null) {
+            // 回旋镖提供武器基础伤害，力量等属性修饰按原版顺序结算。
+            AttributeInstance preview = new AttributeInstance(attack.getAttribute(), ignored -> {});
+            preview.setBaseValue(attack.getBaseValue() + damage - 1.0);
+            attack.getModifiers().forEach(preview::addTransientModifier);
+            damage = (float) preview.getValue();
+        }
+        initialize(owner, weapon, damage, settings.flySpeed(), settings.backSpeed(), settings.forwardTicks(), settings.penetration());
         this.fire = settings.fire();
         if (fire) setSecondsOnFire(4);
     }
 
     public void configure(LivingEntity owner, ItemStack weapon, float damage, float flySpeed, float backSpeed, int forwardTicks, int penetration) {
+        initialize(owner, weapon, damage * (float) owner.getAttributeValue(LibAttributes.getAttackDamage()),
+                flySpeed, backSpeed, forwardTicks, penetration);
+    }
+
+    private void initialize(LivingEntity owner, ItemStack weapon, float damage, float flySpeed, float backSpeed, int forwardTicks, int penetration) {
         setOwner(owner);
         setPos(owner.getX(), owner.getEyeY() - 0.15, owner.getZ());
         entityData.set(DATA_WEAPON, weapon.copyWithCount(1));
-        float resolvedDamage = damage * (float) owner.getAttributeValue(LibAttributes.getAttackDamage());
-        entityData.set(DATA_DAMAGE, Math.max(0, resolvedDamage));
+        entityData.set(DATA_DAMAGE, Math.max(0, damage));
         this.backSpeed = Math.max(0.01F, backSpeed);
         this.forwardTicks = Math.max(1, forwardTicks);
         this.penetration = Math.max(1, penetration);

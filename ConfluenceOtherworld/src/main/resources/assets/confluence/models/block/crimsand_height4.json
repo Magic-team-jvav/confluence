@@ -1,7 +1,7 @@
 {
     "textures": {
-        "particle": "confluence:block/crimsand",
-        "texture": "confluence:block/crimsand"
+        "particle": "confluence:block/crimson/crimsand",
+        "texture": "confluence:block/crimson/crimsand"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

@@ -14,7 +14,7 @@ import org.confluence.mod.client.model.entity.projectile.VilethronProjectileMode
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 
 public class VilethronProjectileRenderer extends EntityRenderer<VilethronProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/vilethron_projectile.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/vilethron_projectile.png");
     private final VilethronProjectileModel model;
 
     public VilethronProjectileRenderer(EntityRendererProvider.Context context) {

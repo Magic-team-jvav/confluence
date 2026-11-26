@@ -5,7 +5,7 @@
 			"identifier": "confluence:magic_missile_expiration_ball",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:magic_missile_expiration_ball"
+                "texture": "confluence:magic_missile/magic_missile_expiration_ball"
 			}
 		},
 		"curves": {

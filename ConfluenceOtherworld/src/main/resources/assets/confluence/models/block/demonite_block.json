@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/demonite_block"
+      "all": "confluence:block/ore/storage/demonite_block"
   }
 }

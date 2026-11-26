@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/gold_coins",
-		"particle": "confluence:block/gold_coins"
+        "0": "confluence:block/decorative/coins/gold_coins",
+        "particle": "confluence:block/decorative/coins/gold_coins"
 	},
 	"elements": [
 		{

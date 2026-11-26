@@ -1,6 +1,6 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "confluence:block/argon_moss_up_0"
+        "layer0": "confluence:block/moss/argon_moss_up_0"
     }
 }

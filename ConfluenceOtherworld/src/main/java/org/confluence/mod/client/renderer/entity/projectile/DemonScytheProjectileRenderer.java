@@ -13,7 +13,7 @@ import org.confluence.mod.client.model.entity.projectile.DemonScytheProjectileMo
 import org.confluence.mod.common.entity.projectile.mana.DemonScytheProjectile;
 
 public class DemonScytheProjectileRenderer extends EntityRenderer<DemonScytheProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/demon_scythe_projectile.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/demon_scythe_projectile.png");
     private final DemonScytheProjectileModel model;
 
     public DemonScytheProjectileRenderer(EntityRendererProvider.Context context) {

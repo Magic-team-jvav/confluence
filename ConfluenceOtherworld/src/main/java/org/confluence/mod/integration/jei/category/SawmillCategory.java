@@ -18,7 +18,7 @@ import org.confluence.mod.integration.jei.EitherRecipe4xHelper;
 
 public class SawmillCategory implements IRecipeCategory<SawmillRecipe> {
     public static final RecipeType<SawmillRecipe> TYPE = new RecipeType<>(Confluence.asResource("sawmill"), SawmillRecipe.class);
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/sawmill.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/jei/sawmill.png");
     private final IDrawable icon;
     private final EitherRecipe4xHelper helper;
 

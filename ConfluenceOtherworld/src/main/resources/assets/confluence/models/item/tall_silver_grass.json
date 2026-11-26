@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:block/tall_silver_grass_top"
+      "layer0": "confluence:block/plant/tall_silver_grass_top"
   }
 }

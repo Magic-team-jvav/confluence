@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "end": "confluence:block/pink_brick_column_end",
-    "side": "confluence:block/pink_brick_column_side"
+      "end": "confluence:block/decorative/bricks/pink_brick_column_end",
+      "side": "confluence:block/decorative/bricks/pink_brick_column_side"
   }
 }

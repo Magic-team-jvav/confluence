@@ -2,9 +2,9 @@
 	"credit": "Made with Blockbench",
 	"render_type": "cutout_mipped",
 	"textures": {
-		"0": "confluence:block/web_rope",
-		"1": "confluence:block/web_rope_1",
-		"particle": "confluence:block/web_rope"
+        "0": "confluence:block/rope/web_rope",
+        "1": "confluence:block/rope/web_rope_1",
+        "particle": "confluence:block/rope/web_rope"
 	},
 	"elements": [
 		{

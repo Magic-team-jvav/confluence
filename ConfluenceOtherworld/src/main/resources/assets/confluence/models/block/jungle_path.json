@@ -2,7 +2,7 @@
     "textures": {
         "particle": "block/mud",
         "top": "block/dirt_path_top",
-        "side": "confluence:block/jungle_path_side",
+        "side": "confluence:block/jungle/jungle_path_side",
         "bottom": "block/mud"
     },
     "elements": [

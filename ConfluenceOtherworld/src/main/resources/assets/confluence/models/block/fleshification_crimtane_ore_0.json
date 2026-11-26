@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/fleshification_crimtane_ore_0"
+      "all": "confluence:block/ore/crimson/fleshification_crimtane_ore_0"
   }
 }

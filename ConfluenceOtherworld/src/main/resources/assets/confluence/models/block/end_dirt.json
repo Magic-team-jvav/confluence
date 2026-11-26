@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "confluence:block/end_dirt"
+      "all": "confluence:block/end/end_dirt"
   }
 }

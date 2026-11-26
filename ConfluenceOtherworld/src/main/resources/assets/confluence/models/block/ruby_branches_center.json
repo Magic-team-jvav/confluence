@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/ruby_branches",
-		"particle": "confluence:block/ruby_branches"
+        "0": "confluence:block/wood/gem/ruby_branches",
+        "particle": "confluence:block/wood/gem/ruby_branches"
 	},
 	"elements": [
 		{

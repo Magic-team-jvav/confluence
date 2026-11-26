@@ -5,7 +5,7 @@
 			"identifier": "confluence:ball_of_fire",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:ball_of_fire"
+                "texture": "confluence:magic/ball_of_fire"
 			}
 		},
 		"events": {

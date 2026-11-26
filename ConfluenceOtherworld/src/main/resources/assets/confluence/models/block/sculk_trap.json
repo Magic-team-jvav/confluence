@@ -2,7 +2,7 @@
     "parent": "minecraft:block/cube_bottom_top",
     "textures": {
         "bottom": "minecraft:block/sculk_catalyst_bottom",
-        "side": "confluence:block/sculk_trap_side",
-        "top": "confluence:block/sculk_trap_top"
+        "side": "confluence:block/trap/sculk_trap_side",
+        "top": "confluence:block/trap/sculk_trap_top"
     }
 }

@@ -1,8 +1,8 @@
 {
     "render_type": "translucent",
     "textures": {
-        "all": "confluence:block/void_weave",
-        "particle": "confluence:block/void_weave"
+        "all": "confluence:block/end/void_weave",
+        "particle": "confluence:block/end/void_weave"
     },
     "elements": [
         {

@@ -2,6 +2,6 @@
     "parent": "minecraft:block/tinted_cross",
     "render_type": "cutout_mipped",
     "textures": {
-        "cross": "confluence:block/green_moss_up_1"
+        "cross": "confluence:block/moss/green_moss_up_1"
     }
 }

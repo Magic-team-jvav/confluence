@@ -5,7 +5,7 @@
 			"identifier": "confluence:rainbow_expiration",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:rainbow_expiration"
+                "texture": "confluence:magic/rainbow_expiration"
 			}
 		},
 		"components": {

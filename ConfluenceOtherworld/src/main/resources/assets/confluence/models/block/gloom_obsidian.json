@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "confluence:block/gloom_obsidian"
+      "all": "confluence:block/decorative/obsidian/gloom_obsidian"
   }
 }

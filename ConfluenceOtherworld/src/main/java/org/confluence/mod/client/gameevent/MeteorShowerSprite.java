@@ -23,7 +23,7 @@ import static org.confluence.mod.client.gameevent.ClientGameEventSystem.poseStac
 import static org.confluence.mod.client.gameevent.ClientGameEventSystem.random;
 
 final class MeteorShowerSprite {
-    static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor_shower.png");
+    static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/event/meteor_shower.png");
     static final Queue<MeteorShowerSprite> SPRITES = EvictingQueue.create(32);
     static boolean started;
     static final float frame = 1 / 7.0F;

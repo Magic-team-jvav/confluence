@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/diamond_branches",
-		"particle": "confluence:block/diamond_branches"
+        "0": "confluence:block/wood/gem/diamond_branches",
+        "particle": "confluence:block/wood/gem/diamond_branches"
 	},
 	"elements": [
 		{

@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "confluence:block/cross_statue",
+        "0": "confluence:block/statue/cross_statue",
 		"particle": "block/andesite"
 	},
 	"elements": [

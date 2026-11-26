@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/raw_meteorite_block"
+      "all": "confluence:block/ore/raw/raw_meteorite_block"
   }
 }

@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "confluence:block/crimson_tapered_block_tip_single"
+        "layer0": "confluence:block/crimson/crimson_tapered_block_tip_single"
     }
 }

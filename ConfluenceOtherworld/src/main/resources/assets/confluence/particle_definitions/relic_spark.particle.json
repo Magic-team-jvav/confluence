@@ -5,7 +5,7 @@
 			"identifier": "confluence:relic_spark",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:relic_spark"
+                "texture": "confluence:combat/relic_spark"
 			}
 		},
 		"components": {

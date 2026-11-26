@@ -3,7 +3,7 @@
 	"render_type": "cutout_mipped",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "confluence:block/remains_block",
+        "1": "confluence:block/cavern/remains_block",
 		"2": "block/chain",
 		"particle": "block/chain"
 	},

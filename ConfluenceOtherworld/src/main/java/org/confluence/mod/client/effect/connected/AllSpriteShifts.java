@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 
 public class AllSpriteShifts {
-    public static final CTSpriteShiftEntry ANDESITE_CASING = omni("andesite_casing");
+    public static final CTSpriteShiftEntry ANDESITE_CASING = getCT(AllCTTypes.OMNIDIRECTIONAL, "functional/mechanism/andesite_casing", "andesite_casing", 1);
 
     private static CTSpriteShiftEntry omni(String name) {
         return getCT(AllCTTypes.OMNIDIRECTIONAL, name, 1);

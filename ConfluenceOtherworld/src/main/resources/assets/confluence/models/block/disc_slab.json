@@ -1,9 +1,9 @@
 {
 "parent":"block/slab",
 "textures":{
-"bottom":"confluence:block/disc_block",
-"top":"confluence:block/disc_block",
-"side":"confluence:block/disc_block"
+    "bottom": "confluence:block/decorative/plate/disc_block",
+    "top": "confluence:block/decorative/plate/disc_block",
+    "side": "confluence:block/decorative/plate/disc_block"
 },
 "render_type":"solid"
 }

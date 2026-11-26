@@ -5,7 +5,7 @@
 			"identifier": "confluence:void_step",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:void_step"
+                "texture": "confluence:soul/void_step"
 			}
 		},
 		"components": {

@@ -1,6 +1,6 @@
 {
   "parent": "block/leaves",
   "textures": {
-    "all": "confluence:block/baobab_leaves_item"
+      "all": "confluence:block/wood/baobab/baobab_leaves_item"
   }
 }

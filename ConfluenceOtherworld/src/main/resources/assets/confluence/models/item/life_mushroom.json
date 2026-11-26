@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "confluence:block/life_mushroom"
+        "layer0": "confluence:block/mushroom/life/life_mushroom"
     }
 }

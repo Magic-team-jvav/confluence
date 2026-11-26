@@ -20,7 +20,7 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
 public final class MeteorLandingHandler {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/event/meteor.png");
     private static final float RADIUS = 5.0F;
     private static final PoseStack poseStack = new PoseStack();
     private static @Nullable GlobalPos globalPos = null;

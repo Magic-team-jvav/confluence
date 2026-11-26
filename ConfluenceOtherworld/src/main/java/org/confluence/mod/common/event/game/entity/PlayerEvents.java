@@ -433,7 +433,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void advancementProgress(AdvancementEvent.AdvancementProgressEvent event) {
         if (AchievementOffset.Loader.getDisplayOffset().containsKey(event.getAdvancement().id())) {
-            AchievementsDataSyncPacketS2C.sendToPlayer((ServerPlayer) event.getEntity());
+            AchievementsDataSyncPacketS2C.sendToPlayer((ServerPlayer) event.getEntity(), event.getAdvancement().id());
         }
     }
 

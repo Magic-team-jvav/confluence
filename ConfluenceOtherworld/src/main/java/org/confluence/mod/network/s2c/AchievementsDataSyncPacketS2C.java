@@ -16,6 +16,7 @@ import org.confluence.mod.util.AchievementUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 public record AchievementsDataSyncPacketS2C(PlayerAdvancements.Data data) implements IPacketS2C {
     public static final Type<AchievementsDataSyncPacketS2C> TYPE = Confluence.createType("achievements_data_sync");
@@ -24,7 +25,7 @@ public record AchievementsDataSyncPacketS2C(PlayerAdvancements.Data data) implem
 
     @Override
     public void work(Player player) {
-        AchievementUtils.handleData(data, true);
+        AchievementUtils.handleData(data);
     }
 
     @Override
@@ -32,13 +33,29 @@ public record AchievementsDataSyncPacketS2C(PlayerAdvancements.Data data) implem
         return TYPE;
     }
 
-    public static void sendToPlayer(ServerPlayer player) {
+    public static void sendToPlayer(ServerPlayer player, ResourceLocation... ids) {
         Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>();
-        for (Map.Entry<AdvancementHolder, AdvancementProgress> entry : player.getAdvancements().progress.entrySet()) {
-            if (entry.getValue().hasProgress() && AchievementOffset.Loader.getDisplayOffset().containsKey(entry.getKey().id())) {
-                map.put(entry.getKey().id(), entry.getValue());
+        Set<ResourceLocation> display = AchievementOffset.Loader.getDisplayOffset().keySet();
+        if (ids.length == 0) {
+            for (ResourceLocation id : display) {
+                putIfHasProgress(player, id, map);
+            }
+        } else {
+            for (ResourceLocation id : ids) {
+                if (display.contains(id)) {
+                    putIfHasProgress(player, id, map);
+                }
             }
         }
         PacketDistributor.sendToPlayer(player, new AchievementsDataSyncPacketS2C(new PlayerAdvancements.Data(map)));
+    }
+
+    private static void putIfHasProgress(ServerPlayer player, ResourceLocation id, Map<ResourceLocation, AdvancementProgress> map) {
+        AdvancementHolder advancement = player.server.getAdvancements().get(id);
+        if (advancement == null) return;
+        AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
+        if (progress.hasProgress()) {
+            map.put(id, progress);
+        }
     }
 }

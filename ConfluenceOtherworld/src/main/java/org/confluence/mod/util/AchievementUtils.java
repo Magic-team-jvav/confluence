@@ -1,7 +1,6 @@
 package org.confluence.mod.util;
 
 import com.google.common.collect.Streams;
-import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
 import com.google.gson.stream.JsonReader;
@@ -120,28 +119,28 @@ public final class AchievementUtils {
         return DataFixTypes.ADVANCEMENTS.wrapCodec(dataCodec, LibClientUtils.getDataFixer(), 1343);
     }
 
-    public static void handleData(PlayerAdvancements.Data data, boolean override) {
-        if (override || AchievementUtils.data == null) {
-            AchievementUtils.data = data;
+    public static void handleData(PlayerAdvancements.Data remote) {
+        if (data == null) {
+            data = remote;
         } else {
-            Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(AchievementUtils.data.map());
-            map.putAll(data.map());
-            AchievementUtils.data = new PlayerAdvancements.Data(map);
+            Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(data.map());
+            map.putAll(remote.map());
+            data = new PlayerAdvancements.Data(map);
         }
     }
 
     public static void saveData() {
         if (data == null) return;
         Path path = CONFLUENCE_ACHIEVEMENTS_DIR.resolve(LibClientUtils.getGameProfile().getId() + ".json");
-        saveData(data, path, ModUtils.GSON, getCodecClientOnly());
+        saveData(data, path);
         data = null;
     }
 
-    public static void saveData(PlayerAdvancements.Data data, Path savePath, Gson gson, Codec<PlayerAdvancements.Data> codec) {
+    public static void saveData(PlayerAdvancements.Data data, Path savePath) {
         try {
             FileUtil.createDirectoriesSafe(savePath.getParent());
             try (Writer writer = Files.newBufferedWriter(savePath, StandardCharsets.UTF_8)) {
-                gson.toJson(codec.encodeStart(JsonOps.INSTANCE, data).getOrThrow(), gson.newJsonWriter(writer));
+                ModUtils.GSON.toJson(getCodecClientOnly().encodeStart(JsonOps.INSTANCE, data).getOrThrow(), ModUtils.GSON.newJsonWriter(writer));
             }
         } catch (JsonIOException | IOException ioexception) {
             Confluence.LOGGER.error("Couldn't save confluence achievements to {}", savePath, ioexception);

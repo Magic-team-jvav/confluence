@@ -221,6 +221,7 @@ public final class PlayerUtils {
         CompatibilitySyncPacketS2c.sendToClient(player);
         TeamPacket.sendToClient(player, player);
         DragonChargePlayerConfigPacketS2C.sendToPlayer(player);
+        AchievementsDataSyncPacketS2C.sendToPlayer(player);
     }
 
     /// 将target的数据同步到sendTo

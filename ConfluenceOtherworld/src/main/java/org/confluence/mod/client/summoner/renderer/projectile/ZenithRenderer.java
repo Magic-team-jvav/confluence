@@ -15,8 +15,8 @@ import org.confluence.mod.client.summoner.model.json.JsonModelRenderer;
 import org.confluence.mod.client.summoner.trail.RibbonTrailContext;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.projectile.Zenith;
-import org.confluence.mod.common.summoner.util.EasingCurve;
 import org.confluence.mod.integration.opallight.OpalLightIntegration;
+import org.confluence.mod.util.EasingCurve;
 
 import java.util.ArrayList;
 import java.util.List;

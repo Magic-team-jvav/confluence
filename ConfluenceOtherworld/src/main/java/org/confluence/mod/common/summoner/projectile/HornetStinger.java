@@ -6,9 +6,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +18,7 @@ import java.util.List;
 public class HornetStinger extends Projectile implements IEntityCollision<HornetStinger>, IBlockCollision<HornetStinger> {
 
     public HornetStinger() {
-        super(SummonerAttachmentEntityTypes.HORNET_STINGER);
+        super(ModAttachmentEntityTypes.HORNET_STINGER);
         setDrag(1.0F);
         setGravity(0);
     }

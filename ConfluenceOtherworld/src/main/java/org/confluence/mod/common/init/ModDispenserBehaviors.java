@@ -22,7 +22,7 @@ import org.confluence.mod.common.item.common.SpongeItem;
 
 import java.util.stream.Stream;
 
-public class ModDispenserBehaviors {
+public final class ModDispenserBehaviors {
     private static final DefaultDispenseItemBehavior REMAINDER_DISPENSER = new DefaultDispenseItemBehavior();
 
     /// 注册本模组液体工具在发射器中的交互行为。

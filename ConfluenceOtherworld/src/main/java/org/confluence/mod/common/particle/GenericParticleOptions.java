@@ -1,8 +1,8 @@
-package org.confluence.mod.common.summoner.particle;
+package org.confluence.mod.common.particle;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import org.confluence.mod.common.summoner.register.SummonerParticleTypes;
+import org.confluence.mod.common.init.ModParticleTypes;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -45,7 +45,7 @@ public final class GenericParticleOptions extends PortParticleOptions {
     private final float scale;
 
     public GenericParticleOptions(int centerColor, int edgeColor, int lifetime, float spinSpeed, float friction, float scale) {
-        super(SummonerParticleTypes.GENERIC.get(), CODEC, STREAM_CODEC);
+        super(ModParticleTypes.GENERIC.get(), CODEC, STREAM_CODEC);
         this.centerColor = centerColor;
         this.edgeColor = edgeColor;
         this.lifetime = Math.max(1, lifetime);

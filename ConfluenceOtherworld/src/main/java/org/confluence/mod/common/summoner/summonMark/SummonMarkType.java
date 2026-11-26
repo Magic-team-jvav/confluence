@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.util.consumer.Consumer4;
 import org.confluence.lib.util.consumer.Consumer5;
-import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
+import org.confluence.mod.common.attachment.WhipMarkTracker;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.jetbrains.annotations.Nullable;
 

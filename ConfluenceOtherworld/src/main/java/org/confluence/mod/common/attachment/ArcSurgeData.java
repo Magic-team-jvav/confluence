@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.attachment;
+package org.confluence.mod.common.attachment;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -12,15 +12,15 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.mana.ArcSurgeItem;
 import org.confluence.mod.common.item.mana.ArcSurgePattern;
 import org.confluence.mod.common.summoner.projectile.Zenith;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
-import org.confluence.mod.common.summoner.util.ZenithTargeting;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.ArcSurgePacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
+import org.confluence.mod.util.ZenithTargeting;
 import org.mesdag.portlib.attachment.IPortAttachmentHolder;
 
 import java.util.*;
@@ -70,7 +70,7 @@ public final class ArcSurgeData {
         if (!level.getFluidState(BlockPos.containing(source)).isEmpty()) return;
         var clipper = (java.util.function.BiFunction<Vec3, Vec3, Vec3>) (a, b) -> level.clip(new ClipContext(
                 a, b, ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, player)).getLocation();
-        List<Entity> targets = new ArrayList<>(player.getData(SummonerAttachmentTypes.TARGET_CACHE).getHitTargets(
+        List<Entity> targets = new ArrayList<>(player.getData(ModAttachmentTypes.SUMMONER_TARGET_CACHE).getHitTargets(
                 player.getBoundingBox().inflate(ArcSurgePattern.RANGE), target -> Zenith.TARGETING.canAcquire(player, target)));
         targets.sort(Comparator.comparingDouble((Entity target) -> ZenithTargeting.score(source, look,
                 target.getBoundingBox().getCenter(), ArcSurgePattern.RANGE, ArcSurgePattern.HALF_ANGLE)).thenComparingInt(Entity::getId));

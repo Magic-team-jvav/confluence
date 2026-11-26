@@ -3,9 +3,9 @@ package org.confluence.mod.common.summoner.projectile;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 public class ImpFireball extends Projectile implements IEntityCollision<ImpFireball>, IBlockCollision<ImpFireball> {
 
     public ImpFireball() {
-        super(SummonerAttachmentEntityTypes.IMP_FIREBALL);
+        super(ModAttachmentEntityTypes.IMP_FIREBALL);
         setDrag(1.0F);
         setGravity(0);
     }

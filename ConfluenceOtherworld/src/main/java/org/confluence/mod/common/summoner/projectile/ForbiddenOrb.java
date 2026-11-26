@@ -5,11 +5,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
+import org.confluence.mod.common.particle.GenericParticleBuilder;
+import org.confluence.mod.common.particle.ParticleHelper;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
-import org.confluence.mod.common.summoner.particle.GenericParticleBuilder;
-import org.confluence.mod.common.summoner.particle.ParticleHelper;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class ForbiddenOrb extends Projectile implements IEntityCollision<Forbidd
     private boolean exploded;
 
     public ForbiddenOrb() {
-        super(SummonerAttachmentEntityTypes.FORBIDDEN_ORB);
+        super(ModAttachmentEntityTypes.FORBIDDEN_ORB);
         setDrag(1.0F);
         setGravity(0.0F);
         setMaxTickCount(60);

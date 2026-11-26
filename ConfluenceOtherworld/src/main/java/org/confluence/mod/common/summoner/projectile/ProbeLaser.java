@@ -1,15 +1,15 @@
 package org.confluence.mod.common.summoner.projectile;
 
 import net.minecraft.world.phys.AABB;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class ProbeLaser extends Projectile implements IEntityCollision<ProbeLaser> {
     public ProbeLaser() {
-        super(SummonerAttachmentEntityTypes.PROBE_LASER);
+        super(ModAttachmentEntityTypes.PROBE_LASER);
         setDrag(1);
         setGravity(0);
         setMaxTickCount(100);

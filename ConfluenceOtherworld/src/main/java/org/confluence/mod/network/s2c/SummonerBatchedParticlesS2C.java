@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.network;
+package org.confluence.mod.network.s2c;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -15,14 +15,14 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 import java.util.List;
 import java.util.Objects;
 
-public record SummonerBatchedParticlesPayload(List<Entry> entries) implements IPortPacket.S2C {
+public record SummonerBatchedParticlesS2C(List<Entry> entries) implements IPortPacket.S2C {
 
     public static final ResourceLocation ID = Confluence.asResource("summoner_batched_particles");
 
-    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, SummonerBatchedParticlesPayload> STREAM_CODEC = PortStreamCodec.composite(
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, SummonerBatchedParticlesS2C> STREAM_CODEC = PortStreamCodec.composite(
             Entry.STREAM_CODEC.apply(PortByteBufCodecs.list(4096)),
-            SummonerBatchedParticlesPayload::entries,
-            SummonerBatchedParticlesPayload::new
+            SummonerBatchedParticlesS2C::entries,
+            SummonerBatchedParticlesS2C::new
     );
 
     @Override

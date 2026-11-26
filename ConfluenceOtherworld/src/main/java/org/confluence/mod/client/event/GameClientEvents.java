@@ -14,6 +14,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -21,6 +22,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
@@ -31,6 +33,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.FogType;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -66,6 +69,7 @@ import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
+import org.confluence.mod.client.info.InfoRenderDispatcher;
 import org.confluence.mod.client.renderer.entity.DestroyerRenderer;
 import org.confluence.mod.client.renderer.entity.MartianOfficerRenderer;
 import org.confluence.mod.client.renderer.entity.TongueRenderer;
@@ -77,14 +81,18 @@ import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.client.renderer.tooltip.WeaponTooltip;
 import org.confluence.mod.client.summoner.AfterimageManager;
+import org.confluence.mod.client.summoner.AttachmentEntityRenderDispatcher;
+import org.confluence.mod.client.summoner.RenderUtil;
 import org.confluence.mod.client.summoner.WholeModelTransparency;
 import org.confluence.mod.client.summoner.model.virtual.VirtualEntityRenderer;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.attachment.WhipMarkTracker;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.map.ExtractinatorData;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -94,6 +102,7 @@ import org.confluence.mod.common.init.item.BowItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
+import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.ElectrifiedInputPacketC2S;
@@ -400,13 +409,18 @@ public final class GameClientEvents {
         List<Component> toolTip = event.getToolTip();
         ItemStack stack = event.getItemStack();
         Holder<Item> holder = stack.getItemHolder();
+        Player player = event.getEntity();
 
         if (ModClientConfigs.sellPriceDisplay.test()) {
-            ValueComponent.addTooltip(stack, toolTip, event.getEntity());
+            ValueComponent.addTooltip(stack, toolTip, player);
         }
-        ModArmorBonus.addTooltip(event.getEntity(), stack, toolTip);
+        ModArmorBonus.addTooltip(player, stack, toolTip);
         DiggingPower.addTooltip(stack, holder, toolTip);
         ExtractinatorData.addTooltip(holder, toolTip);
+
+        if (player != null && stack.getItem() instanceof SummonerWeaponItem<?> summonerWeaponItem) {
+            event.getToolTip().addAll(summonerWeaponItem.getTooltips(stack, player));
+        }
     }
 
     private static void addAttributeTooltips(PortAddAttributeTooltipsEvent event) {
@@ -443,17 +457,39 @@ public final class GameClientEvents {
             WallOfFleshRenderer.renderWalls(event);
             DestroyerRenderer.renderDestroyers(event);
             TongueRenderer.renderFirstPerson(event, minecraft, player);
+
+            float partialTick = event.getPartialTick();
+            MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+            PoseStack poseStack = event.getPoseStack();
+            Camera camera = event.getCamera();
+            InfoRenderDispatcher.render(player.level(), camera, poseStack, bufferSource, partialTick);
+            if (!AttachmentEntityRenderDispatcher.isShadowPass()) {
+                AfterimageManager.render(minecraft.level, camera, poseStack, partialTick);
+                AttachmentEntityRenderDispatcher.render(minecraft.level, camera, poseStack, bufferSource, partialTick);
+                bufferSource.endBatch();
+            }
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
             SpelunkerHelper.renderLevel(event, player);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            EmpPulseRenderer.render(event.getPoseStack(), event.getCamera().getPosition(), minecraft);
-            MartianOfficerRenderer.renderShields(event);
+            float partialTick = event.getPartialTick();
             PoseStack poseStack = event.getPoseStack();
+            EmpPulseRenderer.render(poseStack, event.getCamera().getPosition(), minecraft);
+            MartianOfficerRenderer.renderShields(event);
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);
-            HomingBeeRenderer.renderInWorld(poseStack, player, minecraft, event.getPartialTick());
+            HomingBeeRenderer.renderInWorld(poseStack, player, minecraft, partialTick);
             LucyTheAxeDialogRenderer.renderInWorld(minecraft, poseStack);
             HouseSelectHud.renderRegionInWorld(minecraft);
             VoidSeaRenderer.render(event, minecraft, player);
+
+            LivingEntity target = player.getData(ModAttachmentTypes.SUMMON_MARK_DATA).getMarkTarget();
+            if (target != null) {
+                Vec3 targetPos = target.getPosition(partialTick).add(0, target.getBbHeight() + 0.25, 0);
+                RenderUtil.renderImageInWorld(WhipMarkTracker.TEXTURE, targetPos, poseStack, 0.25F, 0.25F, minecraft.renderBuffers().bufferSource(), true, FastColor.ARGB32.color(191, 255, 255, 255));
+            }
+        } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
+            if (!AttachmentEntityRenderDispatcher.isShadowPass()) {
+                WholeModelTransparency.finishFrame();
+            }
         }
     }
 

@@ -11,12 +11,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.server.ServerStoppedEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
@@ -28,9 +24,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(modid = Confluence.MODID)
 public final class FirecrackerItem extends BaseWhipItem {
-    public static final float TAG_DAMAGE = 0.0F;
     private static final List<Blast> BLASTS = new ArrayList<>();
 
     public FirecrackerItem(Supplier<? extends SummonMarkType> summonMarkType) {
@@ -76,7 +70,6 @@ public final class FirecrackerItem extends BaseWhipItem {
         level.playSound(null, damageRecipient.blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.5F, 1.4F);
     }
 
-    @SubscribeEvent
     public static void tickBlasts(TickEvent.LevelTickEvent event) {
         if (event.phase != TickEvent.Phase.END || !(event.level instanceof ServerLevel level))
             return;
@@ -90,8 +83,7 @@ public final class FirecrackerItem extends BaseWhipItem {
         });
     }
 
-    @SubscribeEvent
-    public static void clearBlasts(ServerStoppedEvent event) {
+    public static void clearBlasts() {
         BLASTS.clear();
     }
 

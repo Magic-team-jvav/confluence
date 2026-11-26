@@ -17,8 +17,8 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.lib.client.light.DynamicLightGpu;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +71,7 @@ public class AttachmentEntityRenderDispatcher {
     private static void render(ClientLevel level, Vec3 cameraPos, PoseStack poseStack, MultiBufferSource bufferSource, float partialTick, boolean debug) {
         List<AbstractClientPlayer> players = level.players();
         for (AbstractClientPlayer player : players) {
-            List<AttachmentEntity> entities = player.getData(SummonerAttachmentTypes.ENTITY_DATA).getRenderCache();
+            List<AttachmentEntity> entities = player.getData(ModAttachmentTypes.SUMMONER_ATTACHMENT_ENTITY_DATA).getRenderCache();
             boolean showHitboxes = debug && Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes();
             int playerLight = getLightCoords(level, player.getLightProbePosition(partialTick));
             for (AttachmentEntity entity : entities) {

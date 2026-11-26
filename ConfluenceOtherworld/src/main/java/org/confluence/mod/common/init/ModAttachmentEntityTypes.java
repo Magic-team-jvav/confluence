@@ -1,6 +1,8 @@
-package org.confluence.mod.common.summoner.register;
+package org.confluence.mod.common.init;
 
 import PortLib.extensions.net.minecraftforge.registries.DeferredRegister.PortDeferredRegisterExtension;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -9,12 +11,19 @@ import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.minion.*;
 import org.confluence.mod.common.summoner.projectile.*;
+import org.mesdag.portlib.registries.PortCustomRegistration;
+import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.function.Supplier;
 
-public final class SummonerAttachmentEntityTypes {
+/// 召唤物附件实体类型。注册表本体由 {@link #REGISTRY} 建立，条目由 {@link #TYPES} 在模组事件总线上注册。
+public final class ModAttachmentEntityTypes {
 
-    public static final DeferredRegister<AttachmentEntityType<? extends AttachmentEntity>> TYPES = DeferredRegister.create(SummonerRegistries.ATTACHMENT_ENTITY_TYPE_KEY, Confluence.MODID);
+    public static final ResourceKey<Registry<AttachmentEntityType<? extends AttachmentEntity>>> ATTACHMENT_ENTITY_TYPE_KEY = ResourceKey.createRegistryKey(Confluence.asResource("summoner_attachment_entity_types"));
+
+    public static final PortCustomRegistration<AttachmentEntityType<? extends AttachmentEntity>> REGISTRY = PortRegisterHandler.custom(Confluence.MODID, ATTACHMENT_ENTITY_TYPE_KEY, maker -> maker.sync(true));
+
+    public static final DeferredRegister<AttachmentEntityType<? extends AttachmentEntity>> TYPES = DeferredRegister.create(ATTACHMENT_ENTITY_TYPE_KEY, Confluence.MODID);
 
     public static final RegistryObject<AttachmentEntityType<HornetMinion>> HORNET = register("hornet", HornetMinion::new);
 
@@ -56,7 +65,7 @@ public final class SummonerAttachmentEntityTypes {
 
     public static final RegistryObject<AttachmentEntityType<EyeFireball>> EYE_FIREBALL = register("eye_fireball", EyeFireball::new);
 
-    /** 天顶剑飞剑 */
+    /// 天顶剑飞剑。
     public static final RegistryObject<AttachmentEntityType<Zenith>> ZENITH = register("zenith", Zenith::new);
 
     public static final RegistryObject<AttachmentEntityType<MiniDestroyerMinion>> MINI_DESTROYER = register("mini_destroyer", MiniDestroyerMinion::new);
@@ -68,10 +77,12 @@ public final class SummonerAttachmentEntityTypes {
     public static final RegistryObject<AttachmentEntityType<ProbeLaser>> PROBE_LASER = register("probe_laser", ProbeLaser::new);
 
     private static <T extends AttachmentEntity> RegistryObject<AttachmentEntityType<T>> register(String name, Supplier<T> supplier) {
-        return PortDeferredRegisterExtension.register(TYPES, name, id -> new AttachmentEntityType<>(id, supplier));
+        return PortDeferredRegisterExtension.register(TYPES, name, id -> new AttachmentEntityType<T>(id, supplier));
     }
 
     public static void register(IEventBus eventBus) {
         TYPES.register(eventBus);
     }
+
+    private ModAttachmentEntityTypes() {}
 }

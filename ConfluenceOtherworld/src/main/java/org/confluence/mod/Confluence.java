@@ -24,7 +24,6 @@ import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.event.GameClientEvents;
 import org.confluence.mod.client.event.ModClientEvents;
 import org.confluence.mod.client.gui.MergedConfigurationScreen;
-import org.confluence.mod.client.summoner.SummonerClientEvents;
 import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.advancement.ShimmerTransmutationTrigger;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
@@ -43,8 +42,6 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SoulItems;
-import org.confluence.mod.common.summoner.SummonerEvents;
-import org.confluence.mod.common.summoner.register.*;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
 import org.mesdag.portlib.wrapper.PortEnvironment;
@@ -80,15 +77,6 @@ public final class Confluence {
         ModCommonConfigs.register(context);
         NetworkEvents.init();
         ModEvents.init();
-        {
-            SummonerRegistries.init();
-            SummonerAttachmentTypes.init();
-            SummonerAttachmentEntityTypes.register(eventBus);
-            SummonerSoundEvents.register(eventBus);
-            SummonerSummonMarks.init();
-            SummonerEvents.init();
-            SummonerParticleTypes.init();
-        }
         ModDataMaps.init();
         EntityEvents.init();
         ItemEvents.init();
@@ -104,7 +92,6 @@ public final class Confluence {
             ModClientConfigs.register(context);
             ModKeyBindings.init();
             ModClientEvents.init();
-            SummonerClientEvents.init();
             EctoMistHelper.init();
             GameClientEvents.init();
             context.registerExtensionPoint(
@@ -133,6 +120,8 @@ public final class Confluence {
         ModSoundEvents.EVENTS.register(eventBus);
         ModAttachmentTypes.init();
         ModSoulSkills.register(eventBus);
+        ModAttachmentEntityTypes.register(eventBus);
+        ModSummonMarkTypes.register(eventBus);
         ModEffects.EFFECTS.register(eventBus);
         ModMenuTypes.TYPES.register(eventBus);
         ModParticleTypes.init();

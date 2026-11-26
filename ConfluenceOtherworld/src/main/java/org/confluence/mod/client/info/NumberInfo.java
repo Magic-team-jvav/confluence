@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.client.summoner.LyraRenderTypes;
-import org.confluence.mod.common.summoner.attachment.InfoData;
+import org.confluence.mod.common.attachment.InfoData;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 

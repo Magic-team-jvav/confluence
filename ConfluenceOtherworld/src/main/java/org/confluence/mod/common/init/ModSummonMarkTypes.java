@@ -1,15 +1,23 @@
-package org.confluence.mod.common.summoner.register;
+package org.confluence.mod.common.init;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraftforge.eventbus.api.IEventBus;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.whip.FirecrackerItem;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
+import org.mesdag.portlib.registries.PortCustomRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.registries.PortRegistration;
 import org.mesdag.portlib.registries.PortRegistryEntry;
 
-public final class SummonerSummonMarks {
+/// 鞭类武器的召唤印记类型。注册表本体由 {@link #REGISTRY} 建立，条目由 {@link #TYPES} 注册。
+public final class ModSummonMarkTypes {
+    public static final ResourceKey<Registry<SummonMarkType>> SUMMON_MARK_TYPE_KEY = ResourceKey.createRegistryKey(Confluence.asResource("summon_mark"));
 
-    public static final PortRegistration<SummonMarkType> TYPES = PortRegisterHandler.create(Confluence.MODID, SummonerRegistries.SUMMON_MARK_TYPE_KEY);
+    public static final PortCustomRegistration<SummonMarkType> REGISTRY = PortRegisterHandler.custom(Confluence.MODID, SUMMON_MARK_TYPE_KEY, maker -> maker.sync(true));
+
+    public static final PortRegistration<SummonMarkType> TYPES = PortRegisterHandler.create(Confluence.MODID, SUMMON_MARK_TYPE_KEY);
 
     public static final PortRegistryEntry<SummonMarkType, SummonMarkType> LEATHER_WHIP = TYPES.register("leather_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
     public static final PortRegistryEntry<SummonMarkType, SummonMarkType> SLUB_WHIP = TYPES.register("slub_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
@@ -41,6 +49,9 @@ public final class SummonerSummonMarks {
             null,
             null));
 
-    public static void init() {
+    /// 注册表本体在类初始化时建立，条目由 {@code PortRegisterHandler} 在注册事件中写入。
+    public static void register(IEventBus eventBus) {
     }
+
+    private ModSummonMarkTypes() {}
 }

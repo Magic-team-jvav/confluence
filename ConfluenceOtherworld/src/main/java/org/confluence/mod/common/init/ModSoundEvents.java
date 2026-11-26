@@ -653,6 +653,10 @@ public final class ModSoundEvents {
 
     public static final RegistryObject<SoundEvent> ZOMBIE87_FREE = register("zombie87_free"); // 僵尸：鸣叫
 
+    public static final RegistryObject<SoundEvent> USE_MINION_WEAPON = register("use_minion_weapon");
+    public static final RegistryObject<SoundEvent> USE_TERRAPRISM = register("use_terraprism");
+    public static final RegistryObject<SoundEvent> ZENITH = register("zenith"); // 天顶剑挥砍时播放的音效。
+
     private static RegistryObject<SoundEvent> register(String name) {
         return EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(Confluence.asResource(name)));
     }

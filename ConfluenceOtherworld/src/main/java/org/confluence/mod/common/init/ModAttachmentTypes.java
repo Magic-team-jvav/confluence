@@ -3,6 +3,7 @@ package org.confluence.mod.common.init;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.*;
+import org.confluence.mod.common.particle.SummonerParticleData;
 import org.mesdag.portlib.attachment.PortAttachmentType;
 import org.mesdag.portlib.registries.PortAttachmentRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
@@ -28,4 +29,14 @@ public final class ModAttachmentTypes {
 
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ChunkBrushData>> CHUNK_BRUSH_DATA = TYPES.register("chunk_brush_data", () -> PortAttachmentType.serializable(ChunkBrushData::new).build());
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ChunkDropletsData>> CHUNK_DROPLETS_DATA = TYPES.register("chunk_droplets_data", () -> PortAttachmentType.serializable(ChunkDropletsData::new).build());
+
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<AttachmentEntityData>> SUMMONER_ATTACHMENT_ENTITY_DATA = TYPES.register("summoner_attachment_entity_data", () -> PortAttachmentType.builder(AttachmentEntityData::new).sync(new AttachmentEntityData.SyncHandler()).build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<TargetCache>> SUMMONER_TARGET_CACHE = TYPES.register("summoner_target_cache", () -> PortAttachmentType.builder(TargetCache::new).build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<WhipMarkTracker>> SUMMON_MARK_DATA = TYPES.register("summon_mark_data", () -> PortAttachmentType.builder(WhipMarkTracker::new).sync(new WhipMarkTracker.SyncHandler()).build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<SummonerParticleData>> SUMMONER_BATCHED_PARTICLES = TYPES.register("summoner_batched_particles", () -> PortAttachmentType.builder(SummonerParticleData::new).build());
+    /// 信息数据（Level 级）：服务端累积、tick 末尾发包，客户端分流为数字/文本信息。
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<InfoData>> SUMMONER_INFO = TYPES.register("summoner_info", () -> PortAttachmentType.builder(InfoData::new).build());
+    /// 玩家持有天顶剑时的蓄力与挥砍状态。
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ZenithData>> ZENITH_DATA = TYPES.register("zenith_data", () -> PortAttachmentType.builder(ZenithData::new).build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ArcSurgeData>> ARC_SURGE_DATA = TYPES.register("arc_surge_data", () -> PortAttachmentType.builder(ArcSurgeData::new).build());
 }

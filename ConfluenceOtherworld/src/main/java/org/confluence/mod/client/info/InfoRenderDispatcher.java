@@ -7,8 +7,8 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.summoner.attachment.InfoData;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.common.attachment.InfoData;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.joml.Quaternionf;
 
 public final class InfoRenderDispatcher {
@@ -16,7 +16,7 @@ public final class InfoRenderDispatcher {
     private InfoRenderDispatcher() {}
 
     public static void render(Level level, Camera camera, PoseStack poseStack, MultiBufferSource bufferSource, float partialTick) {
-        InfoData data = level.getData(SummonerAttachmentTypes.INFO);
+        InfoData data = level.getData(ModAttachmentTypes.SUMMONER_INFO);
         if (!data.isEmpty()) {
             Vec3 camPos = camera.getPosition();
             Quaternionf baseRotation = new Quaternionf(camera.rotation()).mul(Axis.XN.rotationDegrees(180.0F), new Quaternionf());

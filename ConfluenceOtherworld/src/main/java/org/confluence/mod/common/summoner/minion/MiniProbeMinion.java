@@ -3,17 +3,17 @@ package org.confluence.mod.common.summoner.minion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.attachment.TargetCache;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.SummonerHelper;
-import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.worm.WormAttachmentEntity;
 import org.confluence.mod.common.summoner.projectile.ProbeLaser;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -27,7 +27,7 @@ public class MiniProbeMinion extends MomentumMinion {
     private long nextShotTick;
 
     public MiniProbeMinion() {
-        super(SummonerAttachmentEntityTypes.MINI_PROBE);
+        super(ModAttachmentEntityTypes.MINI_PROBE);
         setGravity(0);
         setSlotCost(0);
     }
@@ -48,8 +48,8 @@ public class MiniProbeMinion extends MomentumMinion {
     @Nullable
     private MiniDestroyerMinion getBody() {
         if (bodyId.isPresent()) {
-            List<AttachmentEntity> segments = owner.getData(SummonerAttachmentTypes.ENTITY_DATA).getGroups()
-                    .getOrDefault(SummonerAttachmentEntityTypes.MINI_DESTROYER.get(), List.of());
+            List<AttachmentEntity> segments = owner.getData(ModAttachmentTypes.SUMMONER_ATTACHMENT_ENTITY_DATA).getGroups()
+                    .getOrDefault(ModAttachmentEntityTypes.MINI_DESTROYER.get(), List.of());
             for (AttachmentEntity segment : segments) {
                 if (segment instanceof MiniDestroyerMinion body && body.getUuid().equals(bodyId.get()) && !body.isRemove() && body.getNextSegment() != null) {
                     return body;

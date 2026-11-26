@@ -1,10 +1,10 @@
-package org.confluence.mod.common.summoner.particle;
+package org.confluence.mod.common.particle;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleType;
-import org.confluence.mod.common.summoner.register.SummonerParticleTypes;
+import org.confluence.mod.common.init.ModParticleTypes;
 import org.jetbrains.annotations.NotNull;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -52,7 +52,7 @@ public final class ZenithParticleOptions extends PortParticleOptions {
     private final float scale;
 
     public ZenithParticleOptions(int color, int lifetime, float friction, float scale) {
-        super(SummonerParticleTypes.ZENITH.get(), CODEC, STREAM_CODEC);
+        super(ModParticleTypes.ZENITH.get(), CODEC, STREAM_CODEC);
         this.color = color;
         this.lifetime = lifetime;
         this.friction = friction;
@@ -77,7 +77,7 @@ public final class ZenithParticleOptions extends PortParticleOptions {
 
     @Override
     public @NotNull ParticleType<ZenithParticleOptions> getType() {
-        return SummonerParticleTypes.ZENITH.get();
+        return ModParticleTypes.ZENITH.get();
     }
 
     @Override

@@ -10,6 +10,7 @@ import org.confluence.mod.common.block.functional.network.NetworkService;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.item.whip.FirecrackerItem;
 import org.confluence.mod.common.wind.WindField;
 import org.confluence.mod.common.worldgen.TheEndBiomeHolder;
 import org.confluence.mod.common.worldgen.biome.injector.ConfluenceBiomeInjector;
@@ -53,5 +54,6 @@ public final class ServerEvents {
     public static void serverStopped(ServerStoppedEvent event) {
         PathService.INSTANCE.onServerStop();
         NetworkService.INSTANCE.onServerStop();
+        FirecrackerItem.clearBlasts();
     }
 }

@@ -1,9 +1,9 @@
-package org.confluence.mod.common.summoner.particle;
+package org.confluence.mod.common.particle;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 
 import java.util.Random;
 import java.util.function.Consumer;
@@ -134,7 +134,7 @@ public class ParticleHelper {
             throw new IllegalStateException("Particle type not set. Call type() or generic() first.");
         }
         boolean server = !level.isClientSide();
-        SummonerParticleData batch = server ? level.getData(SummonerAttachmentTypes.BATCHED_PARTICLES) : null;
+        SummonerParticleData batch = server ? level.getData(ModAttachmentTypes.SUMMONER_BATCHED_PARTICLES) : null;
         if (count <= 0) {
             ParticleOptions options = genericBuilder != null ? genericBuilder.build() : particleType;
             if (server) {

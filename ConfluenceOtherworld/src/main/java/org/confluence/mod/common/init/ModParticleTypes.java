@@ -3,8 +3,9 @@ package org.confluence.mod.common.init;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.particle.DamageIndicatorOptions;
+import org.confluence.mod.common.particle.GenericParticleOptions;
 import org.confluence.mod.common.particle.WholeItemParticleOptions;
+import org.confluence.mod.common.particle.ZenithParticleOptions;
 import org.mesdag.portlib.registries.PortParticleTypeRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.registries.PortRegistryEntry;
@@ -14,7 +15,6 @@ public final class ModParticleTypes {
 
     public static final PortParticleTypeRegistration PARTICLES = PortRegisterHandler.particleType(Confluence.MODID);
 
-    public static final PortRegistryEntry<ParticleType<?>, ParticleType<DamageIndicatorOptions>> DAMAGE_INDICATOR = PARTICLES.register("damage_indicator", true, DamageIndicatorOptions.CODEC, DamageIndicatorOptions.STREAM_CODEC);
     public static final PortRegistryEntry<ParticleType<?>, ParticleType<WholeItemParticleOptions>> WHOLE_ITEM = PARTICLES.register("whole_item", true, WholeItemParticleOptions.CODEC, WholeItemParticleOptions.STREAM_CODEC);
     /// 满足原版弹丸的非空尾迹契约，但客户端不会为它创建可见粒子。
     public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> NO_TRAIL = PARTICLES.register("no_trail", false);
@@ -31,4 +31,8 @@ public final class ModParticleTypes {
     public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> SPORE_CLOUD = PARTICLES.register("spore_cloud", true);
     public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> SPIT_GLOW = PARTICLES.register("spit_glow", true);
     public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> VOID_SEA_SUSPENDED = PARTICLES.register("void_sea_suspended", true);
+    public static final PortRegistryEntry<ParticleType<?>, ParticleType<GenericParticleOptions>> GENERIC = PARTICLES.register("generic", true, GenericParticleOptions.CODEC, GenericParticleOptions.STREAM_CODEC);
+
+    /// 天顶剑粒子：水滴形头部与四棱锥拖尾。
+    public static final PortRegistryEntry<ParticleType<?>, ParticleType<ZenithParticleOptions>> ZENITH = PARTICLES.register("zenith", true, ZenithParticleOptions.CODEC, ZenithParticleOptions.STREAM_CODEC);
 }

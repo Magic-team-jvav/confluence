@@ -17,9 +17,9 @@ import org.confluence.lib.client.DynamicLightRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.animal.Fairy;
 import org.confluence.mod.common.entity.projectile.sword.PhasebladeProjectile;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.sword.BasePhasebladeItem;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.mesdag.opallight.OpalLightConfig;
 import org.mesdag.opallight.light.data.LightConditions;
 import org.mesdag.opallight.light.data.LightDataLoader;
@@ -163,7 +163,7 @@ public final class OpalLightIntegration {
         world.activeAttachments.clear();
         for (Player player : level.players()) {
             if (player.isRemoved() || player.isSpectator()) continue;
-            for (var attachment : player.getData(SummonerAttachmentTypes.ENTITY_DATA).getRenderCache()) {
+            for (var attachment : player.getData(ModAttachmentTypes.SUMMONER_ATTACHMENT_ENTITY_DATA).getRenderCache()) {
                 NamedLightDefinition source = source("attachments", attachment.getType().location());
                 if (source == null || attachment.isRemove()) continue;
                 UUID uuid = attachment.getUuid();

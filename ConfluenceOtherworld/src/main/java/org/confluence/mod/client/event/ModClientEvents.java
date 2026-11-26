@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -103,6 +104,11 @@ import org.confluence.mod.client.renderer.entity.yoyo.YoyoRenderer;
 import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
+import org.confluence.mod.client.summoner.AttachmentEntityRenderDispatcher;
+import org.confluence.mod.client.summoner.WholeModelTransparency;
+import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
+import org.confluence.mod.client.summoner.renderer.minion.*;
+import org.confluence.mod.client.summoner.renderer.projectile.*;
 import org.confluence.mod.common.block.functional.SafeBlock;
 import org.confluence.mod.common.block.functional.crafting.CookingPotBlock;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
@@ -130,10 +136,7 @@ import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.util.ClientUtils;
 import org.mesdag.particlestorm.api.geckolib.RegisterLocatorPreTransformerEvent;
 import org.mesdag.portlib.event.PortEventHandler;
-import org.mesdag.portlib.event.client.PortRegisterGuiLayersEvent;
-import org.mesdag.portlib.event.client.PortRegisterMenuScreensEvent;
-import org.mesdag.portlib.event.client.PortRegisterRenderBuffersEvent;
-import org.mesdag.portlib.event.client.PortTextureAtlasStitchedEvent;
+import org.mesdag.portlib.event.client.*;
 import org.mesdag.portlib.event.client.extensions.common.PortRegisterClientExtensionsEvent;
 import org.mesdag.portlib.registries.PortRegistryEntry;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -157,6 +160,7 @@ public final class ModClientEvents {
         PortEventHandler.addListener(ModClientEvents::registerGuiLayers);
         PortEventHandler.addListener(ModClientEvents::registerEntityLayers);
         PortEventHandler.addListener(ModClientEvents::registerEntityRenderers);
+        PortEventHandler.addListener(ModClientEvents::entityRenderers$AddLayers);
         PortEventHandler.addListener(ModClientEvents::registerBlockColors);
         PortEventHandler.addListener(ModClientEvents::registerItemColors);
         PortEventHandler.addListener(ModClientEvents::registerClientExtensions);
@@ -189,6 +193,31 @@ public final class ModClientEvents {
             ClientBestiary.getInstance().registerCustomFilter();
 
             ClientBiomeEffectSystem.registerEffects();
+
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.FINCH.get(), new FinchRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.HORNET.get(), new HornetRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.HORNET_STINGER.get(), new HornetStingerRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.IRON_GOLEM.get(), new org.confluence.mod.client.summoner.renderer.minion.IronGolemRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.SCULK_WISP.get(), new SculkWispRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.IMP.get(), new ImpRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.VEX_TOTEM.get(), new VexTotemRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.IMP_FIREBALL.get(), new ImpFireballRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.DEADLY_SPHERE.get(), new DeadlySphereRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.SANGUINE_BAT.get(), new SanguineBatRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.TERRAPRISMA.get(), new TerraprismaRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.SLIME.get(), new SlimeMinionRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.SNOW_FLINX.get(), new SnowFlinxRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.VAMPIRE_FROG.get(), new VampireFrogRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.DESERT_TIGER.get(), new DesertTigerRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.SPIDER.get(), new org.confluence.mod.client.summoner.renderer.minion.SpiderRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.MINI_DESTROYER.get(), new MiniDestroyerRenderer<>());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.MINI_PROBE.get(), new MiniDestroyerRenderer<>());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.DESTRUCTION_OMEN.get(), new DestructionOmenRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.PROBE_LASER.get(), new ProbeLaserRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.RUIN_RELIC.get(), new RuinRelicRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.EYE_LASER_TURRET.get(), new EyeLaserTurretRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.EYE_FIREBALL.get(), new EyeFireballRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.ZENITH.get(), new ZenithRenderer());
 
             registerDestroyerLocatorTransformer();
         });
@@ -1066,6 +1095,15 @@ public final class ModClientEvents {
         return new ExplicitGeoModel<>(Confluence.asResource("geo/entity/jellyfish.geo.json"), Confluence.asResource("textures/entity/jellyfish/" + color + "_jellyfish.png"), Confluence.asResource("animations/entity/jellyfish.animation.json"));
     }
 
+    private static void entityRenderers$AddLayers(PortEntityRenderersEvent.AddLayers event) {
+        for (PortEntityRenderersEvent.AddLayers.Model skin : PortEntityRenderersEvent.AddLayers.Model.values()) {
+            PlayerRenderer playerRenderer = event.getSkin(skin);
+            if (playerRenderer != null) {
+                playerRenderer.addLayer(new BirdNestLayer(playerRenderer));
+            }
+        }
+    }
+
     private static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
         event.register(ModClientSetups.HALLOW_LEAVES_COLOR, NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get());
         event.register(ModClientSetups.VOID_LEAVES_COLOR, NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get());
@@ -1139,7 +1177,6 @@ public final class ModClientEvents {
 
     private static void registerParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ModParticleTypes.SPIT_GLOW.get(), SpitParticle.EmissiveProvider::new);
-        event.registerSpecial(ModParticleTypes.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(ModParticleTypes.WHOLE_ITEM.get(), new WholeItemParticle.Provider());
         // 原版伤害弹丸不接受 null 尾迹；返回 null 粒子实例可明确表达“不渲染尾迹”。
         event.registerSpecial(ModParticleTypes.NO_TRAIL.get(), (type, level, x, y, z, xSpeed, ySpeed, zSpeed) -> null);
@@ -1154,6 +1191,8 @@ public final class ModClientEvents {
         event.registerSpriteSet(ModParticleTypes.LIGHT_BANE_FADE.get(), SimpleTextureSheetParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.ECTO_MIST.get(), EctoMistParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.VOID_SEA_SUSPENDED.get(), VoidSeaSuspendedParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.GENERIC.get(), GenericParticle.GenericParticleProvider::new);
+        event.registerSpriteSet(ModParticleTypes.ZENITH.get(), ZenithParticle.ZenithParticleProvider::new);
     }
 
     private static void textureAtlasStitched(PortTextureAtlasStitchedEvent event) {
@@ -1270,6 +1309,7 @@ public final class ModClientEvents {
             event.registerShader(new ShaderInstance(provider, Confluence.asResource("void_sea_refraction"), DefaultVertexFormat.POSITION), shader -> VoidSeaFilterRenderer.voidSeaRefractionShader = shader);
             event.registerShader(new ShaderInstance(provider, Confluence.asResource("boss_bar_flow"), DefaultVertexFormat.POSITION_TEX), CustomBossBarRenderer::setShader);
             event.registerShader(new ShaderInstance(provider, Confluence.asResource("trade_item_outline"), DefaultVertexFormat.POSITION_TEX_COLOR), NPCTradeItemOutline::setShader);
+            event.registerShader(new ShaderInstance(provider, Confluence.asResource("model_transparency"), DefaultVertexFormat.PARTICLE), WholeModelTransparency::setShader);
         } catch (IOException e) {
             Confluence.LOGGER.error("Failed to register shader", e);
         }

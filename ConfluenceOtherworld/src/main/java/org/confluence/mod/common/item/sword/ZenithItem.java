@@ -6,8 +6,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.item.ILeftClickStateItem;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.summoner.projectile.Zenith;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 
 public class ZenithItem extends BaseSwordItem implements ILeftClickStateItem {
 
@@ -19,12 +19,12 @@ public class ZenithItem extends BaseSwordItem implements ILeftClickStateItem {
 
     @Override
     public void onLeftClick(Player player, ItemStack stack) {
-        player.getData(SummonerAttachmentTypes.ZENITH_DATA).update(this);
+        player.getData(ModAttachmentTypes.ZENITH_DATA).update(this);
     }
 
     @Override
     public void onLeftRelease(Player player, ItemStack stack) {
-        player.getData(SummonerAttachmentTypes.ZENITH_DATA).reset();
+        player.getData(ModAttachmentTypes.ZENITH_DATA).reset();
     }
 
     public Zenith createZenith(Player owner) {

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.particle;
+package org.confluence.mod.common.particle;
 
 import java.util.Random;
 

@@ -1,15 +1,15 @@
 package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.world.phys.AABB;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.minion.goal.mini_destroyer.MiniDestroyerAttackGoal;
 import org.confluence.mod.common.summoner.minion.worm.WormAttachmentEntity;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class MiniDestroyerMinion extends WormAttachmentEntity {
     public MiniDestroyerMinion() {
-        super(SummonerAttachmentEntityTypes.MINI_DESTROYER);
+        super(ModAttachmentEntityTypes.MINI_DESTROYER);
     }
 
     @Override

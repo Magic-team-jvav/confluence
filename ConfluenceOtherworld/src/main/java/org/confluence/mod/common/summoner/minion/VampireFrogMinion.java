@@ -1,12 +1,12 @@
 package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.world.phys.AABB;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.vampire_frog.VampireFrogAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.vampire_frog.VampireFrogIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -19,7 +19,7 @@ public class VampireFrogMinion extends GroundMinion {
     public int attackTime = -1;
 
     public VampireFrogMinion() {
-        super(SummonerAttachmentEntityTypes.VAMPIRE_FROG);
+        super(ModAttachmentEntityTypes.VAMPIRE_FROG);
     }
 
     @Override

@@ -18,10 +18,14 @@ import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.entity.mount.MountManager;
 import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
+import org.confluence.mod.common.item.whip.FirecrackerItem;
 import org.confluence.mod.common.item.whip.WhipSession;
+import org.confluence.mod.common.particle.SummonerParticleData;
 import org.confluence.mod.common.soulcerer.artifact.ArtifactEffects;
+import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
@@ -48,7 +52,10 @@ public final class TickEvents {
             /// 客户端和服务端按各自世界时间更新潮位。
             VoidSeaHelper.tick(event.level);
         }
-        if(!(event.level instanceof ServerLevel level)) return;
+        InfoData.tick(event);
+        if (!(event.level instanceof ServerLevel level)) return;
+        SummonerParticleData.tick(level);
+        FirecrackerItem.tickBlasts(event);
         EnvironmentalMachines.INSTANCE.tick(level);
         if (dimension != OverworldUtils.dimension()) return;
         int dayTime = LibDateUtils.getDayTime(level);
@@ -121,10 +128,15 @@ public final class TickEvents {
             ModArmorBonus.afterTick(player, gameTime);
             PlayerUtils.applySunflowerEffect(player, level, gameTime);
             LucyTheAxe.onIdle(player, gameTime);
-        }
-        PlayerVoidVaultContainer.tickContents(event.player);
-        if (event.player instanceof ServerPlayer player)
             PlayerVoidVaultContainer.of(player).sync(player, false);
+
+            player.getData(ModAttachmentTypes.SUMMONER_TARGET_CACHE).tick();
+            player.getData(ModAttachmentTypes.ZENITH_DATA).tick();
+            player.getData(ModAttachmentTypes.ARC_SURGE_DATA).tick();
+        }
+        event.player.getData(ModAttachmentTypes.SUMMON_MARK_DATA).tick();
+        SummonerHelper.get(event.player).getEntityData().tick(event.player);
+        PlayerVoidVaultContainer.tickContents(event.player);
 
         if (gameTime % 60 == 3) {
             PlayerSpecialData.resetSomeData(event.player);

@@ -1,13 +1,13 @@
 package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.hornet.HornetAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.hornet.HornetIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -17,7 +17,7 @@ public class HornetMinion extends MomentumMinion {
     public int attackTime = -1;
 
     public HornetMinion() {
-        super(SummonerAttachmentEntityTypes.HORNET);
+        super(ModAttachmentEntityTypes.HORNET);
         setGravity(0);
     }
 

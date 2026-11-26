@@ -1,12 +1,12 @@
 package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.world.phys.AABB;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.spider.SpiderAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.spider.SpiderIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -19,7 +19,7 @@ public class SpiderMinion extends GroundMinion {
     public int variant = -1;
 
     public SpiderMinion() {
-        super(SummonerAttachmentEntityTypes.SPIDER);
+        super(ModAttachmentEntityTypes.SPIDER);
     }
 
     @Override

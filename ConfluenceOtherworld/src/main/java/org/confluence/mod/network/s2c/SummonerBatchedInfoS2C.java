@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.network;
+package org.confluence.mod.network.s2c;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.summoner.attachment.InfoData;
+import org.confluence.mod.common.attachment.InfoData;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.chat.PortComponentSerialization;
@@ -15,14 +15,14 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.List;
 
-public record SummonerBatchedInfoPayload(List<Number> numbers, List<Text> texts) implements IPortPacket.S2C {
+public record SummonerBatchedInfoS2C(List<Number> numbers, List<Text> texts) implements IPortPacket.S2C {
 
     public static final ResourceLocation ID = Confluence.asResource("summoner_batched_info");
 
-    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, SummonerBatchedInfoPayload> STREAM_CODEC = PortStreamCodec.composite(
-            Number.CODEC.apply(PortByteBufCodecs.list(4096)), SummonerBatchedInfoPayload::numbers,
-            Text.CODEC.apply(PortByteBufCodecs.list(4096)), SummonerBatchedInfoPayload::texts,
-            SummonerBatchedInfoPayload::new
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, SummonerBatchedInfoS2C> STREAM_CODEC = PortStreamCodec.composite(
+            Number.CODEC.apply(PortByteBufCodecs.list(4096)), SummonerBatchedInfoS2C::numbers,
+            Text.CODEC.apply(PortByteBufCodecs.list(4096)), SummonerBatchedInfoS2C::texts,
+            SummonerBatchedInfoS2C::new
     );
 
     @Override

@@ -10,6 +10,7 @@ import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.util.ClientUtils;
+import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.component.PortDataComponentType;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -54,7 +55,7 @@ public record ValueComponent(int value) {
         return getValueLong(itemStack, defaultValue, false);
     }
 
-    public static void addTooltip(ItemStack stack, List<Component> toolTip, Player player) {
+    public static void addTooltip(ItemStack stack, List<Component> toolTip, @Nullable Player player) {
         if (stack.getTag() != null && stack.getTag().contains(NPCTradeMenu.BUY_PRICE_TAG)) {
             long buyPrice = stack.getTag().getLong(NPCTradeMenu.BUY_PRICE_TAG);
             if (buyPrice > 0)

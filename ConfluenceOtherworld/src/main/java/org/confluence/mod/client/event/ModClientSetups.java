@@ -61,6 +61,7 @@ import org.confluence.mod.client.security.SecurityFace;
 import org.confluence.mod.common.attachment.LeftClickCooldowns;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.init.ModArmPoses;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -73,7 +74,6 @@ import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.summoner.SummonerHelper;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -392,7 +392,7 @@ public final class ModClientSetups {
     static void registerItemProperties() {
         ResourceLocation enable = Confluence.asResource("enable");
         ItemProperties.register(SummonItems.FINCH_STAFF.get(), enable, ((itemStack, clientLevel, livingEntity, seed) -> {
-            if (livingEntity instanceof Player player && !SummonerHelper.get(player).getEntityData().get(SummonerAttachmentEntityTypes.FINCH.get()).isEmpty()) {
+            if (livingEntity instanceof Player player && !SummonerHelper.get(player).getEntityData().get(ModAttachmentEntityTypes.FINCH.get()).isEmpty()) {
                 return 0;
             }
             return 1;

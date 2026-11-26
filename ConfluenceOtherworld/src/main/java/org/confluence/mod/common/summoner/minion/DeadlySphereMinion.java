@@ -1,6 +1,7 @@
 package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.world.phys.AABB;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
@@ -8,7 +9,6 @@ import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.deadly_sphere.DeadlySphereAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.deadly_sphere.DeadlySphereIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -24,7 +24,7 @@ public class DeadlySphereMinion extends MomentumMinion implements IEntityCollisi
     private int form;
 
     public DeadlySphereMinion() {
-        super(SummonerAttachmentEntityTypes.DEADLY_SPHERE);
+        super(ModAttachmentEntityTypes.DEADLY_SPHERE);
         setGravity(0);
     }
 

@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.SummonerHelper;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -29,7 +29,7 @@ public class BirdNestLayer extends RenderLayer<AbstractClientPlayer, PlayerModel
 
     @Override
     public void render(@NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (!player.isInvisible() && !SummonerHelper.get(player).getEntityData().get(SummonerAttachmentEntityTypes.FINCH.get()).isEmpty()) {
+        if (!player.isInvisible() && !SummonerHelper.get(player).getEntityData().get(ModAttachmentEntityTypes.FINCH.get()).isEmpty()) {
             poseStack.pushPose();
             poseStack.scale(-1.0F, -1.0F, 1.0F);
             poseStack.translate(-0.5F, 0.2F, -0.5F);

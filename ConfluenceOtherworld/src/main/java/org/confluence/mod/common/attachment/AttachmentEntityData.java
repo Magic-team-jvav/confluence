@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.attachment;
+package org.confluence.mod.common.attachment;
 
 import io.netty.buffer.Unpooled;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -6,14 +6,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.confluence.mod.common.summoner.minion.MinionSlotType;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
-import org.confluence.mod.common.summoner.register.SummonerRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.attachment.IPortAttachmentHolder;
@@ -147,7 +147,7 @@ public class AttachmentEntityData {
                 });
                 if (!groups.isEmpty() || changed) {
                     changed = false;
-                    player.syncData(SummonerAttachmentTypes.ENTITY_DATA.get());
+                    player.syncData(ModAttachmentTypes.SUMMONER_ATTACHMENT_ENTITY_DATA.get());
                 }
             }
         }
@@ -226,7 +226,7 @@ public class AttachmentEntityData {
                 // 读取 AttachmentEntityType → 实体列表
                 int typeCount = buf.readVarInt();
                 for (int i = 0; i < typeCount; i++) {
-                    AttachmentEntityType<?> entityType = SummonerRegistries.ATTACHMENT_ENTITY_TYPES.get(buf.readResourceLocation());
+                    AttachmentEntityType<?> entityType = ModAttachmentEntityTypes.REGISTRY.get(buf.readResourceLocation());
                     assert entityType != null;
                     List<AttachmentEntity> list = groups.computeIfAbsent(entityType, k -> new ArrayList<>());
                     int listSize = buf.readVarInt();

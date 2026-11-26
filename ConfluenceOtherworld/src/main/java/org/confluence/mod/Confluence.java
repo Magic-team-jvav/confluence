@@ -20,7 +20,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.consumer.Consumer3;
 import org.confluence.mod.client.ModClientConfigs;
 import org.confluence.mod.client.gui.MergedConfigurationScreen;
-import org.confluence.mod.client.summoner.SummonerClientEvents;
 import org.confluence.mod.common.ModCommonConfigs;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.ModPrefix;
@@ -30,8 +29,6 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SoulItems;
-import org.confluence.mod.common.summoner.SummonerEvents;
-import org.confluence.mod.common.summoner.register.*;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.create.CreateHelper;
@@ -67,7 +64,6 @@ public final class Confluence {
         ModCommonConfigs.register(container);
         if (LibUtils.isPhysicalClient()) {
             ModClientConfigs.register(container);
-            SummonerClientEvents.init(eventBus);
             container.registerExtensionPoint(IConfigScreenFactory.class, MergedConfigurationScreen::factory);
         }
 
@@ -78,10 +74,11 @@ public final class Confluence {
         ModRecipes.register(eventBus);
         ModFeatures.register(eventBus);
         ModEnchantments.register(eventBus);
+        ModAdvancements.register(eventBus);
+
         AgeratumHelper.register(eventBus);
         CreateHelper.register(eventBus);
         IronSpellHelper.registerEvents();
-        ModAdvancements.register(eventBus);
 
         TFReferences.init();
         ModFluids.initialize();
@@ -93,15 +90,6 @@ public final class Confluence {
         ModDataComponentTypes.TYPES.register(eventBus);
         ModSoundEvents.EVENTS.register(eventBus);
         ModAttachmentTypes.TYPES.register(eventBus);
-        { // todo 合并注册
-            SummonerAttachmentTypes.register(eventBus);
-            SummonerRegistries.register(eventBus);
-            SummonerAttachmentEntityTypes.register(eventBus);
-            SummonerSoundEvents.register(eventBus);
-            SummonerSummonMarks.init();
-            SummonerEvents.init();
-            SummonerParticleTypes.TYPES.register(eventBus);
-        }
         ModEffects.EFFECTS.register(eventBus);
         ModMenuTypes.TYPES.register(eventBus);
         ModParticleTypes.TYPES.register(eventBus);
@@ -115,6 +103,8 @@ public final class Confluence {
         ModDensityFunctionTypes.TYPES.register(eventBus);
 
         ModSoulSkills.register(eventBus);
+        ModAttachmentEntityTypes.register(eventBus);
+        ModSummonMarkTypes.register(eventBus);
     }
 
     public static void registerGameRules() {

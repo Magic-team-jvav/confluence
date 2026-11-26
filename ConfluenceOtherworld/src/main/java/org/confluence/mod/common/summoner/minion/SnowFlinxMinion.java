@@ -1,11 +1,11 @@
 package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.world.phys.AABB;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.minion.goal.snow_flinx.SnowFlinxAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.snow_flinx.SnowFlinxIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
@@ -17,7 +17,7 @@ import java.util.List;
 public class SnowFlinxMinion extends GroundMinion implements IEntityCollision<SnowFlinxMinion> {
 
     public SnowFlinxMinion() {
-        super(SummonerAttachmentEntityTypes.SNOW_FLINX);
+        super(ModAttachmentEntityTypes.SNOW_FLINX);
     }
 
     @Override

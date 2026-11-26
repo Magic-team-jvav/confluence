@@ -521,6 +521,10 @@ public final class ModSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> ZOMBIE5_FREE = register("zombie5_free"); // 僵尸：鸣叫
     public static final DeferredHolder<SoundEvent, SoundEvent> ZOMBIE87_FREE = register("zombie87_free"); // 僵尸：鸣叫
 
+    public static final DeferredHolder<SoundEvent, SoundEvent> USE_MINION_WEAPON = register("use_minion_weapon");
+    public static final DeferredHolder<SoundEvent, SoundEvent> USE_TERRAPRISM = register("use_terraprism");
+    public static final DeferredHolder<SoundEvent, SoundEvent> ZENITH = register("zenith"); // 天顶剑挥砍时播放的音效。
+
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
         return EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(Confluence.asResource(name)));
     }

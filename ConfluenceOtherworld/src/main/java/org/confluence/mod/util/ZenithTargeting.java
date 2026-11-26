@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.util;
+package org.confluence.mod.util;
 
 import net.minecraft.world.phys.Vec3;
 

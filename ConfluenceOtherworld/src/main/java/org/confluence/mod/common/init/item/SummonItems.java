@@ -8,14 +8,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.summon.EyeLaserTurretStaffItem;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.*;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
-import org.confluence.mod.common.summoner.register.SummonerSoundEvents;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -27,62 +26,62 @@ public class SummonItems {
 
     public static final DeferredItem<SummonerWeaponItem<FinchMinion>> FINCH_STAFF = registerItem("finch_staff", "雀杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE),
-                    SummonerAttachmentEntityTypes.FINCH,
+                    ModAttachmentEntityTypes.FINCH,
                     MinionSlotType.Minion,
                     3.0F,
             0.4F,
                     0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    ModSoundEvents.USE_MINION_WEAPON,
                     null,
                     null
             ));
     public static final DeferredItem<SummonerWeaponItem<HornetMinion>> NEW_HORNET_STAFF = registerItemWithEnglishName("new_hornet_staff", "黄蜂法杖", "Hornet Staff", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
-                    SummonerAttachmentEntityTypes.HORNET,
+                    ModAttachmentEntityTypes.HORNET,
                     MinionSlotType.Minion,
                     8.0F,
                     0.2F,
                     0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    ModSoundEvents.USE_MINION_WEAPON,
                     null,
                     null
             ));
     public static final DeferredItem<SummonerWeaponItem<IronGolemMinion>> IRON_GOLEM_STAFF = registerItem("iron_golem_staff", "铁傀儡杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE),
-                    SummonerAttachmentEntityTypes.IRON_GOLEM,
+                    ModAttachmentEntityTypes.IRON_GOLEM,
                     MinionSlotType.Minion,
                     16.0F,
                     1.0F,
                     0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    ModSoundEvents.USE_MINION_WEAPON,
                     null,
                     null
             ));
     public static final DeferredItem<SummonerWeaponItem<SlimeMinion>> SLIME_STAFF = registerItem("slime_staff", "史莱姆法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED),
-                    SummonerAttachmentEntityTypes.SLIME,
+                    ModAttachmentEntityTypes.SLIME,
                     MinionSlotType.Minion,
                     5.0F,
             0.2F,
                     0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    ModSoundEvents.USE_MINION_WEAPON,
                     null,
                     null
             ));
     public static final DeferredItem<SummonerWeaponItem<SculkWispMinion>> SCULK_WISP_STAFF = registerItem("sculk_wisp_staff", "幽匿游灵法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
-                    SummonerAttachmentEntityTypes.SCULK_WISP,
+                    ModAttachmentEntityTypes.SCULK_WISP,
                     MinionSlotType.Minion,
                     7.0F,
                     1.0F,
                     0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    ModSoundEvents.USE_MINION_WEAPON,
                     null,
                     null
             ));
     public static final DeferredItem<SummonerWeaponItem<ImpMinion>> IMP_STAFF = registerItem("imp_staff", "小鬼法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
-                    SummonerAttachmentEntityTypes.IMP,
+                    ModAttachmentEntityTypes.IMP,
                     MinionSlotType.Minion,
                     14.0F,
                     1.0F,
@@ -93,51 +92,51 @@ public class SummonItems {
             ));
     public static final DeferredItem<SummonerWeaponItem<SnowFlinxMinion>> SNOW_FLINX_STAFF = registerItemWithEnglishName("snow_flinx_staff", "小雪怪法杖", "Flinx Staff", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
-                    SummonerAttachmentEntityTypes.SNOW_FLINX,
+                    ModAttachmentEntityTypes.SNOW_FLINX,
                     MinionSlotType.Minion,
                     7.0F,
             0.2F,
                     0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    ModSoundEvents.USE_MINION_WEAPON,
                     null,
                     null
             ));
     public static final DeferredItem<SummonerWeaponItem<VampireFrogMinion>> VAMPIRE_FROG_STAFF = registerItem("vampire_frog_staff", "吸血鬼青蛙法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
-                    SummonerAttachmentEntityTypes.VAMPIRE_FROG,
+                    ModAttachmentEntityTypes.VAMPIRE_FROG,
                     MinionSlotType.Minion,
                     11.0F,
             0.5F,
                     0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    ModSoundEvents.USE_MINION_WEAPON,
                     null,
                     null
             ));
     public static final DeferredItem<SummonerWeaponItem<DeadlySphereMinion>> DEADLY_SPHERE_STAFF = registerItem("deadly_sphere_staff", "致命球法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW),
-                    SummonerAttachmentEntityTypes.DEADLY_SPHERE,
+                    ModAttachmentEntityTypes.DEADLY_SPHERE,
                     MinionSlotType.Minion,
                     41.0F,
             0.2F,
                     0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    ModSoundEvents.USE_MINION_WEAPON,
                     null,
                     null
             ));
     public static final DeferredItem<SummonerWeaponItem<SanguineBatMinion>> SANGUINE_STAFF = registerItem("sanguine_staff", "血红法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED),
-                    SummonerAttachmentEntityTypes.SANGUINE_BAT,
+                    ModAttachmentEntityTypes.SANGUINE_BAT,
                     MinionSlotType.Minion,
                     27.0F,
             0.3F,
                     0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    ModSoundEvents.USE_MINION_WEAPON,
                     null,
                     null
             ));
     public static final DeferredItem<SummonerWeaponItem<SpiderMinion>> SPIDER_STAFF = registerItem("spider_staff", "蜘蛛法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED),
-                    SummonerAttachmentEntityTypes.SPIDER,
+                    ModAttachmentEntityTypes.SPIDER,
                     MinionSlotType.Minion,
                     19.5F,
                     1.0F,
@@ -148,7 +147,7 @@ public class SummonItems {
             ));
     public static final DeferredItem<SummonerWeaponItem<DesertTigerMinion>> DESERT_TIGER_STAFF = registerItem("desert_tiger_staff", "沙漠虎杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW),
-                    SummonerAttachmentEntityTypes.DESERT_TIGER,
+                    ModAttachmentEntityTypes.DESERT_TIGER,
                     MinionSlotType.Minion,
                     31.0F,
             0.25F,
@@ -181,12 +180,12 @@ public class SummonItems {
             ));
     public static final DeferredItem<SummonerWeaponItem<TerraprismaMinion>> TERRAPRISMA = registerItem("terraprisma", "泰拉棱镜", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK),
-                    SummonerAttachmentEntityTypes.TERRAPRISMA,
+                    ModAttachmentEntityTypes.TERRAPRISMA,
                     MinionSlotType.Minion,
                     67.0F,
             0.4F,
                     0.0F,
-                    SummonerSoundEvents.USE_TERRAPRISM,
+                    ModSoundEvents.USE_TERRAPRISM,
                     (weapon, player, itemStack) -> {
                         TerraprismaMinion minion = weapon.createMinion(player, itemStack);
                         SummonerHelper summonerHelper = SummonerHelper.get(player);
@@ -201,23 +200,23 @@ public class SummonItems {
             ));
     public static final DeferredItem<SummonerWeaponItem<RuinRelicMinion>> RUINOUS_STAFF = registerItemWithEnglishName("ruinous_staff", "毁灭法杖", "Ruinous Staff", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE),
-                    SummonerAttachmentEntityTypes.RUIN_RELIC,
+                    ModAttachmentEntityTypes.RUIN_RELIC,
                     MinionSlotType.Minion,
                     30.0F,
                     0.4F,
                     0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    ModSoundEvents.USE_MINION_WEAPON,
                     null,
                     null
             ));
     public static final DeferredItem<SummonerWeaponItem<EyeLaserTurretMinion>> EYE_LASER_TURRET_STAFF = registerItem("eye_laser_turret_staff", "眼球激光塔法杖", () -> new EyeLaserTurretStaffItem(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
-                    SummonerAttachmentEntityTypes.EYE_LASER_TURRET,
+                    ModAttachmentEntityTypes.EYE_LASER_TURRET,
                     MinionSlotType.Sentry,
                     18F,
                     0.25F,
                     0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    ModSoundEvents.USE_MINION_WEAPON,
                     (weapon, player, itemStack) -> {
                         EyeLaserTurretMinion minion = weapon.createMinion(player, itemStack);
                         SummonerHelper summonerHelper = SummonerHelper.get(player);
@@ -231,24 +230,24 @@ public class SummonItems {
             ));
     public static final DeferredItem<SummonerWeaponItem<VexTotemMinion>> VEX_TOTEM = registerItemWithEnglishName("vex_totem", "恼鬼图腾", "Vex Totem", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
-                    SummonerAttachmentEntityTypes.VEX_TOTEM,
+                    ModAttachmentEntityTypes.VEX_TOTEM,
                     MinionSlotType.Minion,
                     23.5F,
                     0.5F,
                     0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    ModSoundEvents.USE_MINION_WEAPON,
                     null,
                     null
             ));
 
     public static final DeferredItem<SummonerWeaponItem<MiniDestroyerMinion>> MINI_EARTH_SHAKER = registerItemWithEnglishName("mini_earth_shaker", "迷你撼地锤", "Mini Earth Shaker", () -> new SummonerWeaponItem<>(
             new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE),
-            SummonerAttachmentEntityTypes.MINI_DESTROYER,
+            ModAttachmentEntityTypes.MINI_DESTROYER,
             MinionSlotType.Minion,
             2.0F,
             0.2F,
             0.0F,
-            SummonerSoundEvents.USE_MINION_WEAPON,
+            ModSoundEvents.USE_MINION_WEAPON,
             (weapon, player, itemStack) -> {
                 SummonerHelper helper = SummonerHelper.get(player);
                 if (helper.canSummon(weapon.getSlotType(itemStack), 1)) {
@@ -285,8 +284,8 @@ public class SummonItems {
             },
             (weapon, player, itemStack) -> {
                 SummonerHelper helper = SummonerHelper.get(player);
-                helper.getEntityData().remove(SummonerAttachmentEntityTypes.MINI_DESTROYER.get());
-                helper.getEntityData().remove(SummonerAttachmentEntityTypes.MINI_PROBE.get());
+                helper.getEntityData().remove(ModAttachmentEntityTypes.MINI_DESTROYER.get());
+                helper.getEntityData().remove(ModAttachmentEntityTypes.MINI_PROBE.get());
             }
     ));
 

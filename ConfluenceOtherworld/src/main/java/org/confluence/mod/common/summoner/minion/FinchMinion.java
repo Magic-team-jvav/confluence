@@ -3,6 +3,7 @@ package org.confluence.mod.common.summoner.minion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
@@ -10,7 +11,6 @@ import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.finch.FinchAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.finch.FinchIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
@@ -24,7 +24,7 @@ public class FinchMinion extends MomentumMinion implements IEntityCollision<Finc
     public float idleBlendO;
 
     public FinchMinion() {
-        super(SummonerAttachmentEntityTypes.FINCH);
+        super(ModAttachmentEntityTypes.FINCH);
         setGravity(0);
     }
 

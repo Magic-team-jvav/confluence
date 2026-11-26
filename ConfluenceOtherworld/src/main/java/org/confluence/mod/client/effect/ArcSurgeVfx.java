@@ -9,7 +9,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.lightning.ArcSurgeLightning;
 import org.confluence.mod.common.item.mana.ArcSurgePattern;
-import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
+import org.confluence.mod.common.particle.ZenithParticleOptions;
 import org.confluence.mod.network.s2c.ArcSurgePacketS2C;
 
 import java.util.*;

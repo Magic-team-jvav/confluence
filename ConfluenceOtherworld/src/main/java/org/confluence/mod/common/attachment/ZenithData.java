@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.attachment;
+package org.confluence.mod.common.attachment;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
@@ -9,12 +9,12 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.sword.ZenithItem;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.projectile.Zenith;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
-import org.confluence.mod.common.summoner.register.SummonerSoundEvents;
-import org.confluence.mod.common.summoner.util.ZenithTargeting;
+import org.confluence.mod.util.ZenithTargeting;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -51,7 +51,7 @@ public class ZenithData {
             if (entityHit != null) {
                 endEndPos = entityHit.getLocation();
             }
-            TargetCache targetCache = owner.getData(SummonerAttachmentTypes.TARGET_CACHE);
+            TargetCache targetCache = owner.getData(ModAttachmentTypes.SUMMONER_TARGET_CACHE);
             Predicate<Entity> predicate = target -> Zenith.TARGETING.canAcquire(owner, target);
             List<Entity> targetList = targetCache.getHitTargets(endEndPos, 32, predicate);
             Entity best = null;
@@ -110,7 +110,7 @@ public class ZenithData {
     }
 
     private void playZenithSound() {
-        SoundEvent soundEvent = SummonerSoundEvents.ZENITH.get();
+        SoundEvent soundEvent = ModSoundEvents.ZENITH.get();
         RandomSource random = owner.level().getRandom();
         Vec3 pos = owner.position();
         owner.level().playSound(null, pos.x, pos.y, pos.z, soundEvent, owner.getSoundSource(), 0.9f + random.nextFloat() * 0.2f, 0.9f + random.nextFloat() * 0.2f);

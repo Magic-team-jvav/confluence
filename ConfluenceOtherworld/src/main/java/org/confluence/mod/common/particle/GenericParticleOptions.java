@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.particle;
+package org.confluence.mod.common.particle;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -8,7 +8,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import org.confluence.mod.common.summoner.register.SummonerParticleTypes;
+import org.confluence.mod.common.init.ModParticleTypes;
 
 import java.util.Objects;
 
@@ -50,7 +50,7 @@ public final class GenericParticleOptions implements ParticleOptions {
 
     @Override
     public ParticleType<?> getType() {
-        return SummonerParticleTypes.GENERIC.get();
+        return ModParticleTypes.GENERIC.get();
     }
 
     public int centerColor() {

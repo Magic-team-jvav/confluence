@@ -5,13 +5,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.summoner.attachment.TargetCache;
+import org.confluence.mod.common.attachment.TargetCache;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.minion.MomentumMinion;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +51,7 @@ public abstract class WormAttachmentEntity extends MomentumMinion implements IEn
     @Override
     public void onRemove() {
         if (isHead()) {
-            owner.getData(SummonerAttachmentTypes.ENTITY_DATA).remove(getType());
+            owner.getData(ModAttachmentTypes.SUMMONER_ATTACHMENT_ENTITY_DATA).remove(getType());
         }
     }
 
@@ -81,7 +81,7 @@ public abstract class WormAttachmentEntity extends MomentumMinion implements IEn
 
     @Nullable
     private WormAttachmentEntity getSegment(int index) {
-        List<AttachmentEntity> segments = owner.getData(SummonerAttachmentTypes.ENTITY_DATA).getGroups().get(getType());
+        List<AttachmentEntity> segments = owner.getData(ModAttachmentTypes.SUMMONER_ATTACHMENT_ENTITY_DATA).getGroups().get(getType());
         if (segments != null && index < segments.size() && segments.get(index) instanceof WormAttachmentEntity segment && !segment.isRemove()) {
             return segment;
         }

@@ -3,13 +3,13 @@ package org.confluence.mod.common.summoner.minion;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.imp.ImpAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.imp.ImpIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
@@ -22,7 +22,7 @@ public class ImpMinion extends MomentumMinion {
     public int attackTime = -1;
 
     public ImpMinion() {
-        super(SummonerAttachmentEntityTypes.IMP);
+        super(ModAttachmentEntityTypes.IMP);
         setGravity(0);
     }
 

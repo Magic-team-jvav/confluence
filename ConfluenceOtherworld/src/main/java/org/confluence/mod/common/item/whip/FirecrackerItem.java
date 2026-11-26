@@ -10,13 +10,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
@@ -28,20 +24,22 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Confluence.MODID)
 public final class FirecrackerItem extends BaseWhipItem {
-    public static final float TAG_DAMAGE = 0.0F;
     private static final List<Blast> BLASTS = new ArrayList<>();
+
     public FirecrackerItem(Supplier<? extends SummonMarkType> summonMarkType) {
         super("firecracker", ModRarity.LIGHT_RED, 34F, 0.5F, 1.85F, 15, summonMarkType);
     }
 
     @Override
     public float damageFalloff() {return 0.66F;}
+
     @Override
     public float minimumDamageMultiplier() {return 0.0F;}
+
     @Override
     public boolean shouldApplyTag(int hitIndex) {return hitIndex == 0;}
+
     @Override
     public void onDirectHit(WhipDirectHitContext context) {
         context.target().addEffect(new MobEffectInstance(ModEffects.HELLFIRE, 80), context.owner());
@@ -55,6 +53,7 @@ public final class FirecrackerItem extends BaseWhipItem {
         Immunity explosion = new Immunity() {
             @Override
             public Type confluence$getImmunityType() {return Type.LOCAL;}
+
             @Override
             public int confluence$getImmunityDuration(DamageSource source) {return 0;}
         };
@@ -71,7 +70,6 @@ public final class FirecrackerItem extends BaseWhipItem {
         level.playSound(null, damageRecipient.blockPosition(), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.PLAYERS, 0.5F, 1.4F);
     }
 
-    @SubscribeEvent
     public static void tickBlasts(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel level))
             return;
@@ -85,8 +83,7 @@ public final class FirecrackerItem extends BaseWhipItem {
         });
     }
 
-    @SubscribeEvent
-    public static void clearBlasts(ServerStoppedEvent event) {
+    public static void clearBlasts() {
         BLASTS.clear();
     }
 

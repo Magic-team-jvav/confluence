@@ -4,8 +4,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.summoner.network.SummonerBatchedInfoPayload;
-import org.confluence.mod.common.summoner.network.SummonerBatchedParticlesPayload;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
@@ -54,8 +52,8 @@ public final class NetworkEvents {
                 .playToClient(DragonChargePlayerConfigPacketS2C.TYPE, DragonChargePlayerConfigPacketS2C.STREAM_CODEC, DragonChargePlayerConfigPacketS2C::handle)
                 .playToClient(WormholePlayerDataSyncPacketS2C.TYPE, WormholePlayerDataSyncPacketS2C.STREAM_CODEC, WormholePlayerDataSyncPacketS2C::handle)
                 .playToClient(BossBarSyncPacketS2C.TYPE, BossBarSyncPacketS2C.STREAM_CODEC, BossBarSyncPacketS2C::handle)
-                .playToClient(SummonerBatchedInfoPayload.TYPE, SummonerBatchedInfoPayload.STREAM_CODEC, SummonerBatchedInfoPayload::handle)
-                .playToClient(SummonerBatchedParticlesPayload.TYPE, SummonerBatchedParticlesPayload.STREAM_CODEC, SummonerBatchedParticlesPayload::handle)
+                .playToClient(SummonerBatchedInfoS2C.TYPE, SummonerBatchedInfoS2C.STREAM_CODEC, SummonerBatchedInfoS2C::handle)
+                .playToClient(SummonerBatchedParticlesS2C.TYPE, SummonerBatchedParticlesS2C.STREAM_CODEC, SummonerBatchedParticlesS2C::handle)
                 .playToClient(OpenNPCDialogPacketS2C.TYPE, OpenNPCDialogPacketS2C.STREAM_CODEC, OpenNPCDialogPacketS2C::handle)
                 .playToClient(NPCDialogSyncPacketS2C.TYPE, NPCDialogSyncPacketS2C.STREAM_CODEC, NPCDialogSyncPacketS2C::handle)
                 .playToClient(OpenAnglerDialogPacketS2C.TYPE, OpenAnglerDialogPacketS2C.STREAM_CODEC, OpenAnglerDialogPacketS2C::handle)

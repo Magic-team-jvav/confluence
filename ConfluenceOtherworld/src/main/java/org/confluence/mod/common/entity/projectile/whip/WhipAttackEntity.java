@@ -34,10 +34,10 @@ import org.confluence.mod.api.whip.curve.RetractingWhipCurve;
 import org.confluence.mod.api.whip.curve.WhipCurveSampler;
 import org.confluence.mod.api.whip.curve.WhipCurves;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.whip.BaseWhipItem;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
 import org.confluence.mod.mixed.Immunity;
 
@@ -433,7 +433,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
             player.setLastHurtMob(logicalTarget);
             if (weapon().getItem() instanceof BaseWhipItem baseWhipItem && baseWhipItem.shouldApplyTag(hitIndex) && baseWhipItem.getSummonMarkType() != null) {
                 SummonMarkType markType = baseWhipItem.getSummonMarkType();
-                player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).tracker(logicalTarget, markType.createInstance(player, logicalTarget));
+                player.getData(ModAttachmentTypes.SUMMON_MARK_DATA).tracker(logicalTarget, markType.createInstance(player, logicalTarget));
             }
 
             WhipDirectHitContext context = new WhipDirectHitContext(player, logicalTarget, weapon(), damage, hitIndex);

@@ -2,11 +2,11 @@ package org.confluence.mod.common.summoner.projectile;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
+import org.confluence.mod.common.particle.GenericParticleBuilder;
+import org.confluence.mod.common.particle.ParticleHelper;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
-import org.confluence.mod.common.summoner.particle.GenericParticleBuilder;
-import org.confluence.mod.common.summoner.particle.ParticleHelper;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 public class EyeFireball extends Projectile implements IEntityCollision<EyeFireball>, IBlockCollision<EyeFireball> {
 
     public EyeFireball() {
-        super(SummonerAttachmentEntityTypes.EYE_FIREBALL);
+        super(ModAttachmentEntityTypes.EYE_FIREBALL);
         setDrag(1.0F);
         setGravity(0.0F);
         setMaxTickCount(80);

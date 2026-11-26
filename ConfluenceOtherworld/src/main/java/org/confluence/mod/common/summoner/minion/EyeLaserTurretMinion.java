@@ -4,16 +4,16 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
+import org.confluence.mod.common.particle.GenericParticleBuilder;
+import org.confluence.mod.common.particle.ParticleHelper;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.goal.eye_laser_turret.EyeLaserTurretAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.eye_laser_turret.EyeLaserTurretIdleGoal;
-import org.confluence.mod.common.summoner.particle.GenericParticleBuilder;
-import org.confluence.mod.common.summoner.particle.ParticleHelper;
 import org.confluence.mod.common.summoner.projectile.EyeFireball;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -24,7 +24,7 @@ public class EyeLaserTurretMinion extends MomentumMinion implements IBlockCollis
     private int cooldown;
 
     public EyeLaserTurretMinion() {
-        super(SummonerAttachmentEntityTypes.EYE_LASER_TURRET);
+        super(ModAttachmentEntityTypes.EYE_LASER_TURRET);
     }
 
     @Override

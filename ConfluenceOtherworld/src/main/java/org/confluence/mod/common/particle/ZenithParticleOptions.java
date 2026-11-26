@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.particle;
+package org.confluence.mod.common.particle;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -7,7 +7,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import org.confluence.mod.common.summoner.register.SummonerParticleTypes;
+import org.confluence.mod.common.init.ModParticleTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -74,7 +74,7 @@ public final class ZenithParticleOptions implements ParticleOptions {
 
     @Override
     public @NotNull ParticleType<ZenithParticleOptions> getType() {
-        return SummonerParticleTypes.ZENITH.get();
+        return ModParticleTypes.ZENITH.get();
     }
 
     @Override

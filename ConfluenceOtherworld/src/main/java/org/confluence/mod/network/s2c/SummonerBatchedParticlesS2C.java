@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.network;
+package org.confluence.mod.network.s2c;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -13,14 +13,14 @@ import org.confluence.mod.Confluence;
 import java.util.List;
 
 
-public record SummonerBatchedParticlesPayload(List<Entry> entries) implements IPacketS2C {
+public record SummonerBatchedParticlesS2C(List<Entry> entries) implements IPacketS2C {
 
-    public static final Type<SummonerBatchedParticlesPayload> TYPE = Confluence.createType("summoner_batched_particles");
+    public static final Type<SummonerBatchedParticlesS2C> TYPE = Confluence.createType("summoner_batched_particles");
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, SummonerBatchedParticlesPayload> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<RegistryFriendlyByteBuf, SummonerBatchedParticlesS2C> STREAM_CODEC = StreamCodec.composite(
             Entry.STREAM_CODEC.apply(ByteBufCodecs.list(4096)),
-            SummonerBatchedParticlesPayload::entries,
-            SummonerBatchedParticlesPayload::new
+            SummonerBatchedParticlesS2C::entries,
+            SummonerBatchedParticlesS2C::new
     );
 
     @Override
@@ -32,7 +32,7 @@ public record SummonerBatchedParticlesPayload(List<Entry> entries) implements IP
     }
 
     @Override
-    public Type<SummonerBatchedParticlesPayload> type() {
+    public Type<SummonerBatchedParticlesS2C> type() {
         return TYPE;
     }
 

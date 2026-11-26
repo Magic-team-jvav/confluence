@@ -74,7 +74,7 @@ public record ValueComponent(int value) implements DataComponentType<ValueCompon
         return getValueLong(itemStack, defaultValue, false);
     }
 
-    public static void addTooltip(ItemStack stack, List<Component> toolTip, Player player) {
+    public static void addTooltip(ItemStack stack, List<Component> toolTip, @Nullable Player player) {
         CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
         if (customData != null && customData.contains(NPCTradeMenu.BUY_PRICE_TAG)) {
             long buyPrice = customData.copyTag().getLong(NPCTradeMenu.BUY_PRICE_TAG);

@@ -1,12 +1,12 @@
 package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.world.phys.AABB;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.iron_golem.IronGolemAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.iron_golem.IronGolemIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
@@ -18,7 +18,7 @@ public class IronGolemMinion extends GroundMinion {
     public int attackTime = -1;
 
     public IronGolemMinion() {
-        super(SummonerAttachmentEntityTypes.IRON_GOLEM);
+        super(ModAttachmentEntityTypes.IRON_GOLEM);
     }
 
     @Override

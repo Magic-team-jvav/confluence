@@ -18,7 +18,7 @@ import org.confluence.mod.common.item.common.SpongeItem;
 
 import java.util.stream.Stream;
 
-public class ModDispenserBehaviors {
+public final class ModDispenserBehaviors {
     public static void boostrap() {
         DispenserBlock.registerBehavior(SpawnEggItems.THE_TWINS_SPAWN_EGG.get(), new OptionalDispenseItemBehavior() {
             @Override

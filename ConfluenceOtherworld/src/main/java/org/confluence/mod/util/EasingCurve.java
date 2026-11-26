@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.util;
+package org.confluence.mod.util;
 
 import java.util.ArrayList;
 import java.util.List;

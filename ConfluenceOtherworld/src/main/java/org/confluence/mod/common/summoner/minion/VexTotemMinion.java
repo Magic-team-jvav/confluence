@@ -6,6 +6,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
@@ -13,7 +14,6 @@ import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.vex_totem.VexTotemAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.vex_totem.VexTotemIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -30,7 +30,7 @@ public class VexTotemMinion extends MomentumMinion implements IEntityCollision<V
     public int chargeTime = -1;
 
     public VexTotemMinion() {
-        super(SummonerAttachmentEntityTypes.VEX_TOTEM);
+        super(ModAttachmentEntityTypes.VEX_TOTEM);
         setGravity(0);
     }
 

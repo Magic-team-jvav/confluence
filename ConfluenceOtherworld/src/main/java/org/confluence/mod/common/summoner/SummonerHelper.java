@@ -4,12 +4,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.mod.common.summoner.attachment.AttachmentEntityData;
+import org.confluence.mod.common.attachment.AttachmentEntityData;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.confluence.mod.common.summoner.minion.MinionSlotType;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.util.AchievementUtils;
 
 import java.util.Collection;
@@ -24,7 +24,7 @@ public final class SummonerHelper {
 
     private SummonerHelper(Player player) {
         this.player = player;
-        this.data = player.getData(SummonerAttachmentTypes.ENTITY_DATA);
+        this.data = player.getData(ModAttachmentTypes.SUMMONER_ATTACHMENT_ENTITY_DATA);
     }
 
     public static SummonerHelper get(Player player) {

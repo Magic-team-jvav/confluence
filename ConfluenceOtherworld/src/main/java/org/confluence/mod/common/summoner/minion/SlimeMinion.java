@@ -2,11 +2,11 @@ package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.minion.goal.slime.SlimeAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.slime.SlimeIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
@@ -18,7 +18,7 @@ import java.util.List;
 public class SlimeMinion extends GroundMinion implements IEntityCollision<SlimeMinion> {
 
     public SlimeMinion() {
-        super(SummonerAttachmentEntityTypes.SLIME);
+        super(ModAttachmentEntityTypes.SLIME);
     }
 
     @Override

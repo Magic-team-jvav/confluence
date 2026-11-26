@@ -9,7 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.client.DynamicLightDispatcher;
-import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
+import org.confluence.mod.common.particle.ZenithParticleOptions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;

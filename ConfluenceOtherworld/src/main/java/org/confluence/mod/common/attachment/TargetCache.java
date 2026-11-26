@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.attachment;
+package org.confluence.mod.common.attachment;
 
 import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
@@ -24,10 +24,10 @@ import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.minion.Minion;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -191,7 +191,7 @@ public class TargetCache {
         LivingEntity newTarget = null;
         double bestScore = Double.MAX_VALUE;
         for (LivingEntity entity : targets) {
-            if (owner.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).isSummonMarkTarget(entity)) {
+            if (owner.getData(ModAttachmentTypes.SUMMON_MARK_DATA).isSummonMarkTarget(entity)) {
                 return entity;
             }
 

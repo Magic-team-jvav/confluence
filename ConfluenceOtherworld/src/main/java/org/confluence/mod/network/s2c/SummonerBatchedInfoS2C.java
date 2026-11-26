@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner.network;
+package org.confluence.mod.network.s2c;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -10,19 +10,19 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.summoner.attachment.InfoData;
+import org.confluence.mod.common.attachment.InfoData;
 
 import java.util.List;
 
 
-public record SummonerBatchedInfoPayload(List<Number> numbers, List<Text> texts) implements IPacketS2C {
+public record SummonerBatchedInfoS2C(List<Number> numbers, List<Text> texts) implements IPacketS2C {
 
-    public static final Type<SummonerBatchedInfoPayload> TYPE = Confluence.createType("summoner_batched_info");
+    public static final Type<SummonerBatchedInfoS2C> TYPE = Confluence.createType("summoner_batched_info");
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, SummonerBatchedInfoPayload> STREAM_CODEC = StreamCodec.composite(
-            Number.CODEC.apply(ByteBufCodecs.list(4096)), SummonerBatchedInfoPayload::numbers,
-            Text.CODEC.apply(ByteBufCodecs.list(4096)), SummonerBatchedInfoPayload::texts,
-            SummonerBatchedInfoPayload::new
+    public static final StreamCodec<RegistryFriendlyByteBuf, SummonerBatchedInfoS2C> STREAM_CODEC = StreamCodec.composite(
+            Number.CODEC.apply(ByteBufCodecs.list(4096)), SummonerBatchedInfoS2C::numbers,
+            Text.CODEC.apply(ByteBufCodecs.list(4096)), SummonerBatchedInfoS2C::texts,
+            SummonerBatchedInfoS2C::new
     );
 
     @Override
@@ -31,7 +31,7 @@ public record SummonerBatchedInfoPayload(List<Number> numbers, List<Text> texts)
     }
 
     @Override
-    public Type<SummonerBatchedInfoPayload> type() {
+    public Type<SummonerBatchedInfoS2C> type() {
         return TYPE;
     }
 

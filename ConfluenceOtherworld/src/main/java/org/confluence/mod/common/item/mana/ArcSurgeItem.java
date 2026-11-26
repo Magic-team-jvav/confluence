@@ -20,8 +20,8 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.item.IWeaponTooltip;
-import org.confluence.mod.common.summoner.attachment.ArcSurgeData;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.common.attachment.ArcSurgeData;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.mixed.Immunity;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public final class ArcSurgeItem extends CustomRarityItem implements IWeaponToolt
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
-            player.getData(SummonerAttachmentTypes.ARC_SURGE_DATA).press(stack);
+            player.getData(ModAttachmentTypes.ARC_SURGE_DATA).press(stack);
         }
         // 与原版弓/弩一致：在 use 内自行进入“使用中”，松手后由 releaseUsing / tick 校验结束
         player.startUsingItem(hand);
@@ -63,7 +63,7 @@ public final class ArcSurgeItem extends CustomRarityItem implements IWeaponToolt
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
         if (living instanceof Player player && !level.isClientSide) {
-            player.getData(SummonerAttachmentTypes.ARC_SURGE_DATA).reset();
+            player.getData(ModAttachmentTypes.ARC_SURGE_DATA).reset();
         }
     }
     @Override public Holder<Attribute> getTooltipDamageAttribute() { return LibAttributes.getMagicDamage(); }

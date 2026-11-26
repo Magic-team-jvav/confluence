@@ -61,6 +61,7 @@ import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.Skeletron;
 import org.confluence.mod.common.entity.boss.TheDestroyer;
 import org.confluence.mod.common.entity.monster.Decayeder;
+import org.confluence.mod.common.entity.monster.DungeonSpirit;
 import org.confluence.mod.common.entity.monster.TheHungry;
 import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
@@ -91,8 +92,8 @@ import org.confluence.mod.common.item.potion.HealingPotionItem;
 import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.item.whip.WhipDamageSource;
-import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -176,6 +177,8 @@ public final class LivingEntityEvents {
             }
             DeathMotionPacketS2C.sendToAll(victim);
             NoTraps.entityDropsGrenade(victim);
+        } else {
+            WhipMarkTracker.death(damageSource, victim);
         }
     }
 
@@ -194,6 +197,8 @@ public final class LivingEntityEvents {
                 && LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer killer) {
             SoulcererUtils.adjustSoul(killer, SoulSkillParameters.SOUL_MARK_KILL_SOUL);
         }
+        /// 地牢幽魂：满足条件的地牢敌怪死亡后在原地生成。
+        DungeonSpirit.onDeath(event);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -219,11 +224,11 @@ public final class LivingEntityEvents {
         }
         event.setAmount(amount);
 
-        DamageIndicatorOptions.sendHealParticle(amount, level, living);
+        InfoData.heal(amount, level, living);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
-    public static void clearCanceledSoulDamage(LivingIncomingDamageEvent event) {
+    public static void livingIncomingDamage$Lowest$ReceiveCanceled(LivingIncomingDamageEvent event) {
         SoulcererUtils.clearCanceledSoulDamage(event);
     }
 
@@ -278,7 +283,7 @@ public final class LivingEntityEvents {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity victim = event.getEntity();
-        if (!(victim.level() instanceof ServerLevel level)) return;
+        if (!(victim.level() instanceof ServerLevel)) return;
         DamageSource damageSource = event.getSource();
         if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
         @Nullable Entity attacker = damageSource.getEntity();
@@ -307,6 +312,9 @@ public final class LivingEntityEvents {
         if (victim.getVehicle() instanceof AbstractMountEntity mount) {
             amount = mount.modifyRiderDamage(damageSource, amount);
         }
+
+        amount = WhipMarkTracker.process(damageSource, victim, amount);
+
         event.setNewDamage(amount);
     }
 
@@ -316,8 +324,6 @@ public final class LivingEntityEvents {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity victim = event.getEntity();
-        if (victim instanceof Player player && !victim.level().isClientSide)
-            TheDestroyer.recordPlayerDamage(player);
         if (!(victim.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
         SwordItems.afterSuccessfulDamage(damageSource, damageSource.getEntity(), victim);
@@ -344,11 +350,11 @@ public final class LivingEntityEvents {
 
         FlaskEffect.onLivingDamage(victim, attacker, damageSource, amount);
         Immunity.calculateInvTicks(damageSource, victim);
-        DamageIndicatorOptions.sendDamageParticle(level, damageSource, amount, victim);
         if (victim instanceof ServerPlayer player) {
             AchievementUtils.luckyBreak_watchYourStep(player, damageSource, attacker);
             BaseLanceItem.cancelSting(player);
             ModArmorBonus.beAttacked(player, damageSource);
+            TheDestroyer.recordPlayerDamage(player);
         }
         if (attacker instanceof ServerPlayer player) {
             ModArmorBonus.onAttacked(player, damageSource, victim);
@@ -357,6 +363,8 @@ public final class LivingEntityEvents {
             /// 附魔：眩晕 / 灵魂虹吸 / 虚空强袭 / 回击
             EnchantmentBehaviors.afterAttack(player, victim, damageSource, event.getOriginalDamage());
         }
+
+        InfoData.post(level, amount, attacker, victim, damageSource);
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
@@ -806,6 +814,10 @@ public final class LivingEntityEvents {
                 living.hasEffect(ModEffects.SHARPENED)
         ) {
             event.setPenetration(event.getPenetration() + 12);
+        }
+
+        if (damageSource instanceof AttachmentEntityDamageSource source) {
+            event.setPenetration(event.getPenetration() + source.getArmorPenetration());
         }
     }
 }

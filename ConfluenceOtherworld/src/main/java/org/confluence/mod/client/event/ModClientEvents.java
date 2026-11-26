@@ -14,8 +14,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.SpiderRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
@@ -108,6 +111,11 @@ import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
 import org.confluence.mod.client.renderer.tooltip.NoopTooltip;
+import org.confluence.mod.client.summoner.AttachmentEntityRenderDispatcher;
+import org.confluence.mod.client.summoner.WholeModelTransparency;
+import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
+import org.confluence.mod.client.summoner.renderer.minion.*;
+import org.confluence.mod.client.summoner.renderer.projectile.*;
 import org.confluence.mod.common.block.functional.BasePylonBlock;
 import org.confluence.mod.common.block.functional.SafeBlock;
 import org.confluence.mod.common.block.functional.boulder.GeoBoulderBlock;
@@ -175,6 +183,31 @@ public final class ModClientEvents {
             ClientBestiary.getInstance().registerCustomFilter();
 
             ClientBiomeEffectSystem.registerEffects();
+
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.FINCH.get(), new FinchRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.HORNET.get(), new HornetRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.HORNET_STINGER.get(), new HornetStingerRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.IRON_GOLEM.get(), new org.confluence.mod.client.summoner.renderer.minion.IronGolemRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.SCULK_WISP.get(), new SculkWispRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.IMP.get(), new ImpRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.VEX_TOTEM.get(), new VexTotemRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.IMP_FIREBALL.get(), new ImpFireballRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.DEADLY_SPHERE.get(), new DeadlySphereRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.SANGUINE_BAT.get(), new SanguineBatRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.TERRAPRISMA.get(), new TerraprismaRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.SLIME.get(), new SlimeMinionRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.SNOW_FLINX.get(), new SnowFlinxRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.VAMPIRE_FROG.get(), new VampireFrogRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.DESERT_TIGER.get(), new DesertTigerRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.SPIDER.get(), new org.confluence.mod.client.summoner.renderer.minion.SpiderRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.MINI_DESTROYER.get(), new MiniDestroyerRenderer<>());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.MINI_PROBE.get(), new MiniDestroyerRenderer<>());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.DESTRUCTION_OMEN.get(), new DestructionOmenRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.PROBE_LASER.get(), new ProbeLaserRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.RUIN_RELIC.get(), new RuinRelicRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.EYE_LASER_TURRET.get(), new EyeLaserTurretRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.EYE_FIREBALL.get(), new EyeFireballRenderer());
+            AttachmentEntityRenderDispatcher.register(ModAttachmentEntityTypes.ZENITH.get(), new ZenithRenderer());
         });
     }
 
@@ -1062,6 +1095,16 @@ public final class ModClientEvents {
     }
 
     @SubscribeEvent
+    public static void entityRenderers$AddLayers(EntityRenderersEvent.AddLayers event) {
+        for (PlayerSkin.Model skin : PlayerSkin.Model.values()) {
+            PlayerRenderer playerRenderer = event.getSkin(skin);
+            if (playerRenderer != null) {
+                playerRenderer.addLayer(new BirdNestLayer(playerRenderer));
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
         event.register(ModClientSetups.HALLOW_LEAVES_COLOR, NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get());
         event.register(ModClientSetups.VOID_LEAVES_COLOR, NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get());
@@ -1146,7 +1189,6 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
-        event.registerSpecial(ModParticleTypes.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(ModParticleTypes.WHOLE_ITEM.get(), new WholeItemParticle.Provider());
         event.registerSpecial(ModParticleTypes.NO_TRAIL.get(), (type, level, x, y, z, xSpeed, ySpeed, zSpeed) -> null);
         event.registerSpriteSet(ModParticleTypes.LUMINITE_IMPACT.get(), LuminiteImpactParticle.Provider::new);
@@ -1161,6 +1203,8 @@ public final class ModClientEvents {
         event.registerSpriteSet(ModParticleTypes.ECTO_MIST.get(), EctoMistParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.VOID_SEA_SUSPENDED.get(), VoidSeaSuspendedParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.SPIT_GLOW.get(), SpitParticle.EmissiveProvider::new);
+        event.registerSpriteSet(ModParticleTypes.GENERIC.get(), GenericParticle.GenericParticleProvider::new);
+        event.registerSpriteSet(ModParticleTypes.ZENITH.get(), ZenithParticle.ZenithParticleProvider::new);
     }
 
     @SubscribeEvent
@@ -1348,5 +1392,6 @@ public final class ModClientEvents {
         event.registerShader(new ShaderInstance(provider, Confluence.asResource("void_sea_refraction"), DefaultVertexFormat.POSITION), shader -> VoidSeaFilterRenderer.voidSeaRefractionShader = shader);
         event.registerShader(new ShaderInstance(provider, Confluence.asResource("boss_bar_flow"), DefaultVertexFormat.POSITION_TEX), CustomBossBarRenderer::setShader);
         event.registerShader(new ShaderInstance(provider, Confluence.asResource("trade_item_outline"), DefaultVertexFormat.POSITION_TEX_COLOR), NPCTradeItemOutline::setShader);
+        event.registerShader(new ShaderInstance(provider, Confluence.asResource("model_transparency"), DefaultVertexFormat.PARTICLE), WholeModelTransparency::setShader);
     }
 }

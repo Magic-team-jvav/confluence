@@ -1,13 +1,17 @@
-package org.confluence.mod.common.summoner.register;
+package org.confluence.mod.common.init;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.whip.FirecrackerItem;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
 
-public final class SummonerSummonMarks {
-
-    public static final DeferredRegister<SummonMarkType> TYPES = SummonerRegistries.SUMMON_MARK_TYPES;
+public class ModSummonMarkTypes {
+    public static final ResourceKey<Registry<SummonMarkType>> SUMMON_MARK_TYPE_KEY = ResourceKey.createRegistryKey(Confluence.asResource("summon_mark"));
+    public static final DeferredRegister<SummonMarkType> TYPES = DeferredRegister.create(SUMMON_MARK_TYPE_KEY, Confluence.MODID);
 
     public static final DeferredHolder<SummonMarkType, SummonMarkType> LEATHER_WHIP = TYPES.register("leather_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
     public static final DeferredHolder<SummonMarkType, SummonMarkType> SLUB_WHIP = TYPES.register("slub_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
@@ -39,7 +43,8 @@ public final class SummonerSummonMarks {
             null,
             null));
 
-    /// 通过 `SummonerRegistries.register(eventBus)` 挂上模组事件总线，所以这里**不能**再 `register(eventBus)`
-    public static void init() {
+    public static void register(IEventBus eventBus) {
+        TYPES.makeRegistry(builder -> builder.sync(true));
+        TYPES.register(eventBus);
     }
 }

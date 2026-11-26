@@ -1,10 +1,10 @@
 package org.confluence.mod.common.summoner.projectile;
 
 import net.minecraft.world.phys.AABB;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.MiniDestroyerMinion;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public class DestructionOmen extends Projectile implements IEntityCollision<Dest
     private MiniDestroyerMinion source;
 
     public DestructionOmen() {
-        super(SummonerAttachmentEntityTypes.DESTRUCTION_OMEN);
+        super(ModAttachmentEntityTypes.DESTRUCTION_OMEN);
         setPhysics(false);
         setMaxTickCount(60);
     }

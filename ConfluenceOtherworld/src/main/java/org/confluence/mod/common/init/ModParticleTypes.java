@@ -10,16 +10,17 @@ import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.particle.DamageIndicatorOptions;
+import org.confluence.mod.common.particle.GenericParticleOptions;
 import org.confluence.mod.common.particle.WholeItemParticleOptions;
+import org.confluence.mod.common.particle.ZenithParticleOptions;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class ModParticleTypes {
     public static final DeferredRegister<ParticleType<?>> TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Confluence.MODID);
 
-    public static final DeferredHolder<ParticleType<?>, ParticleType<DamageIndicatorOptions>> DAMAGE_INDICATOR = register("damage_indicator", true, DamageIndicatorOptions.CODEC, DamageIndicatorOptions.STREAM_CODEC);
-    public static final DeferredHolder<ParticleType<?>, ParticleType<WholeItemParticleOptions>> WHOLE_ITEM = register("whole_item", true, WholeItemParticleOptions.CODEC, WholeItemParticleOptions.STREAM_CODEC);
+    public static final DeferredHolder<ParticleType<?>, ParticleType<WholeItemParticleOptions>> WHOLE_ITEM = register("whole_item", WholeItemParticleOptions.CODEC, WholeItemParticleOptions.STREAM_CODEC);
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> LUMINITE_IMPACT = register("luminite_impact", false);
     /// 满足原版弹丸的非空尾迹契约，但客户端不会为它创建可见粒子。
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> NO_TRAIL = register("no_trail", false);
@@ -35,10 +36,13 @@ public final class ModParticleTypes {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SPORE_CLOUD = register("spore_cloud", true);
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SPIT_GLOW = register("spit_glow", true);
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> VOID_SEA_SUSPENDED = register("void_sea_suspended", true);
+    public static final Supplier<ParticleType<GenericParticleOptions>> GENERIC = register("generic", GenericParticleOptions.CODEC, GenericParticleOptions.STREAM_CODEC);
+    /// 天顶剑粒子：水滴形头部与四棱锥拖尾。
+    public static final Supplier<ParticleType<ZenithParticleOptions>> ZENITH = register("zenith", ZenithParticleOptions.CODEC, ZenithParticleOptions.STREAM_CODEC);
 
     // 原版用了Function获取codec，现在自己的用不到，要用了再改
-    private static <T extends ParticleOptions> DeferredHolder<ParticleType<?>, ParticleType<T>> register(String id, boolean overrideLimiter, MapCodec<T> mapCodec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
-        return TYPES.register(id, () -> new ParticleType<>(overrideLimiter) {
+    private static <T extends ParticleOptions> DeferredHolder<ParticleType<?>, ParticleType<T>> register(String id, MapCodec<T> mapCodec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+        return TYPES.register(id, () -> new ParticleType<>(true) {
             @Override
             public MapCodec<T> codec() {
                 return mapCodec;

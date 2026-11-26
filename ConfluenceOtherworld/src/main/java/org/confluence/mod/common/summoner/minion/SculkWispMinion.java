@@ -1,11 +1,11 @@
 package org.confluence.mod.common.summoner.minion;
 
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.sculk_wisp.SculkWispAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.sculk_wisp.SculkWispIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
@@ -18,7 +18,7 @@ public class SculkWispMinion extends MomentumMinion {
     public int castTime = -1;
 
     public SculkWispMinion() {
-        super(SummonerAttachmentEntityTypes.SCULK_WISP);
+        super(ModAttachmentEntityTypes.SCULK_WISP);
         setGravity(0);
     }
 

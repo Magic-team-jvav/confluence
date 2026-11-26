@@ -6,13 +6,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.Ellipse;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.goal.sanguine_bat.SanguineBatAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.sanguine_bat.SanguineBatIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
@@ -32,7 +32,7 @@ public class SanguineBatMinion extends Minion implements IEntityCollision<Sangui
     public final Set<Entity> hitTargets = new HashSet<>();
 
     public SanguineBatMinion() {
-        super(SummonerAttachmentEntityTypes.SANGUINE_BAT);
+        super(ModAttachmentEntityTypes.SANGUINE_BAT);
     }
 
     @Override

@@ -6,13 +6,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.attachment.TargetCache;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
-import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
 import org.confluence.mod.common.summoner.minion.goal.terraprisma.TerraprismAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.terraprisma.TerraprismIdleGoal;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -40,7 +40,7 @@ public class TerraprismaMinion extends Minion implements IEntityCollision<Terrap
     }
 
     public TerraprismaMinion() {
-        super(SummonerAttachmentEntityTypes.TERRAPRISMA);
+        super(ModAttachmentEntityTypes.TERRAPRISMA);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class TerraprismaMinion extends Minion implements IEntityCollision<Terrap
         Vec3 center = owner.getBoundingBox().getCenter();
         List<LivingEntity> targets = cache.getEntitiesInRadius(center, getSearchDistance(), living ->
                 (skipVisibility ? cache.canKeep(living) : cache.canAcquire(living)) && (skipVisibility || cache.isVisibility(owner, living)));
-        LivingEntity marked = owner.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).getMarkTarget();
+        LivingEntity marked = owner.getData(ModAttachmentTypes.SUMMON_MARK_DATA).getMarkTarget();
         LivingEntity nearest = null;
         double nearestDistance = Double.MAX_VALUE;
         for (LivingEntity living : targets) {

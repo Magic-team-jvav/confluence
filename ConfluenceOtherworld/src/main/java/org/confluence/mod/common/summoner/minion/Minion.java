@@ -4,8 +4,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.mod.common.attachment.TargetCache;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
-import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
 import org.jetbrains.annotations.NotNull;
 

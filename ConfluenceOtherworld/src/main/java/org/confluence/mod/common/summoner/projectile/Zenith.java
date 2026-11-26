@@ -20,12 +20,12 @@ import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
+import org.confluence.mod.common.particle.ParticleHelper;
+import org.confluence.mod.common.particle.ZenithParticleOptions;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
-import org.confluence.mod.common.summoner.particle.ParticleHelper;
-import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
-import org.confluence.mod.common.summoner.util.EasingCurve;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.util.EasingCurve;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
     private static final StreamCodec<ByteBuf, PowerSource> ZENITH_RENDER_TYPE = ByteBufCodecs.STRING_UTF8.map(PowerSource::valueOf, Enum::name);
 
     public Zenith() {
-        super(SummonerAttachmentEntityTypes.ZENITH);
+        super(ModAttachmentEntityTypes.ZENITH);
         this.random = RandomSource.create();
         this.powerSource = Util.getRandom(PowerSource.values(), random);
         this.alpha = Mth.randomBetween(random, 0.2f, 1);

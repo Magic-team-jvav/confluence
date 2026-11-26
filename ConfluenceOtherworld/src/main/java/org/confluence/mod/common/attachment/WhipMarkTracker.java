@@ -1,15 +1,19 @@
-package org.confluence.mod.common.summoner.attachment;
+package org.confluence.mod.common.attachment;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.attachment.AttachmentSyncHandler;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.ModPrefix;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkInstance;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +25,7 @@ import java.util.Map;
 
 public class WhipMarkTracker {
 
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/vfx/summon/summon_mark.png");
     private final Player owner;
     private final Map<SummonMarkType, SummonMarkInstance> marks = new HashMap<>();
     private LivingEntity target = null;
@@ -30,6 +35,30 @@ public class WhipMarkTracker {
             this.owner = player;
         } else {
             throw new IllegalArgumentException(owner + " is not a valid WhipMarkTracker");
+        }
+    }
+
+    public static float process(DamageSource damageSource, LivingEntity victim, float amount) {
+        if (damageSource instanceof AttachmentEntityDamageSource a && a.getEntity() instanceof ServerPlayer sp && victim != sp) {
+            WhipMarkTracker tracker = sp.getData(ModAttachmentTypes.SUMMON_MARK_DATA);
+            if (tracker.isSummonMarkTarget(victim)) {
+                for (SummonMarkInstance instance : tracker.getSummonMarkInstances()) {
+                    amount = instance.getType().damagePre(tracker, instance, victim, a, amount);
+                }
+            }
+        }
+        return amount;
+    }
+
+    public static void death(DamageSource damageSource, LivingEntity victim) {
+        if (damageSource instanceof AttachmentEntityDamageSource a) {
+            WhipMarkTracker tracker = a.getAttachmentEntity().getOwner().getData(ModAttachmentTypes.SUMMON_MARK_DATA);
+            if (tracker.isSummonMarkTarget(victim)) {
+                List<SummonMarkInstance> summonMarkInstances = tracker.getSummonMarkInstances();
+                for (SummonMarkInstance instance : summonMarkInstances) {
+                    instance.getType().kill(tracker, instance, victim, a);
+                }
+            }
         }
     }
 
@@ -45,7 +74,7 @@ public class WhipMarkTracker {
                 marks.clear();
             }
             if (!marks.isEmpty()) {
-                owner.syncData(SummonerAttachmentTypes.SUMMON_MARK_DATA.get());
+                owner.syncData(ModAttachmentTypes.SUMMON_MARK_DATA.get());
             } else {
                 target = null;
             }

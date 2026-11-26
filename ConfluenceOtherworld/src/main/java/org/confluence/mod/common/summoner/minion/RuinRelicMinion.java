@@ -4,15 +4,15 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.init.ModAttachmentEntityTypes;
+import org.confluence.mod.common.particle.GenericParticleBuilder;
+import org.confluence.mod.common.particle.ParticleHelper;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.goal.ruin_relic.RuinRelicAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.ruin_relic.RuinRelicIdleGoal;
-import org.confluence.mod.common.summoner.particle.GenericParticleBuilder;
-import org.confluence.mod.common.summoner.particle.ParticleHelper;
 import org.confluence.mod.common.summoner.projectile.ForbiddenOrb;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class RuinRelicMinion extends MomentumMinion {
     private int cooldown;
 
     public RuinRelicMinion() {
-        super(SummonerAttachmentEntityTypes.RUIN_RELIC);
+        super(ModAttachmentEntityTypes.RUIN_RELIC);
         setGravity(0);
     }
 
@@ -90,7 +90,7 @@ public class RuinRelicMinion extends MomentumMinion {
     /** 获取与自身目标一致的同类遗迹数量。 */
     public int getSameTargetCount() {
         LivingEntity currentTarget = getTarget();
-        List<RuinRelicMinion> list = SummonerHelper.get(getOwner()).getEntityData().get(SummonerAttachmentEntityTypes.RUIN_RELIC.get());
+        List<RuinRelicMinion> list = SummonerHelper.get(getOwner()).getEntityData().get(ModAttachmentEntityTypes.RUIN_RELIC.get());
         int count = 0;
         for (RuinRelicMinion entity : list) {
             if (entity.getTarget() == currentTarget) {
@@ -103,7 +103,7 @@ public class RuinRelicMinion extends MomentumMinion {
     /** 获取自身在同目标分组中的次序。 */
     public int getSameTargetOrder() {
         LivingEntity currentTarget = getTarget();
-        List<RuinRelicMinion> list = SummonerHelper.get(getOwner()).getEntityData().get(SummonerAttachmentEntityTypes.RUIN_RELIC.get());
+        List<RuinRelicMinion> list = SummonerHelper.get(getOwner()).getEntityData().get(ModAttachmentEntityTypes.RUIN_RELIC.get());
         int order = 0;
         for (RuinRelicMinion entity : list) {
             if (entity == this) {

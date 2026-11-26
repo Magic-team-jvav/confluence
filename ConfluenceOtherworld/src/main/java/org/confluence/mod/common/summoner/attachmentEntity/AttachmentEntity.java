@@ -10,12 +10,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.attachment.TargetCache;
+import org.confluence.mod.common.attachment.WhipMarkTracker;
 import org.confluence.mod.common.component.prefix.ModPrefix;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
-import org.confluence.mod.common.summoner.attachment.TargetCache;
-import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
@@ -101,14 +101,14 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
     }
 
     public TargetCache getTargetCache() {
-        return owner.getData(SummonerAttachmentTypes.TARGET_CACHE);
+        return owner.getData(ModAttachmentTypes.SUMMONER_TARGET_CACHE);
     }
 
     public boolean attack(@NotNull Entity target, float damageAmount, int invincibleTime) {
         LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(target);
         if (logicalTarget != null && LibEntityUtils.allowsAttack(owner, target)) {
             AttachmentEntityDamageSource damageSource = getDamageSource();
-            WhipMarkTracker tracker = owner.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
+            WhipMarkTracker tracker = owner.getData(ModAttachmentTypes.SUMMON_MARK_DATA);
             if (tracker.isSummonMarkTarget(logicalTarget)) {
                 damageAmount = tracker.getDamageModifier(damageSource, damageAmount);
             }

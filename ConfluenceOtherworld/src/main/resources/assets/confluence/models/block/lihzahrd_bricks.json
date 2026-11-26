@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "confluence:block/lihzahrd_bricks"
+      "all": "confluence:block/decorative/bricks/lihzahrd_bricks"
   }
 }

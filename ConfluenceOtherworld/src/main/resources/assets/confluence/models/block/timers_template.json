@@ -2,13 +2,13 @@
 	"credit": "Made by Mesdag",
 	"render_type": "translucent",
 	"textures": {
-		"5": "confluence:block/air",
-		"inner_top": "confluence:block/timers_inner_top",
-		"particle": "confluence:block/timers_inner_side",
-		"inner_side": "confluence:block/timers_inner_side",
-		"layer_side": "confluence:block/timers_layer_side",
-		"bottom": "confluence:block/timers_bottom",
-		"layer_top": "confluence:block/timers_3_1_off"
+        "5": "confluence:block/placeholder/air",
+        "inner_top": "confluence:block/timer/timers_inner_top",
+        "particle": "confluence:block/timer/timers_inner_side",
+        "inner_side": "confluence:block/timer/timers_inner_side",
+        "layer_side": "confluence:block/timer/timers_layer_side",
+        "bottom": "confluence:block/timer/timers_bottom",
+        "layer_top": "confluence:block/timer/timers_3_1_off"
 	},
 	"elements": [
 		{

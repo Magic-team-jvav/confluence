@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "confluence:block/marble_eternal_chessboard_bricks_1"
+      "all": "confluence:block/decorative/bricks/marble_eternal_chessboard_bricks_1"
   }
 }

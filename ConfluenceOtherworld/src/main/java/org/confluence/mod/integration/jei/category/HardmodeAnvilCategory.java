@@ -19,7 +19,7 @@ import org.confluence.mod.integration.jei.EitherRecipe4xHelper;
 
 public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<HardmodeAnvilRecipe>> {
     public static final RecipeType<RecipeHolder<HardmodeAnvilRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("hardmode_anvil"));
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/hardmode_anvil.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/jei/hardmode_anvil.png");
     private final IDrawable icon;
     private final EitherRecipe4xHelper helper;
 

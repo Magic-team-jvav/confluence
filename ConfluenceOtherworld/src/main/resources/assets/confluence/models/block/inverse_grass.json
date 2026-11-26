@@ -1,8 +1,8 @@
 {
   "parent": "block/cross",
   "textures": {
-    "cross": "confluence:block/inverse_grass",
-    "particle": "confluence:block/inverse_grass"
+      "cross": "confluence:block/end/inverse_grass",
+      "particle": "confluence:block/end/inverse_grass"
   },
   "render_type": "cutout"
 }

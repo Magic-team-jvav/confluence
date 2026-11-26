@@ -1,5 +1,5 @@
 {
   "textures": {
-    "particle": "confluence:block/marble"
+      "particle": "confluence:block/marble_cave/marble"
   }
 }

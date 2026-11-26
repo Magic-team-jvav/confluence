@@ -31,7 +31,7 @@ public final class MartianOfficerRenderer extends GeoNormalRenderer<MartianOffic
 
     public MartianOfficerRenderer(EntityRendererProvider.Context context) {
         super(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/martian_officer.geo.json"),
-                Confluence.asResource("textures/entity/martian_officer.png"),
+                Confluence.asResource("textures/entity/monster/martian/martian_officer.png"),
                 Confluence.asResource("animations/entity/martian_officer.animation.json")), false, 1.3F, 0.0F);
     }
 

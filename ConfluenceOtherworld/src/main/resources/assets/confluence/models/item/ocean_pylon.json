@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "confluence:block/ocean_pylon_item"
+        "layer0": "confluence:block/pylon/ocean_pylon_item"
     }
 }

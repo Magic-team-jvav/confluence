@@ -46,7 +46,7 @@ public class SwordItems {
 
     /// 星怒弹幕的交叉面片外观；星泣 / 星乐 / 星惧的坠星复用同一份外观。
     public static final SwordProjectileAppearance.Cross STAR_FURY_APPEARANCE = new SwordProjectileAppearance.Cross(
-            Confluence.asResource("textures/entity/star_fury_projectile.png"), 0xFFFFFFFF, 2.0F, 18.0F, 10);
+            Confluence.asResource("textures/entity/projectile/star_fury_projectile.png"), 0xFFFFFFFF, 2.0F, 18.0F, 10);
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
@@ -159,7 +159,7 @@ public class SwordItems {
             .projectile(new Projectile(1.0F, 0.6F, 0.9F, 40, 0.0F, 15,
                     ModSoundEvents.FROZEN_ARROW.getId(), ModEntities.ICE_BLADE_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
                     new SwordProjectileAppearance.Model(Confluence.asResource("ice_blade_sword_projectile"),
-                            Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1.0F, 0.0F, 0.0F, 0.0F,
+                            Confluence.asResource("textures/entity/projectile/ice_blade_sword_projectile.png"), 1.0F, 0.0F, 0.0F, 0.0F,
                             SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT),
                     List.of(SwordProjectileParticleEffect.emitter(SwordProjectileParticleEffect.Event.TRAIL, Confluence.asResource("ball_of_frost_trail")))))
             .tooltipImage()
@@ -174,7 +174,7 @@ public class SwordItems {
             .projectile(new Projectile(1.0F, 0.8F, 0.9F, 40, 0.0F, 10,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
                     new SwordProjectileAppearance.Model(Confluence.asResource("enchanted_sword_projectile"),
-                            Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1.0F, 0.2F, 0.0F, 0.89F,
+                            Confluence.asResource("textures/entity/projectile/enchanted_sword_projectile.png"), 1.0F, 0.2F, 0.0F, 0.89F,
                             SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT),
                     List.of(SwordProjectileParticleEffect.emitter(SwordProjectileParticleEffect.Event.TRAIL, Confluence.asResource("falling_star")))))
             .specialSweep(0.8F));
@@ -190,7 +190,7 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> WAFFLES_IRON = registerWithEnglishName("waffles_iron", "华夫饼烘烤模", "Waffle's Iron", () -> new EffectSwordItem(ModTiers.UNBREAKABLE, ModRarity.PINK, 27, 2.5F,
             SwordDefinition.builder().projectile(new Projectile(1.0F, 0.8F, 1.0F, 60, 0.06F, 10,
                     ModSoundEvents.ITEM_WAFFLE_IRON.getId(), ModEntities.ICE_BLADE_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
-                    new SwordProjectileAppearance.Cross(Confluence.asResource("textures/entity/waffle.png"),
+                    new SwordProjectileAppearance.Cross(Confluence.asResource("textures/entity/model/waffle.png"),
                             0xFFFFFFFF, 1.0F, 0.0F, 0))).tooltipImage(),
             ModEffects.HELLFIRE, 100, 0, 1.0F / 3.0F));
 
@@ -246,7 +246,7 @@ public class SwordItems {
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD.getId(),
                     Optional.of(new SimpleTrack(Mth.HALF_PI, 0.8F, 0.2F, Optional.empty(), 0.1)), ForwardGeneration.of(0.0F, 0.0F),
                     new SwordProjectileAppearance.Model(Confluence.asResource("enchanted_sword_projectile"),
-                            Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1.0F, 0.2F, 0.0F, 0.89F,
+                            Confluence.asResource("textures/entity/projectile/enchanted_sword_projectile.png"), 1.0F, 0.2F, 0.0F, 0.89F,
                             SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT))));
 
     // 赞助者物品

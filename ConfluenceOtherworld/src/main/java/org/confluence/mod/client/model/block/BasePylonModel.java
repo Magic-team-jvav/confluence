@@ -19,7 +19,7 @@ public class BasePylonModel extends GeoModel<BasePylonBlock.BEntity> {
                 String path = entry.getId().getPath();
                 arr[((BasePylonBlock) entry.get()).id] = new ResourceLocation[]{
                         Confluence.asResource("geo/block/" + path + ".geo.json"),
-                        Confluence.asResource("textures/block/" + path + ".png"),
+                        Confluence.asResource("textures/block/pylon/" + path + ".png"),
                         Confluence.asResource("animations/block/" + path + ".animation.json")
                 };
             }

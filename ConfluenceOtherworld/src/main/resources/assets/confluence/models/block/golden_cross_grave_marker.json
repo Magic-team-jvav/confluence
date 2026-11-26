@@ -3,8 +3,8 @@
 	"render_type": "cutout_mipped",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "confluence:block/golden_cross_grave_marker",
-		"particle": "confluence:block/golden_cross_grave_marker"
+        "1": "confluence:block/gravestone/golden_cross_grave_marker",
+        "particle": "confluence:block/gravestone/golden_cross_grave_marker"
 	},
 	"elements": [
 		{

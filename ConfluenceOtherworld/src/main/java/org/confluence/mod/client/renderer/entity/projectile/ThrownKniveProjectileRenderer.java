@@ -14,7 +14,7 @@ import org.confluence.mod.client.model.entity.projectile.ThrownKniveProjectileMo
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 
 public class ThrownKniveProjectileRenderer extends EntityRenderer<ThrowableDropSelfProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/thrown_knive_projectile.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/thrown_knive_projectile.png");
     private final ThrownKniveProjectileModel model;
 
     public ThrownKniveProjectileRenderer(EntityRendererProvider.Context pContext) {

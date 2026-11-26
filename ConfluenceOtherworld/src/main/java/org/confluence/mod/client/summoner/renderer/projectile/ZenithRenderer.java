@@ -23,7 +23,7 @@ import java.util.List;
 
 /// 天顶剑模型、弧形拖尾及生命周期淡出。
 public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
-    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/zenith.png");
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/summon/zenith.png");
 
     @Override
     protected RenderContext<Zenith> createContext(Zenith zenith, PathNode visualNode, float partialTick, int packedLight) {

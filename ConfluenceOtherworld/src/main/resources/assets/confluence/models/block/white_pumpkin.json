@@ -8,7 +8,7 @@
         }
     },
     "textures": {
-        "end": "confluence:block/white_pumpkin_top",
-        "side": "confluence:block/white_pumpkin_side"
+        "end": "confluence:block/crops/white_pumpkin_top",
+        "side": "confluence:block/crops/white_pumpkin_side"
     }
 }

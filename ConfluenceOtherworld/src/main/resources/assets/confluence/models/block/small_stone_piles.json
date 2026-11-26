@@ -4,7 +4,7 @@
     "parent": "minecraft:block/block",
 	"texture_size": [32, 32],
 	"textures": {
-		"2": "confluence:block/small_stone_piles",
+        "2": "confluence:block/cavern/small_stone_piles",
 		"particle": "block/stone"
 	},
 	"elements": [

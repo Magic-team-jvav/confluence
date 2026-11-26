@@ -5,7 +5,7 @@
 			"identifier": "confluence:bomb_round",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:bomb_round"
+                "texture": "confluence:explosion/bomb_round"
 			}
 		},
 		"components": {

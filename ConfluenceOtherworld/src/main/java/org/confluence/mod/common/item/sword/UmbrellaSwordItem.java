@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.sword;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -12,6 +13,11 @@ import org.confluence.lib.common.component.ModRarity;
 public class UmbrellaSwordItem extends GeoSwordItem {
     public UmbrellaSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, SwordDefinition.Builder builder) {
         super(tier, rarity, rawDamage, rawSpeed, builder);
+    }
+
+    @Override
+    protected ResourceLocation textureId(ResourceLocation modelId) {
+        return modelId.withPath("sword/umbrella/" + modelId.getPath());
     }
 
     @Override

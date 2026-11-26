@@ -76,7 +76,7 @@ public final class EnvironmentalMachineRenderer extends GeoBlockRenderer<Environ
     private static final float PROGRESS_BAR_X = -PROGRESS_BAR_WIDTH / 2;
     private static final float PROGRESS_BAR_Y = -4;
 
-    public static ResourceLocation texture(boolean world) {return Confluence.asResource("textures/block/" + (world ? "terraformer" : "clentaminator") + ".png");}
+    public static ResourceLocation texture(boolean world) {return Confluence.asResource("textures/block/functional/workstation/" + (world ? "terraformer" : "clentaminator") + ".png");}
 
     public EnvironmentalMachineRenderer() {
         super(new GeoModel<>() {

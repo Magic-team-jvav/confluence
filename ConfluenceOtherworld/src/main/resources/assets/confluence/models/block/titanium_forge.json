@@ -4,8 +4,8 @@
 	"texture_size": [32, 32],
 	"render_type": "cutout_mipped",
 	"textures": {
-		"1": "confluence:block/adamantite_forge",
-		"2": "confluence:block/adamantite_forge_flame",
+        "1": "confluence:block/functional/workstation/adamantite_forge",
+        "2": "confluence:block/functional/workstation/adamantite_forge_flame",
 		"particle": "confluence:block/particle/titanium_forge_particle"
 	},
 	"elements": [

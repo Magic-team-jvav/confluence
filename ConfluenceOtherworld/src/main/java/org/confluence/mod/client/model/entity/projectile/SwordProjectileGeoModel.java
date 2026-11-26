@@ -9,7 +9,7 @@ import software.bernie.geckolib.model.GeoModel;
 
 public final class SwordProjectileGeoModel extends GeoModel<GeoSwordProjectile> {
     private static final ResourceLocation FALLBACK_MODEL = Confluence.asResource("geo/entity/visual_neuron.geo.json");
-    private static final ResourceLocation FALLBACK_TEXTURE = Confluence.asResource("textures/entity/visual_neuron.png");
+    private static final ResourceLocation FALLBACK_TEXTURE = Confluence.asResource("textures/entity/boss/visual_neuron.png");
 
     @Override
     public ResourceLocation getModelResource(GeoSwordProjectile entity) {

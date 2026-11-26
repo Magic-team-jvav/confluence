@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/crimstone_bricks"
+      "all": "confluence:block/decorative/bricks/crimstone_bricks"
   }
 }

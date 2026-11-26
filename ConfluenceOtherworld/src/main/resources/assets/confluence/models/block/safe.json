@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "confluence:block/safe",
+        "0": "confluence:block/functional/storage/safe",
         "particle": "block/chain"
 	},
 	"display": {

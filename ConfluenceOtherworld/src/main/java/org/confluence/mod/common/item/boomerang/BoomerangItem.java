@@ -141,9 +141,8 @@ public class BoomerangItem extends Item implements ILeftClickStateItem, IWeaponT
         }
     }
 
-    @Override
-    public double getTooltipDamage(ItemStack stack, double attributeValue) {
-        return settings.damage() * attributeValue;
+    public float baseDamage() {
+        return settings.damage();
     }
 
     @Override

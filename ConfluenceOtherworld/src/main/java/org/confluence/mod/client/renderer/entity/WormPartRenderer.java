@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import org.confluence.mod.client.model.entity.EntityTexturePaths;
 import org.confluence.mod.client.model.entity.WormPartGeoModel;
 import org.confluence.mod.common.entity.monster.BaseWormMonster;
 import org.confluence.mod.common.entity.monster.BaseWormPart;
@@ -34,9 +35,9 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
         String tail = wyvernGeometry ? "wyvern" : family.getPath() + "_tail";
         return new WormPartGeoModel<>(
                 ResourceLocation.fromNamespaceAndPath(family.getNamespace(), "geo/entity/" + body + ".geo.json"),
-                ResourceLocation.fromNamespaceAndPath(family.getNamespace(), "textures/entity/" + body + ".png"),
+                EntityTexturePaths.resolve(ResourceLocation.fromNamespaceAndPath(family.getNamespace(), "textures/entity/" + body + ".png")),
                 ResourceLocation.fromNamespaceAndPath(family.getNamespace(), "geo/entity/" + tail + ".geo.json"),
-                ResourceLocation.fromNamespaceAndPath(family.getNamespace(), "textures/entity/" + tail + ".png"));
+                EntityTexturePaths.resolve(ResourceLocation.fromNamespaceAndPath(family.getNamespace(), "textures/entity/" + tail + ".png")));
     }
 
     @Override

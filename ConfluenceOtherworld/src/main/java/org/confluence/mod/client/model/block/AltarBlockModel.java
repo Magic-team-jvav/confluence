@@ -11,8 +11,8 @@ public class AltarBlockModel extends GeoModel<AltarBlock.BEntity> {
             Confluence.asResource("geo/block/crimson_altar.geo.json")
     };
     public static final ResourceLocation[] TEXTURES = new ResourceLocation[]{
-            Confluence.asResource("textures/block/demon_altar.png"),
-            Confluence.asResource("textures/block/crimson_altar.png")
+            Confluence.asResource("textures/block/corruption/demon_altar.png"),
+            Confluence.asResource("textures/block/crimson/crimson_altar.png")
     };
     public static final ResourceLocation[] ANIMATIONS = new ResourceLocation[]{
             Confluence.asResource("animations/block/demon_altar.animation.json"),

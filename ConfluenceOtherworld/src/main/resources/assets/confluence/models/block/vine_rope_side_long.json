@@ -3,7 +3,7 @@
 	"credit": "Made with Blockbench",
 	"render_type": "cutout_mipped",
 	"textures": {
-		"1": "confluence:block/vine_rope_2"
+        "1": "confluence:block/rope/vine_rope_2"
 	},
 	"elements": [
 		{

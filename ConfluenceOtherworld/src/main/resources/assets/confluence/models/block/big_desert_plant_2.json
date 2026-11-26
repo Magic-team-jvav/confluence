@@ -3,9 +3,9 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "confluence:block/big_desert_plant",
-		"2": "confluence:block/big_desert_plant_flower",
-		"particle": "confluence:block/big_desert_plant_flower"
+        "1": "confluence:block/desert/big_desert_plant",
+        "2": "confluence:block/desert/big_desert_plant_flower",
+        "particle": "confluence:block/desert/big_desert_plant_flower"
 	},
 	"render_type": "cutout_mipped",
 	"elements": [

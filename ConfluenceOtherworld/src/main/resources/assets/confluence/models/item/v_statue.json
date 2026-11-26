@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"1": "confluence:block/v_statue"
+        "1": "confluence:block/statue/v_statue"
 	},
 	"elements": [
 		{

@@ -12,8 +12,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.RainProjectileModel;
 
 public class RainProjectileRenderer<T extends Entity> extends EntityRenderer<T> {
-    public static final ResourceLocation RAIN = Confluence.asResource("textures/entity/rain_projectile.png");
-    public static final ResourceLocation BLOOD_RAIN = Confluence.asResource("textures/entity/blood_rain_projectile.png");
+    public static final ResourceLocation RAIN = Confluence.asResource("textures/entity/projectile/rain_projectile.png");
+    public static final ResourceLocation BLOOD_RAIN = Confluence.asResource("textures/entity/projectile/blood_rain_projectile.png");
     private final RainProjectileModel model;
     private final ResourceLocation texture;
     private final float offsetY;

@@ -1,5 +1,5 @@
 {
     "textures": {
-        "particle": "confluence:block/echo_block"
+        "particle": "confluence:block/functional/mechanism/echo_block"
     }
 }

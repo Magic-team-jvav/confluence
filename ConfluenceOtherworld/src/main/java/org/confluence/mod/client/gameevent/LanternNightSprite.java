@@ -28,7 +28,7 @@ import static org.confluence.mod.client.gameevent.ClientGameEventSystem.poseStac
 import static org.confluence.mod.client.gameevent.ClientGameEventSystem.random;
 
 final class LanternNightSprite {
-    static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/lantern_night.png");
+    static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/event/lantern_night.png");
     static final int MAX = 100;
     static final Queue<LanternNightSprite> SPRITES = new ArrayDeque<>(MAX);
     static boolean started;

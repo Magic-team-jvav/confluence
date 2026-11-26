@@ -3,8 +3,8 @@
 	"render_type": "cutout_mipped",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "confluence:block/headstone",
-		"particle": "confluence:block/headstone"
+        "1": "confluence:block/gravestone/headstone",
+        "particle": "confluence:block/gravestone/headstone"
 	},
 	"elements": [
 		{

@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"render_type": "cutout_mipped",
 	"textures": {
-		"0": "confluence:block/pine_needle_handmade_rope_set",
-		"particle": "confluence:block/pine_needle_handmade_rope_set"
+        "0": "confluence:block/rope/pine_needle_handmade_rope_set",
+        "particle": "confluence:block/rope/pine_needle_handmade_rope_set"
 	},
 	"elements": [
 		{

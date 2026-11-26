@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/red_packed_ice"
+      "all": "confluence:block/tundra/red_packed_ice"
   }
 }

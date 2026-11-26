@@ -21,7 +21,7 @@ import java.util.Map;
 
 public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> implements ColoredGeoRenderer<BaseFlailItem> {
     private static final ResourceLocation HANDLE_MODEL = Confluence.asResource("geo/item/flail/handle.geo.json");
-    private static final ResourceLocation FALLBACK_TEXTURE = Confluence.asResource("textures/entity/flail.png");
+    private static final ResourceLocation FALLBACK_TEXTURE = Confluence.asResource("textures/entity/flail/default_ball.png");
 
     private final FlailItemModel model;
     private final Map<String, ResourceLocation> modelCache = new HashMap<>();

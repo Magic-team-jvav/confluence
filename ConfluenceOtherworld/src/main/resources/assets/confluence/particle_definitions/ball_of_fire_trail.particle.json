@@ -5,7 +5,7 @@
 			"identifier": "confluence:ball_of_fire_trail",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:ball_of_fire_trail"
+                "texture": "confluence:magic/ball_of_fire_trail"
 			}
 		},
 		"components": {

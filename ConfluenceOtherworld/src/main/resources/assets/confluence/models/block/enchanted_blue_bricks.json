@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/enchanted_blue_bricks"
+      "all": "confluence:block/decorative/bricks/enchanted_blue_bricks"
   }
 }

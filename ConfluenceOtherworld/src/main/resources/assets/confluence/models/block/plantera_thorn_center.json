@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "confluence:block/plantera_thorn_center",
-		"inside": "confluence:block/plantera_thorn_center"
+        "particle": "confluence:block/jungle/plantera_thorn_center",
+        "inside": "confluence:block/jungle/plantera_thorn_center"
 	},
 	"elements": [
 		{

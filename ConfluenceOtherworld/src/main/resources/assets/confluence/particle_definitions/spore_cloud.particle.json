@@ -5,7 +5,7 @@
 			"identifier": "confluence:spore_cloud",
 			"basic_render_parameters": {
 				"material": "particles_blend",
-				"texture": "confluence:spore_cloud"
+                "texture": "confluence:ambient/spore_cloud"
 			}
 		},
 		"curves": {

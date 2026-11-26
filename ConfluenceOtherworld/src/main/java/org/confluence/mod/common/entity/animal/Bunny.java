@@ -253,7 +253,8 @@ public class Bunny extends Rabbit implements CritterVisual {
 
         @Override
         public ResourceLocation texturePath() {
-            if (this == CORRUPT) return IVariant.resource("textures/entity/evil_bunny.png");
+            if (this == CORRUPT)
+                return IVariant.resource("textures/entity/monster/evil/evil_bunny.png");
             if (this == VICIOUS) return IVariant.resource("textures/entity/evil_bunny/vicious.png");
             String name = switch (this) {
                 case NORMAL, PARTY, SLIMED, XMAS -> "bunny";

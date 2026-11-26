@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:block/twilight_ellflower"
+      "layer0": "confluence:block/plant/twilight_ellflower"
   }
 }

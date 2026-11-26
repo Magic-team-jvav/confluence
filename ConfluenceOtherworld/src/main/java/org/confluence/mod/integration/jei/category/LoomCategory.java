@@ -19,7 +19,7 @@ import org.confluence.mod.integration.jei.EitherRecipe4xHelper;
 
 public class LoomCategory implements IRecipeCategory<RecipeHolder<LoomRecipe>> {
     public static final RecipeType<RecipeHolder<LoomRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("loom"));
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/loom.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/jei/loom.png");
     private final IDrawable icon;
     private final EitherRecipe4xHelper helper;
 

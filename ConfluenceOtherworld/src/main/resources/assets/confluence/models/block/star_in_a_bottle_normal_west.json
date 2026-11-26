@@ -6,7 +6,7 @@
 	"textures": {
 		"0": "block/oak_log_top",
 		"1": "block/oak_log",
-		"4": "confluence:block/star_in_a_bottle",
+        "4": "confluence:block/soul_bottle/star_in_a_bottle",
 		"particle": "block/oak_log_top"
 	},
 	"elements": [

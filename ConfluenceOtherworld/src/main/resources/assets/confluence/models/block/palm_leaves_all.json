@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/palm_leaves_top",
-		"1": "confluence:block/palm_leaves_side_1",
-		"particle": "confluence:block/palm_leaves_top"
+        "0": "confluence:block/wood/palm/palm_leaves_top",
+        "1": "confluence:block/wood/palm/palm_leaves_side_1",
+        "particle": "confluence:block/wood/palm/palm_leaves_top"
 	},
 	"elements": [
 		{

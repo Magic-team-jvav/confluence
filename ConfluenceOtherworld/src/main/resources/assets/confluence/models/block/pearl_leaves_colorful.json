@@ -2,6 +2,6 @@
     "parent": "minecraft:block/leaves",
     "render_type": "translucent",
     "textures": {
-        "all": "confluence:block/pearl_leaves_colorful"
+        "all": "confluence:block/wood/pearl/pearl_leaves_colorful"
     }
 }

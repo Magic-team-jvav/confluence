@@ -3,9 +3,9 @@
 	"credit": "Made with Blockbench                    model by Magnox",
 	"texture_size": [32, 32],
 	"textures": {
-		"1": "confluence:block/hellforge_lava_anim",
-		"2": "confluence:block/hellforge",
-		"particle": "confluence:block/hellforge_lava_anim"
+        "1": "confluence:block/functional/workstation/hellforge_lava_anim",
+        "2": "confluence:block/functional/workstation/hellforge",
+        "particle": "confluence:block/functional/workstation/hellforge_lava_anim"
 	},
 	"elements": [
 		{

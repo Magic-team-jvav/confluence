@@ -23,9 +23,9 @@ import static org.confluence.mod.client.gameevent.ClientGameEventSystem.random;
 
 final class SlimeRainSprite {
     static final ResourceLocation[] SLIME_RAIN_TEXTURES = new ResourceLocation[]{
-            Confluence.asResource("textures/environment/slime_rain_blue.png"),
-            Confluence.asResource("textures/environment/slime_rain_green.png"),
-            Confluence.asResource("textures/environment/slime_rain_purple.png")
+            Confluence.asResource("textures/environment/event/slime_rain_blue.png"),
+            Confluence.asResource("textures/environment/event/slime_rain_green.png"),
+            Confluence.asResource("textures/environment/event/slime_rain_purple.png")
     };
     static final Queue<SlimeRainSprite> SPRITES = EvictingQueue.create(32);
     static boolean started;

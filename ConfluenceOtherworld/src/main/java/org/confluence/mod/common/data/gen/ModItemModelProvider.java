@@ -67,7 +67,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             // 占位子弹暂无贴图，跳过模型生成，避免贴图校验失败
             if (item == GunItems.DUMMY_BULLET) return;
             String path = item.getId().getPath();
-            withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/" + path));
+            withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/ammo/" + path));
         });
 
         ModelFile.UncheckedModelFile templateReverse24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse24x"));

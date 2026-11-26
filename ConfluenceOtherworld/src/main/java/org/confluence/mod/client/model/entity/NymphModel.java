@@ -6,9 +6,9 @@ import org.confluence.mod.common.entity.monster.Nymph;
 
 /// 根据宁芙的伪装、显形和受伤状态切换对应纹理。
 public final class NymphModel extends GeoNormalModel<Nymph> {
-    private static final ResourceLocation NORMAL = Confluence.asResource("textures/entity/nymph.png");
-    private static final ResourceLocation REVEALED = Confluence.asResource("textures/entity/nymph_dark.png");
-    private static final ResourceLocation WOUNDED = Confluence.asResource("textures/entity/nymph_dark_blood.png");
+    private static final ResourceLocation NORMAL = Confluence.asResource("textures/entity/monster/cavern/nymph.png");
+    private static final ResourceLocation REVEALED = Confluence.asResource("textures/entity/monster/cavern/nymph_dark.png");
+    private static final ResourceLocation WOUNDED = Confluence.asResource("textures/entity/monster/cavern/nymph_dark_blood.png");
 
     public NymphModel(ResourceLocation path) {
         super(path);

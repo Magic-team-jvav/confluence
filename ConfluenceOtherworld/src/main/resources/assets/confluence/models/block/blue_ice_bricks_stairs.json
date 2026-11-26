@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/stairs",
   "textures": {
-    "bottom": "confluence:block/blue_ice_bricks",
-    "side": "confluence:block/blue_ice_bricks",
-    "top": "confluence:block/blue_ice_bricks"
+      "bottom": "confluence:block/decorative/bricks/blue_ice_bricks",
+      "side": "confluence:block/decorative/bricks/blue_ice_bricks",
+      "top": "confluence:block/decorative/bricks/blue_ice_bricks"
   }
 }

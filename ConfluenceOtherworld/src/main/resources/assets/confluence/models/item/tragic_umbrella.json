@@ -47,7 +47,7 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/tragic_umbrella"
+            "particle": "confluence:item/sword/umbrella/tragic_umbrella"
         }
     },
     "gui_light": "front",

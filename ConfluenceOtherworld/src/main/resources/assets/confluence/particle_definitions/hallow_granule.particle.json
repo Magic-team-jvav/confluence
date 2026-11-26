@@ -5,7 +5,7 @@
 			"identifier": "confluence:hallow_granule",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:hallow_granule"
+                "texture": "confluence:ambient/hallow_granule"
 			}
 		},
 		"components": {

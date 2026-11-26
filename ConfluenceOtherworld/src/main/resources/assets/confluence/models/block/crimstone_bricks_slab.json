@@ -1,9 +1,9 @@
 {
   "parent": "block/slab",
   "textures": {
-    "bottom": "confluence:block/crimstone_bricks",
-    "top": "confluence:block/crimstone_bricks",
-    "side": "confluence:block/crimstone_bricks"
+      "bottom": "confluence:block/decorative/bricks/crimstone_bricks",
+      "top": "confluence:block/decorative/bricks/crimstone_bricks",
+      "side": "confluence:block/decorative/bricks/crimstone_bricks"
   },
   "render_type": "solid"
 }

@@ -3,7 +3,7 @@
 	"render_type": "cutout_mipped",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "confluence:block/keg",
+        "1": "confluence:block/functional/workstation/keg",
 		"particle": "confluence:block/particle/keg_particle"
 	},
 	"elements": [

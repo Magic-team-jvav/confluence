@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "confluence:block/inverse_rheum_nobile"
+        "layer0": "confluence:block/end/inverse_rheum_nobile"
     }
 }

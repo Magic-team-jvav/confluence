@@ -1,8 +1,8 @@
 {
     "parent": "block/thin_block",
     "textures": {
-        "particle": "confluence:block/pearlsand",
-        "texture": "confluence:block/pearlsand"
+        "particle": "confluence:block/hallow/pearlsand",
+        "texture": "confluence:block/hallow/pearlsand"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

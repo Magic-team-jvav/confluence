@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:block/large_void_crystal_bud"
+      "layer0": "confluence:block/end/large_void_crystal_bud"
   }
 }

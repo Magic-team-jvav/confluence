@@ -79,7 +79,7 @@ public class NorthPoleProjectile extends SpearProjectile {
 
     @Override
     public net.minecraft.resources.ResourceLocation getProjTexture() {
-        return Confluence.asResource("textures/entity/storm_spear_shot_projectile.png");
+        return Confluence.asResource("textures/entity/projectile/storm_spear_shot_projectile.png");
     }
 
     @Override

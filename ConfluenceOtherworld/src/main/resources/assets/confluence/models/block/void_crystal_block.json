@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "confluence:block/void_crystal_block"
+      "all": "confluence:block/end/void_crystal_block"
   }
 }

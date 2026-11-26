@@ -2,7 +2,7 @@
   "credit": "Made with Blockbench",
   "parent": "builtin/entity",
   "textures": {
-    "particle": "confluence:block/ebonstone"
+      "particle": "confluence:block/corruption/ebonstone"
   },
   "texture_size": [
     256,

@@ -17,8 +17,8 @@ import java.util.List;
 
 public class TombstoneEditScreen extends AbstractSignEditScreen {
     private static final Vector3f TEXT_SCALE = new Vector3f(1.5F, 1.5F, 1.5F);
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/tombstone.png");
-    private static final ResourceLocation GOLD_BACKGROUND = Confluence.asResource("textures/gui/gold_tombstone.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/tombstone/tombstone.png");
+    private static final ResourceLocation GOLD_BACKGROUND = Confluence.asResource("textures/gui/tombstone/gold_tombstone.png");
     // 墓碑背景中羊皮纸区域（未缩放坐标，原点为文字中心）
     private static final float PAPER_WIDTH = 156.0F;
     private static final float PAPER_HEIGHT = 96.0F;

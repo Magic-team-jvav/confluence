@@ -22,7 +22,7 @@ import org.confluence.mod.common.block.functional.enemybanner.EnemyBannerBlock;
 import org.confluence.mod.common.block.functional.enemybanner.WallEnemyBannerBlock;
 
 public class EnemyBannerBlockRenderer implements BlockEntityRenderer<AbstractEnemyBannerBlock.BEntity> {
-    private static final RenderType RENDER_TYPE = RenderType.entitySolid(Confluence.asResource("textures/entity/enemy_banner.png"));
+    private static final RenderType RENDER_TYPE = RenderType.entitySolid(Confluence.asResource("textures/entity/model/enemy_banner.png"));
     private final ModelPart flag;
     private final ModelPart pole;
     private final ModelPart bar;

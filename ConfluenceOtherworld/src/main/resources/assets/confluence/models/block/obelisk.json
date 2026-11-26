@@ -6,7 +6,7 @@
     "model": "confluence:models/obj/obelisk.obj",
     "mtl_override": "confluence:models/obj/obelisk.mtl",
     "textures": {
-        "texture0": "confluence:block/obelisk",
+        "texture0": "confluence:block/gravestone/obelisk",
         "particle": "minecraft:block/blackstone"
     },
     "display": {

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/lunar_coral_block_2"
+      "all": "confluence:block/ocean/coral/lunar_coral_block_2"
   }
 }

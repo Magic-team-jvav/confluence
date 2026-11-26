@@ -4,8 +4,8 @@
 	"texture_size": [32, 32],
 	"render_type": "cutout_mipped",
 	"textures": {
-		"1": "confluence:block/hellforge",
-		"3": "confluence:block/hellforge_lava_anim",
+        "1": "confluence:block/functional/workstation/hellforge",
+        "3": "confluence:block/functional/workstation/hellforge_lava_anim",
 		"particle": "confluence:block/particle/hellforge_particle"
 	},
 	"elements": [

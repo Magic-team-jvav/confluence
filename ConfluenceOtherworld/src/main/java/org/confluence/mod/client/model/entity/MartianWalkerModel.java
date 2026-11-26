@@ -9,7 +9,7 @@ import software.bernie.geckolib.animation.AnimationState;
 public final class MartianWalkerModel extends ExplicitGeoModel<MartianWalker> {
     public MartianWalkerModel() {
         super(Confluence.asResource("geo/entity/martian_walker.geo.json"),
-                Confluence.asResource("textures/entity/martian_walker.png"),
+                Confluence.asResource("textures/entity/monster/martian/martian_walker.png"),
                 Confluence.asResource("animations/entity/martian_walker.animation.json"));
     }
     @Override public void setCustomAnimations(MartianWalker walker, long instanceId, AnimationState<MartianWalker> state) {

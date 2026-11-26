@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/sapphire_branches",
-		"particle": "confluence:block/sapphire_branches"
+        "0": "confluence:block/wood/gem/sapphire_branches",
+        "particle": "confluence:block/wood/gem/sapphire_branches"
 	},
 	"elements": [
 		{

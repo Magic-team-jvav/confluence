@@ -2,6 +2,6 @@
   "parent": "minecraft:block/template_orientable_trapdoor_open",
   "render_type": "minecraft:cutout",
   "textures": {
-    "texture": "confluence:block/christmas_pine_trapdoor"
+      "texture": "confluence:block/wood/pine/christmas_pine_trapdoor"
   }
 }

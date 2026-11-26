@@ -96,9 +96,9 @@ public final class ModClientSetups {
     public static final ResourceLocation LEGACY_SPRITE = Confluence.asResource("hud/icon");
     public static final ResourceLocation OVERLAY_SPRITE = Confluence.asResource("hud/overlay");
     // region sun todo dynamic texture
-    public static final ResourceLocation SUNGLASSES_TEXTURE = Confluence.asResource("textures/environment/sunglasses.png");
-    public static final ResourceLocation BOULDER_SUN_TEXTURE = Confluence.asResource("textures/environment/boulder.png");
-    public static final ResourceLocation SUNGLASSES_BOULDER_TEXTURE = Confluence.asResource("textures/environment/sunglasses_boulder.png");
+    public static final ResourceLocation SUNGLASSES_TEXTURE = Confluence.asResource("textures/environment/sky/sunglasses.png");
+    public static final ResourceLocation BOULDER_SUN_TEXTURE = Confluence.asResource("textures/environment/sky/boulder.png");
+    public static final ResourceLocation SUNGLASSES_BOULDER_TEXTURE = Confluence.asResource("textures/environment/sky/sunglass_boulder.png");
     // endregion
     private static final NormalNoise normalNoise = NormalNoise.create(RandomSource.create(260318), -5, 1.0, 1.0, 1.0, 1.0);
     static final IClientFluidTypeExtensions HONEY_CLIENT_EXTENSIONS = new IClientFluidTypeExtensions() {

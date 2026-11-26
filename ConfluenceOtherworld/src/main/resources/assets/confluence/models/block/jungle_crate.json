@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column_horizontal",
   "textures": {
-    "end": "confluence:block/jungle_crate_end",
-    "side": "confluence:block/jungle_crate_side"
+      "end": "confluence:block/crate/jungle_crate_end",
+      "side": "confluence:block/crate/jungle_crate_side"
   }
 }

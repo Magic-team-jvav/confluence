@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/topaz_branches",
-		"1": "confluence:block/stony_log_top",
-		"particle": "confluence:block/topaz_branches"
+        "0": "confluence:block/wood/gem/topaz_branches",
+        "1": "confluence:block/cavern/stony_log_top",
+        "particle": "confluence:block/wood/gem/topaz_branches"
 	},
 	"elements": [
 		{

@@ -23,7 +23,7 @@ import org.confluence.mod.common.recipe.EnhancedForgeRecipe;
 import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public abstract class EnhancedForgeCategory<R extends EnhancedForgeRecipe> implements IRecipeCategory<RecipeHolder<R>> {
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/hellforge.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/jei/hellforge.png");
     private final IDrawable icon;
 
     public EnhancedForgeCategory(IJeiHelpers jeiHelpers, ItemStack iconStack) {

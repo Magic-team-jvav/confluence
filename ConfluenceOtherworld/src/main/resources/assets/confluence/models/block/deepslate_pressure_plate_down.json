@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/pressure_plate_down",
   "textures": {
-    "texture": "confluence:block/deepslate"
+      "texture": "confluence:block/cavern/deepslate"
   }
 }

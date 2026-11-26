@@ -5,7 +5,7 @@
 			"identifier": "confluence:bomb_spark",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:bomb_spark"
+                "texture": "confluence:explosion/bomb_spark"
 			}
 		},
 		"components": {

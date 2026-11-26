@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/desert_tall_grass_bottom",
-		"1": "confluence:block/desert_tall_grass_top",
-		"particle": "confluence:block/desert_tall_grass_bottom"
+        "0": "confluence:block/desert/desert_tall_grass_bottom",
+        "1": "confluence:block/desert/desert_tall_grass_top",
+        "particle": "confluence:block/desert/desert_tall_grass_bottom"
 	},
 	"render_type": "cutout",
 	"elements": [

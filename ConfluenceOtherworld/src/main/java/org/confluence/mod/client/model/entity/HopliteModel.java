@@ -8,7 +8,7 @@ import software.bernie.geckolib.animation.AnimationState;
 
 public final class HopliteModel extends VanillaHumanoidGeoModel<Hoplite> {
     public HopliteModel(EntityRendererProvider.Context context) {
-        super(context, Confluence.asResource("geo/entity/hoplite.geo.json"), Confluence.asResource("textures/entity/hoplite.png"), true);
+        super(context, Confluence.asResource("geo/entity/hoplite.geo.json"), Confluence.asResource("textures/entity/monster/undead/hoplite.png"), true);
     }
 
     @Override

@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "confluence:block/jungle_thorn_side",
-		"inside": "confluence:block/jungle_thorn_side"
+        "particle": "confluence:block/jungle/jungle_thorn_side",
+        "inside": "confluence:block/jungle/jungle_thorn_side"
 	},
 	"elements": [
 		{

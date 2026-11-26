@@ -1,10 +1,10 @@
 {   "parent": "block/block",
     "render_type": "cutout",
     "textures": {
-        "particle": "confluence:block/crimson_cactus_side",
-        "bottom": "confluence:block/crimson_cactus_bottom",
-        "top": "confluence:block/crimson_cactus_top",
-        "side": "confluence:block/crimson_cactus_side"
+        "particle": "confluence:block/crimson/crimson_cactus_side",
+        "bottom": "confluence:block/crimson/crimson_cactus_bottom",
+        "top": "confluence:block/crimson/crimson_cactus_top",
+        "side": "confluence:block/crimson/crimson_cactus_side"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

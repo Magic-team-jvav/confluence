@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "confluence:block/pearl_sapling"
+      "cross": "confluence:block/wood/pearl/pearl_sapling"
   },
   "render_type": "cutout"
 }

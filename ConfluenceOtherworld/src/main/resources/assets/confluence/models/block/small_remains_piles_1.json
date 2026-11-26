@@ -4,7 +4,7 @@
 	"texture_size": [64, 64],
     "render_type": "cutout",
 	"textures": {
-        "0": "confluence:block/small_remains_piles",
+        "0": "confluence:block/cavern/small_remains_piles",
         "particle": "block/bone_block"
 	},
 	"elements": [

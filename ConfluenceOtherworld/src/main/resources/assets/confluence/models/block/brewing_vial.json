@@ -4,7 +4,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [36, 36],
 	"textures": {
-		"texture_0786d3d1-891c-4a89-93bb-665f6408e2ab": "confluence:block/brewing_vial",
+        "texture_0786d3d1-891c-4a89-93bb-665f6408e2ab": "confluence:block/functional/workstation/brewing_vial",
 		"particle": "confluence:block/particle/brewing_vial_particle"
 	},
 	"elements": [

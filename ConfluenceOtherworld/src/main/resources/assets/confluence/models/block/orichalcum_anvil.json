@@ -3,7 +3,7 @@
 	"render_type": "cutout_mipped",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "confluence:block/orichalcum_anvil",
+        "0": "confluence:block/functional/workstation/orichalcum_anvil",
 		"particle": "confluence:block/particle/orichalcum_anvil_particle"
 	},
 	"elements": [

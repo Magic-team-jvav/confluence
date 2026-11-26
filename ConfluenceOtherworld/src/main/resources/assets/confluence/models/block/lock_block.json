@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column",
   "textures": {
-    "end": "confluence:block/lock_block_other",
-    "side": "confluence:block/lock_block_main"
+      "end": "confluence:block/functional/mechanism/lock_block_other",
+      "side": "confluence:block/functional/mechanism/lock_block_main"
   }
 }

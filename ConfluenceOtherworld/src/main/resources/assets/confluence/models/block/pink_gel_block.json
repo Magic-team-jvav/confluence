@@ -2,6 +2,6 @@
   "parent": "minecraft:block/cube_all",
   "render_type": "translucent",
   "textures": {
-    "all": "confluence:block/pink_gel_block"
+      "all": "confluence:block/decorative/gel/pink_gel_block"
   }
 }

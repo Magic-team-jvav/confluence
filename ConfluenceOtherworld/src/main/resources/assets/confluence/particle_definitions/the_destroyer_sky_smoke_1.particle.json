@@ -5,7 +5,7 @@
             "identifier": "confluence:the_destroyer_sky_smoke_1",
             "basic_render_parameters": {
                 "material": "particles_blend",
-                "texture": "confluence:destroyer_smoke"
+                "texture": "confluence:destroyer_attack/destroyer_smoke"
             }
         },
         "components": {

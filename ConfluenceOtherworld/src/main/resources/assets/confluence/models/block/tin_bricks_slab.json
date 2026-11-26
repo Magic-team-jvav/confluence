@@ -1,9 +1,9 @@
 {
   "parent": "block/slab",
   "textures": {
-    "bottom": "confluence:block/tin_bricks",
-    "top": "confluence:block/tin_bricks",
-    "side": "confluence:block/tin_bricks"
+      "bottom": "confluence:block/decorative/bricks/tin_bricks",
+      "top": "confluence:block/decorative/bricks/tin_bricks",
+      "side": "confluence:block/decorative/bricks/tin_bricks"
   },
   "render_type": "solid"
 }

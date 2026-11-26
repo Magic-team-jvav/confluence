@@ -5,7 +5,7 @@
 			"identifier": "confluence:bei_dou_rune",
 			"basic_render_parameters": {
 				"material": "particles_blend",
-				"texture": "confluence:stellar_studies_rune"
+                "texture": "confluence:magic/stellar_studies_rune"
 			}
 		},
 		"components": {

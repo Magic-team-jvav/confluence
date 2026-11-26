@@ -5,7 +5,7 @@
             "identifier": "confluence:blood",
             "basic_render_parameters": {
                 "material": "particles_blend",
-                "texture": "confluence:blood"
+                "texture": "confluence:combat/blood"
             }
         },
         "events": {

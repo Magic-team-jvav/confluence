@@ -1,10 +1,10 @@
 {   "parent": "block/block",
     "render_type": "cutout",
     "textures": {
-        "particle": "confluence:block/corrupt_cactus_side",
-        "bottom": "confluence:block/corrupt_cactus_bottom",
-        "top": "confluence:block/corrupt_cactus_top",
-        "side": "confluence:block/corrupt_cactus_side"
+        "particle": "confluence:block/corruption/corrupt_cactus_side",
+        "bottom": "confluence:block/corruption/corrupt_cactus_bottom",
+        "top": "confluence:block/corruption/corrupt_cactus_top",
+        "side": "confluence:block/corruption/corrupt_cactus_side"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

@@ -1,7 +1,7 @@
 {
   "parent": "confluence:block/template_drooping_vine",
   "textures": {
-    "vine": "confluence:block/moonglow_willow_drooping_vine",
-    "vine_1": "confluence:block/moonglow_willow_drooping_vine_1"
+      "vine": "confluence:block/wood/moonglow_willow/moonglow_willow_drooping_vine",
+      "vine_1": "confluence:block/wood/moonglow_willow/moonglow_willow_drooping_vine_1"
   }
 }

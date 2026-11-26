@@ -1,5 +1,5 @@
 {
   "textures": {
-    "particle": "confluence:block/demonite_ore_bricks"
+      "particle": "confluence:block/decorative/bricks/demonite_ore_bricks"
   }
 }

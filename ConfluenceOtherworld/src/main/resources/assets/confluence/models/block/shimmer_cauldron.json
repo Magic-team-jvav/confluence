@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"5": "confluence:block/shimmer_cauldron_background",
+        "5": "confluence:block/functional/workstation/shimmer_cauldron_background",
 		"top": "block/cauldron_top",
 		"bottom": "block/cauldron_bottom",
 		"particle": "block/cauldron_side",

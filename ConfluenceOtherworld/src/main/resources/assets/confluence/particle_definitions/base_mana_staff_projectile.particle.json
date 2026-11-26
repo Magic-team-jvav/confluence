@@ -5,7 +5,7 @@
             "identifier": "confluence:base_mana_staff_projectile",
             "basic_render_parameters": {
                 "material": "particles_add",
-                "texture": "confluence:base_mana_staff_projectile"
+                "texture": "confluence:magic/base_mana_staff_projectile"
             }
         },
         "events": {

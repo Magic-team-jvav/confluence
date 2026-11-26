@@ -5,7 +5,7 @@
 			"identifier": "confluence:fireworks_rocket_expiration",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:magic_missile_expiration"
+                "texture": "confluence:magic_missile/magic_missile_expiration"
 			}
 		},
 		"components": {

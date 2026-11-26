@@ -5,7 +5,7 @@
 			"identifier": "confluence:dual_flash_beacon",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:dual_flash_beacon"
+                "texture": "confluence:soul/dual_flash_beacon"
 			}
 		},
 		"components": {

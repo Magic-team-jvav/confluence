@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "confluence:block/corruption_thorn_side",
-		"inside": "confluence:block/corruption_thorn_side"
+        "particle": "confluence:block/corruption/corruption_thorn_side",
+        "inside": "confluence:block/corruption/corruption_thorn_side"
 	},
 	"elements": [
 		{

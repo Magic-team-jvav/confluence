@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "confluence:block/hallow_drooping_vine_1"
+      "layer0": "confluence:block/hallow/hallow_drooping_vine_1"
   }
 }

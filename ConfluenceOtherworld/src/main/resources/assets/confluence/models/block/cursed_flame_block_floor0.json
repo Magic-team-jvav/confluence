@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_fire_floor",
   "textures": {
-    "fire": "confluence:block/cursed_flame_block_0"
+      "fire": "confluence:block/corruption/cursed_flame_block_0"
   }
 }

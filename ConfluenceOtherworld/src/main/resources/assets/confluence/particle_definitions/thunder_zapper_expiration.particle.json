@@ -5,7 +5,7 @@
 			"identifier": "confluence:thunder_zapper_expiration",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:thunder_zapper_expiration"
+                "texture": "confluence:magic/thunder_zapper_expiration"
 			}
 		},
 		"components": {

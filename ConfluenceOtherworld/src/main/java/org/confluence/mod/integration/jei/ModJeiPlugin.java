@@ -47,8 +47,8 @@ import java.util.List;
 @JeiPlugin
 public final class ModJeiPlugin implements IModPlugin {
     public static final ResourceLocation UID = Confluence.asResource("jei_plugin");
-    public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/arrow_down.png");
-    public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/arrow_right.png");
+    public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/jei/arrow_down.png");
+    public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/jei/arrow_right.png");
     public static @Nullable IJeiRuntime jeiRuntime;
 
     public static List<ToastComponent.ToastInstance<?>> filterAchievements(List<ToastComponent.ToastInstance<?>> original) {

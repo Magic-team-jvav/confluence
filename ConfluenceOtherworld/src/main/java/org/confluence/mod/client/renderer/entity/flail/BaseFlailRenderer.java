@@ -30,7 +30,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> implements ColoredGeoRenderer<BaseFlailEntity> {
     private static final ResourceLocation DEFAULT_BALL_MODEL = Confluence.asResource("geo/entity/flail/flail.geo.json");
-    private static final ResourceLocation DEFAULT_BALL_TEXTURE = Confluence.asResource("textures/entity/flail.png");
+    private static final ResourceLocation DEFAULT_BALL_TEXTURE = Confluence.asResource("textures/entity/flail/default_ball.png");
     private static final ResourceLocation DEFAULT_CHAIN_TEXTURE = Confluence.asResource("textures/entity/flail/flail_chain.png");
 
     public BaseFlailRenderer(EntityRendererProvider.Context context) {

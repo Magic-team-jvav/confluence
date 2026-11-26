@@ -5,7 +5,7 @@
 			"identifier": "confluence:flower_petal_trail",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:flower_petal_trail"
+                "texture": "confluence:ambient/flower_petal_trail"
 			}
 		},
 		"components": {

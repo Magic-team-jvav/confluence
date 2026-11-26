@@ -14,7 +14,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.SkullProjectileModel;
 
 public class SkullProjectileRenderer<T extends Entity> extends EntityRenderer<T> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/skull_projectile.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/skull_projectile.png");
     private final SkullProjectileModel model;
 
     public SkullProjectileRenderer(EntityRendererProvider.Context pContext) {

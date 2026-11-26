@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "confluence:block/geyser_block",
-		"particle": "confluence:block/geyser_block"
+        "0": "confluence:block/trap/geyser_block",
+        "particle": "confluence:block/trap/geyser_block"
 	},
 	"elements": [
 		{

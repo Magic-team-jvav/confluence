@@ -10,7 +10,7 @@ import org.confluence.mod.common.entity.monster.MartianProbe;
 /// 最内侧 11 像素的外星大脑。渲染器检测到负体积立方体后会把渲染类型切换为剔除背面的
 /// “外面模式”，外壳朝向相机的一面因此被剔除，于是能透过球壳看到里面的大脑。
 public final class MartianProbeModel extends GeoNormalModel<MartianProbe> {
-    private static final ResourceLocation ALERT_TEXTURE = Confluence.asResource("textures/entity/martian_probe_alert.png");
+    private static final ResourceLocation ALERT_TEXTURE = Confluence.asResource("textures/entity/monster/martian/martian_probe_alert.png");
 
     public MartianProbeModel() {
         super(Confluence.asResource("martian_probe"), false);

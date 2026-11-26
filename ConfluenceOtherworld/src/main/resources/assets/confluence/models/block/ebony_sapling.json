@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cross",
   "textures": {
-    "cross": "confluence:block/ebony_sapling"
+      "cross": "confluence:block/wood/ebony/ebony_sapling"
   },
   "render_type": "cutout"
 }

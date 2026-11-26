@@ -5,7 +5,7 @@
             "identifier": "confluence:stinky",
             "basic_render_parameters": {
                 "material": "particles_blend",
-                "texture": "confluence:big_smoke"
+                "texture": "confluence:explosion/big_smoke"
             }
         },
         "components": {

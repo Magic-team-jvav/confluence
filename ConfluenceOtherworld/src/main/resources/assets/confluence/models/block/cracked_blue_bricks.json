@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "confluence:block/cracked_blue_bricks"
+      "all": "confluence:block/decorative/bricks/cracked_blue_bricks"
   }
 }

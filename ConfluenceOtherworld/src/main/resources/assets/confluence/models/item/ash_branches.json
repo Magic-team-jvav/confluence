@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/ash_log_top",
-		"1": "confluence:block/ash_log",
-        "particle": "confluence:block/ash_log_top"
+        "0": "confluence:block/wood/ash/ash_log_top",
+        "1": "confluence:block/wood/ash/ash_log",
+        "particle": "confluence:block/wood/ash/ash_log_top"
 	},
 	"elements": [
 		{

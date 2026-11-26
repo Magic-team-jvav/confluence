@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/pressure_plate_up",
   "textures": {
-    "texture": "confluence:block/stone"
+      "texture": "confluence:block/cavern/stone"
   }
 }

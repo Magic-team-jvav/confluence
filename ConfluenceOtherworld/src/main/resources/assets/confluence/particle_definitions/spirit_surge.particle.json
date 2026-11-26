@@ -5,7 +5,7 @@
 			"identifier": "confluence:spirit_surge",
 			"basic_render_parameters": {
 				"material": "particles_blend",
-				"texture": "confluence:spirit_surge"
+                "texture": "confluence:soul/spirit_surge"
 			}
 		},
 		"curves": {

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/tungsten_block"
+      "all": "confluence:block/ore/storage/tungsten_block"
   }
 }

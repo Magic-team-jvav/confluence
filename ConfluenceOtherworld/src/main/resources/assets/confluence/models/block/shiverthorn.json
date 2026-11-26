@@ -1,8 +1,8 @@
 {
   "parent": "block/cross",
   "textures": {
-    "cross": "confluence:block/shiverthorn",
-    "particle": "confluence:block/shiverthorn"
+      "cross": "confluence:block/herb/shiverthorn",
+      "particle": "confluence:block/herb/shiverthorn"
   },
   "render_type": "cutout"
 }

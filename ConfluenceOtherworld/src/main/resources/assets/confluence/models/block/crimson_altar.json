@@ -2,7 +2,7 @@
   "credit": "Made with Blockbench",
   "parent": "builtin/entity",
   "textures": {
-    "particle": "confluence:block/crimstone"
+      "particle": "confluence:block/crimson/crimstone"
   },
   "texture_size": [
     128,

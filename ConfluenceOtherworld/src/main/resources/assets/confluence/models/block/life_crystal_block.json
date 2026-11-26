@@ -2,7 +2,7 @@
   "credit": "Made with Blockbench",
   "parent": "builtin/entity",
   "textures": {
-    "particle": "confluence:block/life_crystal_block"
+      "particle": "confluence:block/ore/crystal/life_crystal_block"
   },
   "texture_size": [
     64,

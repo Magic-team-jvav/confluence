@@ -2,7 +2,7 @@
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
     "bottom": "minecraft:block/dirt",
-    "side": "confluence:block/corrupt_grass_block_side",
-    "top": "confluence:block/corrupt_grass_block_top"
+      "side": "confluence:block/corruption/corrupt_grass_block_side",
+      "top": "confluence:block/corruption/corrupt_grass_block_top"
   }
 }

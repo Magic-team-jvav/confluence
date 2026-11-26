@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/silver_coins",
-		"particle": "confluence:block/silver_coins"
+        "0": "confluence:block/decorative/coins/silver_coins",
+        "particle": "confluence:block/decorative/coins/silver_coins"
 	},
 	"elements": [
 		{

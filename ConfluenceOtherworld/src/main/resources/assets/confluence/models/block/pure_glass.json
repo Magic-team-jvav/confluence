@@ -2,6 +2,6 @@
   "parent": "block/cube_all",
   "render_type": "cutout",
   "textures": {
-    "all": "confluence:block/pure_glass"
+      "all": "confluence:block/decorative/glass/pure_glass"
   }
 }

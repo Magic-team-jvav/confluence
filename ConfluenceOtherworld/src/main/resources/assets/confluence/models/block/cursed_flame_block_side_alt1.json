@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_fire_side_alt",
   "textures": {
-    "fire": "confluence:block/cursed_flame_block_1"
+      "fire": "confluence:block/corruption/cursed_flame_block_1"
   }
 }

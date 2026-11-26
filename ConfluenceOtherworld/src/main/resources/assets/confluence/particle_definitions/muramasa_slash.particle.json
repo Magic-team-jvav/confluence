@@ -5,7 +5,7 @@
 			"identifier": "confluence:muramasa_slash",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:muramasa_slash"
+                "texture": "confluence:combat/muramasa_slash"
 			}
 		},
 		"components": {

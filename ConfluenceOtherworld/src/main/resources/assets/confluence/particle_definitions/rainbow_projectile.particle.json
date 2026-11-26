@@ -5,7 +5,7 @@
 			"identifier": "confluence:rainbow_projectile",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:rainbow_projectile"
+                "texture": "confluence:magic/rainbow_projectile"
 			}
 		},
 		"curves": {

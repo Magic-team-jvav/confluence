@@ -11,7 +11,7 @@ import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 public class SkyMillBlockRenderer extends GeoBlockRenderer<SkyMillBlock.BEntity> implements ColoredGeoRenderer<SkyMillBlock.BEntity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/sky_mill.geo.json");
-    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/sky_mill.png");
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/functional/workstation/sky_mill.png");
     public static final ResourceLocation ANIMATION = Confluence.asResource("animations/block/sky_mill.animation.json");
 
     public SkyMillBlockRenderer() {

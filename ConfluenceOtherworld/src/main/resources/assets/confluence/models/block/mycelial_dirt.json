@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "confluence:block/mycelial_dirt"
+      "all": "confluence:block/mushroom/mycelial_dirt"
   }
 }

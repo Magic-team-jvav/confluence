@@ -1,7 +1,7 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "confluence:block/soul_glass"
+      "all": "confluence:block/decorative/glass/soul_glass"
   },
     "render_type": "translucent"
 }

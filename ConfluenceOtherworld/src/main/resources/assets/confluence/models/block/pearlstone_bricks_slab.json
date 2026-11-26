@@ -1,9 +1,9 @@
 {
   "parent": "block/slab",
   "textures": {
-    "bottom": "confluence:block/pearlstone_bricks",
-    "top": "confluence:block/pearlstone_bricks",
-    "side": "confluence:block/pearlstone_bricks"
+      "bottom": "confluence:block/decorative/bricks/pearlstone_bricks",
+      "top": "confluence:block/decorative/bricks/pearlstone_bricks",
+      "side": "confluence:block/decorative/bricks/pearlstone_bricks"
   },
   "render_type": "solid"
 }

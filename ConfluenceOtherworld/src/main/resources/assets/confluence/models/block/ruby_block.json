@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/ruby_block"
+      "all": "confluence:block/ore/storage/ruby_block"
   }
 }

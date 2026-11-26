@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/sturdy_fossil_block"
+      "all": "confluence:block/underground_desert/sturdy_fossil_block"
   }
 }

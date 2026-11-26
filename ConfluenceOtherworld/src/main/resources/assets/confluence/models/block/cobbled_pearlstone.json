@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/cobbled_pearlstone"
+      "all": "confluence:block/hallow/cobbled_pearlstone"
   }
 }

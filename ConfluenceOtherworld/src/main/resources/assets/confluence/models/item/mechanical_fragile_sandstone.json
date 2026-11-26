@@ -1,11 +1,11 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/fragile_sandstone_background",
+        "0": "confluence:block/underground_desert/fragile_sandstone_background",
 		"1": "block/sandstone_top",
 		"2": "block/sandstone",
 		"3": "block/sandstone_bottom",
-		"particle": "confluence:block/fragile_sandstone_background"
+        "particle": "confluence:block/underground_desert/fragile_sandstone_background"
 	},
 	"elements": [
 		{

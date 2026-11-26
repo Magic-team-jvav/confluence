@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.sword;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Tier;
 import org.confluence.lib.common.component.ModRarity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -30,6 +31,10 @@ public class GeoSwordItem extends BaseSwordItem implements GeoItem {
         super(tier, rarity, rawDamage, rawSpeed, definition);
     }
 
+    protected ResourceLocation textureId(ResourceLocation modelId) {
+        return modelId;
+    }
+
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
@@ -46,7 +51,8 @@ public class GeoSwordItem extends BaseSwordItem implements GeoItem {
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (renderer == null) {
-                    this.renderer = new GeoItemRenderer<>(new DefaultedItemGeoModel<>(BuiltInRegistries.ITEM.getKey(GeoSwordItem.this)));
+                    ResourceLocation id = BuiltInRegistries.ITEM.getKey(GeoSwordItem.this);
+                    this.renderer = new GeoItemRenderer<>(new DefaultedItemGeoModel<GeoSwordItem>(id).withAltTexture(textureId(id)));
                 }
                 return renderer;
             }

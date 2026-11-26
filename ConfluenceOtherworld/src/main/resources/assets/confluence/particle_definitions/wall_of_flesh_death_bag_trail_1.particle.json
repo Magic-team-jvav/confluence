@@ -5,7 +5,7 @@
             "identifier": "confluence:wall_of_flesh_death_bag_trail_1",
             "basic_render_parameters": {
                 "material": "particles_add",
-                "texture": "confluence:evil_granule"
+                "texture": "confluence:ambient/evil_granule"
             }
         },
         "components": {

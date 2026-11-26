@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/hardened_pearlsand_block"
+      "all": "confluence:block/hallow/hardened_pearlsand_block"
   }
 }

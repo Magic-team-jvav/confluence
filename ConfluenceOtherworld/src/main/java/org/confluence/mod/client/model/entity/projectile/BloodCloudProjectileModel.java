@@ -7,7 +7,7 @@ import software.bernie.geckolib.model.GeoModel;
 
 public class BloodCloudProjectileModel extends GeoModel<CloudProjectile> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/entity/blood_cloud_projectile.geo.json");
-    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/blood_cloud_projectile.png");
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/blood_cloud_projectile.png");
 
     @Override
     public ResourceLocation getModelResource(CloudProjectile animatable) {

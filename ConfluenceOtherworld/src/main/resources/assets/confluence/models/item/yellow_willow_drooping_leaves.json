@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "confluence:block/yellow_willow_drooping_leaves_1"
+        "layer0": "confluence:block/wood/yellow_willow/yellow_willow_drooping_leaves_1"
     }
 }

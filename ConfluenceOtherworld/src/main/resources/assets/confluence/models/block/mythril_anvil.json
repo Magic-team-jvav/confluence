@@ -3,7 +3,7 @@
 	"texture_size": [64, 64],
 	"render_type": "cutout_mipped",
 	"textures": {
-		"0": "confluence:block/mythril_anvil",
+        "0": "confluence:block/functional/workstation/mythril_anvil",
 		"particle": "confluence:block/particle/mythril_anvil_particle"
 	},
 	"elements": [

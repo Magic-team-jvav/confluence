@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:block/cube_all",
     "textures": {
-        "all": "confluence:block/mural_block"
+        "all": "confluence:block/decorative/art/mural_block"
     }
 }

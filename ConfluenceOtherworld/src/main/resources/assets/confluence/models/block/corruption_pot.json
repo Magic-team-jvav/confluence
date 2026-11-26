@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [80, 80],
 	"textures": {
-		"1": "confluence:block/corruption_pot",
-		"particle": "confluence:block/corruption_pot"
+        "1": "confluence:block/corruption/corruption_pot",
+        "particle": "confluence:block/corruption/corruption_pot"
 	},
 	"elements": [
 		{

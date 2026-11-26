@@ -5,7 +5,7 @@
 			"identifier": "confluence:flower_petal",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:flower_petal"
+                "texture": "confluence:ambient/flower_petal"
 			}
 		},
 		"events": {

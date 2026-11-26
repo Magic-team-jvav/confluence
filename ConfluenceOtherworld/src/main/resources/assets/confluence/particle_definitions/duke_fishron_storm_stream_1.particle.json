@@ -5,7 +5,7 @@
             "identifier": "confluence:duke_fishron_storm_stream_1",
             "basic_render_parameters": {
                 "material": "particles_add",
-                "texture": "confluence:duke_fishron_flash"
+                "texture": "confluence:duke_fishron/duke_fishron_flash"
             }
         },
         "components": {

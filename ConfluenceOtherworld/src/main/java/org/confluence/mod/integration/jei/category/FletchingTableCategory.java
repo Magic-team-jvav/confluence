@@ -21,7 +21,7 @@ import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class FletchingTableCategory implements IRecipeCategory<RecipeHolder<FletchingTableRecipe>> {
     public static final RecipeType<RecipeHolder<FletchingTableRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("fletching_table"));
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/fletching_table.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/jei/fletching_table.png");
     private final IDrawable icon;
 
     public FletchingTableCategory(IJeiHelpers jeiHelpers) {

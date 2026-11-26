@@ -5,7 +5,7 @@
 			"identifier": "confluence:butterfly_yellow",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:butterfly_0"
+                "texture": "confluence:ambient/butterfly_0"
 			}
 		},
 		"components": {

@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench                    model by Magnox",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "confluence:block/dye_vat",
-		"1": "confluence:block/dye_vat_anim",
+        "0": "confluence:block/functional/workstation/dye_vat",
+        "1": "confluence:block/functional/workstation/dye_vat_anim",
 		"particle": "confluence:block/particle/dye_vat_particle"
 	},
 	"elements": [

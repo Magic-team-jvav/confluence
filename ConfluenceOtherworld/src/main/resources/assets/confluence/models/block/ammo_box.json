@@ -3,8 +3,8 @@
 	"texture_size": [64, 64],
 	"render_type": "cutout_mipped",
 	"textures": {
-		"0": "confluence:block/arrow",
-		"1": "confluence:block/ammo_box",
+        "0": "confluence:block/trap/arrow",
+        "1": "confluence:block/functional/workstation/ammo_box",
 		"particle": "confluence:block/particle/ammo_box_particle"
 	},
 	"elements": [

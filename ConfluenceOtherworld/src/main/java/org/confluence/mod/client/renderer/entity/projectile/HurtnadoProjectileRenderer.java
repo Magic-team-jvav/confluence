@@ -14,7 +14,7 @@ import org.confluence.mod.client.model.entity.projectile.HurtnadoProjectileModel
 import org.confluence.mod.common.entity.projectile.mana.HurtnadoProjectile;
 
 public class HurtnadoProjectileRenderer extends EntityRenderer<HurtnadoProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/hurtnado_projectile.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/projectile/hurtnado_projectile.png");
     private final HurtnadoProjectileModel model;
 
     public HurtnadoProjectileRenderer(EntityRendererProvider.Context context) {

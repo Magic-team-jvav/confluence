@@ -5,7 +5,7 @@
             "identifier": "confluence:reforge_hammer_rainbow_spark",
             "basic_render_parameters": {
                 "material": "particles_add",
-                "texture": "confluence:reforge_hammer_rainbow_spark"
+                "texture": "confluence:reforge/reforge_hammer_rainbow_spark"
             }
         },
         "components": {

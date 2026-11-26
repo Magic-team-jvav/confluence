@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "confluence:block/sapphire_sapling"
+        "layer0": "confluence:block/wood/gem/sapphire_sapling"
     }
 }

@@ -2,10 +2,10 @@
     "credit": "Made with Blockbench",
     "render_type": "cutout",
     "textures": {
-        "0": "confluence:block/yellow_willow_leaves",
-        "1": "confluence:block/yellow_willow_drooping_leaves_1",
-        "2": "confluence:block/yellow_willow_drooping_leaves",
-        "particle": "confluence:block/yellow_willow_leaves"
+        "0": "confluence:block/wood/yellow_willow/yellow_willow_leaves",
+        "1": "confluence:block/wood/yellow_willow/yellow_willow_drooping_leaves_1",
+        "2": "confluence:block/wood/yellow_willow/yellow_willow_drooping_leaves",
+        "particle": "confluence:block/wood/yellow_willow/yellow_willow_leaves"
     },
     "elements": [
         {

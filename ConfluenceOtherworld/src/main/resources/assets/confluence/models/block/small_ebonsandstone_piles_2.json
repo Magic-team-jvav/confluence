@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"1":  "confluence:block/small_ebonsandstone_piles_2",
-        "particle": "confluence:block/hardened_ebonsand_block"
+        "1": "confluence:block/corruption/small_ebonsandstone_piles_2",
+        "particle": "confluence:block/corruption/hardened_ebonsand_block"
 	},
 	"elements": [
 		{

@@ -1,8 +1,8 @@
 {
     "render_type": "translucent",
     "textures": {
-        "all": "confluence:block/dream_bubble",
-        "particle": "confluence:block/dream_bubble"
+        "all": "confluence:block/shimmer/dream_bubble",
+        "particle": "confluence:block/shimmer/dream_bubble"
     },
     "elements": [
         {

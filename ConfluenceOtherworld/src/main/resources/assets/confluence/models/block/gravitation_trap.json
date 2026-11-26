@@ -3,6 +3,6 @@
   "textures": {
     "bottom": "minecraft:block/deepslate_top",
     "side": "minecraft:block/deepslate",
-    "top": "confluence:block/gravitation_trap"
+      "top": "confluence:block/trap/gravitation_trap"
   }
 }

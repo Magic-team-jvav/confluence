@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/stony_log_top",
-		"1": "confluence:block/sapphire_branches",
-		"particle": "confluence:block/stony_log_top"
+        "0": "confluence:block/cavern/stony_log_top",
+        "1": "confluence:block/wood/gem/sapphire_branches",
+        "particle": "confluence:block/cavern/stony_log_top"
 	},
 	"elements": [
 		{

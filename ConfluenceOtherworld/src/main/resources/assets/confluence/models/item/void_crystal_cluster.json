@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:block/void_crystal_cluster"
+      "layer0": "confluence:block/end/void_crystal_cluster"
   }
 }

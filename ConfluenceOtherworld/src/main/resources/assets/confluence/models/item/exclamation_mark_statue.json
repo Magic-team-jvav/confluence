@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"4": "confluence:block/exclamation_mark_statue",
+        "4": "confluence:block/statue/exclamation_mark_statue",
 		"particle": "block/andesite"
 	},
 	"elements": [

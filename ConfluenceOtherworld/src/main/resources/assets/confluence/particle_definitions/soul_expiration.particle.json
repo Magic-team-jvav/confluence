@@ -5,7 +5,7 @@
 			"identifier": "confluence:soul_expiration",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:base_mana_staff_projectile_expiration"
+                "texture": "confluence:magic/base_mana_staff_projectile_expiration"
 			}
 		},
 		"components": {

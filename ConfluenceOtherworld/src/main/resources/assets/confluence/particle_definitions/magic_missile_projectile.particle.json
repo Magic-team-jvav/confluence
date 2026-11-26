@@ -5,7 +5,7 @@
 			"identifier": "confluence:magic_missile_projectile",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:magic_missile_projectile"
+                "texture": "confluence:magic_missile/magic_missile_projectile"
 			}
 		},
 		"curves": {

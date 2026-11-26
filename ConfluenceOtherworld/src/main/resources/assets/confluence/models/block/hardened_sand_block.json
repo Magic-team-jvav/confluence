@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/hardened_sand_block"
+      "all": "confluence:block/desert/hardened_sand_block"
   }
 }

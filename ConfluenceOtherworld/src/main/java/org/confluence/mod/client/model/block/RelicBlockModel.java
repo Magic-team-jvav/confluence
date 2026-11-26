@@ -18,7 +18,7 @@ public class RelicBlockModel extends GeoModel<RelicBlock.BEntity> {
             String path = block.getId().getPath();
             map.put(block.get(), new ResourceLocation[]{
                     Confluence.asResource("geo/block/" + path + ".geo.json"),
-                    Confluence.asResource("textures/block/" + path + ".png"),
+                    Confluence.asResource("textures/block/relic/" + path + ".png"),
                     Confluence.asResource("animations/block/" + path + ".animation.json")
             });
         }

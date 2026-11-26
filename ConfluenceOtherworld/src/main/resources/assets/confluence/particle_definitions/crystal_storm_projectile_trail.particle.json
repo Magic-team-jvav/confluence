@@ -5,7 +5,7 @@
 			"identifier": "confluence:crystal_storm_projectile_trail",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "confluence:crystal_storm_projectile_trail"
+                "texture": "confluence:magic/crystal_storm_projectile_trail"
 			}
 		},
 		"components": {

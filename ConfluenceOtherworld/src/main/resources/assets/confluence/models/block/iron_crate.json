@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/iron_crate"
+      "all": "confluence:block/crate/iron_crate"
   }
 }

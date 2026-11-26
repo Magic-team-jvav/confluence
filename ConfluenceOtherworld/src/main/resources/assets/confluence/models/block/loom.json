@@ -6,7 +6,7 @@
         128
     ],
     "textures": {
-        "0": "confluence:block/loom",
+        "0": "confluence:block/functional/workstation/loom",
         "particle": "confluence:block/particle/loom_particle"
     },
     "elements": [

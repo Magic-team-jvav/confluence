@@ -5,7 +5,7 @@
             "identifier": "confluence:martian_reinforcement_landing",
             "basic_render_parameters": {
                 "material": "particles_alpha",
-                "texture": "confluence:bomb_smoke"
+                "texture": "confluence:explosion/bomb_smoke"
             }
         },
         "components": {

@@ -37,7 +37,7 @@ public class DungeonCompassRenderer {
         bone.updateScale(0.8F, 0.8F, 0.8F);
         this.outline = geoModel.getBone("outline").orElseThrow();
         outline.updateScale(0.8F, 0.8F, 0.8F);
-        ResourceLocation texture = Confluence.asResource("textures/item/dungeon_compass.png");
+        ResourceLocation texture = Confluence.asResource("textures/item/compass/dungeon_compass_model.png");
         this.boneRenderType = RenderType.text(texture);
         this.outlineRenderType = RenderType.eyes(texture);
     }

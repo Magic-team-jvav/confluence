@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "confluence:block/fey_planks_7"
+      "all": "confluence:block/wood/fey/fey_planks_7"
   }
 }

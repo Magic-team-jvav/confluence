@@ -12,7 +12,7 @@ public final class SpiderSetModel extends GeoNormalModel<ClimbingSpider> {
 
     public SpiderSetModel(String texturePath) {
         super(Confluence.asResource("wall_creeper"), false);
-        texture = Confluence.asResource("textures/entity/" + texturePath + ".png");
+        texture = EntityTexturePaths.resolve(Confluence.asResource("textures/entity/" + texturePath + ".png"));
     }
 
     @Override

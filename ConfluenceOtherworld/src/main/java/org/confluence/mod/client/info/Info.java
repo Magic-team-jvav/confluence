@@ -14,7 +14,7 @@ import org.joml.Quaternionf;
 public abstract class Info {
 
     /// 数字字形贴图（白字，按条目颜色染色）：0-9 后追加小数点，共 {@link #GLYPH_COUNT} 个字形。
-    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/damage_font.png");
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/font/damage_font.png");
     public static final int GLYPH_COUNT = 11;
     public static final int TEXTURE_WIDTH = 55;
     /// 单字形边长（世界单位）、生命周期（tick）。

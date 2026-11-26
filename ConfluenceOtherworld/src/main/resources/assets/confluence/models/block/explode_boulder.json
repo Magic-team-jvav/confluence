@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [80, 80],
 	"textures": {
-		"1": "confluence:block/explode_boulder",
-		"particle": "confluence:block/explode_boulder"
+        "1": "confluence:block/boulder/explode_boulder",
+        "particle": "confluence:block/boulder/explode_boulder"
 	},
 	"elements": [
 		{

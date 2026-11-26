@@ -5,7 +5,7 @@
 			"identifier": "confluence:falling_star",
 			"basic_render_parameters": {
 				"material": "particles_blend",
-				"texture": "confluence:falling_star"
+                "texture": "confluence:weather/falling_star"
 			}
 		},
 		"components": {

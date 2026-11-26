@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [48, 48],
 	"textures": {
-		"1": "confluence:block/o_statue"
+        "1": "confluence:block/statue/o_statue"
 	},
 	"elements": [
 		{

@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
-		"1": "confluence:block/small_crimsandstone_piles_1",
-        "particle": "confluence:block/hardened_crimsand_block"
+        "1": "confluence:block/crimson/small_crimsandstone_piles_1",
+        "particle": "confluence:block/crimson/hardened_crimsand_block"
     },
 	"elements": [
 		{

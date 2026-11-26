@@ -2,8 +2,8 @@
   "ambientocclusion": false,
   "render_type": "cutout_mipped",
   "textures": {
-    "particle": "confluence:block/brown_moss_random",
-    "glow_lichen": "confluence:block/brown_moss_random"
+      "particle": "confluence:block/moss/brown_moss_random",
+      "glow_lichen": "confluence:block/moss/brown_moss_random"
   },
   "elements": [
     {   "from": [ 0, 0, 0.1 ],

@@ -1,7 +1,13 @@
 package org.confluence.mod.util;
 
 import com.google.common.collect.Streams;
+import com.google.gson.JsonIOException;
+import com.google.gson.stream.JsonReader;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.FileUtil;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -14,9 +20,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fml.loading.FMLPaths;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.gui.AchievementProgress;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -34,15 +43,83 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.diff.Diff;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
 
 public final class AchievementUtils {
     public static final String PREFIX = "achievements/";
+    public static final Path CONFLUENCE_ACHIEVEMENTS_DIR = FMLPaths.GAMEDIR.get().resolve("confluence").resolve("achievements");
+    public static final ResourceLocation GOING_OLDSCHOOL = asAchievement("going_oldschool");
+    public static final Codec<Map<ResourceLocation, AdvancementProgress>> DATA_CODEC = Codec.unboundedMap(ResourceLocation.CODEC, AchievementProgress.CODEC);
     /// 植树造林所需种下的树苗数量。
     private static final int CONSERVATIONIST_REQUIRED = 100;
     private static final String CONSERVATIONIST_KEY = "confluence:conservationist_planted";
+    private static @Nullable Map<ResourceLocation, AdvancementProgress> data;
     @Diff
     public static final ResourceLocation ROOT = asAchievement("new_world");
+
+    /// 客户端收到同步后合并进本地缓存（服务端只会发来“有进度”的条目）。
+    public static void handleData(Map<ResourceLocation, AdvancementProgress> remote) {
+        if (data == null) {
+            data = new LinkedHashMap<>(remote);
+        } else {
+            Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(data);
+            map.putAll(remote);
+            data = map;
+        }
+    }
+
+    public static void saveData() {
+        if (data == null) return;
+        Path path = CONFLUENCE_ACHIEVEMENTS_DIR.resolve(LibClientUtils.getGameProfile().getId() + ".json");
+        saveData(data, path);
+        data = null;
+    }
+
+    public static void saveData(Map<ResourceLocation, AdvancementProgress> data, Path savePath) {
+        java.util.Optional<com.google.gson.JsonElement> encoded = DATA_CODEC.encodeStart(JsonOps.INSTANCE, data).result();
+        if (encoded.isEmpty()) {
+            Confluence.LOGGER.error("Couldn't encode confluence achievements to {}", savePath);
+            return;
+        }
+        try {
+            FileUtil.createDirectoriesSafe(savePath.getParent());
+            try (Writer writer = Files.newBufferedWriter(savePath, StandardCharsets.UTF_8)) {
+                ModUtils.GSON.toJson(encoded.get(), ModUtils.GSON.newJsonWriter(writer));
+            }
+        } catch (JsonIOException | IOException ioexception) {
+            Confluence.LOGGER.error("Couldn't save confluence achievements to {}", savePath, ioexception);
+        }
+    }
+
+    public static Map<ResourceLocation, AdvancementProgress> loadData(UUID uuid) {
+        Path path = CONFLUENCE_ACHIEVEMENTS_DIR.resolve(uuid + ".json");
+        if (Files.isRegularFile(path)) {
+            try (JsonReader reader = new JsonReader(Files.newBufferedReader(path, StandardCharsets.UTF_8))) {
+                reader.setLenient(false);
+                java.util.Optional<Map<ResourceLocation, AdvancementProgress>> parsed = DATA_CODEC
+                        .parse(JsonOps.INSTANCE, com.google.gson.internal.Streams.parse(reader))
+                        .result();
+                if (parsed.isPresent()) {
+                    return parsed.get();
+                }
+                Confluence.LOGGER.error("Couldn't parse confluence achievements in {}", path);
+            } catch (JsonIOException | IOException ioexception) {
+                Confluence.LOGGER.error("Couldn't access confluence achievements in {}", path, ioexception);
+            } catch (RuntimeException runtimeException) {
+                Confluence.LOGGER.error("Couldn't parse confluence achievements in {}", path, runtimeException);
+            }
+        }
+        return new LinkedHashMap<>();
+    }
 
     public static ResourceLocation asAchievement(String path) {
         return Confluence.asResource(PREFIX + path);

@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.Util;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
@@ -13,6 +14,7 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.util.AchievementUtils;
@@ -21,9 +23,7 @@ import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 import java.util.*;
 
 public class AchievementScreen extends Screen {
-    public static final PortWidgetSprites SPRITES = new PortWidgetSprites(
-            Confluence.asResource("achievement_icon"),
-            Confluence.asResource("achievement_icon_highlighted"));
+    public static final PortWidgetSprites SPRITES = new PortWidgetSprites(Confluence.asResource("achievement_icon"), Confluence.asResource("achievement_icon_highlighted"));
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/achievement/achievement.png");
     private static final int ENTRY_X = 4;
     private static final int ENTRY_Y = 22;
@@ -75,7 +75,8 @@ public class AchievementScreen extends Screen {
     private Iterable<Map.Entry<ResourceLocation, AchievementOffset>> rendered;
     private int lines;
     private int skip;
-//    private boolean completedGoingOldSchool;
+    private Map<ResourceLocation, AdvancementProgress> data = Map.of();
+    private boolean completedGoingOldSchool;
     private boolean[] categoriesDisabled;
 
     private int hovered = -1;
@@ -83,6 +84,17 @@ public class AchievementScreen extends Screen {
             {0, 0}, {0, 0}, {0, 0}, {0, 0}
     };
     private boolean scrolling;
+
+    /// 列表最多能滚到哪一行：总行数减去一屏能显示的行数。
+    private int maxSkip() {
+        return Math.max(lines - LIMIT_ENTRY_SIZE, 0);
+    }
+
+    /// 滚动条 thumb 在轨道上的位置比例。
+    private float scrollRatio() {
+        int max = maxSkip();
+        return max == 0 ? 0.0F : (float) skip / max;
+    }
 
     public AchievementScreen() {
         super(CommonComponents.EMPTY);
@@ -116,8 +128,9 @@ public class AchievementScreen extends Screen {
         }
         this.rendered = achievements.entrySet();
         this.lines = achievements.size();
-//        this.data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
-//        this.completedGoingOldSchool = data.containsKey(AchievementUtils.GOING_OLDSCHOOL);
+        this.skip = Mth.clamp(skip, 0, maxSkip());
+        this.data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
+        this.completedGoingOldSchool = data.containsKey(AchievementUtils.GOING_OLDSCHOOL);
         this.categoriesDisabled = new boolean[4];
     }
 
@@ -159,12 +172,12 @@ public class AchievementScreen extends Screen {
             assert entry != null;
             ResourceLocation key = entry.getKey();
             guiGraphics.blit(BACKGROUND, x, y, ENTRY_U, ENTRY_V, ENTRY_W, ENTRY_H, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-//            AdvancementProgress progress = data.get(key);
+            AdvancementProgress progress = data.get(key);
             int frameX = x + ENTRY_FRAME_X;
             int frameY = y + ENTRY_FRAME_Y;
-//            if (progress != null && progress.isDone()) {
-//                guiGraphics.blit(BACKGROUND, frameX, frameY, ENTRY_FRAME_U, ENTRY_FRAME_V, ENTRY_FRAME_W, ENTRY_FRAME_H, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-//            }
+            if (progress != null && progress.isDone()) {
+                guiGraphics.blit(BACKGROUND, frameX, frameY, ENTRY_FRAME_U, ENTRY_FRAME_V, ENTRY_FRAME_W, ENTRY_FRAME_H, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+            }
             Triple<ResourceLocation, Component, Component> triple = achievementDisplays.get(key);
             if (triple != null) {
                 guiGraphics.blit(triple.getLeft(), frameX + ENTRY_ICON_X, frameY + ENTRY_ICON_Y, 0, 0, 32, 32, 32, 32);
@@ -217,13 +230,15 @@ public class AchievementScreen extends Screen {
         }
 
         x = leftPos + 197;
-        float ratio = (float) skip / lines;
-        y = topPos + 22 + Mth.lerpInt(ratio, 0, 180 - 15);
-        int u = 210;
-        if (scrolling || (mouseX > x && mouseX < x + 7 && mouseY > y && mouseY < y + 15)) {
-            u += 8;
+        if (maxSkip() > 0) {
+            float ratio = scrollRatio();
+            y = topPos + 22 + Mth.lerpInt(ratio, 0, 180 - 15);
+            int u = 210;
+            if (scrolling || (mouseX > x && mouseX < x + 7 && mouseY > y && mouseY < y + 15)) {
+                u += 8;
+            }
+            guiGraphics.blit(BACKGROUND, x, y, u, 10, 7, 15, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         }
-        guiGraphics.blit(BACKGROUND, x, y, u, 10, 7, 15, TEXTURE_WIDTH, TEXTURE_HEIGHT);
     }
 
     @Override
@@ -241,7 +256,7 @@ public class AchievementScreen extends Screen {
                 }
             }
         }
-        int clamp = Mth.clamp(skip + invertDelta, 0, lines - LIMIT_ENTRY_SIZE);
+        int clamp = Mth.clamp(skip + invertDelta, 0, maxSkip());
         if (clamp != skip) {
             if (invertDelta == 1) {
                 int[] temp = descLinesAndSkips[0];
@@ -269,19 +284,21 @@ public class AchievementScreen extends Screen {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         int x = leftPos + 197;
-        float ratio = (float) skip / lines;
-        int y = topPos + 22 + Mth.lerpInt(ratio, 0, 180 - 15);
-        if (mouseX > x && mouseX < x + 7 && mouseY > y && mouseY < y + 15) {
-            this.scrolling = true;
-            for (int[] descLinesAndSkip : descLinesAndSkips) {
-                descLinesAndSkip[0] = 0;
-                descLinesAndSkip[1] = 0;
+        if (maxSkip() > 0) {
+            float ratio = scrollRatio();
+            int y = topPos + 22 + Mth.lerpInt(ratio, 0, 180 - 15);
+            if (mouseX > x && mouseX < x + 7 && mouseY > y && mouseY < y + 15) {
+                this.scrolling = true;
+                for (int[] descLinesAndSkip : descLinesAndSkips) {
+                    descLinesAndSkip[0] = 0;
+                    descLinesAndSkip[1] = 0;
+                }
+                return true;
             }
-            return true;
         }
 
         x = leftPos + CATEGORY_X;
-        y = topPos + CATEGORY_Y;
+        int y = topPos + CATEGORY_Y;
         for (int i = 0; i < 4; i++) {
             AchievementOffset.Category category = INDEX_2_CATEGORY[i];
             int[] uvwh = CATEGORIES_UVWH.get(category);
@@ -295,14 +312,18 @@ public class AchievementScreen extends Screen {
                     }
                 }
                 this.rendered = list;
-                ratio = (float) skip / lines;
+                float oldRatio = scrollRatio();
                 this.lines = list.size();
-                this.skip = Math.max(Mth.clamp(Mth.lerpInt(ratio, 0, lines), 0, lines - 1), 0);
+                this.skip = Mth.clamp(Math.round(oldRatio * maxSkip()), 0, maxSkip());
                 return true;
             }
             x += w;
         }
         if (button == 0 && BackgroundLayer.clickedLayers(mouseX, mouseY)) {
+            if (completedGoingOldSchool != BackgroundLayer.isCompletedGoingOldSchool()) {
+                this.data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
+                this.completedGoingOldSchool = BackgroundLayer.isCompletedGoingOldSchool();
+            }
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);
@@ -312,7 +333,10 @@ public class AchievementScreen extends Screen {
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if (scrolling) {
             float ratio = (float) Mth.clamp((mouseY - topPos - 22 - 15 * 0.5) / (180 - 15), 0, 1);
-            this.skip = Math.min(Mth.ceil(ratio * lines), lines - 1);
+            int max = maxSkip();
+            if (max > 0) {
+                this.skip = Mth.clamp(Math.round(ratio * max), 0, max);
+            }
             return true;
         }
         if (button == 0 && BackgroundLayer.dragLayers(mouseX, mouseY, dragX, dragY)) {

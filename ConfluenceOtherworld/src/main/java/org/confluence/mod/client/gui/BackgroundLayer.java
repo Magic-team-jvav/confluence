@@ -3,24 +3,35 @@ package org.confluence.mod.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import net.minecraft.Util;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.advancements.CriterionProgress;
+import net.minecraft.advancements.FrameType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraftforge.client.DimensionSpecialEffectsManager;
+import net.minecraftforge.client.ForgeHooksClient;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public enum BackgroundLayer {
     SKY {
@@ -73,7 +84,7 @@ public enum BackgroundLayer {
 
         @Override
         public void render(GuiGraphics guiGraphics, float partialTick) {
-            float f = Mth.cos(timeOfDay * Mth.TWO_PI) * 2.0F + 0.25F;
+            float f = (Mth.cos(timeOfDay * Mth.TWO_PI) + ORBIT_HORIZON) / STAR_FADE;
             f = Mth.clamp(f, 0.0F, 1.0F);
             f = f * f;
             if (f <= 0) return;
@@ -95,13 +106,13 @@ public enum BackgroundLayer {
                 float size = random.nextFloat() * 0.5F + 0.5F;
                 Quaternionf rotation = Axis.ZP.rotation(random.nextFloat() * Mth.TWO_PI);
                 temp.set(-size, -size, 0).rotate(rotation).add(x, y, 0);
-                builder.vertex(matrix4f, temp.x, temp.y, 0);
+                builder.vertex(matrix4f, temp.x, temp.y, 0).endVertex();
                 temp.set(-size, size, 0).rotate(rotation).add(x, y, 0);
-                builder.vertex(matrix4f, temp.x, temp.y, 0);
+                builder.vertex(matrix4f, temp.x, temp.y, 0).endVertex();
                 temp.set(size, size, 0).rotate(rotation).add(x, y, 0);
-                builder.vertex(matrix4f, temp.x, temp.y, 0);
+                builder.vertex(matrix4f, temp.x, temp.y, 0).endVertex();
                 temp.set(size, -size, 0).rotate(rotation).add(x, y, 0);
-                builder.vertex(matrix4f, temp.x, temp.y, 0);
+                builder.vertex(matrix4f, temp.x, temp.y, 0).endVertex();
             }
             BufferUploader.drawWithShader(builder.end());
             RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -113,14 +124,44 @@ public enum BackgroundLayer {
     PLANET {
         private static final ResourceLocation SUN = Confluence.asResource("background/sun_0");
         private static final ResourceLocation MOON = Confluence.asResource("background/moon_0");
+        /// 松手后过渡回轨道的时长。
+        private static final long SETTLE_DURATION_MS = 300L;
         private int width;
         private int height;
         private int sunSize;
         private int moonSize;
+        /// 轨道椭圆半径：水平取屏幕半宽，竖直取抬高后的值。
+        /// 水平方向让屏幕左右边缘对应晨昏两端；竖直方向抬高轨道，
+        /// 使太阳/月亮在晨昏过渡（日出日落光晕窗口）开始时就已经进入屏幕。
+        private float radiusX;
+        private float radiusY;
+        private float sunCenterY;
+        private float moonCenterY;
+        /// 行星贴图中心点，绘制与命中判定共用同一坐标。
         private final Vector2f sunPos = new Vector2f();
         private final Vector2f moonPos = new Vector2f();
         private boolean draggedSun;
         private boolean draggedMoon;
+        private boolean sunSettling;
+        private boolean moonSettling;
+        private long sunSettleStart;
+        private long moonSettleStart;
+        private float sunFromX;
+        private float sunFromY;
+        private float moonFromX;
+        private float moonFromY;
+        /// 松手瞬间的轨道角与最短旋转量，避免绕着 0/2π 转整圈。
+        private float sunSettleAngle;
+        private float sunSettleDelta;
+        private float moonSettleAngle;
+        private float moonSettleDelta;
+        /// 当前实际绘制的旋转角，抓取/松手时作为旋转过渡的起点。
+        private float sunDrawAngle;
+        private float moonDrawAngle;
+        private float sunSpinFrom;
+        private float moonSpinFrom;
+        private long sunSpinStart;
+        private long moonSpinStart;
 
         @Override
         public void init(int width, int height) {
@@ -128,72 +169,157 @@ public enum BackgroundLayer {
             this.height = height;
             this.sunSize = 78 / 2;
             this.moonSize = 61 / 2;
+            this.radiusX = Math.max(width * 0.5F, 1.0F);
+            this.radiusY = Math.max(height, 1.0F) / (1.0F + ORBIT_HORIZON);
+            this.sunCenterY = height + sunSize * 0.5F - ORBIT_HORIZON * radiusY;
+            this.moonCenterY = height + moonSize * 0.5F - ORBIT_HORIZON * radiusY;
+            this.draggedSun = false;
+            this.draggedMoon = false;
+            this.sunSettling = false;
+            this.moonSettling = false;
+            this.sunDrawAngle = 0.0F;
+            this.moonDrawAngle = 0.0F;
+            this.sunSpinFrom = 0.0F;
+            this.moonSpinFrom = 0.0F;
         }
 
         @Override
         public void render(GuiGraphics guiGraphics, float partialTick) {
             RenderSystem.setShaderColor(1, 1, 1, 1);
-            PoseStack poseStack = guiGraphics.pose();
+            long now = Util.getMillis();
 
-            if (draggedSun || draggedMoon) {
-                if (draggedSun) {
-                    poseStack.pushPose();
-                    float halfSunSize = sunSize * 0.5F;
-                    poseStack.translate(sunPos.x - halfSunSize, sunPos.y - halfSunSize, 0);
-                    guiGraphics.blitSprite(SUN, 0, 0, sunSize, sunSize);
-                    timeOfDay = Mth.lerp(sunPos.x / width, 0.25F, 0.75F);
-                    poseStack.popPose();
-                } else {
-                    poseStack.pushPose();
-                    float halfMoonSize = moonSize * 0.5F;
-                    poseStack.translate(moonPos.x - halfMoonSize, moonPos.y - halfMoonSize, 0);
-                    guiGraphics.blitSprite(MOON, 0, 0, moonSize, moonSize);
-                    float delta = moonPos.x / width;
-                    if (delta < 0.5F) {
-                        timeOfDay = Mth.lerp(delta * 2, 0.75F, 1);
-                    } else {
-                        timeOfDay = Mth.lerp(delta * 2 - 1, 0, 0.25F);
-                    }
-                    poseStack.popPose();
-                }
-            } else {
-                Quaternionf rotation = Axis.ZP.rotation(Mth.TWO_PI * timeOfDay);
-                poseStack.pushPose();
-                float halfSunSize = sunSize * 0.5F;
-                poseStack.translate(width * 0.5F, height + halfSunSize, 0);
-                poseStack.mulPose(rotation);
-                poseStack.translate(-halfSunSize, height - halfSunSize, 0);
-                guiGraphics.blitSprite(SUN, 0, 0, sunSize, sunSize);
-                Matrix4f pose = poseStack.last().pose();
-                sunPos.set(pose.m30(), pose.m31());
-                poseStack.popPose();
-
-                poseStack.pushPose();
-                float halfMoonSize = moonSize * 0.5F;
-                poseStack.translate(width * 0.5F, height + halfMoonSize, 0);
-                poseStack.mulPose(rotation);
-                poseStack.translate(-halfMoonSize, -halfMoonSize - height, 0);
-                guiGraphics.blitSprite(MOON, 0, 0, moonSize, moonSize);
-                pose = poseStack.last().pose();
-                moonPos.set(pose.m30(), pose.m31());
-                poseStack.popPose();
+            if (draggedSun) {
+                float spin = Mth.clamp((now - sunSpinStart) / (float) SETTLE_DURATION_MS, 0.0F, 1.0F);
+                this.sunDrawAngle = lerpAngle(spin * spin * (3.0F - 2.0F * spin), sunSpinFrom, 0.0F);
+                drawPlanet(guiGraphics, SUN, sunPos.x, sunPos.y, sunSize, sunDrawAngle);
+                timeOfDay = planetTimeOfDay(sunPos.x, true);
+                return;
             }
+            if (draggedMoon) {
+                float spin = Mth.clamp((now - moonSpinStart) / (float) SETTLE_DURATION_MS, 0.0F, 1.0F);
+                this.moonDrawAngle = lerpAngle(spin * spin * (3.0F - 2.0F * spin), moonSpinFrom, 0.0F);
+                drawPlanet(guiGraphics, MOON, moonPos.x, moonPos.y, moonSize, moonDrawAngle);
+                timeOfDay = planetTimeOfDay(moonPos.x, false);
+                return;
+            }
+
+            float angle = Mth.TWO_PI * timeOfDay;
+            float sin = Mth.sin(angle);
+            float cos = Mth.cos(angle);
+
+            float sunX = width * 0.5F - radiusX * sin;
+            float sunY = sunCenterY + radiusY * cos;
+            float sunAngle = orbitRotation(timeOfDay);
+            if (sunSettling) {
+                float progress = Mth.clamp((now - sunSettleStart) / (float) SETTLE_DURATION_MS, 0.0F, 1.0F);
+                float eased = progress * progress * (3.0F - 2.0F * progress);
+                sunX = Mth.lerp(eased, sunFromX, sunX);
+                sunY = Mth.lerp(eased, sunFromY, sunY);
+                sunAngle = sunSpinFrom + sunSettleDelta * eased + wrapAngle(orbitRotation(timeOfDay) - sunSettleAngle);
+                if (progress >= 1.0F) {
+                    sunSettling = false;
+                }
+            }
+            this.sunDrawAngle = sunAngle;
+            sunPos.set(sunX, sunY);
+
+            float moonX = width * 0.5F + radiusX * sin;
+            float moonY = moonCenterY - radiusY * cos;
+            float moonAngle = orbitRotation(timeOfDay);
+            if (moonSettling) {
+                float progress = Mth.clamp((now - moonSettleStart) / (float) SETTLE_DURATION_MS, 0.0F, 1.0F);
+                float eased = progress * progress * (3.0F - 2.0F * progress);
+                moonX = Mth.lerp(eased, moonFromX, moonX);
+                moonY = Mth.lerp(eased, moonFromY, moonY);
+                moonAngle = moonSpinFrom + moonSettleDelta * eased + wrapAngle(orbitRotation(timeOfDay) - moonSettleAngle);
+                if (progress >= 1.0F) {
+                    moonSettling = false;
+                }
+            }
+            this.moonDrawAngle = moonAngle;
+            moonPos.set(moonX, moonY);
+
+            drawPlanet(guiGraphics, SUN, sunX, sunY, sunSize, sunAngle);
+            drawPlanet(guiGraphics, MOON, moonX, moonY, moonSize, moonAngle);
+        }
+
+        /// 以贴图中心点绘制，和 {@link #sunPos}/{@link #moonPos} 的坐标含义保持一致。
+        private static void drawPlanet(GuiGraphics guiGraphics, ResourceLocation sprite, float centerX, float centerY, int size, float angle) {
+            float half = size * 0.5F;
+            PoseStack poseStack = guiGraphics.pose();
+            poseStack.pushPose();
+            poseStack.translate(centerX, centerY, 0);
+            poseStack.mulPose(Axis.ZP.rotation(angle));
+            poseStack.translate(-half, -half, 0);
+            guiGraphics.blitSprite(sprite, 0, 0, size, size);
+            poseStack.popPose();
+        }
+
+        /// 反解轨道：屏幕左右边缘分别对应太阳的日出/日落与月亮的月出/月落，拖动不出屏也能改变晨昏。
+        private float planetTimeOfDay(float centerX, boolean sun) {
+            double offset = (width * 0.5D - centerX) / Math.max(radiusX, 1.0F);
+            double angle;
+            if (sun) {
+                angle = Math.PI - Math.asin(Mth.clamp(offset, -1.0D, 1.0D));
+            } else {
+                angle = Math.asin(Mth.clamp(-offset, -1.0D, 1.0D));
+                if (centerX < width * 0.5F) {
+                    angle += Mth.TWO_PI;
+                }
+            }
+            return (float) (angle / Mth.TWO_PI);
+        }
+
+        /// 行星在轨道上的自转：限制在 ±45° 的周期性摆动，避免昼夜角差过大导致抓取/松手转半圈。
+        private static float orbitRotation(float t) {
+            return Mth.sin(Mth.TWO_PI * t) * (Mth.PI * 0.25F);
+        }
+
+        /// 以最短路径插值旋转角，避免横跨 0/2π 时绕整圈。
+        private static float lerpAngle(float progress, float from, float to) {
+            return from + shortestDelta(from, to) * progress;
+        }
+
+        private static float shortestDelta(float from, float to) {
+            return wrapAngle(to - from);
+        }
+
+        private static float wrapAngle(float angle) {
+            float wrapped = angle % Mth.TWO_PI;
+            if (wrapped > Mth.PI) {
+                wrapped -= Mth.TWO_PI;
+            } else if (wrapped < -Mth.PI) {
+                wrapped += Mth.TWO_PI;
+            }
+            return wrapped;
+        }
+
+        /// 命中判定按贴图矩形（外扩 1px），与绘制区域一致。
+        private static boolean isWithin(Vector2f center, int size, double mouseX, double mouseY) {
+            float half = size * 0.5F + 1.0F;
+            return Math.abs(mouseX - center.x) <= half && Math.abs(mouseY - center.y) <= half;
         }
 
         @Override
         public boolean clicked(double mouseX, double mouseY) {
-            if (sunPos.distance((float) mouseX, (float) mouseY) < sunSize) {
+            if (isWithin(sunPos, sunSize, mouseX, mouseY)) {
+                this.sunSpinFrom = this.sunDrawAngle;
+                this.sunSpinStart = Util.getMillis();
                 this.draggedSun = true;
+                this.sunSettling = false;
                 sunPos.set((float) mouseX, (float) mouseY);
                 dragged = true;
-//                awardGoingOldschool();
+                awardGoingOldschool();
                 return true;
             }
-            if (moonPos.distance((float) mouseX, (float) mouseY) < moonSize) {
+            if (isWithin(moonPos, moonSize, mouseX, mouseY)) {
+                this.moonSpinFrom = this.moonDrawAngle;
+                this.moonSpinStart = Util.getMillis();
                 this.draggedMoon = true;
+                this.moonSettling = false;
                 moonPos.set((float) mouseX, (float) mouseY);
                 dragged = true;
-//                awardGoingOldschool();
+                awardGoingOldschool();
                 return true;
             }
             return false;
@@ -216,11 +342,25 @@ public enum BackgroundLayer {
         public boolean released(double mouseX, double mouseY) {
             if (draggedSun) {
                 this.draggedSun = false;
+                this.sunSettling = true;
+                this.sunSettleStart = Util.getMillis();
+                this.sunSpinFrom = this.sunDrawAngle;
+                this.sunSettleAngle = orbitRotation(timeOfDay);
+                this.sunSettleDelta = shortestDelta(sunSpinFrom, sunSettleAngle);
+                this.sunFromX = sunPos.x;
+                this.sunFromY = sunPos.y;
                 dragged = false;
                 return true;
             }
             if (draggedMoon) {
                 this.draggedMoon = false;
+                this.moonSettling = true;
+                this.moonSettleStart = Util.getMillis();
+                this.moonSpinFrom = this.moonDrawAngle;
+                this.moonSettleAngle = orbitRotation(timeOfDay);
+                this.moonSettleDelta = shortestDelta(moonSpinFrom, moonSettleAngle);
+                this.moonFromX = moonPos.x;
+                this.moonFromY = moonPos.y;
                 dragged = false;
                 return true;
             }
@@ -418,6 +558,10 @@ public enum BackgroundLayer {
     private static float skyColor;
     private static boolean dragged;
     private static boolean completedGoingOldSchool;
+    /// 行星出现/消失时的 cos 阈值，星星也用它对齐月亮升落。
+    private static final float ORBIT_HORIZON = 0.42F;
+    /// 星星从月亮升起（cos=-ORBIT_HORIZON）到完全可见所需的 cos 跨度。
+    private static final float STAR_FADE = 0.73F;
 
     public static void initLayers(int width, int height) {
         timeOfDay = (float) Math.random();
@@ -496,28 +640,29 @@ public enum BackgroundLayer {
         enabled = false;
     }
 
-//    private static void awardGoingOldschool() {
-//        if (completedGoingOldSchool) return;
-//        PlayerAdvancements.Data data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
-//        if (data.map().containsKey(AchievementUtils.GOING_OLDSCHOOL)) {
-//            completedGoingOldSchool = true;
-//        } else {
-//            completedGoingOldSchool = true;
-//            Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(data.map());
-//            map.put(AchievementUtils.GOING_OLDSCHOOL, new AchievementProgress(Map.of("never", new CriterionProgress(Instant.now())), true));
-//            data = new PlayerAdvancements.Data(map);
-//            AchievementToast toast = new AchievementToast(
-//                    Confluence.asResource("textures/achievement/going_oldschool.png"),
-//                    new AchievementToast.Display(AdvancementType.CHALLENGE,
-//                            Component.translatable("achievements.confluence.going_oldschool.title"),
-//                            Component.translatable("achievements.confluence.going_oldschool.description")
-//                    ));
-//            toast.blitOffset = () -> ClientHooks.getGuiFarPlane() - 21000 + 1;
-//            Minecraft.getInstance().getToasts().addToast(toast);
-//            AchievementUtils.handleData(data, false);
-//            AchievementUtils.saveData();
-//        }
-//    }
+    private static void awardGoingOldschool() {
+        if (completedGoingOldSchool) return;
+        Map<ResourceLocation, AdvancementProgress> data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
+        if (data.containsKey(AchievementUtils.GOING_OLDSCHOOL)) {
+            completedGoingOldSchool = true;
+            return;
+        }
+        completedGoingOldSchool = true;
+        Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(data);
+        CriterionProgress criterion = new CriterionProgress();
+        criterion.grant();
+        map.put(AchievementUtils.GOING_OLDSCHOOL, new AchievementProgress(Map.of("never", criterion), true));
+        AchievementToast toast = new AchievementToast(
+                Confluence.asResource("textures/achievement/challenger/going_oldschool.png"),
+                new AchievementToast.Display(FrameType.CHALLENGE,
+                        Component.translatable("achievements.confluence.going_oldschool.title"),
+                        Component.translatable("achievements.confluence.going_oldschool.description")
+                ));
+        toast.blitOffset = () -> ForgeHooksClient.getGuiFarPlane() - 11000 + 1;
+        Minecraft.getInstance().getToasts().addToast(toast);
+        AchievementUtils.handleData(map);
+        AchievementUtils.saveData();
+    }
 
     public static boolean isCompletedGoingOldSchool() {
         return completedGoingOldSchool;

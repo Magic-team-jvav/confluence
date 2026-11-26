@@ -90,7 +90,6 @@ public final class GameEvents {
         } else {
             ExtraInventorySyncPacketS2C.sendToClient(sendTo, sendTo);
             AchievementOffsetSyncPacketS2C.sendToClient(sendTo);
-//            AchievementUtils.setData(sendTo);
         }
     }
 

@@ -82,6 +82,7 @@ import org.confluence.mod.common.worldgen.secret_seed.NeverSleep;
 import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.mixed.*;
+import org.confluence.mod.network.s2c.AchievementsDataSyncPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.util.TCUtils;
@@ -113,7 +114,7 @@ public final class PlayerEvents {
         PortEventHandler.addListener(PlayerEvents::respawn);
         PortEventHandler.addListener(PlayerEvents::harvestCheck);
         PortEventHandler.addListener(PlayerEvents::advancementEarn);
-//        PortEventHandler.addListener(PlayerEvents::advancementProgress);
+        PortEventHandler.addListener(PlayerEvents::advancementProgress);
         PortEventHandler.addListener(PlayerEvents::startTracking);
         PortEventHandler.addListener(PlayerEvents::changedDimension);
         PortEventHandler.addListener(PlayerEvents::container$Close);
@@ -312,7 +313,6 @@ public final class PlayerEvents {
     }
 
 
-
     private static void itemFished(ItemFishedEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         FishingHook hook = event.getHookEntity();
@@ -331,7 +331,8 @@ public final class PlayerEvents {
                 .anyMatch(stack -> stack.is(AnglerData.INSTANCE.getQuestFish()));
         boolean caughtMob = !questCatch && tryCatchBloodMoonMob(player, hook, session);
         if (caughtMob) event.getDrops().clear();
-        if (session != null && (caughtMob || !event.getDrops().isEmpty())) session.consumeBait(player);
+        if (session != null && (caughtMob || !event.getDrops().isEmpty()))
+            session.consumeBait(player);
     }
 
     /// 血月夜晚的水中捕获可替换为生物；仅成功生成时返回 true，失败则保留原鱼获。
@@ -449,6 +450,11 @@ public final class PlayerEvents {
         if (display != null && !display.shouldAnnounceChat() && AchievementOffset.Loader.getDisplayOffset().containsKey(advancement.getId())) {
             player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), advancement.getChatComponent()), false);
         }
+    }
+
+    /// 成就进度变化时增量同步该成就，标题界面的成就界面据此展示已完成状态。
+    private static void advancementProgress(AdvancementEvent.AdvancementProgressEvent event) {
+        AchievementsDataSyncPacketS2C.sendToPlayer((ServerPlayer) event.getEntity(), event.getAdvancement().getId());
     }
 
     private static void startTracking(PlayerEvent.StartTracking event) {

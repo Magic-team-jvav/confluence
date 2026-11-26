@@ -56,7 +56,7 @@ public final class NetworkEvents {
         handler.registerInGameS2C(SoulSkillSyncPacketS2C.class, SoulSkillSyncPacketS2C.ID, SoulSkillSyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(SoulSkillUsePacketS2C.class, SoulSkillUsePacketS2C.ID, SoulSkillUsePacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(AchievementOffsetSyncPacketS2C.class, AchievementOffsetSyncPacketS2C.ID, AchievementOffsetSyncPacketS2C.STREAM_CODEC);
-//        handler.registerInGameS2C(AchievementsDataSyncPacketS2C.class, AchievementsDataSyncPacketS2C.ID, AchievementsDataSyncPacketS2C.STREAM_CODEC);
+        handler.registerInGameS2C(AchievementsDataSyncPacketS2C.class, AchievementsDataSyncPacketS2C.ID, AchievementsDataSyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(AvailableHouseSelectPacketS2C.class, AvailableHouseSelectPacketS2C.ID, AvailableHouseSelectPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(BestiarySyncPacketS2C.class, BestiarySyncPacketS2C.ID, BestiarySyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(BossBarSyncPacketS2C.class, BossBarSyncPacketS2C.ID, BossBarSyncPacketS2C.STREAM_CODEC);

@@ -7,7 +7,10 @@ import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -21,6 +24,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.InteractionHand;
@@ -60,6 +64,7 @@ import org.confluence.mod.client.effect.voidsea.VoidSeaFilterRenderer;
 import org.confluence.mod.client.effect.voidsea.VoidSeaRenderer;
 import org.confluence.mod.client.effect.voidsea.VoidSeaSwimEffects;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
+import org.confluence.mod.client.gui.AchievementScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.hud.CrosshairHud;
@@ -108,11 +113,13 @@ import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.ElectrifiedInputPacketC2S;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModAttributeUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.lwjgl.glfw.GLFW;
+import org.mesdag.portlib.client.gui.components.PortImageButton;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.client.PortAddAttributeTooltipsEvent;
@@ -286,6 +293,7 @@ public final class GameClientEvents {
         ModClientSetups.ENTITY_DISPLAY.clear();
         ClientSoulHandler.clearHudPlayers();
         OpalLightIntegration.clearWorld();
+        AchievementUtils.saveData();
     }
 
     private static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
@@ -511,22 +519,22 @@ public final class GameClientEvents {
             event.addListener(ExtraInventoryScreen.getExtraInventoryButton((EffectRenderingInventoryScreen<?>) screen, isInventoryScreen));
         }
 
-// todo       if (screen instanceof TitleScreen) {
-//            for (GuiEventListener listener : event.getListenersList()) {
-//                if (listener instanceof AbstractWidget widget &&
-//                        widget.getMessage().getContents() instanceof TranslatableContents contents &&
-//                        "menu.online".equals(contents.getKey())
-//                ) {
-//                    event.addListener(new PortImageButton(screen.width / 2 - 124, widget.getY(), 20, 20, AchievementScreen.SPRITES, button -> {
-//                        Minecraft.getInstance().pushGuiLayer(new AchievementScreen());
-//                    }) {
-//                        @Override
-//                        public void setFocused(boolean focused) {}
-//                    });
-//                    break;
-//                }
-//            }
-//        }
+        if (screen instanceof TitleScreen) {
+            for (GuiEventListener listener : event.getListenersList()) {
+                if (listener instanceof AbstractWidget widget &&
+                        widget.getMessage().getContents() instanceof TranslatableContents contents &&
+                        "fml.menu.mods".equals(contents.getKey())
+                ) {
+                    event.addListener(new PortImageButton(widget.getX() - 24, widget.getY(), 20, 20, AchievementScreen.SPRITES, button -> {
+                        Minecraft.getInstance().pushGuiLayer(new AchievementScreen());
+                    }) {
+                        @Override
+                        public void setFocused(boolean focused) {}
+                    });
+                    break;
+                }
+            }
+        }
     }
 
     private static void renderLiving$Post(RenderLivingEvent.Post<?, ?> event) {

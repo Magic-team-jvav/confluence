@@ -351,7 +351,10 @@ public class HillOfFlesh extends BaseBoss {
 
         encounterTicks++;
         updateInitialization();
-        updatePhase();
+        if (phase2 && isExpert() && expandingTicks < INNER_EXPANSION_TICKS) {
+            expandingTicks++;
+        }
+        entityData.set(DATA_INNER_RADIUS, calculateInnerRadius());
         updateArenaDestruction();
         for (Part part : parts) part.tickPart(this);
 
@@ -370,15 +373,12 @@ public class HillOfFlesh extends BaseBoss {
         }
     }
 
-    private void updatePhase() {
+    @Override
+    protected void updateHealthPhase() {
         if (!phase2 && getHealth() / getMaxHealth() < 0.5F) {
             phase2 = true;
             broadcastPhaseTransition();
         }
-        if (phase2 && isExpert() && expandingTicks < INNER_EXPANSION_TICKS) {
-            expandingTicks++;
-        }
-        entityData.set(DATA_INNER_RADIUS, calculateInnerRadius());
     }
 
     private void updateArenaDestruction() {

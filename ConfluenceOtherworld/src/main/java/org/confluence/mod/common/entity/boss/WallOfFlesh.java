@@ -467,7 +467,6 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
         if (tickCount % CHUNK_REFRESH_INTERVAL == 0) {
             refreshWallChunkTickets(serverLevel);
         }
-        updatePhase();
         acquireFrontTarget();
         updateHorrifiedPlayers();
         ensureWallLayout();
@@ -488,7 +487,8 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
         LibEntityUtils.setEntityYaw(this, rotation);
     }
 
-    private void updatePhase() {
+    @Override
+    protected void updateHealthPhase() {
         if (!isPhaseTwo() && getHealth() < getMaxHealth() * 0.5F) {
             entityData.set(DATA_PHASE_TWO, true);
         }
@@ -982,7 +982,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         entityData.set(DATA_PHASE_TWO, tag.getBoolean(PHASE_TWO_TAG));
-        updatePhase();
+        updateHealthPhase();
         initialPosition = new Vec3(tag.getDouble(INITIAL_X_TAG), tag.getDouble(INITIAL_Y_TAG), tag.getDouble(INITIAL_Z_TAG));
         layoutSeed = tag.getLong(LAYOUT_SEED_TAG);
         hungryTimer = tag.getInt(HUNGRY_TIMER_TAG);

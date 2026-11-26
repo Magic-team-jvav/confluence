@@ -520,7 +520,6 @@ public class TheDestroyer extends MechanicalBoss {
         if (isParalyzed()) return;
         if (!isAlive() || isDisengageRetreating()) return;
         LivingEntity target = getTarget();
-        updateStage();
         probes.tick();
         body.initializeTrail();
         if (target == null || !target.isAlive() || target.isRemoved() || target.level() != level()) {
@@ -607,7 +606,9 @@ public class TheDestroyer extends MechanicalBoss {
         if (isAlive()) tickLasers(target);
     }
 
-    private void updateStage() {
+    @Override
+    protected void updateHealthPhase() {
+        if (isParalyzed() || isDisengageRetreating()) return;
         float threshold = phaseTwoThreshold();
         if (!isMetal() && getHealth() <= getMaxHealth() * threshold) {
             level().broadcastEntityEvent(this, PHASE_SHELL_EVENT);

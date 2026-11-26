@@ -1,5 +1,6 @@
 package org.confluence.mod.client.handler;
 
+import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.network.s2c.BossBarSyncPacketS2C.Health;
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +16,10 @@ public final class ClientBossBarTracker {
     private ClientBossBarTracker() {}
 
     public static void synchronize(UUID eventId, ResourceLocation styleId, List<Health> health) {
-        ACTIVE_BARS.put(eventId, new BossBarData(styleId, List.copyOf(health)));
+        BossBarData previous = ACTIVE_BARS.get(eventId);
+        // 同一样式下收到新血量时沿用起播时间，切换样式才从首帧播放。
+        long start = previous != null && previous.styleId().equals(styleId) ? previous.styleSince() : Util.getMillis();
+        ACTIVE_BARS.put(eventId, new BossBarData(styleId, List.copyOf(health), start));
     }
 
     public static @Nullable BossBarData get(UUID eventId) {
@@ -30,5 +34,5 @@ public final class ClientBossBarTracker {
         ACTIVE_BARS.clear();
     }
 
-    public record BossBarData(ResourceLocation styleId, List<Health> health) {}
+    public record BossBarData(ResourceLocation styleId, List<Health> health, long styleSince) {}
 }

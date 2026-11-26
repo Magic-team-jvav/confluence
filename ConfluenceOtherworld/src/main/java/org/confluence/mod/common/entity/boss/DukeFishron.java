@@ -197,6 +197,19 @@ public class DukeFishron extends BaseBoss {
         };
     }
 
+    @Override
+    protected void updateHealthPhase() {
+        if (isSummoning()) return;
+        float health = getHealth() / getMaxHealth();
+        int nextPhase = health <= DARK_PHASE_HEALTH ? 3 : health <= STORM_PHASE_HEALTH ? 2 : 1;
+        if (nextPhase > phase) {
+            phase = nextPhase;
+            nextAttack = 0;
+            entityData.set(DARK_SKY, phase == 3);
+            finishAttack();
+        }
+    }
+
     private void tickEncounter() {
         if (isSummoning()) {
             if (level() instanceof ServerLevel server) tickSummoning(server);
@@ -213,15 +226,6 @@ public class DukeFishron extends BaseBoss {
         if (outsideOcean != enraged) {
             enraged = outsideOcean;
             setSpecialState(Temperament.ENRAGED, enraged);
-        }
-
-        float health = getHealth() / getMaxHealth();
-        int nextPhase = health <= DARK_PHASE_HEALTH ? 3 : health <= STORM_PHASE_HEALTH ? 2 : 1;
-        if (nextPhase > phase) {
-            phase = nextPhase;
-            nextAttack = 0;
-            entityData.set(DARK_SKY, phase == 3);
-            finishAttack();
         }
 
         ticks++;

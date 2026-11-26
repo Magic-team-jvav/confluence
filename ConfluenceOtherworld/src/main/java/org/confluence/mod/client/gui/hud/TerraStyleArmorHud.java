@@ -33,7 +33,10 @@ public class TerraStyleArmorHud implements PortGuiLayer {
         LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(ModClientConfigs.armorLayoutX.get(), ModClientConfigs.armorLayoutY.get(), 0);
         ModClientConfigs.armorStyle.render(guiGraphics, minecraft);
+        guiGraphics.pose().popPose();
 
         minecraft.getProfiler().pop();
     }

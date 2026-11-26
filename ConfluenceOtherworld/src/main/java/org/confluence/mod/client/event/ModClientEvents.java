@@ -848,7 +848,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.SKELETRON_PRIME.get(), SkeletronPrimeBossRenderer::new);
         event.registerEntityRenderer(BossEntities.SKELETRON_PRIME_PART.get(), SkeletronPrimeArmRenderer::new);
         event.registerEntityRenderer(BossEntities.WALL_OF_FLESH.get(), WallOfFleshRenderer::new);
-        event.registerEntityRenderer(BossEntities.PLANTERA.get(), MissingModelRenderer::new); // todo plantera_1 资源已导出，普通与狂暴花瓣的阶段位置仍待适配
+        event.registerEntityRenderer(BossEntities.PLANTERA.get(), PlanteraRenderer::new);
         event.registerEntityRenderer(BossEntities.DUKE_FISHRON.get(), ctx -> new FishronGeoRenderer<>(ctx, "duke_fishron", new DukeFishronGeoModel()));
         event.registerEntityRenderer(BossEntities.SHARKRON.get(), ctx -> new FishronGeoRenderer<>(ctx, "sharkron"));
         event.registerEntityRenderer(BossEntities.FISHRON_TORNADO.get(), NoopRenderer::new);
@@ -856,8 +856,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.DETONATING_BUBBLE.get(), ctx -> new GeoNoShadeRenderer<>(ctx, new QueenSlimePartModel<>("queen_slime_projectile", Confluence.asResource("textures/entity/boss/detonating_bubble.png"))));
         event.registerEntityRenderer(BossEntities.RAZORBLADE_TYPHOON.get(), NoopRenderer::new);
         event.registerEntityRenderer(BossEntities.SMALL_RAZORBLADE_TYPHOON.get(), NoopRenderer::new);
-        event.registerEntityRenderer(BossEntities.PLANTERA_HOOK.get(), MissingModelRenderer::new); // todo 专用模型
-        event.registerEntityRenderer(BossEntities.PLANTERA_TENTACLE.get(), MissingModelRenderer::new); // todo 专用模型
+        event.registerEntityRenderer(BossEntities.PLANTERA_HOOK.get(), context -> new PlanteraPartRenderer<>(context, "plantera_hook"));
+        event.registerEntityRenderer(BossEntities.PLANTERA_TENTACLE.get(), context -> new PlanteraPartRenderer<>(context, "plantera_tentacle"));
         event.registerEntityRenderer(BossEntities.LUNATIC_CULTIST.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(BossEntities.LUNATIC_CULTIST_CLONE.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(BossEntities.PHANTASM_DRAGON.get(), MissingModelRenderer::new); // todo 专用模型

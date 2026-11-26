@@ -65,7 +65,10 @@ public class TerraStyleManaHud implements PortGuiLayer {
 
         /// 灵魂条与魔力条各有独立的样式开关，同一时间只会画其中一个。
         if (SoulcererUtils.isSoulMode(minecraft.player)) {
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(ModClientConfigs.soulLayoutX.get(), ModClientConfigs.soulLayoutY.get(), 0);
             ModClientConfigs.soulStyle.render(guiGraphics, minecraft);
+            guiGraphics.pose().popPose();
         } else {
             ModClientConfigs.manaStyle.render(guiGraphics, minecraft);
         }

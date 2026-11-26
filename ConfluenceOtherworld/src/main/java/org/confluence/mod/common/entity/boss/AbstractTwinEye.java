@@ -40,6 +40,7 @@ import java.util.UUID;
 
 /// 双眼各自维护技能与脱战，通过遭遇记录共享一阶段目标、血条和胜负。
 public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDropSource {
+    public static final ResourceLocation BOSS_BAR = Confluence.asResource("the_twins");
     private static final EntityDataAccessor<Optional<UUID>> ENCOUNTER_UUID = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Boolean> DATA_TRANSFORMED = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_DASHING = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
@@ -248,7 +249,7 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
     // 两眼共享样式，血量段顺序固定为激光眼、魔焰眼。
     @Override
     protected ResourceLocation getBossBarStyle() {
-        return Confluence.asResource("the_twins");
+        return BOSS_BAR;
     }
 
     // 死亡眼保持零血量，不挤占存活眼的显示长度。
@@ -281,6 +282,18 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
                 return new WaitAction(100);
             }
         };
+    }
+
+    @Override
+    protected void updateHealthPhase() {
+        if (isParalyzed() || isDisengageRetreating() || leavingTicks > 0 || LibDateUtils.isDay(level()))
+            return;
+        if (!isTransformed() && getHealth() < getMaxHealth() * (legendaryCombat() ? LEGENDARY_PHASE_TWO_HEALTH_RATIO : PHASE_TWO_HEALTH_RATIO)) {
+            entityData.set(DATA_TRANSFORMED, true);
+            transitionTicks = transformationDuration();
+            entityData.set(DATA_TRANSITION_TICKS, transitionTicks);
+            resetCombatCycle();
+        }
     }
 
     @Override
@@ -323,12 +336,6 @@ public abstract class AbstractTwinEye extends MechanicalBoss implements MoneyDro
             return;
         }
 
-        if (!isTransformed() && getHealth() < getMaxHealth() * (legendaryCombat() ? LEGENDARY_PHASE_TWO_HEALTH_RATIO : PHASE_TWO_HEALTH_RATIO)) {
-            entityData.set(DATA_TRANSFORMED, true);
-            transitionTicks = transformationDuration();
-            entityData.set(DATA_TRANSITION_TICKS, transitionTicks);
-            resetCombatCycle();
-        }
         if (transitionTicks > 0) {
             transitionTicks--;
             entityData.set(DATA_TRANSITION_TICKS, transitionTicks);

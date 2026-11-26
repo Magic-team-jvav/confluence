@@ -21,7 +21,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-/// 世纪之花触手——从方块表面伸出攻击玩家，短时间后消失。
+/// 二阶段触手围绕本体或花钩活动，槽位由世纪之花统一分配。
 public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements GeoEntity {
     private static final String SLOT_TAG = "Slot";
     /// 触手默认环绕锚点的距离，单位格。
@@ -120,6 +120,7 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
                 SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
                 candidate -> candidate instanceof LivingEntity living && living != master && master.canAttack(living))) {
             if (entity.hurt(damageSources().mobAttack(master), (float) getAttributeValue(Attributes.ATTACK_DAMAGE))) {
+                master.reportAttackHit((LivingEntity) entity);
                 contactCooldown = CONTACT_COOLDOWN;
                 break;
             }
@@ -146,11 +147,6 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
     @Override
     protected Class<Plantera> getOwnerType() {
         return Plantera.class;
-    }
-
-    @Override
-    public boolean isPickable() {
-        return false;
     }
 
     @Override

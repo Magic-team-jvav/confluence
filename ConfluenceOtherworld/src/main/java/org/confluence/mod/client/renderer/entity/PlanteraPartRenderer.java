@@ -43,7 +43,13 @@ public class PlanteraPartRenderer<T extends BaseLivingBossPart<Plantera> & GeoEn
         Plantera boss = part.getOwner();
         if (boss == null) return;
 
-        Vec3 anchor = part instanceof PlanteraHook hook ? boss.hookAttachment(hook.getHookIndex(), partialTick) : boss.tentacleAnchorForRender(((PlanteraTentacle) part).getSlot(), partialTick);
+        Vec3 anchor;
+        if (part instanceof PlanteraHook hook) {
+            anchor = boss.hookAttachment(hook.getHookIndex(), partialTick);
+        } else {
+            PlanteraTentacle tentacle = (PlanteraTentacle) part;
+            anchor = tentacle.isPlanted() ? tentacle.getPlantedAnchor() : boss.tentacleAnchorForRender(tentacle.getSlot(), partialTick);
+        }
         Vec3 start = new Vec3(0, part.getBbHeight() * 0.5, 0);
         if (part instanceof PlanteraHook) {
             // 花钩的藤柄在模型底部，沿钩身反方向从中心退到藤柄内侧。

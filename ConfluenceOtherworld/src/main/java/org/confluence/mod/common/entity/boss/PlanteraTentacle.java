@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
+import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -23,6 +24,9 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 /// 二阶段触手围绕本体或花钩活动，槽位由世纪之花统一分配。
 public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements GeoEntity {
+    // 播种触手固定在落点，最多存活 15 秒，不占用本体或花钩的再生槽。
+    private static final int PLANTED_LIFETIME_TICKS = 300;
+    private static final int PLANTED_SLOT = -1;
     private static final String SLOT_TAG = "Slot";
     /// 触手默认环绕锚点的距离，单位格。
     private static final double DISTANCE_FROM_ANCHOR = 6.0;
@@ -42,6 +46,8 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
 
     private static final EntityDataAccessor<Integer> SLOT = SynchedEntityData.defineId(PlanteraTentacle.class, EntityDataSerializers.INT);
 
+    private static final EntityDataAccessor<Vector3f> PLANTED_ANCHOR = SynchedEntityData.defineId(PlanteraTentacle.class, EntityDataSerializers.VECTOR3);
+
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int contactCooldown;
 
@@ -51,19 +57,35 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
     }
 
     /// 将新建触手绑定到指定槽位。槽位必须由世纪之花分配，外部调用者不应自行复用。
-    public void setMaster(Plantera master, int slot) {
+    public boolean setMaster(Plantera master, int slot) {
         entityData.set(SLOT, Mth.clamp(slot, 0, Plantera.TENTACLE_COUNT - 1));
-        bindTo(master);
+        if (!bindTo(master)) return false;
         master.bindTentacle(this);
+        return true;
+    }
+
+    public boolean setMaster(Plantera master, Vec3 plantPosition) {
+        entityData.set(SLOT, PLANTED_SLOT);
+        entityData.set(PLANTED_ANCHOR, plantPosition.toVector3f());
+        return bindTo(master);
     }
 
     public int getSlot() {
         return entityData.get(SLOT);
     }
 
+    public boolean isPlanted() {
+        return getSlot() == PLANTED_SLOT;
+    }
+
+    public Vec3 getPlantedAnchor() {
+        return new Vec3(entityData.get(PLANTED_ANCHOR));
+    }
+
     @Override
     protected void definePartSynchedData(SynchedEntityData.Builder builder) {
         builder.define(SLOT, 0);
+        builder.define(PLANTED_ANCHOR, new Vector3f());
     }
 
     @Override
@@ -72,12 +94,17 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
             return;
         }
 
-        Vec3 anchor = master.getTentacleAnchor(getSlot());
+        boolean planted = isPlanted();
+        if (planted && tickCount >= PLANTED_LIFETIME_TICKS) {
+            discard();
+            return;
+        }
+        Vec3 anchor = planted ? getPlantedAnchor() : master.getTentacleAnchor(getSlot());
         Vec3 offset = getEyePosition().subtract(anchor);
         double distance = offset.length();
         double desiredDistance = DISTANCE_FROM_ANCHOR * master.getScale();
         if (distance < 1.0E-6) {
-            offset = master.getTentacleBaseDirection(getSlot()).scale(desiredDistance);
+            offset = (planted ? new Vec3(0, 1, 0) : master.getTentacleBaseDirection(getSlot())).scale(desiredDistance);
         } else {
             double radialStep = RADIAL_STEP * master.getScale() * (master.isFtw() ? FTW_TENTACLE_SPEED_MULTIPLIER : 1.0);
             double radialChange = Mth.clamp(desiredDistance - distance, -radialStep, radialStep);
@@ -104,7 +131,8 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
         }
 
         Vec3 desiredEyePosition = anchor.add(offset);
-        Vec3 movement = master.getTentacleAnchorVelocity(getSlot()).add(desiredEyePosition.subtract(getEyePosition()));
+        Vec3 movement = desiredEyePosition.subtract(getEyePosition());
+        if (!planted) movement = movement.add(master.getTentacleAnchorVelocity(getSlot()));
         setDeltaMovement(movement);
         move(MoverType.SELF, movement);
 

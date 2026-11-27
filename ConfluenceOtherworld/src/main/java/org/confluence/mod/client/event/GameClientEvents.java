@@ -465,7 +465,7 @@ public final class GameClientEvents {
     public static void movementInputUpdate(MovementInputUpdateEvent event) {
         Input input = event.getInput();
         LocalPlayer player = (LocalPlayer) event.getEntity();
-        boolean cannotMove = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || ScryingOrbHandler.spectatingPlayer != null;
+        boolean cannotMove = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || player.hasEffect(ModEffects.WEBBED) || ScryingOrbHandler.spectatingPlayer != null;
         ILocalPlayer.of(player).confluence$setCanMove(!cannotMove);
         if (!player.hasInfiniteMaterials()) {
             if (cannotMove || player.hasEffect(ModEffects.SHIMMER) || player.getInBlockState().is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get())) {

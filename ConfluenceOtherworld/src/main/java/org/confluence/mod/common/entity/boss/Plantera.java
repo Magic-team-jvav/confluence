@@ -26,6 +26,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
@@ -35,6 +36,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.entity.projectile.PlanteraProjectile;
 import org.confluence.mod.common.entity.projectile.PlanteraProjectile.Variant;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -50,9 +52,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Plantera extends BaseBoss implements GeoEntity {
     // 本体、花钩和藤蔓共用的模型倍率，同时用于注册碰撞箱。
@@ -99,8 +99,10 @@ public class Plantera extends BaseBoss implements GeoEntity {
 
     /// 钩索拉扯移动时每 tick 保留的旧速度比例。
     private static final double HOOKED_MOVE_MOMENTUM = 0.85D;
-    // 血量每下降十个百分点，基础射击计时每 tick 多推进一步。
-    private static final int BASIC_COOLDOWN = 80;
+    // 泰拉每秒 60 刻，MC 每秒 20 刻。普攻计数仍按泰拉刻计算。
+    private static final int TERRARIA_TICKS_PER_GAME_TICK = 3;
+    // 泰拉计数超过 80 点时开火；血量低于 90%、80%、70%、60% 各多推进一步。
+    private static final int BASIC_FIRE_THRESHOLD = 80;
     // 毒种子额外扣除的普攻计时点数，实际等待随当前射速变化。
     private static final int POISON_COOLDOWN_COST = 30;
     // 刺球额外扣除的普攻计时点数，限制连续弹跳物的密度。
@@ -158,9 +160,9 @@ public class Plantera extends BaseBoss implements GeoEntity {
     // 一次扇形撒播的落地种子数量。
     private static final int PLANTING_SEEDS = 5;
     // 浓花粉的伤害半径（格）。
-    private static final double POLLEN_RADIUS = 2.8;
+    private static final double POLLEN_RADIUS = 5.6;
     // 被风吹散后花粉的伤害半径（格）。
-    private static final double THIN_POLLEN_RADIUS = 4.2;
+    private static final double THIN_POLLEN_RADIUS = 8.4;
     // 浓花粉开始被吹向目标时的速度（格/tick）。
     private static final double POLLEN_WIND_SPEED = 0.8;
     // 花粉每 tick 保留的风速比例，越小越早停下。
@@ -195,10 +197,11 @@ public class Plantera extends BaseBoss implements GeoEntity {
     private int actionTicks;
     private int basicClock;
     private int sunlightCooldown;
-    private int sunlightHits;
-    private int sunlightWindowUntil;
+    private final Deque<Integer> sunlightHits = new ArrayDeque<>();
     private int comboTicks;
     private boolean combo;
+    private int pollenCast;
+    private int comboPollenCast;
     private boolean skillHit;
     private int dashes;
     private boolean dashHit;
@@ -303,11 +306,6 @@ public class Plantera extends BaseBoss implements GeoEntity {
         return entityData.get(DATA_PHASE);
     }
 
-    boolean shootAtTarget() {
-        return getTarget() != null && shootBasic(getTarget()) > 0;
-    }
-
-
     @Override
     public boolean hurt(DamageSource source, float damage) {
         if (!super.hurt(source, damage)) return false;
@@ -318,30 +316,27 @@ public class Plantera extends BaseBoss implements GeoEntity {
 
     public void plantTentacle(Vec3 position) {
         if (!(level() instanceof ServerLevel server) || !isAlive() || getPhase() == 0) return;
-        for (int slot = 0; slot < BODY_TENTACLE_COUNT; slot++) {
-            if ((destroyedTentacles & 1L << slot) == 0) continue;
-            if (spawnTentacle(server, slot)) {
-                tentacles[slot].setPos(position);
-                destroyedTentacles &= ~(1L << slot);
-            }
-            return;
-        }
+        PlanteraTentacle tentacle = BossEntities.PLANTERA_TENTACLE.get().create(server);
+        if (tentacle == null) return;
+        tentacle.setPos(position);
+        if (!tentacle.setMaster(this, position) || !server.addFreshEntity(tentacle))
+            tentacle.discard();
     }
 
     private void onSunlightHit() {
         if (combatState != CombatState.SUNLIGHT) return;
-        if (actionTicks >= sunlightWindowUntil) {
-            sunlightHits = 0;
-            sunlightWindowUntil = actionTicks + SUNLIGHT_INTERRUPT_TICKS;
+        while (!sunlightHits.isEmpty() && actionTicks - sunlightHits.getFirst() >= SUNLIGHT_INTERRUPT_TICKS) {
+            sunlightHits.removeFirst();
         }
-        if (++sunlightHits >= SUNLIGHT_HITS_TO_INTERRUPT) {
+        sunlightHits.addLast(actionTicks);
+        if (sunlightHits.size() >= SUNLIGHT_HITS_TO_INTERRUPT) {
             sunlightCooldown = SUNLIGHT_INTERRUPT_COOLDOWN;
             begin(CombatState.RECOVER);
         }
     }
 
     public void reportSporeHit(LivingEntity victim) {
-        if (victim == combatTarget && combatState == CombatState.SPORES) skillHit = true;
+        if (victim instanceof Player && combatState == CombatState.SPORES) skillHit = true;
         applyRoot(victim);
     }
 
@@ -401,9 +396,8 @@ public class Plantera extends BaseBoss implements GeoEntity {
     private boolean recover(ServerLevel level) {
         if (getPhase() == 0) {
             combo = false;
-            if (isFtw() && sunlightCooldown == 0 && unhurtTicks >= UNHURT_TICKS && LibDateUtils.isDay(level)) {
-                sunlightHits = 0;
-                sunlightWindowUntil = 0;
+            if (isLegendary() && sunlightCooldown == 0 && unhurtTicks >= UNHURT_TICKS && LibDateUtils.isDay(level)) {
+                sunlightHits.clear();
                 begin(CombatState.SUNLIGHT);
                 return true;
             }
@@ -441,48 +435,64 @@ public class Plantera extends BaseBoss implements GeoEntity {
     private void tickBasic() {
         float health = getHealth() / getMaxHealth();
         int acceleration = 1 + (isExpert() ? 1 : 0) + (isFtw() ? 1 : 0) + (isEnraged() ? 3 : 0);
-        basicClock += acceleration + Mth.clamp((int) ((1F - health) * 10F), 0, 5);
-        if (basicClock >= BASIC_COOLDOWN && alignedForAttack())
-            basicClock = BASIC_COOLDOWN - shootBasic(combatTarget);
+        if (health < 0.9F) acceleration++;
+        if (health < 0.8F) acceleration++;
+        if (health < 0.7F) acceleration++;
+        if (health < 0.6F) acceleration++;
+        // 按泰拉的离散步长推进，越过阈值的那一刻清零并继续推进本刻剩余步数。
+        for (int step = 0; step < TERRARIA_TICKS_PER_GAME_TICK; step++) {
+            basicClock += acceleration;
+            if (basicClock <= BASIC_FIRE_THRESHOLD) continue;
+            int cooldownCost = shootBasic(combatTarget);
+            if (cooldownCost < 0) {
+                basicClock = BASIC_FIRE_THRESHOLD;
+                return;
+            }
+            basicClock = -cooldownCost;
+        }
     }
 
     private int shootBasic(LivingEntity victim) {
-        if (getPhase() != 0 || getLookAngle().dot(aim(victim)) < FIRING_ALIGNMENT) return 0;
+        if (getPhase() != 0 || getLookAngle().dot(aim(victim)) < FIRING_ALIGNMENT) return -1;
         Variant variant = Variant.SEED;
-        int cooldown = BASIC_COOLDOWN;
+        int cooldownCost = 0;
         if (getHealth() < getMaxHealth() * SPECIAL_SEED_THRESHOLD) {
             if (getRandom().nextInt(isExpert() ? 2 : 4) == 0) {
                 variant = Variant.POISON_SEED;
-                cooldown += POISON_COOLDOWN_COST;
+                cooldownCost = POISON_COOLDOWN_COST;
             } else if (getRandom().nextInt(isExpert() ? 6 : 8) == 0) {
                 variant = Variant.THORN_BALL;
-                cooldown += THORN_COOLDOWN_COST;
+                cooldownCost = THORN_COOLDOWN_COST;
             }
         }
         double speed = variant == Variant.THORN_BALL ? THORN_SPEED : SEED_SPEED;
         fire(variant, getLookAngle().scale(speed));
-        return cooldown;
+        return cooldownCost;
     }
 
     private boolean waitForCombo(boolean cloud) {
         int miss = cloud ? POLLEN_MISS_TICKS : SPORE_MISS_TICKS;
         int delay = cloud ? POLLEN_COMBO_TICKS : SPORE_COMBO_TICKS;
         if (actionTicks == miss) {
-            boolean hit = cloud ? pollen.stream().anyMatch(p -> p.hitTarget) : skillHit;
+            boolean hit = cloud ? pollen.stream().anyMatch(p -> p.cast == pollenCast && p.hitPlayer) : skillHit;
             float chance = cloud ? difficultyChance(0.35F, 0.50F, 0.75F) : difficultyChance(0.10F, 0.30F, 0.50F);
             if (!hit && getRandom().nextFloat() < chance) comboTicks = delay;
             else begin(CombatState.RECOVER);
         }
         if (comboTicks > 0 && actionTicks >= miss + comboTicks) {
             combo = true;
-            if (cloud) pollen.forEach(cloudToMove -> cloudToMove.blow());
+            comboPollenCast = cloud ? pollenCast : 0;
             begin(CombatState.BARRAGE);
         }
         return cloud && actionTicks < miss && holdPosition();
     }
 
     private float difficultyChance(float classic, float expert, float master) {
-        return isMaster() || isFtw() ? master : isExpert() ? expert : classic;
+        return LibUtils.switchByDifficulty(level(), classic, expert, master);
+    }
+
+    private boolean isLegendary() {
+        return LibUtils.switchByDifficulty(level(), false, false, false, true);
     }
 
     private boolean barrage() {
@@ -490,8 +500,15 @@ public class Plantera extends BaseBoss implements GeoEntity {
             actionTicks--;
             return holdPosition();
         }
-        int shots = combo && !isFtw() ? COMBO_SHOTS : BARRAGE_SHOTS;
-        if ((actionTicks - 1) % BARRAGE_INTERVAL == 0) shootBasic(combatTarget);
+        int shots = combo && !isLegendary() ? COMBO_SHOTS : BARRAGE_SHOTS;
+        if ((actionTicks - 1) % BARRAGE_INTERVAL == 0) {
+            shootBasic(combatTarget);
+            if (actionTicks == 1 && combo && comboPollenCast != 0) {
+                for (PollenCloud cloud : pollen) {
+                    if (cloud.cast == comboPollenCast) cloud.blow();
+                }
+            }
+        }
         if (actionTicks >= shots * BARRAGE_INTERVAL) begin(CombatState.RECOVER);
         return holdPosition();
     }
@@ -515,9 +532,10 @@ public class Plantera extends BaseBoss implements GeoEntity {
 
     private void releasePollen() {
         Vec3 center = getBoundingBox().getCenter();
+        int cast = ++pollenCast;
         for (int index = 0; index < 8; index++) {
             double angle = index * Mth.TWO_PI / 8;
-            pollen.add(new PollenCloud(center.add(Math.cos(angle) * 3.2, 0, Math.sin(angle) * 3.2)));
+            pollen.add(new PollenCloud(cast, center.add(Math.cos(angle) * 3.2, 0, Math.sin(angle) * 3.2)));
         }
     }
 
@@ -560,8 +578,8 @@ public class Plantera extends BaseBoss implements GeoEntity {
     private boolean hitWithBody() {
         var hits = SweptContactAttack.findTargets(this, 0, SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
                 entity -> entity == combatTarget && LibEntityUtils.canMobHit(this, entity));
-        if (hits.isEmpty()) return false;
-        if (doHurtTarget(combatTarget)) applyRoot(combatTarget);
+        if (hits.isEmpty() || !doHurtTarget(combatTarget)) return false;
+        applyRoot(combatTarget);
         return true;
     }
 
@@ -616,7 +634,7 @@ public class Plantera extends BaseBoss implements GeoEntity {
 
     private void applyRoot(LivingEntity victim) {
         if (victim == combatTarget && unhurtTicks >= UNHURT_TICKS && getRandom().nextFloat() < ROOT_CHANCE) {
-            victim.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, isFtw() ? ROOT_TICKS * 2 : ROOT_TICKS, 6));
+            victim.addEffect(new MobEffectInstance(ModEffects.WEBBED, isLegendary() ? ROOT_TICKS * 2 : ROOT_TICKS));
         }
     }
 
@@ -660,13 +678,15 @@ public class Plantera extends BaseBoss implements GeoEntity {
     }
 
     private class PollenCloud {
+        private final int cast;
         private Vec3 center;
         private Vec3 velocity = Vec3.ZERO;
         private int age;
         private boolean thinned;
-        private boolean hitTarget;
+        private boolean hitPlayer;
 
-        private PollenCloud(Vec3 center) {
+        private PollenCloud(int cast, Vec3 center) {
+            this.cast = cast;
             this.center = center;
         }
 
@@ -689,9 +709,9 @@ public class Plantera extends BaseBoss implements GeoEntity {
                     continue;
                 if (!player.hurt(damageSources().mobAttack(Plantera.this), (float) (POLLEN_DAMAGE * (thinned ? 0.5 : 1.0) * CreatureDifficultyScaling.attackMultiplier(Plantera.this))))
                     continue;
-                hitTarget |= player == combatTarget;
-                applyRoot(player);
+                hitPlayer = true;
                 if (!thinned) {
+                    applyRoot(player);
                     player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, POLLEN_EFFECT_TICKS, 1));
                     player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, POLLEN_EFFECT_TICKS));
                     player.addEffect(new MobEffectInstance(MobEffects.POISON, POLLEN_EFFECT_TICKS));
@@ -730,10 +750,9 @@ public class Plantera extends BaseBoss implements GeoEntity {
             PlanteraHook hook = BossEntities.PLANTERA_HOOK.get().create(level());
             if (hook == null) continue;
             hook.setPos(hookAttachment(index, 1.0F).subtract(0, hook.getBbHeight() * 0.5, 0));
-            hook.setMaster(this, index, null);
-            if (!serverLevel.addFreshEntity(hook)) {
-                removeSubEntity(hook);
+            if (!hook.setMaster(this, index, null) || !serverLevel.addFreshEntity(hook)) {
                 hooks[index] = null;
+                hook.discard();
             }
         }
     }
@@ -887,8 +906,7 @@ public class Plantera extends BaseBoss implements GeoEntity {
         PlanteraTentacle created = BossEntities.PLANTERA_TENTACLE.get().create(serverLevel);
         if (created == null) return false;
         created.setPos(getTentacleAnchor(slot));
-        created.setMaster(this, slot);
-        if (serverLevel.addFreshEntity(created)) return true;
+        if (created.setMaster(this, slot) && serverLevel.addFreshEntity(created)) return true;
         removeSubEntity(created);
         tentacles[slot] = null;
         created.discard();
@@ -898,7 +916,7 @@ public class Plantera extends BaseBoss implements GeoEntity {
     // 本体独立计时。传奇的六个花钩也各自计时，互不占用再生间隔。
     private void tickTentacleRegrowth() {
         if (!(level() instanceof ServerLevel server)) return;
-        for (int group = 0; group < (isFtw() ? regenerationTicks.length : 1); group++) {
+        for (int group = 0; group < (isLegendary() ? regenerationTicks.length : 1); group++) {
             int first = group == 0 ? 0 : BODY_TENTACLE_COUNT + (group - 1) * TENTACLES_PER_HOOK;
             int count = group == 0 ? BODY_TENTACLE_COUNT : TENTACLES_PER_HOOK;
             int alive = 0;

@@ -4,7 +4,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -19,26 +18,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.AnglerData;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
-import org.confluence.mod.common.init.ModLootTables;
-import org.confluence.mod.common.init.item.ArmorItems;
-import org.confluence.mod.common.init.item.FishingPoleItems;
-import org.confluence.mod.common.init.item.MountItems;
-import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.network.s2c.OpenAnglerDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 
 
 /// 渔夫 NPC —— 每日钓鱼任务。
@@ -230,36 +219,7 @@ public class AnglerNPC extends BaseNPC {
         else if (count >= 10) AchievementUtils.awardAchievement(player, "good_little_slave");
         else AchievementUtils.awardAchievement(player, "servant_in_training");
 
-        List<ItemStack> rewards = new ArrayList<>();
-        ItemStack milestone = getMilestoneReward(count);
-        if (milestone != null) rewards.add(milestone);
-
-        var rewardTable = count >= 75 ? ModLootTables.QUESTS_AFTER_75 : count >= 10 ? ModLootTables.QUESTS_AFTER_10 : ModLootTables.QUESTS_0;
-        rewards.addAll(rollLoot(serverLevel, rewardTable));
-
-        for (ItemStack reward : rewards) {
-            if (!player.getInventory().add(reward)) {
-                player.drop(reward, false);
-            }
-        }
-    }
-
-    private ItemStack getMilestoneReward(int count) {
-        return switch (count) {
-            case 5 -> MountItems.FUZZY_CARROT.toStack();
-            case 10 -> ArmorItems.ANGLER_HAT.toStack();
-            case 15 -> ArmorItems.ANGLER_VEST.toStack();
-            case 20 -> ArmorItems.ANGLER_PANTS.toStack();
-            case 25 -> ToolItems.BOTTOMLESS_WATER_BUCKET.toStack();
-            case 30 -> FishingPoleItems.GOLDEN_FISHING_ROD.toStack();
-            default -> null;
-        };
-    }
-
-    private List<ItemStack> rollLoot(ServerLevel level, ResourceKey<LootTable> tableKey) {
-        LootTable table = level.getServer().reloadableRegistries().getLootTable(tableKey);
-        LootParams params = new LootParams.Builder(level).create(LootContextParamSets.EMPTY);
-        return table.getRandomItems(params);
+        AnglerQuestRewards.grant(player, questFish, count, getMood().getBuyPriceMultiplier());
     }
 
     @Override

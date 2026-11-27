@@ -46,13 +46,14 @@ public final class CustomBossBarRenderer {
         int screenWidth = graphics.guiWidth();
         int x = (screenWidth - style.frameWidth()) / 2 + ModClientConfigs.bossLayoutX.get();
         y += ModClientConfigs.bossLayoutY.get();
-        // 底框和填充取同一帧，过渡动画播完后停在末帧。
+        // 过渡动画播完后停在末帧，填充按自己的帧数取样。
         int frame = (int) Math.min(style.frames() - 1, (Util.getMillis() - data.styleSince()) / style.frameMillis());
         int frameY = frame * style.frameHeight();
+        int numberTop = style.numberTop(frame);
         graphics.blit(style.frame(), x, y, 0, frameY, style.frameWidth(), style.frameHeight(), style.textureWidth(), style.textureHeight());
         // 血量与布局按同一顺序配对，渲染器无需认识激光眼、魔焰眼或其他具体 Boss。
         for (int i = 0; i < style.sections().size() && i < data.health().size(); i++) {
-            drawHealth(graphics, style, style.sections().get(i), data.health().get(i), x, y, frameY, valueOffsetX, valueOffsetY);
+            drawHealth(graphics, style, style.sections().get(i), data.health().get(i), x, y, frame, numberTop, valueOffsetX, valueOffsetY);
         }
         Minecraft minecraft = Minecraft.getInstance();
         int nameWidth = minecraft.font.width(name);
@@ -64,20 +65,23 @@ public final class CustomBossBarRenderer {
         int nameX = x + (style.frameWidth() - nameWidth) / 2;
         int nameY = y + style.nameTopInset() - lineHeight;
         int increment = style.verticalIncrement();
-        if (ModClientConfigs.bossBarNumbersVisible) {
-            increment = Math.max(increment, style.frameHeight() + lineHeight + 10);
+        boolean numbersVisible = ModClientConfigs.bossBarNumbersVisible;
+        // 按整段动画的最大占用预留空间，下方的其他血条不会随着帧位置抖动。
+        int numberLayoutBottom = style.frameHeight();
+        if (numbersVisible) {
+            numberLayoutBottom = Math.max(numberLayoutBottom, style.maxNumberTop());
+            increment = Math.max(increment, numberLayoutBottom + lineHeight + 10);
         }
         switch (position) {
             case BOTTOM -> {
-                nameY = y + style.frameHeight();
-                if (ModClientConfigs.bossBarNumbersVisible) nameY += lineHeight;
+                nameY = y + numberLayoutBottom + (numbersVisible ? lineHeight : 0);
                 increment = Math.max(increment, nameY - y + lineHeight * 2 + 2);
             }
             case LEFT, RIGHT -> {
                 nameX = position == NamePosition.LEFT ? x + style.sections().get(0).left() - 14 - nameWidth : x + style.frameWidth() - style.sections().get(0).left() + 14;
                 nameY = y + (style.frameHeight() - lineHeight) / 2;
                 // 同侧显示时，名称放在整组血量数字上方，为双子魔眼的两行读数留出空间。
-                if (ModClientConfigs.bossBarNumbersVisible && (position == NamePosition.LEFT
+                if (numbersVisible && (position == NamePosition.LEFT
                         ? ModClientConfigs.bossBarNumberPosition == NumberPosition.LEFT
                         : ModClientConfigs.bossBarNumberPosition == NumberPosition.RIGHT)) {
                     nameY = y + (style.frameHeight() - style.sections().size() * lineHeight) / 2 - lineHeight - 2;
@@ -91,15 +95,15 @@ public final class CustomBossBarRenderer {
     }
 
     // 静态和动态样式只在填充绘制处选择，底框、裁切方向与数字排版保持一致。
-    private static void drawHealth(GuiGraphics graphics, BarStyle style, BarSection section, Health health, int x, int y, int frameY, int offsetX, int offsetY) {
+    private static void drawHealth(GuiGraphics graphics, BarStyle style, BarSection section, Health health, int x, int y, int frame, int numberTop, int offsetX, int offsetY) {
         int width = filledWidth(section.width(), health.current(), health.maximum());
         int sourceX = section.left() + (section.reverse() ? section.width() - width : 0);
         if (width > 0) {
             if (ModClientConfigs.bossBarStyle == Style.DYNAMIC && flowingFillShader != null) {
                 graphics.flush();
-                renderFlowingFill(graphics, style.fill(), x + sourceX, y + style.healthY(), width, sourceX, style.fillY() + frameY, style.fillHeight(), style.textureWidth(), style.textureHeight());
+                renderFlowingFill(graphics, style.fill(), x + sourceX, y + style.healthY(), width, sourceX, style.fillSourceY(frame), style.fillHeight(), style.textureWidth(), style.fillTextureHeight());
             } else {
-                graphics.blit(style.fill(), x + sourceX, y + style.healthY(), sourceX, style.fillY() + frameY, width, style.fillHeight(), style.textureWidth(), style.textureHeight());
+                graphics.blit(style.fill(), x + sourceX, y + style.healthY(), sourceX, style.fillSourceY(frame), width, style.fillHeight(), style.textureWidth(), style.fillTextureHeight());
             }
         }
         if (!ModClientConfigs.bossBarNumbersVisible || health.maximum() <= 0) return;
@@ -109,7 +113,7 @@ public final class CustomBossBarRenderer {
         float scale = Math.min(1.0F, (section.width() - 4.0F) / font.width(value));
         graphics.pose().pushPose();
         float center = x + (style.sections().size() == 1 ? style.frameWidth() * 0.5F : section.left() + section.width() * 0.5F);
-        int top = y + style.frameHeight() - 6;
+        int top = y + numberTop;
         NumberPosition position = ModClientConfigs.bossBarNumberPosition;
         float halfWidth = font.width(value) * scale * 0.5F;
         // 窄屏侧边容不下完整数值时，回到血条下方。

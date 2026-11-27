@@ -10,12 +10,14 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
@@ -35,13 +37,18 @@ public class PlanteraProjectile extends StraightMonsterProjectile {
     private static final double SEED_TRACKING = 0.045;
     // 叶片去程每 tick 混入目标方向的比例，与侧向偏转共同形成弧线。
     private static final double LEAF_TRACKING = 0.025;
-    // 大种子飞行多少 tick 仍未命中时展开碎片弹幕。
-    private static final int SPLIT_AFTER_TICKS = 16;
+    // 大种子累计飞行达到该距离仍未命中时展开碎片弹幕，单位格。
+    private static final double SPLIT_TRAVEL_DISTANCE = 14.0;
+    // 播种弹擦到侧面或顶面后，沿障碍下落至可生根的顶面。
+    private static final double PLANTING_SEED_FALL_SPEED = 0.12;
+    private static final double PLANTING_SEED_SURFACE_OFFSET = 0.08;
     // 叶片飞行多少 tick 后转向发射者。
     private static final int LEAF_RETURN_TICKS = 30;
 
     private static final EntityDataAccessor<Integer> MODE = SynchedEntityData.defineId(PlanteraProjectile.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> LEAF_HIT = SynchedEntityData.defineId(PlanteraProjectile.class, EntityDataSerializers.BOOLEAN);
     private final Variant initialVariant;
+    private double splitDistance;
 
     public PlanteraProjectile(EntityType<? extends PlanteraProjectile> type, Level level, Variant variant) {
         super(type, level);
@@ -52,6 +59,7 @@ public class PlanteraProjectile extends StraightMonsterProjectile {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(MODE, -1);
+        builder.define(LEAF_HIT, false);
     }
 
     private Variant variant() {
@@ -78,9 +86,9 @@ public class PlanteraProjectile extends StraightMonsterProjectile {
             case SPORE ->
                     new Vec3(velocity.x * 0.98, Math.max(-SPORE_TERMINAL_SPEED, velocity.y - SPORE_GRAVITY), velocity.z * 0.98);
             case PLANTING_SEED -> velocity.add(0, -0.065, 0);
-            case LEAF -> tickCount < LEAF_RETURN_TICKS
-                    ? steer(velocity.yRot(-0.035F), aim, LEAF_TRACKING)
-                    : getOwner() == null ? velocity : steer(velocity, getOwner().getBoundingBox().getCenter().subtract(position()), 0.13);
+            case LEAF -> isLeafReturning() && getOwner() != null
+                    ? getOwner().getBoundingBox().getCenter().subtract(position()).normalize().scale(velocity.length())
+                    : steer(velocity.yRot(-0.035F), aim, LEAF_TRACKING);
         };
     }
 
@@ -98,12 +106,33 @@ public class PlanteraProjectile extends StraightMonsterProjectile {
         return hit == null ? BlockHitResult.miss(end, Direction.UP, blockPosition()) : hit;
     }
 
+    private boolean isLeafReturning() {
+        return entityData.get(LEAF_HIT) || tickCount >= LEAF_RETURN_TICKS;
+    }
+
+    @Override
+    public boolean canHitEntity(Entity target) {
+        return (variant() != Variant.LEAF || !isLeafReturning()) && super.canHitEntity(target);
+    }
+
+    @Override
+    protected void finishEntityHit(EntityHitResult result) {
+        if (variant() == Variant.LEAF) entityData.set(LEAF_HIT, true);
+        else super.finishEntityHit(result);
+    }
+
     @Override
     protected void onHitBlock(BlockHitResult result) {
         if (variant() == Variant.PLANTING_SEED) {
-            if (!level().isClientSide && getOwner() instanceof Plantera boss)
-                boss.plantTentacle(result.getLocation());
-            discard();
+            if (result.getDirection() == Direction.UP) {
+                if (!level().isClientSide && getOwner() instanceof Plantera boss)
+                    boss.plantTentacle(result.getLocation());
+                discard();
+            } else {
+                Vec3 outward = Vec3.atLowerCornerOf(result.getDirection().getNormal());
+                setPos(result.getLocation().add(outward.scale(PLANTING_SEED_SURFACE_OFFSET)));
+                setDeltaMovement(0, Math.min(getDeltaMovement().y, -PLANTING_SEED_FALL_SPEED), 0);
+            }
             return;
         }
         Direction direction = result.getDirection();
@@ -118,7 +147,7 @@ public class PlanteraProjectile extends StraightMonsterProjectile {
 
     @Override
     protected boolean ownsBlockImpactMovement(BlockHitResult result) {
-        return variant() == Variant.THORN_BALL;
+        return variant() == Variant.THORN_BALL || variant() == Variant.PLANTING_SEED;
     }
 
     @Override
@@ -153,12 +182,20 @@ public class PlanteraProjectile extends StraightMonsterProjectile {
             discard();
             return;
         }
+        Vec3 previous = position();
         super.tick();
         if (isRemoved()) return;
         Variant mode = variant();
+        if (!level().isClientSide && mode == Variant.LEAF && isLeafReturning()
+                && getOwner() != null && getBoundingBox().intersects(getOwner().getBoundingBox())) {
+            discard();
+            return;
+        }
+        if (!level().isClientSide && mode == Variant.SPLITTING_SEED)
+            splitDistance += previous.distanceTo(position());
         if (level().isClientSide) {
             level().addParticle(mode.particle, getX(), getY(), getZ(), 0, 0, 0);
-        } else if (mode == Variant.SPLITTING_SEED && tickCount >= SPLIT_AFTER_TICKS && getOwner() instanceof Plantera boss && boss.isAlive()) {
+        } else if (mode == Variant.SPLITTING_SEED && splitDistance >= SPLIT_TRAVEL_DISTANCE && getOwner() instanceof Plantera boss && boss.isAlive()) {
             Vec3 forward = getDeltaMovement().normalize();
             for (int index = -3; index <= 3; index++) {
                 PlanteraProjectile fragment = getType().create(level()) instanceof PlanteraProjectile projectile ? projectile : null;

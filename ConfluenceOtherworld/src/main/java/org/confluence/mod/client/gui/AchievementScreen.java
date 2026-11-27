@@ -294,7 +294,7 @@ public class AchievementScreen extends Screen {
         }
 
         x = leftPos + CATEGORY_X;
-        y = topPos + CATEGORY_Y;
+        int y = topPos + CATEGORY_Y;
         for (int i = 0; i < 4; i++) {
             AchievementOffset.Category category = INDEX_2_CATEGORY[i];
             int[] uvwh = CATEGORIES_UVWH.get(category);

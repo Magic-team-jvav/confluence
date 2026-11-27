@@ -8,6 +8,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
@@ -30,6 +31,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -58,6 +60,8 @@ import java.util.function.IntFunction;
 /// 神经元是可独立存档的实体，因此阶段推进不能只依赖附近实体数量。权威 UUID 集合会持久化；
 /// 子实体在 Boss 区块卸载期间死亡时通过世界账本回报，Boss 重新加载后再统一结算。
 public class BrainOfCthulhu extends BaseBoss {
+    public static final ResourceLocation PHASE_TWO_BAR = Confluence.asResource("brain_of_cthulhu_phase2");
+    public static final ResourceLocation TRANSITION_BAR = Confluence.asResource("brain_of_cthulhu_transition");
     private static final RawAnimation CLOSED = RawAnimation.begin().thenLoop("close");
     private static final RawAnimation OPEN = RawAnimation.begin().thenPlay("to_open").thenLoop("open");
     private static final EntityDataAccessor<Boolean> DATA_PHASE_TWO = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.BOOLEAN);
@@ -150,6 +154,12 @@ public class BrainOfCthulhu extends BaseBoss {
         setNoGravity(true);
         noPhysics = true;
         xpReward = 2000;
+    }
+
+    @Override
+    protected ResourceLocation getBossBarStyle() {
+        if (!phase2) return super.getBossBarStyle();
+        return phaseTwoState == PhaseTwoState.TRANSFORMING ? TRANSITION_BAR : PHASE_TWO_BAR;
     }
 
     @Override

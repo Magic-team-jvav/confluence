@@ -5,44 +5,66 @@
             "identifier": "confluence:plantera_pollen_cloud_1",
             "basic_render_parameters": {
                 "material": "particles_blend",
-                "texture": "minecraft:generic_7"
+                "texture": "confluence:plantera/plantera_pollen_cloud_1"
             }
         },
         "components": {
-            "minecraft:emitter_rate_instant": {
-                "num_particles": 26
+            "minecraft:emitter_initialization": {
+                "creation_expression": "variable.drift = 0.12 + 0.20 * variable.emitter_random_1;"
             },
-            "minecraft:emitter_lifetime_once": {
-                "active_time": 0.1
+            "minecraft:emitter_rate_steady": {
+                "spawn_rate": 17,
+                "max_particles": 110
             },
             "minecraft:emitter_shape_sphere": {
-                "radius": "variable.radius"
+                "radius": "variable.radius",
+                "direction": "outwards"
             },
-            "minecraft:particle_initial_speed": 0.18,
             "minecraft:particle_lifetime_expression": {
-                "max_lifetime": "math.random(0.45, 0.85)"
+                "max_lifetime": "2.5 + 2.0 * variable.particle_random_3"
             },
+            "minecraft:particle_initial_spin": {
+                "rotation": "360.0 * variable.particle_random_1",
+                "rotation_rate": "-90.0 + 180.0 * variable.particle_random_2"
+            },
+            "minecraft:particle_initial_speed": "variable.drift",
             "minecraft:particle_motion_dynamic": {
                 "linear_acceleration": [
-                    0,
-                    0.12,
-                    0
-                ]
+                    "0.5 * math.sin(variable.particle_random_1 * 360.0)",
+                    "0.5 * math.sin(variable.particle_random_1 * 360.0)",
+                    "0.5 * math.cos(variable.particle_random_1 * 360.0)"
+                ],
+                "linear_drag_coefficient": 0.35
             },
             "minecraft:particle_appearance_billboard": {
                 "size": [
-                    0.28,
-                    0.28
+                    "variable.particle_random_4>0.45?3:1 + 0.5 * variable.particle_random_4",
+                    "variable.particle_random_4>0.45?3:1 + 0.5 * variable.particle_random_4"
                 ],
-                "facing_camera_mode": "rotate_xyz"
+                "facing_camera_mode": "rotate_xyz",
+                "uv": {
+                    "texture_width": 80,
+                    "texture_height": 80,
+                    "uv": [
+                        "variable.particle_random_4>0.45?0:64",
+                        "variable.particle_random_4>0.45?0:64"
+                    ],
+                    "uv_size": [
+                        "variable.particle_random_4>0.45?64:16",
+                        "variable.particle_random_4>0.45?64:16"
+                    ]
+                }
             },
             "minecraft:particle_appearance_tinting": {
                 "color": [
-                    0.98,
-                    0.43,
-                    0.68,
-                    "variable.opacity * (1 - variable.particle_age / variable.particle_lifetime)"
+                    "variable.particle_random_4>0.55?1:0.5",
+                    "variable.particle_random_4>0.55?0.5:0.7",
+                    "variable.particle_random_4>0.55?1:0.5",
+                    "(variable.particle_random_4>0.55?0.3:1) * variable.opacity * (1 - variable.particle_age / variable.particle_lifetime)"
                 ]
+            },
+            "minecraft:emitter_lifetime_once": {
+                "active_time": 0.5
             }
         }
     }

@@ -42,6 +42,10 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
     private static final String STATE_TAG = "State";
     /// 藤钩向目标位置移动的基础速度，单位格/tick。
     private static final double HOOK_SPEED = 2.0;
+    // 实际移动到抓附点附近才允许牵引，避免被方块拦住时提前判定为抓牢。
+    private static final double ANCHOR_REACH_DISTANCE_SQUARED = 0.04;
+    private static final double ANCHOR_CLEARANCE = 0.02;
+    private static final double STALLED_MOVEMENT_SQUARED = 1.0E-6;
     // 花钩逐步转向飞行或受力方向，抓住方块时也保留入射姿态的过渡。
     private static final float HOOK_TURN_DEGREES_PER_TICK = 24.0F;
 
@@ -64,14 +68,13 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
         super(type, level);
     }
 
-    public void setMaster(Plantera master, int hookIndex, @Nullable BlockPos anchor) {
-        if (!bindTo(master)) {
-            return;
-        }
+    public boolean setMaster(Plantera master, int hookIndex, @Nullable BlockPos anchor) {
         entityData.set(HOOK_INDEX, Mth.clamp(hookIndex, 0, Plantera.HOOK_COUNT - 1));
         setAnchor(anchor);
         setState(anchor == null ? State.IDLE : State.EXTENDING);
+        if (!bindTo(master)) return false;
         master.bindHook(this);
+        return true;
     }
 
     public int getHookIndex() {
@@ -129,37 +132,43 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
                 ? master.hookAttachment(getHookIndex(), 1.0F)
                 : attachmentPoint(anchor, master);
         Vec3 offset = targetCenter.subtract(getBoundingBox().getCenter());
-        if (offset.lengthSqr() <= HOOK_SPEED * HOOK_SPEED) {
+        double distanceSquared = offset.lengthSqr();
+        if (distanceSquared <= HOOK_SPEED * HOOK_SPEED) {
             if (state == State.RETRACTING) {
                 setState(State.IDLE);
-            } else if (state == State.EXTENDING) {
+            }
+            Vec3 movement = state == State.GRABBED ? offset.scale(FOLLOW_MOMENTUM) : offset;
+            setDeltaMovement(movement);
+            move(MoverType.SELF, movement);
+            if (state == State.EXTENDING && getBoundingBox().getCenter().distanceToSqr(targetCenter) <= ANCHOR_REACH_DISTANCE_SQUARED) {
                 setState(State.GRABBED);
                 spawnThorns(master, anchor);
             }
-            Vec3 movement = anchor == null ? offset : offset.scale(FOLLOW_MOMENTUM);
-            setDeltaMovement(movement);
-            move(MoverType.SELF, movement);
             if (getState() == State.GRABBED) {
                 // 沿藤蔓受力方向倾斜，并保留朝向抓附面的分量，让钩尖扣住方块。
                 Vec3 intoFace = Vec3.atCenterOf(anchor).subtract(targetCenter).normalize();
                 Vec3 alongVine = targetCenter.subtract(master.hookAttachment(getHookIndex(), 1.0F)).normalize();
                 updateRotation(intoFace.add(alongVine));
             } else {
+                retractIfBlocked(state, previous);
                 updateRotation(movement);
             }
             attackContacts(master, previous);
             return;
         }
-        if (offset.lengthSqr() < 1.0E-4) {
-            setDeltaMovement(Vec3.ZERO);
-            return;
-        }
-
         Vec3 movement = offset.normalize().scale(HOOK_SPEED);
         setDeltaMovement(movement);
         move(MoverType.SELF, movement);
+        retractIfBlocked(state, previous);
         updateRotation(movement);
         attackContacts(master, previous);
+    }
+
+    private void retractIfBlocked(State state, Vec3 previous) {
+        if (state == State.EXTENDING && position().distanceToSqr(previous) < STALLED_MOVEMENT_SQUARED) {
+            setAnchor(null);
+            setState(State.RETRACTING);
+        }
     }
 
     /// FTW 钩爪抓牢时，在相邻空位长出可被攻击清除的粉色荆棘。
@@ -186,7 +195,9 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
                 face = side;
             }
         }
-        return face == null ? center : center.add(Vec3.atLowerCornerOf(face.getNormal()).scale(0.5 + getBbWidth() * 0.35));
+        if (face == null) return center;
+        double halfExtent = (face.getAxis().isVertical() ? getBbHeight() : getBbWidth()) * 0.5;
+        return center.add(Vec3.atLowerCornerOf(face.getNormal()).scale(0.5 + halfExtent + ANCHOR_CLEARANCE));
     }
 
     private void updateRotation(Vec3 movement) {

@@ -78,13 +78,6 @@ public final class ModLootTables {
     public static final ResourceLocation TREASURE = register("gameplay/fishing/treasure");
     public static final ResourceLocation CRATE = register("gameplay/crate");
     public static final ResourceLocation CRATE_HARDMODE = register("gameplay/crate_hardmode");
-    public static final ResourceLocation QUESTS_0 = register("gameplay/fishing_quests_0");
-    public static final ResourceLocation QUESTS_1 = register("gameplay/fishing_quests_1");
-    public static final ResourceLocation QUESTS_2 = register("gameplay/fishing_quests_2");
-    public static final ResourceLocation QUESTS_3 = register("gameplay/fishing_quests_3");
-    public static final ResourceLocation QUESTS_4 = register("gameplay/fishing_quests_4");
-    public static final ResourceLocation QUESTS_AFTER_10 = register("gameplay/fishing_quests_after_10");
-    public static final ResourceLocation QUESTS_AFTER_75 = register("gameplay/fishing_quests_after_75");
 
     public static final ResourceLocation CORRUPTION_CARRY = register("gameplay/corruption_carry");
     public static final ResourceLocation SLIME_CARRY = register("gameplay/slime_carry");

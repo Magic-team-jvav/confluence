@@ -16,7 +16,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCon
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -26,7 +25,6 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.loot.BindSoulSkillFunction;
 import org.confluence.mod.common.loot.DateLootItemCondition;
-import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
 import org.confluence.mod.common.loot.PercentageLootEntry;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
@@ -51,8 +49,6 @@ public record GiftSubProvider() implements LootTableSubProvider {
         LootItemConditionalFunction.Builder<?> count1To4 = SetItemCountFunction.setCount(UniformGenerator.between(1, 4));
         LootItemConditionalFunction.Builder<?> count5To15 = SetItemCountFunction.setCount(UniformGenerator.between(5, 15));
         LootItemConditionalFunction.Builder<?> count8To11 = SetItemCountFunction.setCount(UniformGenerator.between(8, 11));
-        GamePhaseLootItemCondition.Builder afterWallOfFlesh = GamePhaseLootItemCondition.builder().from(GamePhase.WALL_OF_FLESH).to(GamePhase.MOON_LORD);
-        GamePhaseLootItemCondition.Builder beforeWallOfFlesh = GamePhaseLootItemCondition.builder().from(GamePhase.BEFORE_SKELETRON).to(GamePhase.WALL_OF_FLESH);
 
 
         output.accept(Confluence.asResource("gameplay/crate/obsidian_crate"), environmentLavaCrateCommon()
@@ -930,205 +926,6 @@ public record GiftSubProvider() implements LootTableSubProvider {
                                 PercentageLootEntry.rule(100.0 * 24 / 628, LootItem.lootTableItem(PotionItems.RECALL_POTION)),
                                 PercentageLootEntry.rule(100.0 * 24 / 628, LootItem.lootTableItem(PotionItems.WORMHOLE_POTION))
                         ))
-                )
-        );
-        // 初始任务
-        output.accept(ModLootTables.QUESTS_0, LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        // 虫洞药水、传送药水（各1/6概率 = 400/2400 ≈ 16.7%）
-                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(400))
-                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(400))
-                        // 宝匣药水、钓鱼药水（各1/3概率 = 800/2400 ≈ 33.3%）
-                        .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(800).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(800).apply(count2To5))
-                        // 钓鱼浮标（1/25概率 = 96/2400 = 4%）
-                        .add(LootItem.lootTableItem(AccessoryItems.FISHING_BOBBER).setWeight(96))
-                        // 六分仪、渔民宝典、天气收音机（各1/30概率 = 80/2400 ≈ 3.3%）
-                        .add(LootItem.lootTableItem(TCItems.SEXTANT).setWeight(80))
-                        .add(LootItem.lootTableItem(TCItems.FISHERMANS_POCKET_GUIDE).setWeight(80))
-                        .add(LootItem.lootTableItem(TCItems.WEATHER_RADIO).setWeight(80))
-                        // 钓具箱、优质钓鱼线、渔夫耳环（各1/40概率 = 60/2400 = 2.5%）
-                        .add(LootItem.lootTableItem(AccessoryItems.TACKLE_BOX).setWeight(60))
-                        .add(LootItem.lootTableItem(AccessoryItems.HIGH_TEST_FISHING_LINE).setWeight(60))
-                        .add(LootItem.lootTableItem(TCItems.ANGLER_EARRING).setWeight(60))
-                        // 鱼钩、鲤鱼矿车（各1/60概率 = 40/2400 ≈ 1.67%）
-                        .add(LootItem.lootTableItem(HookItems.FISH_HOOK).setWeight(40))
-                        .add(LootItem.lootTableItem(MinecartItems.MINECARP).setWeight(40))
-                        // 金虫网（1/80概率 = 30/2400 = 1.25%）
-                        .add(LootItem.lootTableItem(ToolItems.GOLDEN_BUG_NET).setWeight(30))
-                        // 无底蜂蜜桶、蜂蜜吸收棉（各1/140概率 = 17.14/2400 ≈ 0.71%，取整为17）
-                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_HONEY_BUCKET).setWeight(17))
-                        .add(LootItem.lootTableItem(ToolItems.HONEY_ABSORBANT_SPONGE).setWeight(17))
-                        // 服装暂时用金币代替（各1/80概率 = 30/2400 = 1.25%）
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).setWeight(30))
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).setWeight(30))
-                )
-        );
-        output.accept(ModLootTables.QUESTS_AFTER_10, LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootTableReference.lootTableReference(ModLootTables.QUESTS_1)).when(beforeWallOfFlesh)
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootTableReference.lootTableReference(ModLootTables.QUESTS_2)).when(afterWallOfFlesh)
-                )
-        );
-        output.accept(ModLootTables.QUESTS_AFTER_75, LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootTableReference.lootTableReference(ModLootTables.QUESTS_3)).when(beforeWallOfFlesh)
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootTableReference.lootTableReference(ModLootTables.QUESTS_4)).when(afterWallOfFlesh)
-                )
-        );
-        // 渔夫奖励列表其二  肉前，第十个任务后
-        output.accept(ModLootTables.QUESTS_1, LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        // 虫洞药水、传送药水（各1/6概率 = 1400/8400 ≈ 16.7%）
-                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(1400))
-                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(1400))
-                        // 宝匣药水、钓鱼药水（各1/3概率 = 2800/8400 ≈ 33.3%）
-                        .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(2800).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(2800).apply(count2To5))
-                        // 无底水桶、超级吸收棉（各1/70概率 = 120/8400 ≈ 1.43%）
-                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_WATER_BUCKET).setWeight(120))
-                        .add(LootItem.lootTableItem(ToolItems.SUPER_ABSORBANT_SPONGE).setWeight(120))
-                        // 钓鱼浮标（1/25概率 = 336/8400 = 4%）
-                        .add(LootItem.lootTableItem(AccessoryItems.FISHING_BOBBER).setWeight(336))
-                        // 六分仪、渔民宝典、天气收音机（各1/30概率 = 280/8400 ≈ 3.33%）
-                        .add(LootItem.lootTableItem(TCItems.SEXTANT).setWeight(280))
-                        .add(LootItem.lootTableItem(TCItems.FISHERMANS_POCKET_GUIDE).setWeight(280))
-                        .add(LootItem.lootTableItem(TCItems.WEATHER_RADIO).setWeight(280))
-                        // 钓具箱、优质钓鱼线、渔夫耳环（各1/40概率 = 210/8400 = 2.5%）
-                        .add(LootItem.lootTableItem(AccessoryItems.TACKLE_BOX).setWeight(210))
-                        .add(LootItem.lootTableItem(AccessoryItems.HIGH_TEST_FISHING_LINE).setWeight(210))
-                        .add(LootItem.lootTableItem(TCItems.ANGLER_EARRING).setWeight(210))
-                        // 鱼钩、鲤鱼矿车（各1/60概率 = 140/8400 ≈ 1.67%）
-                        .add(LootItem.lootTableItem(HookItems.FISH_HOOK).setWeight(140))
-                        .add(LootItem.lootTableItem(MinecartItems.MINECARP).setWeight(140))
-                        // 金虫网（1/80概率 = 105/8400 = 1.25%）
-                        .add(LootItem.lootTableItem(ToolItems.GOLDEN_BUG_NET).setWeight(105))
-                        // 无底蜂蜜桶、蜂蜜吸收棉（各1/140概率 = 60/8400 ≈ 0.71%）
-                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_HONEY_BUCKET).setWeight(60))
-                        .add(LootItem.lootTableItem(ToolItems.HONEY_ABSORBANT_SPONGE).setWeight(60))
-                        // 服装暂时用金币代替（各1/80概率 = 105/8400 = 1.25%）
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).setWeight(105))
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).setWeight(105))
-                )
-        );
-
-        // 渔夫奖励列表其三  第十个任务后，且肉后
-        output.accept(ModLootTables.QUESTS_2, LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        // 虫洞药水、传送药水（各1/6概率 = 1400/8400 ≈ 16.7%）
-                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(1400))
-                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(1400))
-                        // 宝匣药水、钓鱼药水（各1/3概率 = 2800/8400 ≈ 33.3%）
-                        .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(2800).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(2800).apply(count2To5))
-                        // 鳍翼、无底水桶、超级吸收棉（各1/70概率 = 120/8400 ≈ 1.43%）
-                        .add(LootItem.lootTableItem(TCItems.FIN_WINGS).setWeight(120))
-                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_WATER_BUCKET).setWeight(120))
-                        .add(LootItem.lootTableItem(ToolItems.SUPER_ABSORBANT_SPONGE).setWeight(120))
-                        // 无底蜂蜜桶、蜂蜜吸收棉（各1/100概率 = 84/8400 = 1%）
-                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_HONEY_BUCKET).setWeight(84))
-                        .add(LootItem.lootTableItem(ToolItems.HONEY_ABSORBANT_SPONGE).setWeight(84))
-                        // 钓鱼浮标（1/25概率 = 336/8400 = 4%）
-                        .add(LootItem.lootTableItem(AccessoryItems.FISHING_BOBBER).setWeight(336))
-                        // 六分仪、渔民宝典、天气收音机（各1/30概率 = 280/8400 ≈ 3.33%）
-                        .add(LootItem.lootTableItem(TCItems.SEXTANT).setWeight(280))
-                        .add(LootItem.lootTableItem(TCItems.FISHERMANS_POCKET_GUIDE).setWeight(280))
-                        .add(LootItem.lootTableItem(TCItems.WEATHER_RADIO).setWeight(280))
-                        // 钓具箱、优质钓鱼线、渔夫耳环（各1/40概率 = 210/8400 = 2.5%）
-                        .add(LootItem.lootTableItem(AccessoryItems.TACKLE_BOX).setWeight(210))
-                        .add(LootItem.lootTableItem(AccessoryItems.HIGH_TEST_FISHING_LINE).setWeight(210))
-                        .add(LootItem.lootTableItem(TCItems.ANGLER_EARRING).setWeight(210))
-                        // 鱼钩、鲤鱼矿车（各1/60概率 = 140/8400 ≈ 1.67%）
-                        .add(LootItem.lootTableItem(HookItems.FISH_HOOK).setWeight(140))
-                        .add(LootItem.lootTableItem(MinecartItems.MINECARP).setWeight(140))
-                        // 金虫网（1/80概率 = 105/8400 = 1.25%）
-                        .add(LootItem.lootTableItem(ToolItems.GOLDEN_BUG_NET).setWeight(105))
-                        // 服装暂时用金币代替（各1/80概率 = 105/8400 = 1.25%）
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).setWeight(105))
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).setWeight(105))
-                        // 熔线钓钩（1/100概率 = 84/8400 = 1%）
-                        .add(LootItem.lootTableItem(FishingPoleItems.HOTLINE_FISHING_HOOK).setWeight(84))
-                )
-        );
-        // 渔夫奖励列表其四  第七十五个任务后，且肉前
-        output.accept(ModLootTables.QUESTS_3, LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        // 虫洞药水、传送药水（各1/6概率 = 7000/42000 ≈ 16.7%）
-                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(7000))
-                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(7000))
-                        // 宝匣药水、钓鱼药水（各1/3概率 = 14000/42000 ≈ 33.3%）
-                        .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(14000).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(14000).apply(count2To5))
-                        // 无底水桶、超级吸收棉（各1/70概率 = 600/42000 ≈ 1.43%）
-                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_WATER_BUCKET).setWeight(600))
-                        .add(LootItem.lootTableItem(ToolItems.SUPER_ABSORBANT_SPONGE).setWeight(600))
-                        // 无底蜂蜜桶、蜂蜜吸收棉（各1/140概率 = 300/42000 ≈ 0.71%）
-                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_HONEY_BUCKET).setWeight(300))
-                        .add(LootItem.lootTableItem(ToolItems.HONEY_ABSORBANT_SPONGE).setWeight(300))
-                        // 钓鱼浮标（1/25概率 = 1680/42000 = 4%）
-                        .add(LootItem.lootTableItem(AccessoryItems.FISHING_BOBBER).setWeight(1680))
-                        // 六分仪、渔民宝典、天气收音机（各1/30概率 = 1400/42000 ≈ 3.33%）
-                        .add(LootItem.lootTableItem(TCItems.SEXTANT).setWeight(1400))
-                        .add(LootItem.lootTableItem(TCItems.FISHERMANS_POCKET_GUIDE).setWeight(1400))
-                        .add(LootItem.lootTableItem(TCItems.WEATHER_RADIO).setWeight(1400))
-                        // 钓具箱、优质钓鱼线、渔夫耳环（各1/40概率 = 1050/42000 = 2.5%）
-                        .add(LootItem.lootTableItem(AccessoryItems.TACKLE_BOX).setWeight(1050))
-                        .add(LootItem.lootTableItem(AccessoryItems.HIGH_TEST_FISHING_LINE).setWeight(1050))
-                        .add(LootItem.lootTableItem(TCItems.ANGLER_EARRING).setWeight(1050))
-                        // 鱼钩、鲤鱼矿车（各1/60概率 = 700/42000 ≈ 1.67%）
-                        .add(LootItem.lootTableItem(HookItems.FISH_HOOK).setWeight(700))
-                        .add(LootItem.lootTableItem(MinecartItems.MINECARP).setWeight(700))
-                        // 金虫网（1/80概率 = 525/42000 = 1.25%）
-                        .add(LootItem.lootTableItem(ToolItems.GOLDEN_BUG_NET).setWeight(525))
-                        // 金钓竿（1/250概率 = 168/42000 = 0.4%）
-                        .add(LootItem.lootTableItem(FishingPoleItems.GOLDEN_FISHING_ROD).setWeight(168))
-                        // 服装暂时用金币代替（各1/80概率 = 525/42000 = 1.25%）
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).setWeight(525))
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).setWeight(525))
-                )
-        );
-        // 渔夫奖励列表其五  第七十五个任务后，且肉后
-        output.accept(ModLootTables.QUESTS_4, LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        // 虫洞药水、传送药水（各1/6概率 = 7000/42000 ≈ 16.7%）
-                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(7000))
-                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(7000))
-                        // 宝匣药水、钓鱼药水（各1/3概率 = 14000/42000 ≈ 33.3%）
-                        .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(14000).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(14000).apply(count2To5))
-                        // 鳍翼、无底水桶、超级吸收棉（各1/70概率 = 600/42000 ≈ 1.43%）
-                        .add(LootItem.lootTableItem(TCItems.FIN_WINGS).setWeight(600))
-                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_WATER_BUCKET).setWeight(600))
-                        .add(LootItem.lootTableItem(ToolItems.SUPER_ABSORBANT_SPONGE).setWeight(600))
-                        // 无底蜂蜜桶、蜂蜜吸收棉（各1/100概率 = 420/42000 = 1%）
-                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_HONEY_BUCKET).setWeight(420))
-                        .add(LootItem.lootTableItem(ToolItems.HONEY_ABSORBANT_SPONGE).setWeight(420))
-                        // 钓鱼浮标（1/25概率 = 1680/42000 = 4%）
-                        .add(LootItem.lootTableItem(AccessoryItems.FISHING_BOBBER).setWeight(1680))
-                        // 六分仪、渔民宝典、天气收音机（各1/30概率 = 1400/42000 ≈ 3.33%）
-                        .add(LootItem.lootTableItem(TCItems.SEXTANT).setWeight(1400))
-                        .add(LootItem.lootTableItem(TCItems.FISHERMANS_POCKET_GUIDE).setWeight(1400))
-                        .add(LootItem.lootTableItem(TCItems.WEATHER_RADIO).setWeight(1400))
-                        // 钓具箱、优质钓鱼线、渔夫耳环（各1/40概率 = 1050/42000 = 2.5%）
-                        .add(LootItem.lootTableItem(AccessoryItems.TACKLE_BOX).setWeight(1050))
-                        .add(LootItem.lootTableItem(AccessoryItems.HIGH_TEST_FISHING_LINE).setWeight(1050))
-                        .add(LootItem.lootTableItem(TCItems.ANGLER_EARRING).setWeight(1050))
-                        // 鱼钩、鲤鱼矿车（各1/60概率 = 700/42000 ≈ 1.67%）
-                        .add(LootItem.lootTableItem(HookItems.FISH_HOOK).setWeight(700))
-                        .add(LootItem.lootTableItem(MinecartItems.MINECARP).setWeight(700))
-                        // 金虫网（1/80概率 = 525/42000 = 1.25%）
-                        .add(LootItem.lootTableItem(ToolItems.GOLDEN_BUG_NET).setWeight(525))
-                        // 熔线钓钩（1/100概率 = 420/42000 = 1%）
-                        .add(LootItem.lootTableItem(FishingPoleItems.HOTLINE_FISHING_HOOK).setWeight(420))
-                        // 服装暂时用金币代替（各1/80概率 = 525/42000 = 1.25%）
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).setWeight(525))
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).setWeight(525))
-                        // 金钓竿（1/250概率 = 168/42000 = 0.4%）
-                        .add(LootItem.lootTableItem(FishingPoleItems.GOLDEN_FISHING_ROD).setWeight(168))
                 )
         );
         // 宝藏袋

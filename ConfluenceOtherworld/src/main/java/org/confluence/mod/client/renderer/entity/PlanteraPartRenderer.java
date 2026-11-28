@@ -5,6 +5,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -21,8 +22,9 @@ import software.bernie.geckolib.animatable.GeoEntity;
 public class PlanteraPartRenderer<T extends BaseLivingBossPart<Plantera> & GeoEntity> extends BossGeoRenderer<T> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/boss/plantera_parts.png");
     private static final ResourceLocation VINE = Confluence.asResource("geo/entity/boss/plantera_vine_segment.geo.json");
-    // 体节在模型坐标中从 Y=0 延伸到 Y=-16。
     private static final double SEGMENT_LENGTH = Plantera.MODEL_SCALE;
+    // 花钩抓牢后向物块内推进的渲染距离，单位为格。
+    private static final double HOOK_EMBED_DEPTH = 0.65;
 
     public PlanteraPartRenderer(EntityRendererProvider.Context context, String name) {
         super(context, new GeoNormalModel<T>(Confluence.asResource("boss/" + name), false) {
@@ -52,9 +54,10 @@ public class PlanteraPartRenderer<T extends BaseLivingBossPart<Plantera> & GeoEn
             anchor = tentacle.isPlanted() ? tentacle.getPlantedAnchor() : boss.tentacleAnchorForRender(tentacle.getSlot(), partialTick);
         }
         Vec3 start = new Vec3(0, part.getBbHeight() * 0.5, 0);
-        if (part instanceof PlanteraHook) {
+        if (part instanceof PlanteraHook hook) {
             // 花钩的藤柄在模型底部，沿钩身反方向从中心退到藤柄内侧。
-            start = start.subtract(part.getViewVector(partialTick).scale(0.5 * Plantera.MODEL_SCALE * part.getScale()));
+            start = start.add(hookEmbedOffset(hook, partialTick))
+                    .subtract(hook.getViewVector(partialTick).scale(0.5 * Plantera.MODEL_SCALE * hook.getScale()));
         }
         Vec3 offset = anchor.subtract(part.getPosition(partialTick)).subtract(start);
         double length = offset.length();
@@ -84,10 +87,19 @@ public class PlanteraPartRenderer<T extends BaseLivingBossPart<Plantera> & GeoEn
 
     @Override
     protected void applyRotations(T animatable, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTick) {
-        poseStack.translate(0, animatable.getBbHeight() * 0.5, 0);
+        Vec3 embedOffset = animatable instanceof PlanteraHook hook ? hookEmbedOffset(hook, partialTick) : Vec3.ZERO;
+        poseStack.translate(embedOffset.x, animatable.getBbHeight() * 0.5 + embedOffset.y, embedOffset.z);
         poseStack.mulPose(Axis.YP.rotationDegrees(-getRenderYaw(animatable, partialTick)));
         poseStack.mulPose(Axis.XP.rotationDegrees(90 + getRenderPitch(animatable, partialTick)));
         poseStack.scale(Plantera.MODEL_SCALE, Plantera.MODEL_SCALE, Plantera.MODEL_SCALE);
         poseStack.translate(0, -0.5, 0);
+    }
+
+    private static Vec3 hookEmbedOffset(PlanteraHook hook, float partialTick) {
+        BlockPos anchor = hook.getAnchor();
+        if (anchor == null || !hook.hasReachedAnchor()) return Vec3.ZERO;
+        // 钩身会随藤蔓倾斜，入块方向以锚定物块为准。
+        Vec3 center = hook.getPosition(partialTick).add(0, hook.getBbHeight() * 0.5, 0);
+        return Vec3.atCenterOf(anchor).subtract(center).normalize().scale(HOOK_EMBED_DEPTH);
     }
 }
